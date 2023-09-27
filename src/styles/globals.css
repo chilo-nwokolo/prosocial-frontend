@@ -4,10 +4,19 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-size: 14px;
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+}
+
+/* TelInput component */
+.telInput {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  padding: 6px 8px;
 }
