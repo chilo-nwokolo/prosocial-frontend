@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 
 export default function ProLayout({
-	children, // will be a page or nested layout
+	children,
 }: {
 	children: React.ReactNode;
 }) {
@@ -11,7 +11,7 @@ export default function ProLayout({
 			border="1px solid"
 			borderColor="gray.300"
 			minH="100vh"
-			maxWidth="md"
+			maxWidth="lg"
 			minWidth="xs"
 			mx="auto"
       overflowY="auto"
