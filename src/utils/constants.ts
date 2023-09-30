@@ -6,6 +6,8 @@ export const ImageLinks = {
 export const appRouteLinks = {
   login: '/pro/login',
   register: '/pro/register',
+  confirmEmail: '/pro/register/confirm-email',
+  verifyEmail: '/pro/register/verify-email',
   gettingStarted: '/pro/getting-started',
   welcome: '/pro/getting-started/welcome',
   termsConditions: '/pro/getting-started/terms-conditions',

@@ -7,6 +7,7 @@ import {
 	FormControl,
 	FormHelperText,
 	FormLabel,
+	Image,
 	Input,
 	Text,
 	Tooltip,
@@ -14,12 +15,14 @@ import {
 import { useState } from 'react';
 import TelInput from 'react-phone-number-input/input';
 import { AiFillInfoCircle } from 'react-icons/ai';
-import { CgProfile } from 'react-icons/cg';
 import Link from 'next/link';
 import { appRouteLinks } from '@/utils/constants';
+import ProfilePictureUploader from '@/Components/General/ProfilePictureUploader';
 
 export default function RegistrationPage() {
 	const [value, setValue] = useState('');
+	const [profileImage, setProfileImage] = useState<File | null>(null);
+
 	return (
 		<Box mt="5">
 			<Text mb="4" as="h1" fontSize="2xl" fontWeight="medium">
@@ -84,11 +87,10 @@ export default function RegistrationPage() {
 							letters, lowercase letters, numbers, and symbols.
 						</FormHelperText>
 					</FormControl>
+					{/* Profile Photo */}
 					<FormControl>
-						<Text fontWeight="medium">
-							Profile Photo
-						</Text>
-            <FormHelperText>
+						<Text fontWeight="medium">Upload your profile photo</Text>
+						<FormHelperText>
 							<Tooltip
 								label="Your profile photo is not public. It will be seen by potential friends once an outing has been completed. The only 
                 members who can see your photo are perpetually members in your ProSocial circle and friends who have linked with your account"
@@ -100,29 +102,11 @@ export default function RegistrationPage() {
 								</Flex>
 							</Tooltip>
 						</FormHelperText>
-						<Flex justifyContent="center" alignItems="center" flexDir="column" w="full" mt="10">
-							<FormLabel
-                cursor="pointer"
-								w="150px"
-								h="150px"
-								bg="gray.500"
-                _hover={{ bg: "gray.700", shadow: "lg" }}
-								border="1px solid"
-								borderColor="gray.300"
-								borderRadius="full"
-								color="white"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-							>
-								<CgProfile style={{ fontSize: "80px" }} />
-							</FormLabel>
-							<Input visibility="hidden" type="file" accept=".png, .jpg, .jpeg" />
-						</Flex>
+						<ProfilePictureUploader setProfileImage={setProfileImage} profileImage={profileImage} />
 					</FormControl>
-          <Link href={appRouteLinks.intro}>
-					  <Button w="full">Sign Up</Button>
-          </Link>
+					<Link href={appRouteLinks.confirmEmail}>
+						<Button w="full">Sign Up</Button>
+					</Link>
 				</Flex>
 			</form>
 		</Box>
