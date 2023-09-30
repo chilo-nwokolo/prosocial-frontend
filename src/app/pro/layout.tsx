@@ -15,7 +15,8 @@ export default function ProLayout({
 			minWidth="xs"
 			mx="auto"
       overflowY="auto"
-			p="4"
+			px="6"
+			py="4"
 		>
 			{children}
 		</Box>

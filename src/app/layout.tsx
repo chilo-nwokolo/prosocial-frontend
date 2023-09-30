@@ -1,6 +1,5 @@
 import { Providers } from '@/Components/Providers';
 import '@/styles/globals.css';
-import { Box } from '@chakra-ui/react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
