@@ -1,7 +1,6 @@
 'use client';
 
-import Image from 'next/image';
-import { Center } from '@chakra-ui/react';
+import { Center, Image } from '@chakra-ui/react';
 import { ImageLinks, appRouteLinks } from '@/utils/constants';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -24,8 +23,9 @@ export default function Home() {
 				className="grow-element"
 				src={ImageLinks.logoWithText}
 				alt="prosocial logo"
-				width={200}
-				height={200}
+				w={200}
+				h={200}
+				objectFit="contain"
 			/>
 		</Center>
 	);
