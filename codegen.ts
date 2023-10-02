@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/service';
+import { BASE_URL } from './src/service';
 import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
@@ -14,7 +14,6 @@ const config: CodegenConfig = {
 			},
 		},
 	},
-	ignoreNoDocuments: true,
 };
 
 export default config;

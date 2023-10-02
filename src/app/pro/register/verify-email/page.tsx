@@ -1,23 +1,77 @@
-import { appRouteLinks } from "@/utils/constants";
-import { Button, Center, Flex, Text } from "@chakra-ui/react";
-import Link from "next/link";
+'use client';
 
-export default function EmailConfirmationPage() {
-  return (
-    <Center h="100vh">
-      <Flex flexDir="column" my="auto" gap="10">
-        <Text as="h1" fontSize="2xl" fontWeight="medium">
-          Verify your Email Address
-        </Text>
-        <Text>
-          We have sent you an email to verify your email address. Verifying your email address give you access to all the awesome features in ProSocial.
-        </Text>
-        <Link href={appRouteLinks.intro}>
-          <Button>
-            Next
-          </Button>
-        </Link>
-      </Flex>
-    </Center>
-  )
+import { VERIFY_EMAIL } from '@/features/auth/gql';
+import { appRouteLinks } from '@/utils/constants';
+import { useMutation } from '@apollo/client';
+import { Button, Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react';
+import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+export default function EmailVerificationPage() {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const accessToken = searchParams.get('access_token');
+	const toast = useToast();
+
+	const [verify, { loading, error }] = useMutation(VERIFY_EMAIL, {
+		onCompleted: () => {
+			toast({
+				title: 'Email verified successfully',
+				status: 'success',
+			});
+			router.push(appRouteLinks.login);
+		},
+	});
+
+	if (error) {
+		toast({
+			id: 'failedToast',
+			status: 'error',
+			description: 'Invalid token',
+			title: 'Unable to verify your email address',
+		});
+	}
+
+	useEffect(() => {
+		toast.close('errorToast');
+		if (accessToken) {
+			verify({ variables: { access_token: accessToken } });
+		} else {
+			toast({
+				id: 'errorToast',
+				status: 'error',
+				description: 'Invalid URL',
+				title:
+					'Invalid token or the token is missing. Kindly try clicking on the link again.',
+			});
+			router.push(appRouteLinks.login);
+		}
+	}, []);
+
+	if (loading) {
+		return (
+			<Center h="100vh">
+				<Spinner size="xl" />
+			</Center>
+		);
+	}
+
+	return (
+		<Center h="100vh">
+			{error ? (
+				<Flex flexDir="column" my="auto" gap="10">
+					<Text as="h1" fontSize="2xl" fontWeight="medium">
+						Sorry, Verification Failed.
+					</Text>
+					<Text>
+						Send us an email, <a href="mailto:">info@prosocialapp.com</a> for assistance.
+					</Text>
+					<Link href={appRouteLinks.login}>
+						<Button w="full">Go to Login</Button>
+					</Link>
+				</Flex>
+			) : null}
+		</Center>
+	);
 }

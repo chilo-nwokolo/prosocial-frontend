@@ -10,7 +10,7 @@ export default function Home() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       router.push(appRouteLinks.gettingStarted);
-    }, 5000); 
+    }, 4000);
 
     return () => {
       clearTimeout(timeout)
@@ -23,8 +23,8 @@ export default function Home() {
 				className="grow-element"
 				src={ImageLinks.logoWithText}
 				alt="prosocial logo"
-				w={200}
-				h={200}
+				w="200px"
+				h="200px"
 				objectFit="contain"
 			/>
 		</Center>

@@ -7,28 +7,25 @@ import {
 	FormControl,
 	FormHelperText,
 	FormLabel,
-	Image,
-	Input,
 	Text,
 	Tooltip,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import TelInput from 'react-phone-number-input/input';
 import { AiFillInfoCircle } from 'react-icons/ai';
-import Link from 'next/link';
-import { appRouteLinks } from '@/utils/constants';
-import ProfilePictureUploader from '@/Components/General/ProfilePictureUploader';
+import ProfilePictureUploader from '@/components/General/ProfilePictureUploader';
+import FormInput from '@/components/General/FormInput';
+import UseRegistrationPage from '@/features/auth/hooks/useRegistrationPage';
 
 export default function RegistrationPage() {
-	const [value, setValue] = useState('');
-	const [profileImage, setProfileImage] = useState<File | null>(null);
+	const { formik, profileImage, setProfileImage, setPhone, phone, loading } =
+		UseRegistrationPage();
 
 	return (
 		<Box mt="5">
 			<Text mb="4" as="h1" fontSize="2xl" fontWeight="medium">
 				Let&apos;s create your account
 			</Text>
-			<form>
+			<form onSubmit={formik.handleSubmit}>
 				<Flex flexDir="column" gap="4">
 					{/* Phone Number */}
 					<FormControl>
@@ -38,9 +35,9 @@ export default function RegistrationPage() {
 							international
 							className="telInput"
 							withCountryCallingCode
-							value={value}
+							value={phone}
 							// @ts-ignore
-							onChange={setValue}
+							onChange={setPhone}
 						/>
 						<FormHelperText fontSize="xs">
 							<Tooltip
@@ -55,38 +52,65 @@ export default function RegistrationPage() {
 						</FormHelperText>
 					</FormControl>
 					{/* Date of Birth */}
-					<FormControl>
-						<FormLabel>Date of birth</FormLabel>
-						<Input type="date" />
-						<FormHelperText>
-							<Tooltip
-								label="ProSocial requires your date of birth to verify you are 18 years or older. We also group our members with people at similar life stages, which often is reflected by age"
-								placement="bottom"
-								fontSize="xs"
-							>
-								<Flex alignItems="center" gap="1" fontSize="xs" cursor="default">
-									<AiFillInfoCircle /> Why do you ask for my Date of birth?
-								</Flex>
-							</Tooltip>
-						</FormHelperText>
-					</FormControl>
+					<FormInput
+						labelTitle="Date of birth"
+						tooltip="ProSocial requires your date of birth to verify you are 18 years or older. We also group our members with people at similar life stages, which often is reflected by age"
+						inputType="date"
+						name="dob"
+						infoText="Why do you ask for my Date of birth?"
+						value={formik.values.dob}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={formik.errors.dob}
+						min={'2008-01-01'}
+					/>
+					{/* First Name */}
+					<FormInput
+						labelTitle="First Name"
+						tooltip=""
+						name="firstName"
+						inputType="text"
+						value={formik.values.firstName}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={formik.errors.firstName}
+					/>
+					{/* Last Name */}
+					<FormInput
+						labelTitle="Last Name"
+						tooltip=""
+						name="lastName"
+						inputType="text"
+						value={formik.values.lastName}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={formik.errors.lastName}
+					/>
 					{/* Email */}
-					<FormControl>
-						<FormLabel>Email Address</FormLabel>
-						<Input type="email" />
-						<FormHelperText fontSize="xs">
-							We&apos;ll never share your email.
-						</FormHelperText>
-					</FormControl>
+					<FormInput
+						labelTitle="Email Address"
+						tooltip=""
+						name="email"
+						inputType="email"
+						infoText="We'll never share your email."
+						value={formik.values.email}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={formik.errors.email}
+					/>
 					{/* Password */}
-					<FormControl>
-						<FormLabel>Password</FormLabel>
-						<Input type="password" />
-						<FormHelperText fontSize="xs">
-							Password must contain at least 8 characters and a combination of uppercase
-							letters, lowercase letters, numbers, and symbols.
-						</FormHelperText>
-					</FormControl>
+					<FormInput
+						labelTitle="Password"
+						tooltip=""
+						inputType="password"
+						name="password"
+						infoText="Password must contain at least 8 characters and a combination of uppercase
+						letters, lowercase letters, numbers, and symbols."
+						value={formik.values.password}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						error={formik.errors.password}
+					/>
 					{/* Profile Photo */}
 					<FormControl>
 						<Text fontWeight="medium">Upload your profile photo</Text>
@@ -102,11 +126,14 @@ export default function RegistrationPage() {
 								</Flex>
 							</Tooltip>
 						</FormHelperText>
-						<ProfilePictureUploader setProfileImage={setProfileImage} profileImage={profileImage} />
+						<ProfilePictureUploader
+							setProfileImage={setProfileImage}
+							profileImage={profileImage}
+						/>
 					</FormControl>
-					<Link href={appRouteLinks.confirmEmail}>
-						<Button w="full">Sign Up</Button>
-					</Link>
+					<Button w="full" type="submit" isLoading={loading} loadingText="Creating your account">
+						Sign Up
+					</Button>
 				</Flex>
 			</form>
 		</Box>

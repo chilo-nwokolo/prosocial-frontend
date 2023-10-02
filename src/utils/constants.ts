@@ -14,3 +14,10 @@ export const appRouteLinks = {
   serviceTerms: '/pro/getting-started/service-terms',
   intro: '/pro/intro',
 }
+
+export const formFeedback = {
+  required: "This field is required",
+  invalidEmail: "Please enter a valid email",
+  minPassword: "Password must exceed 8 characters",
+};
+

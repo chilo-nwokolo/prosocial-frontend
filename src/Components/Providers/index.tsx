@@ -10,7 +10,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 	return (
 		<ApolloProvider client={client}>
 			<CacheProvider>
-				<ChakraProvider>{children}</ChakraProvider>
+				<ChakraProvider toastOptions={{ defaultOptions:  { position: 'top-right', duration: 3000, isClosable: true } }}>{children}</ChakraProvider>
 			</CacheProvider>
 		</ApolloProvider>
 	);
