@@ -4,6 +4,6 @@ module.exports = {
         script : "npm",
         exec_mode: 'cluster',
         instances: 1,
-        args: 'start'
+        args: 'dev'
     }]
 }
