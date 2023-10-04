@@ -1,9 +1,9 @@
 module.exports = {
     apps : [{
         name   : "Prosocial Frontend App",
-        script : "npm",
+        script : "yarn",
         exec_mode: 'cluster',
         instances: 1,
-        args: 'dev'
+        args: 'start'
     }]
 }
