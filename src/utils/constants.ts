@@ -4,7 +4,7 @@ export const ImageLinks = {
 }
 
 export const appRouteLinks = {
-  login: '/pro/login',
+  login: '/login',
   register: '/pro/register',
   confirmEmail: '/pro/register/confirm-email',
   verifyEmail: '/pro/register/verify-email',
