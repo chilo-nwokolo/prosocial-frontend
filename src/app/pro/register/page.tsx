@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/react';
 import TelInput from 'react-phone-number-input/input';
 import { AiFillInfoCircle } from 'react-icons/ai';
-import ProfilePictureUploader from '@/components-new/General/ProfilePictureUploader';
-import FormInput from '@/components-new/General/FormInput';
+import ProfilePictureUploader from '@/components/General/ProfilePictureUploader';
+import FormInput from '@/components/General/FormInput';
 import UseRegistrationPage from '@/features/auth/hooks/useRegistrationPage';
 
 export default function RegistrationPage() {

@@ -1,6 +1,6 @@
 'use client';
 
-import AppModal from '@/components-new/AppModal';
+import AppModal from '@/components/AppModal';
 import { appRouteLinks } from '@/utils/constants';
 import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
 import Link from 'next/link';
