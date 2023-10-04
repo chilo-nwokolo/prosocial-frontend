@@ -47,6 +47,7 @@ export default function EmailVerificationPage() {
 			});
 			router.push(appRouteLinks.login);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (loading) {

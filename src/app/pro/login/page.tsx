@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ImageLinks, appRouteLinks, formFeedback } from '@/utils/constants';
 import Image from 'next/image';
-import FormInput from '@/components/General/FormInput';
+import FormInput from '@/components-new/General/FormInput';
 import useLoginPage from '@/features/auth/hooks/useLoginPage';
 import Link from 'next/link';
 
