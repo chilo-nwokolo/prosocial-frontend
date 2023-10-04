@@ -1,12 +1,12 @@
 'use client';
 
-import { VERIFY_EMAIL } from '@/features/auth/gql';
-import { appRouteLinks } from '@/utils/constants';
-import { useMutation } from '@apollo/client';
+import { useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Button, Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+import { VERIFY_EMAIL } from '@/features/auth/gql';
+import { appRouteLinks } from '@/utils/constants';
 
 export default function EmailVerificationPage() {
 	const searchParams = useSearchParams();

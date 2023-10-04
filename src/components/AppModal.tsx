@@ -1,11 +1,9 @@
 import {
-  Button,
   Flex,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
 	ModalContent,
-	ModalHeader,
 	ModalOverlay,
   Text,
   ThemingProps,
