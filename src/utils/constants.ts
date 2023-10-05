@@ -4,14 +4,17 @@ export const ImageLinks = {
 }
 
 export const appRouteLinks = {
-  login: '/login',
-  register: '/pro/register',
-  confirmEmail: '/pro/register/confirm-email',
-  verifyEmail: '/pro/register/verify-email',
-  gettingStarted: '/pro/getting-started',
-  welcome: '/pro/getting-started/welcome',
-  termsConditions: '/pro/getting-started/terms-conditions',
-  serviceTerms: '/pro/getting-started/service-terms',
+  // auth routes
+  login: '/auth/login',
+  register: '/auth/register',
+  confirmEmail: '/auth/register/confirm-email',
+  verifyEmail: '/auth/register/verify-email',
+  // getting started
+  gettingStarted: '/getting-started',
+  welcome: '/getting-started/welcome',
+  termsConditions: '/getting-started/terms-conditions',
+  serviceTerms: '/getting-started/service-terms',
+  // authenticated routes
   intro: '/pro/intro',
 }
 

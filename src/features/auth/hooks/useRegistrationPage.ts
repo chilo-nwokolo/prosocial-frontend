@@ -1,5 +1,4 @@
 import { useFormik } from 'formik';
-import { calculateMinDateOfBirth } from '@/utils/helpers';
 import * as yup from 'yup';
 import { useMutation } from '@apollo/client';
 import { useState } from 'react';
@@ -17,7 +16,7 @@ export default function UseRegistrationPage() {
 	const [register, { loading }] = useMutation(REGISTER_USER);
 
 	const validationSchema = yup.object({
-		dob: yup.date().min(calculateMinDateOfBirth()).required(formFeedback.required),
+		dob: yup.date().required(formFeedback.required),
 		email: yup.string().email(formFeedback.invalidEmail).required(formFeedback.required),
 		password: yup.string().min(8, formFeedback.minPassword).required(formFeedback.required),
 		firstName: yup.string().required(formFeedback.required),
