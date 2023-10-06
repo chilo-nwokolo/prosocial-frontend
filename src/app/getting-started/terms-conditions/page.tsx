@@ -29,7 +29,7 @@ export default function TermsAndConditionsPage() {
 				<Flex justifyContent="center" gap="4" mt="8">
 					<Button onClick={openDeclineModal}>Decline</Button>
           <Link href={appRouteLinks.register}>
-					  <Button>Accept</Button>
+						<Button>Accept</Button>
           </Link>
 				</Flex>
 			</Box>

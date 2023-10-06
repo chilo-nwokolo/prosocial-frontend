@@ -1,10 +1,6 @@
 import { Box } from '@chakra-ui/react';
 
-export default function ProLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function ProLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<Box
 			as="section"
@@ -14,7 +10,7 @@ export default function ProLayout({
 			maxWidth="lg"
 			minWidth="xs"
 			mx="auto"
-      overflowY="auto"
+			overflowY="auto"
 			px="6"
 			py="4"
 		>

@@ -6,9 +6,8 @@ import {
 	Center,
 	Flex,
 	Text,
-  useToast,
 } from '@chakra-ui/react';
-import { ImageLinks, appRouteLinks, formFeedback } from '@/utils/constants';
+import { ImageLinks, appRouteLinks } from '@/utils/constants';
 import Image from 'next/image';
 import FormInput from '@/components/General/FormInput';
 import useLoginPage from '@/features/auth/hooks/useLoginPage';

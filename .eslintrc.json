@@ -1,3 +1,21 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "next",
+    "plugin:react-hooks/recommended",
+    "eslint:recommended"
+  ],
+  "plugins": ["react-hooks"],
+  "ignorePatterns": ["src/__generated__/**"],
+  "globals": {
+    "React": true
+  },
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
 }

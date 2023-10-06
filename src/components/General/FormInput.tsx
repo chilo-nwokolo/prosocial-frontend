@@ -15,7 +15,9 @@ type Props = {
 	inputType: HTMLInputTypeAttribute;
 	value: string;
   name: string;
+	// eslint-disable-next-line no-unused-vars
 	onChange: (e: ChangeEvent<any>) => void;
+	// eslint-disable-next-line no-unused-vars
 	onBlur: (e: any) => void;
 	infoText?: string;
 	tooltip?: string;
