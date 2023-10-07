@@ -18,6 +18,11 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
+export enum AnswerTypeEnum {
+  Numberrange = 'NUMBERRANGE',
+  Text = 'TEXT'
+}
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   token: Scalars['String']['output'];
@@ -44,6 +49,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   login: AuthResponse;
   logout?: Maybe<BasicResponse>;
+  questionResponse: BasicResponse;
   register: User;
   updateUser: User;
   verifyUser: BasicResponse;
@@ -53,6 +59,11 @@ export type Mutation = {
 export type MutationLoginArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationQuestionResponseArgs = {
+  input: QuestionResponseGroupInput;
 };
 
 
@@ -121,19 +132,42 @@ export type PaginatorInfo = {
 
 export type ProfileInput = {
   gender?: InputMaybe<GenderEnum>;
+  health_rating?: InputMaybe<Scalars['String']['input']>;
   level_of_education?: InputMaybe<Scalars['String']['input']>;
+  political_orientation?: InputMaybe<Scalars['String']['input']>;
   race?: InputMaybe<Scalars['String']['input']>;
   relationship_status?: InputMaybe<Scalars['String']['input']>;
+  socialization?: InputMaybe<Scalars['String']['input']>;
+  to_socialization?: InputMaybe<Scalars['String']['input']>;
   zip_code?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  answerResponses?: Maybe<Array<QuestionResponse>>;
   me?: Maybe<User>;
+  onBoardCategoriesWithQuestions?: Maybe<Array<QuestionCategory>>;
+  questionCategories?: Maybe<Array<QuestionCategory>>;
+  questions?: Maybe<Array<Question>>;
   /** Find a single user by an identifying attribute. */
   user?: Maybe<User>;
   /** List multiple users. */
   users: UserPaginator;
+};
+
+
+export type QueryAnswerResponsesArgs = {
+  categoryId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryQuestionCategoriesArgs = {
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryQuestionsArgs = {
+  category_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -147,6 +181,59 @@ export type QueryUsersArgs = {
   first?: Scalars['Int']['input'];
   name?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type Question = {
+  __typename?: 'Question';
+  answer_type?: Maybe<AnswerTypeEnum>;
+  category?: Maybe<QuestionCategory>;
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  options?: Maybe<Array<QuestionOption>>;
+  sub_category?: Maybe<Scalars['String']['output']>;
+  text: Scalars['String']['output'];
+  trait?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type QuestionCategory = {
+  __typename?: 'QuestionCategory';
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  maximum_attachable_questions?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  questions?: Maybe<Array<Question>>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type QuestionOption = {
+  __typename?: 'QuestionOption';
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  question?: Maybe<Question>;
+  title?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+export type QuestionResponse = {
+  __typename?: 'QuestionResponse';
+  answer?: Maybe<QuestionOption>;
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  question?: Maybe<Question>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+};
+
+export type QuestionResponseGroupInput = {
+  answers?: InputMaybe<Array<QuestionResponseInput>>;
+};
+
+export type QuestionResponseInput = {
+  answer: Scalars['ID']['input'];
+  question_id: Scalars['ID']['input'];
 };
 
 export type RegisterUserInput = {
@@ -195,6 +282,7 @@ export type User = {
   name: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   profile?: Maybe<UserProfile>;
+  question_responses?: Maybe<Array<QuestionResponse>>;
   unique_id: Scalars['String']['output'];
   updated_at: Scalars['DateTime']['output'];
 };
@@ -218,6 +306,7 @@ export type UserProfile = {
   race?: Maybe<Scalars['String']['output']>;
   relationship_status?: Maybe<Scalars['String']['output']>;
   socialization?: Maybe<Scalars['String']['output']>;
+  to_socialization?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   zip_code?: Maybe<Scalars['String']['output']>;
 };
@@ -246,7 +335,7 @@ export type Login_UserMutationVariables = Exact<{
 }>;
 
 
-export type Login_UserMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', token: string, token_type: string, user: { __typename?: 'User', id: string, name: string } } };
+export type Login_UserMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, phone?: string | null, email: string } } };
 
 export type Query_UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -256,5 +345,5 @@ export type Query_UsersQuery = { __typename?: 'Query', users: { __typename?: 'Us
 
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
 export const VerifyUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VerifyUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verifyUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"access_token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<VerifyUserMutation, VerifyUserMutationVariables>;
-export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"token_type"}}]}}]}}]} as unknown as DocumentNode<Login_UserMutation, Login_UserMutationVariables>;
+export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<Login_UserMutation, Login_UserMutationVariables>;
 export const Query_UsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_USERS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<Query_UsersQuery, Query_UsersQueryVariables>;

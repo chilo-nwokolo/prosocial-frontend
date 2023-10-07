@@ -25,8 +25,9 @@ export const LOGIN_USER = gql(`
       user {
         id
         name
+        phone
+        email
       }
-      token_type
     }
   }
 `);

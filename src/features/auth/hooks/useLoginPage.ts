@@ -5,11 +5,15 @@ import { useFormik } from 'formik';
 import { LOGIN_USER } from '../gql';
 import { appRouteLinks, formFeedback } from '@/utils/constants';
 import { useToast } from '@chakra-ui/react';
+import { useUser } from '@/store';
+import { setCookie } from '@/libs/cookies';
+
 
 export default function useLoginPage() {
 	const router = useRouter();
 	const [login, { loading }] = useMutation(LOGIN_USER);
 	const toast = useToast();
+	const [updateUser] = useUser((state) => [state.updateUser])
 
 	const validationSchema = yup.object({
 		email: yup.string().email(formFeedback.invalidEmail).required(formFeedback.required),
@@ -27,8 +31,10 @@ export default function useLoginPage() {
 					email,
 					password,
 				},
-				onCompleted: () => {
-					router.push(appRouteLinks.intro);
+				onCompleted: (data) => {
+					updateUser(data);
+					router.push(appRouteLinks.onbording);
+					setCookie("accessToken", data.login.token);
 				},
 				onError: () => {
 					toast({

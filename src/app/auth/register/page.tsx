@@ -62,7 +62,6 @@ export default function RegistrationPage() {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 						error={formik.errors.dob}
-						min={'2008-01-01'}
 					/>
 					{/* First Name */}
 					<FormInput

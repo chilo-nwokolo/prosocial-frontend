@@ -12,7 +12,7 @@ import {
 
 type Props = {
 	title: string;
-	options: string[];
+	options: string[] | undefined;
 	error?: string;
 };
 
@@ -56,7 +56,7 @@ const defaultOptions = [
 ];
 
 export default function RatingScaleQuestion({ title, options, error }: Props) {
-	const questionOptions = options.length ? options : defaultOptions;
+	const questionOptions = options?.length ? options : defaultOptions;
 
 	const { getRootProps, getRadioProps } = useRadioGroup({
 		name: 'survey',

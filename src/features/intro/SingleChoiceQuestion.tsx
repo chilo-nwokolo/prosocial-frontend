@@ -9,7 +9,7 @@ import {
 
 type Props = {
   title: string;
-  options: string[];
+  options: string[] | undefined;
   error?: string;
   id: number;
 };
@@ -21,7 +21,7 @@ export default function SingleChoiceQuestion({title, options, error, id}: Props)
 			<RadioGroup>
 				<VStack alignItems="start" spacing="12px">
           {
-            options.map((option) => (
+            options?.map((option) => (
               <Radio key={option} value={option}>{option}</Radio>
             ))
           }
