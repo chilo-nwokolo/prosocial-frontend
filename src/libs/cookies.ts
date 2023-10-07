@@ -2,7 +2,6 @@ import Cookie from "js-cookie";
 
 const CookieConfig: typeof Cookie.attributes = {
   path: '/',
-  httpOnly: true,
   expires: 1,
   secure: process.env.NODE_ENV === "production", // Set to true if using HTTPS
 }
