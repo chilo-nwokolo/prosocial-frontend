@@ -9,7 +9,7 @@ export default function InputQuestions({ title }: InputQuestionsProps) {
 		<FormControl>
 			<FormLabel>{title}</FormLabel>
 			<Input type="text" />
-			<FormHelperText>We&apos;ll never share your email.</FormHelperText>
+			<FormHelperText>Error goes here</FormHelperText>
 		</FormControl>
 	);
 }

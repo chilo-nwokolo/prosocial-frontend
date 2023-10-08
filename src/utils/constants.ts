@@ -25,3 +25,7 @@ export const formFeedback = {
   minPassword: "Password must exceed 8 characters",
 };
 
+export const AnswerType = {
+  RATING_SCALE: "RATING_SCALE",
+  SINGLE_CHOICE: "SINGLE_CHOICE",
+}

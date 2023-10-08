@@ -36,7 +36,7 @@
     ".next/types/app/pro/layout.tsx",
     "build/types/**/*.ts",
     "out/types/**/*.ts"
-  ],
+, "src/app/not-found.js"  ],
   "exclude": [
     "node_modules"
   ]

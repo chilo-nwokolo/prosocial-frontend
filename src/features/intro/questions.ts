@@ -1,180 +1,135 @@
-export const questionSections = [
+import { AnswerType } from "@/utils/constants";
+
+export const sampleData = [
 	{
 		id: 1,
 		section: 'The basics',
-		totalQuestions: 9,
-		questions: {
-			description:
-				'Note: Your information will not be visible to other users and never sold to third parties.',
-			data: [
-				{
-					id: 1,
-					question: 'What gender do you identify with?',
-					options: [
-						'Female',
-						'Male',
-						'Gender variant/Non-conforming',
-						'Transgender',
-						'Prefer not to answer',
-					],
-					type: 'singleChoice',
-				},
-				{
-					id: 2,
-					question: 'What is your race/ethnicity?',
-					options: [
-						'White',
-						'Black or African',
-						'American',
-						'Hispanic/Latino',
-						'Asian',
-						'Native Hawaiian/Other Pacific Islander',
-						'American Indian/Alaskan Native',
-						'Multiracial',
-						'Other',
-						'Don’t know/Not sure',
-					],
-					type: 'singleChoice',
-				},
-				{
-					id: 3,
-					question: 'What is your relationship status?',
-					options: ['Single', 'Dating', 'In a committed relationship'],
-					type: 'singleChoice',
-				},
-				{
-					id: 4,
-					question: 'What is your level of education?',
-					options: [
-						'Elementary or Middle school',
-						'High school graduate/GED equivalent',
-						'Some college',
-						'Associates degree',
-						'Bachelor’s degree',
-						'Graduate or professional degree',
-					],
-					type: 'singleChoice',
-				},
-				{
-					id: 5,
-					question: 'What is your zip code?',
-					type: 'text',
-				},
-				{
-					id: 6,
-					question: 'What is your political orientation?',
-					options: [
-						'Strongly liberal',
-						'Slightly liberal',
-						'Moderate',
-						'Slightly conservative',
-						'Strongly conservative',
-					],
-					type: 'ratingScale',
-				},
-				{
-					id: 7,
-					question: 'How often do you go out to socialize?',
-					options: ['Almost never', '1/x a week', '2/x a week', 'Most days', 'Every day'],
-					type: 'ratingScale',
-				},
-				{
-					id: 8,
-					question: 'How often would you like to go out to socialize?',
-					options: ['Almost never', '1/x a week', '2/x a week', 'Most days', 'Every day'],
-					type: 'ratingScale',
-				},
-				{
-					id: 9,
-					question: 'How would you rate your health, generally speaking?',
-					options: ['Poor', 'Moderate', 'Good', 'Very good', 'Excellent'],
-					type: 'ratingScale',
-				},
-			],
-		},
+		totalQuestions: 0,
+		description:
+			'Note: Your information will not be visible to other users and never sold to third parties.',
+		meta: 'Note: Your information will not be visible to other users and never sold to third parties.',
+		questions: [
+			{
+				id: 1,
+				question: 'What gender do you identify with?',
+				options: [
+					{ id: 1, title: 'Female', value: 'Female' },
+					{ id: 2, title: 'Male', value: 'Male' },
+					{ id: 3, title: 'Gender variant/Non-conforming', value: 'Gender variant/Non-conforming' },
+					{ id: 4, title: 'Transgender', value: 'Transgender' },
+					{ id: 5, title: 'Prefer not to answer', value: 'Prefer not to answer' },
+				],
+				type: AnswerType.SINGLE_CHOICE,
+			},
+			{
+				id: 2,
+				question: 'What is your race/ethnicity?',
+				options: [
+					{ id: 1, title: 'White', value: 'White' },
+					{ id: 2, title: 'Black or African', value: 'Black or African' },
+					{ id: 3, title: 'American', value: 'American' },
+					{ id: 4, title: 'Hispanic/Latino', value: 'Hispanic/Latino' },
+					{ id: 5, title: 'Asian', value: 'Asian' },
+					{ id: 6, title: 'Native Hawaiian/Other Pacific Islander', value: 'Native Hawaiian/Other Pacific Islander' },
+					{ id: 7, title: 'American Indian/Alaskan Native', value: 'American Indian/Alaskan Native' },
+					{ id: 8, title: 'Multiracial', value: 'Multiracial' },
+					{ id: 9, title: 'Other', value: 'Other' },
+					{ id: 10, title: 'Don’t know/Not sure', value: 'Don’t know/Not sure' },
+				],
+				type: AnswerType.SINGLE_CHOICE,
+			},
+			{
+				id: 3,
+				question: 'What is your relationship status?',
+				options: [
+					{ id: 1, title: 'Single', value: 'Single' },
+					{ id: 2, title: 'Dating', value: 'Dating' },
+					{ id: 3, title: 'In a committed relationship', value: 'In a committed relationship' },
+				],
+				type: AnswerType.SINGLE_CHOICE,
+			},
+			{
+				id: 4,
+				question: 'What is your level of education?',
+				options: [
+					{ id: 1, title: 'Elementary or Middle school', value: 'Elementary or Middle school' },
+					{ id: 2, title: 'High school graduate/GED equivalent', value: 'High school graduate/GED equivalent' },
+					{ id: 3, title: 'Some college', value: 'Some college' },
+					{ id: 4, title: 'Associates degree', value: 'Associates degree' },
+					{ id: 5, title: 'Bachelor’s degree', value: 'Bachelor’s degree' },
+					{ id: 6, title: 'Graduate or professional degree', value: 'Graduate or professional degree' },
+				],
+				type: AnswerType.SINGLE_CHOICE,
+			},
+			{
+				id: 5,
+				question: 'What is your zip code?',
+				type: 'text',
+			},
+			{
+				id: 6,
+				question: 'What is your political orientation?',
+				options: [
+					{ id: 1, title: 'Strongly liberal', value: 'Strongly liberal' },
+					{ id: 2, title: 'Slightly liberal', value: 'Slightly liberal' },
+					{ id: 3, title: 'Moderate', value: 'Moderate' },
+					{ id: 4, title: 'Slightly conservative', value: 'Slightly conservative' },
+					{ id: 5, title: 'Strongly conservative', value: 'Strongly conservative' },
+				],
+				type: AnswerType.RATING_SCALE,
+			},
+			{
+				id: 7,
+				question: 'How often do you go out to socialize?',
+				options: [
+					{ id: 1, title: 'Almost never', value: 'Almost never' },
+					{ id: 2, title: '1/x a week', value: '1/x a week' },
+					{ id: 3, title: '2/x a week', value: '2/x a week' },
+					{ id: 4, title: 'Most days', value: 'Most days' },
+					{ id: 5, title: 'Every day', value: 'Every day' },
+				],
+				type: AnswerType.RATING_SCALE,
+			},
+			{
+				id: 8,
+				question: 'How often would you like to go out to socialize?',
+				options: [
+					{ id: 1, title: 'Almost never', value: 'Almost never' },
+					{ id: 2, title: '1/x a week', value: '1/x a week' },
+					{ id: 3, title: '2/x a week', value: '2/x a week' },
+					{ id: 4, title: 'Most days', value: 'Most days' },
+					{ id: 5, title: 'Every day', value: 'Every day' },
+				],
+				type: AnswerType.RATING_SCALE,
+			},
+			{
+				id: 9,
+				question: 'How would you rate your health, generally speaking?',
+				options: [
+					{ id: 1, title: 'Poor', value: 'Poor' },
+					{ id: 2, title: 'Moderate', value: 'Moderate' },
+					{ id: 3, title: 'Good', value: 'Good' },
+					{ id: 4, title: 'Very good', value: 'Very good' },
+					{ id: 5, title: 'Excellent', value: 'Excellent' },
+				],
+				type: AnswerType.RATING_SCALE,
+			},
+		],
 	},
 	{
 		id: 2,
 		section: 'Your personality',
-		totalQuestions: 20,
-		questions: {
-			meta: 'I am someone who...',
-			description:
-				'Below are a number of personality traits that may or may not apply to you. Do your best to choose the option that best reflects who you are as a person.',
-			data: [
-				{
-					id: 1,
-					question: 'tends to be quiet.',
-					options: ['1', '2', '3', '4', '5'],
-					type: 'ratingScale',
-				},
-				{
-					id: 2,
-					question: 'is compassionate, has a soft heart.',
-					options: ['1', '2', '3', '4', '5'],
-					type: 'ratingScale',
-				},
-				{
-					id: 3,
-					question: 'reacts annoyed if another person steals the show from me.',
-					options: ['1', '2', '3', '4', '5'],
-					type: 'ratingScale',
-				},
-				{
-					id: 4,
-					question: 'tends to be disorganized.',
-					options: ['1', '2', '3', '4', '5'],
-					type: 'ratingScale',
-				},
-				{
-					id: 5,
-					question: 'worries a lot.',
-					options: ['1', '2', '3', '4', '5'],
-					type: 'ratingScale',
-				},
-			],
-		},
+		totalQuestions: 0,
+		meta: 'I am someone who...',
+		description:
+			'Below are a number of personality traits that may or may not apply to you. Do your best to choose the option that best reflects who you are as a person.',
 	},
 	{
 		id: 3,
 		section: 'Behaviors and beliefs',
-		totalQuestions: 11,
-		questions: {
-			meta: 'In the past month...',
-			description:
-				'The following questions are designed to help us understand how you currently feel about life. For every question, please choose the answer that best describes how you felt during the past month.',
-			data: [
-				{
-					id: 1,
-					question: 'I felt very anxious.',
-					options: ['Never', 'Seldom', 'Sometimes', 'Often', 'Mostly', 'Continuously'],
-					type: 'singleChoice',
-				},
-				{
-					id: 2,
-					question: 'I felt so down that nothing could cheer me up.',
-					options: ['Never', 'Seldom', 'Sometimes', 'Often', 'Mostly', 'Continuously'],
-					type: 'singleChoice',
-				},
-				{
-					id: 3,
-					question: 'I felt calm and peaceful.',
-					options: ['Never', 'Seldom', 'Sometimes', 'Often', 'Mostly', 'Continuously'],
-					type: 'singleChoice',
-				},
-				{
-					id: 4,
-					question: 'It helps to turn to people in times of need.',
-					options: ['1', '2', '3', '4', '5', '6', '7'],
-					type: 'ratingScale',
-				},
-				{
-					id: 5,
-					question: 'I usually discuss my problems and concerns with others.',
-					options: ['1', '2', '3', '4', '5', '6', '7'],
-					type: 'ratingScale',
-				},
-			],
-		},
+		totalQuestions: 0,
+		meta: 'In the past month...',
+		description:
+			'The following questions are designed to help us understand how you currently feel about life. For every question, please choose the answer that best describes how you felt during the past month.',
 	},
 ];

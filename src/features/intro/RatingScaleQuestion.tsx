@@ -12,7 +12,7 @@ import {
 
 type Props = {
 	title: string;
-	options: string[] | undefined;
+	options: [{ id: string, title: string, value: string }] | undefined;
 	error?: string;
 };
 
@@ -23,7 +23,7 @@ function RadioCard(props: any) {
 	const checkbox = getRadioProps();
 
 	return (
-		<Box as="label">
+		<Box as="label" w="full">
 			<input {...input} />
 			<Flex
 				{...checkbox}
@@ -35,7 +35,7 @@ function RadioCard(props: any) {
 					borderColor: 'teal.600',
 				}}
 				h="5.8rem"
-				w="5.8rem"
+				w="full"
         borderTop="none"
 				textAlign="center"
 				alignItems="center"
@@ -47,16 +47,8 @@ function RadioCard(props: any) {
 		</Box>
 	);
 }
-const defaultOptions = [
-	'Disagree strongly',
-	'Disagree a little',
-	'Neutral: no opinion',
-	'Agree a little',
-	'Agree strongly',
-];
 
 export default function RatingScaleQuestion({ title, options, error }: Props) {
-	const questionOptions = options?.length ? options : defaultOptions;
 
 	const { getRootProps, getRadioProps } = useRadioGroup({
 		name: 'survey',
@@ -72,11 +64,11 @@ export default function RatingScaleQuestion({ title, options, error }: Props) {
 			</FormLabel>
 			<RadioGroup>
 				<HStack {...group} gap="0">
-					{questionOptions.map((value) => {
-						const radio = getRadioProps({ value });
+					{options?.map((value) => {
+						const radio = getRadioProps({ value: value.value });
 						return (
-							<RadioCard key={value} {...radio}>
-								{value}
+							<RadioCard key={value.id} {...radio}>
+								{value.title}
 							</RadioCard>
 						);
 					})}
