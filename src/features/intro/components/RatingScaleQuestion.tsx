@@ -6,17 +6,23 @@ import {
 	FormLabel,
 	HStack,
 	RadioGroup,
+	Text,
 	useRadio,
 	useRadioGroup,
 } from '@chakra-ui/react';
 
 type Props = {
 	title: string;
-	options: [{ id: string, title: string, value: string }] | undefined;
+	options: [{ id: string; title: string; value: string }] | undefined;
+	source: string;
+	name: string;
 	error?: string;
+	// eslint-disable-next-line no-unused-vars
+	onChange: (e: any) => void;
+	value: string;
 };
 
-function RadioCard(props: any) {
+export function RadioCard(props: any) {
 	const { getInputProps, getRadioProps } = useRadio(props);
 
 	const input = getInputProps();
@@ -36,11 +42,12 @@ function RadioCard(props: any) {
 				}}
 				h="5.8rem"
 				w="full"
-        borderTop="none"
+				borderTop="none"
 				textAlign="center"
 				alignItems="center"
 				justifyContent="center"
 				fontSize="xs"
+				whiteSpace="pre-wrap"
 			>
 				{props.children}
 			</Flex>
@@ -48,32 +55,44 @@ function RadioCard(props: any) {
 	);
 }
 
-export default function RatingScaleQuestion({ title, options, error }: Props) {
-
+export default function RatingScaleQuestion({ title, options, error, source, name, onChange, value }: Props) {
 	const { getRootProps, getRadioProps } = useRadioGroup({
-		name: 'survey',
-		onChange: console.log,
+		name,
+		value,
 	});
 
-	const group = getRootProps();
+	const group = getRootProps({ onChange });
 
 	return (
 		<FormControl as="fieldset">
-			<FormLabel as="legend" border="1px solid" mb="0" borderColor="gray.200" p="5" w="full">
+			<FormLabel
+				as="legend"
+				border="1px solid"
+				mb="0"
+				borderColor="gray.200"
+				p="5"
+				w="full"
+			>
 				{title}
 			</FormLabel>
-			<RadioGroup>
+			<RadioGroup defaultValue={value}>
 				<HStack {...group} gap="0">
 					{options?.map((value) => {
-						const radio = getRadioProps({ value: value.value });
+						const radio = getRadioProps({ value: source === 'The basics' ? value.value : value.id, onChange });
 						return (
 							<RadioCard key={value.id} {...radio}>
-								{value.title}
+								{source === 'Behaviors and beliefs' ? value.title.charAt(value.title.length - 1) : value.title}
 							</RadioCard>
 						);
 					})}
 				</HStack>
 			</RadioGroup>
+			{source === 'Behaviors and beliefs' ? (
+				<Flex border="1px solid" borderColor="gray.200" borderTop="none" justifyContent="space-between" px="2">
+					<Text fontSize="xs">Strongly <br />disagree</Text>
+					<Text fontSize="xs">Strongly <br />agree</Text>
+				</Flex>
+			) : null}
 			{error ? <FormHelperText>{error}</FormHelperText> : null}
 		</FormControl>
 	);

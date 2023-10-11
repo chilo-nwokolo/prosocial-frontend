@@ -1,20 +1,25 @@
 'use client';
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { AnswerType, appRouteLinks } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
-import RatingScaleQuestion from '@/features/intro/RatingScaleQuestion';
-import SingleChoiceQuestion from '@/features/intro/SingleChoiceQuestion';
-import InputQuestions from '@/features/intro/InputQuestions';
+import RatingScaleQuestion from '@/features/intro/components/RatingScaleQuestion';
+import SingleChoiceQuestion from '@/features/intro/components/SingleChoiceQuestion';
+import InputQuestions from '@/features/intro/components/InputQuestions';
 import { useOnboardQuestions } from '@/store';
+import { useFormik } from 'formik';
+import { decodeUrl, generateQuestions } from '@/utils/helpers';
 
 export default function QuestionsPage({ params }: { params: { slug: string } }) {
 	const router = useRouter();
+	const toast = useToast();
 	const [section, setSection] = useState<any>(null);
-	const [questions] = useOnboardQuestions((state) => [state.questions]);
-
-	console.log(section);
+	const [questions, answers, updateAnswers] = useOnboardQuestions((state) => [
+		state.questions,
+		state.answers,
+		state.updateAnswers,
+	]);
 
 	useEffect(() => {
 		const section = questions.find(
@@ -26,6 +31,18 @@ export default function QuestionsPage({ params }: { params: { slug: string } }) 
 		}
 		setSection(section);
 	}, [params.slug, questions, router]);
+
+	const formik = useFormik({
+		initialValues: Object.keys(answers?.[decodeUrl(params.slug, '-')] || '')
+			?.length
+			? answers[decodeUrl(params.slug, '-')]
+			: generateQuestions(section),
+		onSubmit: (values) => {
+			const source = decodeUrl(params.slug, '-');
+			const updatedAnswers = { ...answers, [source]: values };
+			updateAnswers(updatedAnswers);
+		},
+	});
 
 	return (
 		<Flex flexDir="column" gap="8" mb="5">
@@ -53,26 +70,50 @@ export default function QuestionsPage({ params }: { params: { slug: string } }) 
 						return (
 							<SingleChoiceQuestion
 								key={`quest-${question.id}`}
-								id={question.id}
 								title={question.question ?? question.text}
 								options={question?.options}
+								value={formik.values[question.id]}
+								name={question.id}
+								onChange={formik.handleChange}
+								source={decodeUrl(params.slug)}
 							/>
 						);
 					} else if (question.type === 'text') {
 						return (
-							<InputQuestions key={`quest-${question.id}`} title={question.question} />
+							<InputQuestions
+								onChange={formik.handleChange}
+								value={formik.values[question.id]}
+								key={`quest-${question.id}`}
+								name={question.id}
+								title={question.question}
+							/>
 						);
 					} else {
 						return (
 							<RatingScaleQuestion
 								key={`quest-${question.id}`}
-								title={question.text}
+								title={question.question ?? question.text}
 								options={question?.options}
+								source={decodeURI(params.slug)}
+								name={question.id}
+								value={formik.values[question.id]}
+								onChange={formik.handleChange}
 							/>
 						);
 					}
 				})}
-				<Button>Save</Button>
+				<Button
+					onClick={() => {
+						formik.handleSubmit();
+						router.back();
+						toast({
+							title: 'Saved successfully',
+							status: 'success',
+						});
+					}}
+				>
+					Save
+				</Button>
 			</Flex>
 		</Flex>
 	);

@@ -4,7 +4,7 @@ import { Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { appRouteLinks } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
-import { QUERY_QUESTIONS } from '@/features/intro/gql/queries';
+import { QUERY_QUESTIONS } from '@/features/intro/gql';
 import { useOnboardQuestions } from '@/store';
 import { QuestionsCategoryQuery } from '@/__generated__/graphql';
 import { sampleData } from '@/features/intro/questions';
@@ -13,7 +13,7 @@ export default function OnboardingPage() {
 	const router = useRouter();
 	const [updateQuestions] = useOnboardQuestions((state) => [state.updateQuestions]);
 
-	const restructureQuestions = (questions: QuestionsCategoryQuery) => {
+	const transformQuestions = (questions: QuestionsCategoryQuery) => {
 		return questions.questionCategories?.map((category) => {
 			return {
 				id: category.id,
@@ -31,13 +31,14 @@ export default function OnboardingPage() {
 
 	const { loading, error } = useQuery(QUERY_QUESTIONS, {
 		onCompleted: (data) => {
-			const result = restructureQuestions(data);
+			const result = transformQuestions(data);
 			updateQuestions(result);
 			setTimeout(() => {
 				router.push(appRouteLinks.intro);
 			}, 1000);
 		},
 	});
+
 	const toast = useToast();
 
 	if (error) {

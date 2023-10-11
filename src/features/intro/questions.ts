@@ -7,22 +7,22 @@ export const sampleData = [
 		totalQuestions: 0,
 		description:
 			'Note: Your information will not be visible to other users and never sold to third parties.',
-		meta: 'Note: Your information will not be visible to other users and never sold to third parties.',
+		meta: '',
 		questions: [
 			{
-				id: 1,
+				id: "gender",
 				question: 'What gender do you identify with?',
 				options: [
-					{ id: 1, title: 'Female', value: 'Female' },
-					{ id: 2, title: 'Male', value: 'Male' },
-					{ id: 3, title: 'Gender variant/Non-conforming', value: 'Gender variant/Non-conforming' },
-					{ id: 4, title: 'Transgender', value: 'Transgender' },
-					{ id: 5, title: 'Prefer not to answer', value: 'Prefer not to answer' },
+					{ id: 1, title: 'Female', value: 'FEMALE' },
+					{ id: 2, title: 'Male', value: 'MALE' },
+					{ id: 3, title: 'Gender variant/Non-conforming', value: 'NONCONFORMING' },
+					{ id: 4, title: 'Transgender', value: 'TRANSGENDER' },
+					{ id: 5, title: 'Prefer not to answer', value: 'OTHER' },
 				],
 				type: AnswerType.SINGLE_CHOICE,
 			},
 			{
-				id: 2,
+				id: "race",
 				question: 'What is your race/ethnicity?',
 				options: [
 					{ id: 1, title: 'White', value: 'White' },
@@ -39,7 +39,7 @@ export const sampleData = [
 				type: AnswerType.SINGLE_CHOICE,
 			},
 			{
-				id: 3,
+				id: "relationship_status",
 				question: 'What is your relationship status?',
 				options: [
 					{ id: 1, title: 'Single', value: 'Single' },
@@ -49,7 +49,7 @@ export const sampleData = [
 				type: AnswerType.SINGLE_CHOICE,
 			},
 			{
-				id: 4,
+				id: "level_of_education",
 				question: 'What is your level of education?',
 				options: [
 					{ id: 1, title: 'Elementary or Middle school', value: 'Elementary or Middle school' },
@@ -62,12 +62,12 @@ export const sampleData = [
 				type: AnswerType.SINGLE_CHOICE,
 			},
 			{
-				id: 5,
+				id: "zip_code",
 				question: 'What is your zip code?',
 				type: 'text',
 			},
 			{
-				id: 6,
+				id: "political_orientation",
 				question: 'What is your political orientation?',
 				options: [
 					{ id: 1, title: 'Strongly liberal', value: 'Strongly liberal' },
@@ -79,7 +79,7 @@ export const sampleData = [
 				type: AnswerType.RATING_SCALE,
 			},
 			{
-				id: 7,
+				id: "socialization",
 				question: 'How often do you go out to socialize?',
 				options: [
 					{ id: 1, title: 'Almost never', value: 'Almost never' },
@@ -91,7 +91,7 @@ export const sampleData = [
 				type: AnswerType.RATING_SCALE,
 			},
 			{
-				id: 8,
+				id: "to_socialization",
 				question: 'How often would you like to go out to socialize?',
 				options: [
 					{ id: 1, title: 'Almost never', value: 'Almost never' },
@@ -103,7 +103,7 @@ export const sampleData = [
 				type: AnswerType.RATING_SCALE,
 			},
 			{
-				id: 9,
+				id: "health_rating",
 				question: 'How would you rate your health, generally speaking?',
 				options: [
 					{ id: 1, title: 'Poor', value: 'Poor' },

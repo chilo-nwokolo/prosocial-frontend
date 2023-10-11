@@ -5,6 +5,9 @@ interface QuestionsState {
 	questions: any;
 	// eslint-disable-next-line no-unused-vars
 	updateQuestions: (questions: any) => void;
+	answers: any;
+	// eslint-disable-next-line no-unused-vars
+	updateAnswers: (answers: any) => void;
 }
 
 export const useOnboardQuestions = create<QuestionsState>()(
@@ -13,6 +16,8 @@ export const useOnboardQuestions = create<QuestionsState>()(
 			(set) => ({
 				questions: null,
 				updateQuestions: (questions) => set({ questions }),
+				answers: null,
+				updateAnswers: (answers) => set({ answers }),
 			}),
 			{ name: 'questions' },
 		),
