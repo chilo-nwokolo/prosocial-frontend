@@ -17,6 +17,7 @@ export const appRouteLinks = {
   serviceTerms: '/getting-started/service-terms',
   // authenticated routes
   intro: '/pro/intro',
+  result: '/pro/intro/result',
 }
 
 export const formFeedback = {

@@ -1,12 +1,12 @@
-import { gql } from "@/__generated__";
+import { gql } from '@/__generated__';
 
 /**
- * 
+ *
  * QUERIES
  */
 export const QUERY_QUESTIONS = gql(`
-  query QuestionsCategory {
-    questionCategories {
+  query OnBoardCategoriesWithQuestions {
+    onBoardCategoriesWithQuestions {
       id
       name
       questions {
@@ -23,8 +23,29 @@ export const QUERY_QUESTIONS = gql(`
   }
 `);
 
+export const ME_PERSONALITY_SCORE = gql(`
+  query MePersonalityScore {
+    me {
+      personalityScore {
+        id
+        personalityBucketType {
+          id
+          name
+          sub_title
+          description
+          bucketQuestions {
+            id
+            title
+            text
+          }
+        }
+      }
+    }
+  }
+`);
+
 /**
- * 
+ *
  * MUTATIONS
  */
 
@@ -54,4 +75,4 @@ export const UPDATE_USER_PROFILE = gql(`
       }
     }
   }
-`)
+`);

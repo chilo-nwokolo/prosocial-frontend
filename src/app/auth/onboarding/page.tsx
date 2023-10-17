@@ -6,28 +6,11 @@ import { appRouteLinks } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
 import { QUERY_QUESTIONS } from '@/features/intro/gql';
 import { useOnboardQuestions } from '@/store';
-import { QuestionsCategoryQuery } from '@/__generated__/graphql';
-import { sampleData } from '@/features/intro/questions';
+import { transformQuestions } from '@/features/intro/helpers';
 
 export default function OnboardingPage() {
 	const router = useRouter();
 	const [updateQuestions] = useOnboardQuestions((state) => [state.updateQuestions]);
-
-	const transformQuestions = (questions: QuestionsCategoryQuery) => {
-		return questions.questionCategories?.map((category) => {
-			return {
-				id: category.id,
-				category: category.name.replace('&', 'and'),
-				meta: sampleData[parseInt(category.id) - 1]?.meta,
-				description: sampleData[parseInt(category.id) - 1]?.description,
-				totalQuestions:
-					category.id === '1'
-						? sampleData[0].questions?.length
-						: category.questions?.length,
-				questions: category.id === '1' ? sampleData[0].questions : category.questions,
-			};
-		});
-	};
 
 	const { loading, error } = useQuery(QUERY_QUESTIONS, {
 		onCompleted: (data) => {

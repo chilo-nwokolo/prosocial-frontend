@@ -17,7 +17,8 @@ const documents = {
     "\n  mutation VerifyUser($access_token: String!) {\n    verifyUser(access_token: $access_token) {\n      status\n      message\n    }\n  }\n": types.VerifyUserDocument,
     "\n  mutation LOGIN_USER($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      token\n      user {\n        id\n        name\n        phone\n        email\n      }\n    }\n  }\n": types.Login_UserDocument,
     "\n  query ME {\n    me {\n      id\n      name\n    }\n  }\n": types.MeDocument,
-    "\n  query QuestionsCategory {\n    questionCategories {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n": types.QuestionsCategoryDocument,
+    "\n  query OnBoardCategoriesWithQuestions {\n    onBoardCategoriesWithQuestions {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n": types.OnBoardCategoriesWithQuestionsDocument,
+    "\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n": types.MePersonalityScoreDocument,
     "\n  mutation QuestionResponse($input: QuestionResponseGroupInput!) {\n    questionResponse(input: $input) {\n      status\n      message\n    }\n  }\n": types.QuestionResponseDocument,
     "\n  mutation UPDATE_USER_PROFILE($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      profile {\n        id\n        gender\n        race\n        relationship_status\n        level_of_education\n        zip_code\n        political_orientation\n        socialization\n        to_socialization\n        health_rating\n      }\n    }\n  }\n": types.Update_User_ProfileDocument,
     "\n\tquery QUERY_USERS {\n\t\tusers {\n\t\t\tdata {\n\t\t\t\tid\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n": types.Query_UsersDocument,
@@ -56,7 +57,11 @@ export function gql(source: "\n  query ME {\n    me {\n      id\n      name\n   
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query QuestionsCategory {\n    questionCategories {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query QuestionsCategory {\n    questionCategories {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query OnBoardCategoriesWithQuestions {\n    onBoardCategoriesWithQuestions {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query OnBoardCategoriesWithQuestions {\n    onBoardCategoriesWithQuestions {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

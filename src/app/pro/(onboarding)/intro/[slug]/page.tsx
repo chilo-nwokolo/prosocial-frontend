@@ -22,7 +22,7 @@ export default function QuestionsPage({ params }: { params: { slug: string } }) 
 	]);
 
 	useEffect(() => {
-		const section = questions.find(
+		const section = questions?.find(
 			(question: any) => question.category === decodeURI(params.slug),
 		);
 		if (!section) {

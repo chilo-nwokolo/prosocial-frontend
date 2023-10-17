@@ -1,57 +1,14 @@
 'use client';
 
-import { Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa';
 import { appRouteLinks } from '@/utils/constants';
-import { useOnboardQuestions } from '@/store';
-import { useMutation } from '@apollo/client';
-import { SURVEY_RESPONSE, UPDATE_USER_PROFILE } from '../gql';
-import { combineIntoFormattedArray } from '@/utils/helpers';
 import LoadingModal from '@/components/General/LoadingModal';
+import useQuestionCategories from '../hooks/useQuestionCategories';
 
 export default function QuestionCategories() {
-	const [questions, answers] = useOnboardQuestions((state: any) => [
-		state.questions,
-		state.answers,
-	]);
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	
-	const [updateProfile] =
-		useMutation(UPDATE_USER_PROFILE);
-	const [submitSurvey] =
-		useMutation(SURVEY_RESPONSE);
-
-	const onSubmit = async () => {
-		onOpen();
-		const profileAnswers = answers['The-basics'];
-
-		await updateProfile({
-			variables: {
-				input: {
-					profile: profileAnswers,
-				},
-			},
-		});
-
-		delete answers['The-basics'];
-
-		const allAnswers = Object.values(answers).flat() as any;
-
-		console.log(allAnswers);
-
-		const formattedAnswers = combineIntoFormattedArray(allAnswers);
-
-		await submitSurvey({
-			variables: {
-				input: {
-					answers: formattedAnswers,
-				},
-			},
-		});
-
-		onClose();
-	};
+	const { isOpen, questions, onSubmit, onClose, answers } = useQuestionCategories();
 
 	return (
 		<>
@@ -74,7 +31,8 @@ export default function QuestionCategories() {
 									</Text>
 									<Text>
 										{
-											Object.values(answers?.[question.category.replace(' ', '-')] || '')?.length
+											Object.values(answers?.[question.category.replace(' ', '-')] || '')
+												?.length
 										}
 										/{question.totalQuestions}
 									</Text>

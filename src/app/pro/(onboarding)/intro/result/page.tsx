@@ -1,11 +1,17 @@
 'use client';
 import CharacterBox from '@/features/intro/components/CharacterBox';
+import { ME_PERSONALITY_SCORE } from '@/features/intro/gql';
+import { useQuery } from '@apollo/client';
 import { Box, Button, Flex, SimpleGrid, Text, Tooltip } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FcInfo } from 'react-icons/fc';
 
 export default function ResultPage() {
+
+	const { data } = useQuery(ME_PERSONALITY_SCORE);
 	const [numberOfButtons] = useState(1);
+
+	console.log(data);
 	return (
 		<>
 			<Flex justifyContent="end" alignItems="center" gap="1">
