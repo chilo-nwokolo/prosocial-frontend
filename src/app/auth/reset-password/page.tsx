@@ -70,7 +70,7 @@ export default function ResetPasswordPage() {
 	return (
     <>
       <Center h="90vh">
-        <Box my="auto">
+        <Box my="auto" w="full">
           <Image src={ImageLinks.logo} width={75} height={75} alt="app logo" />
           <Text my="4" as="h1" fontSize="2xl" fontWeight="medium">
             Reset Password
