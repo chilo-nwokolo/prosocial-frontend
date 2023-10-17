@@ -12,6 +12,7 @@ export default function ResultPage() {
 	const [numberOfButtons] = useState(1);
 
 	console.log(data);
+	
 	return (
 		<>
 			<Flex justifyContent="end" alignItems="center" gap="1">

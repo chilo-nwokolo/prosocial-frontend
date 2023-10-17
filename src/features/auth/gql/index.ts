@@ -16,7 +16,7 @@ export const VERIFY_EMAIL = gql(`
       message
     }
   }
-`)
+`);
 
 export const LOGIN_USER = gql(`
   mutation LOGIN_USER($email: String!, $password: String!) {
@@ -28,6 +28,24 @@ export const LOGIN_USER = gql(`
         phone
         email
       }
+    }
+  }
+`);
+
+export const RESET_PASSWORD_LINK = gql(`
+  mutation ResetPasswordLink($email: String!) {
+    requestResetPasswordLink(email: $email) {
+      status
+      message
+    }
+  }`
+);
+
+export const RESET_PASSWORD = gql(`
+  mutation ResetPassword($token: String!, $new_password: String!) {
+    requestResetPassword(token:$token, new_password:$new_password) {
+      status
+      message
     }
   }
 `);

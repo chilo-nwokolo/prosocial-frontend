@@ -6,6 +6,7 @@ import { useToast } from '@chakra-ui/react';
 import { appRouteLinks, formFeedback } from '@/utils/constants';
 import { REGISTER_USER } from '../gql';
 import { useRouter } from 'next/navigation';
+import { apolloErrorHandler } from '@/utils/helpers';
 
 export default function UseRegistrationPage() {
 	const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -56,7 +57,7 @@ export default function UseRegistrationPage() {
         onError: (error) => {
           toast({
             title: "Registration failed",
-            description: error.message,
+            description: apolloErrorHandler(error),
           })
         }
 			});

@@ -7,6 +7,7 @@ import { appRouteLinks, formFeedback } from '@/utils/constants';
 import { useToast } from '@chakra-ui/react';
 import { useUser } from '@/store';
 import { setCookie } from '@/libs/cookies';
+import { apolloErrorHandler } from '@/utils/helpers';
 
 
 export default function useLoginPage() {
@@ -36,10 +37,10 @@ export default function useLoginPage() {
 					router.push(appRouteLinks.onbording);
 					setCookie("accessToken", data.login.token);
 				},
-				onError: () => {
+				onError: (error) => {
 					toast({
 						status: 'error',
-						title: 'Invalid email or password',
+						title: apolloErrorHandler(error),
 					});
 				},
 			});

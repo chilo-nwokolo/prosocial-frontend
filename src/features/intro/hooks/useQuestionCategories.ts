@@ -4,7 +4,7 @@ import { useDisclosure, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { SURVEY_RESPONSE, UPDATE_USER_PROFILE } from '../gql';
 import { appRouteLinks } from '@/utils/constants';
-import { combineIntoFormattedArray } from '@/utils/helpers';
+import { apolloErrorHandler, combineIntoFormattedArray } from '@/utils/helpers';
 
 export default function useQuestionCategories() {
 	const [questions, answers] = useOnboardQuestions((state: any) => [
@@ -19,7 +19,7 @@ export default function useQuestionCategories() {
 		onError: (error) => {
 			toast({
 				status: 'error',
-				title: error.message,
+				title: apolloErrorHandler(error),
 			});
 			onClose();
 		},
@@ -29,7 +29,7 @@ export default function useQuestionCategories() {
 			onClose();
 			toast({
 				status: 'error',
-				title: error.message,
+				title: apolloErrorHandler(error),
 			});
 		},
 		onCompleted: () => {

@@ -1,3 +1,5 @@
+import { ApolloError } from "@apollo/client";
+
 export const calculateMinDateOfBirth = () => {
 	const theYear = new Date().getFullYear() - 15;
 	return `${theYear}-01-01`;
@@ -34,4 +36,8 @@ export function combineIntoFormattedArray(
 
 export function decodeUrl(params: string, separator?: string) {
 	return separator ? decodeURI(params).replace(' ', separator) : decodeURI(params);
+}
+
+export const apolloErrorHandler = (error: ApolloError) => {
+	return error.graphQLErrors.map((e) => e.extensions.reason) as unknown as string || "Something went wrong";
 }

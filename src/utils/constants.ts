@@ -10,6 +10,8 @@ export const appRouteLinks = {
   confirmEmail: '/auth/register/confirm-email',
   verifyEmail: '/auth/register/verify-email',
   onbording: '/auth/onboarding',
+  changePassword: '/auth/change-password',
+  resetPassword: '/auth/reset-password',
   // getting started
   gettingStarted: '/getting-started',
   welcome: '/getting-started/welcome',
