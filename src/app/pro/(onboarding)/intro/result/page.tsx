@@ -1,27 +1,32 @@
 'use client';
+import LoadingModal from '@/components/General/LoadingModal';
 import CharacterBox from '@/features/intro/components/CharacterBox';
-import { ME_PERSONALITY_SCORE } from '@/features/intro/gql';
-import { useQuery } from '@apollo/client';
+import useResultPage from '@/features/intro/hooks/useResultPage';
 import { Box, Button, Flex, SimpleGrid, Text, Tooltip } from '@chakra-ui/react';
-import { useState } from 'react';
 import { FcInfo } from 'react-icons/fc';
 
 export default function ResultPage() {
+	const {
+		loading,
+		result,
+		checkIfAllAnswered,
+		updatePersonalityBucketQuestions,
+		setSelected,
+		selected,
+		personalityBucketQuestions,
+		onSubmit,
+		submitting,
+	} = useResultPage();
 
-	const { data } = useQuery(ME_PERSONALITY_SCORE);
-	const [numberOfButtons] = useState(1);
-
-	console.log(data);
-	
 	return (
 		<>
 			<Flex justifyContent="end" alignItems="center" gap="1">
 				<FcInfo />
-        <Tooltip label='Every answer you provided during the registration procuces a score that combines together to place you into a category. If you feel this category is not an accurate reflection of your personality, you will have the opportunity to answer some more questions so we can further refine our understanding of who you are as a person.'>
-          <Text fontSize="sm" color="blue.600" cursor="pointer">
-            How did my answers produce this result?
-          </Text>
-        </Tooltip>
+				<Tooltip label="Every answer you provided during the registration procuces a score that combines together to place you into a category. If you feel this category is not an accurate reflection of your personality, you will have the opportunity to answer some more questions so we can further refine our understanding of who you are as a person.">
+					<Text fontSize="sm" color="blue.600" cursor="pointer">
+						How did my answers produce this result?
+					</Text>
+				</Tooltip>
 			</Flex>
 			<Flex mt="5" flexDir="column">
 				<Text fontWeight="medium" fontSize="xl">
@@ -30,34 +35,62 @@ export default function ResultPage() {
 				<Flex flexDir="column" alignItems="center" my="8">
 					<Box h="48" border="1px solid black" w="60"></Box>
 					<Text fontSize="2xl" fontWeight="bold" marginTop="5">
-						Explorer
+						{result?.name}
 					</Text>
-					<Text>Menelaus Blue</Text>
-					<Text mt="4">
-						In Greek mythology, Menelaus was a king of Mycenaean, Sparta. Like the
-						butterfly that bears his name, you are a beautiful explorer of the world and
-						someone who people trust.
-					</Text>
+					<Text>{result?.sub_title}</Text>
+					<Text mt="4">{result?.description}</Text>
 				</Flex>
 				<Text textAlign="center" px="9" fontWeight="bold">
 					Select whether or not you agree these characteristics match you.
 				</Text>
 				<Flex flexDir="column" gap="4" my="5">
-					{[1, 2, 3].map((val) => (
-						<CharacterBox key={val} title="Explorative" name="explorer" />
+					{result?.bucketQuestions?.map((val) => (
+						<CharacterBox
+							updatePersonalityBucketQuestions={updatePersonalityBucketQuestions}
+							personalityBucketQuestions={personalityBucketQuestions}
+							key={val.id}
+							id={val.id}
+							title={val.title || ''}
+							description={val.text || ''}
+							setSelected={setSelected}
+							selected={selected}
+						/>
 					))}
 				</Flex>
-				<SimpleGrid columns={numberOfButtons} spacing="3" mb="3">
-					{numberOfButtons === 1 ? (
-						<Button>Yes, let&apos;s go</Button>
-					) : (
+				<Box>
+					{checkIfAllAnswered() ? (
 						<>
-							<Button h="16">Answer more <br />questions</Button>
-							<Button h="16">Proceed to social <br />preferences</Button>
+							<Box fontWeight="medium" px="10" textAlign="center">
+								{personalityBucketQuestions.length <= 1 ? (
+									<Text>
+										It looks like we didn&apos;t get this right. We&apos;ll have more
+										questions for you after completing your Social Preferences.
+									</Text>
+								) : personalityBucketQuestions.length === 2 ? (
+									<Text>
+										It looks like your assessment mostly matches how you feel. Ready to
+										move on?
+									</Text>
+								) : (
+									<Text>
+										It looks like your assessment matches how you feel. Ready to move on?
+									</Text>
+								)}
+							</Box>
+							<SimpleGrid spacing="3" my="5">
+								{personalityBucketQuestions.length <= 1 ? (
+									<Button onClick={onSubmit} isLoading={submitting}>Social Preferences</Button>
+								) : personalityBucketQuestions.length === 2 ? (
+									<Button onClick={onSubmit} isLoading={submitting}>Yes, let&apos;s go</Button>
+								) : (
+									<Button onClick={onSubmit} isLoading={submitting}>Yes, let&apos;s go</Button>
+								)}
+							</SimpleGrid>
 						</>
-					)}
-				</SimpleGrid>
+					) : null}
+				</Box>
 			</Flex>
+			<LoadingModal isOpen={loading} onClose={() => {}} />
 		</>
 	);
 }

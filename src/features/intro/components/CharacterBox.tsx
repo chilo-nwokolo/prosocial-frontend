@@ -10,6 +10,7 @@ import {
 	useRadio,
 	useRadioGroup,
 } from '@chakra-ui/react';
+import { Dispatch, SetStateAction } from 'react';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 function RadioCard(props: any) {
@@ -47,13 +48,50 @@ function RadioCard(props: any) {
 
 type Props = {
 	title: string;
-	name: string;
+	description: string;
+	id: string;
+	personalityBucketQuestions: string[];
+	// eslint-disable-next-line no-unused-vars
+	updatePersonalityBucketQuestions: (personalityBucketQuestions: string[]) => void;
+	setSelected: Dispatch<SetStateAction<string[]>>;
+	selected: string[];
 };
 
-export default function CharacterBox({ title, name }: Props) {
+export default function CharacterBox({
+	title,
+	description,
+	id,
+	updatePersonalityBucketQuestions,
+	personalityBucketQuestions,
+	selected,
+	setSelected,
+}: Props) {
 	const options = ['no', 'yes'];
+
+	const removeItemFromList = (id: string) => {
+		const newResult = personalityBucketQuestions;
+		const index = newResult.indexOf(id);
+		newResult.splice(index, 1);
+		updatePersonalityBucketQuestions(newResult);
+	};
+
 	const { getRootProps, getRadioProps } = useRadioGroup({
-		name,
+		name: id,
+		onChange: (value) => {
+			if (!selected.includes(id)) {
+				setSelected([...selected, id]);
+			}
+			if (personalityBucketQuestions.includes(id) && value === 'no') {
+				// Remove Answer
+				removeItemFromList(id);
+				return;
+			}
+			if (value === 'yes') {
+				// Add Answer
+				if (personalityBucketQuestions.includes(id)) return;
+				updatePersonalityBucketQuestions([...personalityBucketQuestions, id]);
+			}
+		},
 	});
 
 	const group = getRootProps();
@@ -72,11 +110,7 @@ export default function CharacterBox({ title, name }: Props) {
 					<Text fontWeight="medium" fontSize="lg">
 						{title}
 					</Text>
-					<Text fontWeight="normal">
-						You are the type of person who likes to try new things! Whereas other people
-						might feel reluctant or uncomfortable when presented with a new opportunity,
-						you are willing to take chances and explore, which helps you grow.
-					</Text>
+					<Text fontWeight="normal">{description}</Text>
 				</Flex>
 			</FormLabel>
 			<RadioGroup>

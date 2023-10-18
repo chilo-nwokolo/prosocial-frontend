@@ -20,6 +20,8 @@ export const appRouteLinks = {
   // authenticated routes
   intro: '/pro/intro',
   result: '/pro/intro/result',
+  resultSuccess: '/pro/intro/result/success',
+  socialSchedule: '/pro/intro/social-schedule'
 }
 
 export const formFeedback = {

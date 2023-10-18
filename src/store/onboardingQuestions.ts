@@ -8,6 +8,11 @@ interface QuestionsState {
 	answers: any;
 	// eslint-disable-next-line no-unused-vars
 	updateAnswers: (answers: any) => void;
+	personalityBucketQuestions: string[];
+	updatePersonalityBucketQuestions: (
+		// eslint-disable-next-line no-unused-vars
+		personalityBucketQuestions: string[],
+	) => void;
 }
 
 export const useOnboardQuestions = create<QuestionsState>()(
@@ -18,6 +23,9 @@ export const useOnboardQuestions = create<QuestionsState>()(
 				updateQuestions: (questions) => set({ questions }),
 				answers: null,
 				updateAnswers: (answers) => set({ answers }),
+				personalityBucketQuestions: [],
+				updatePersonalityBucketQuestions: (personalityBucketQuestions: string[]) =>
+					set({ personalityBucketQuestions }),
 			}),
 			{ name: 'questions' },
 		),

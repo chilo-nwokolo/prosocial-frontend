@@ -58,6 +58,15 @@ export const SURVEY_RESPONSE = gql(`
   }
 `);
 
+export const USER_BUCKET_QUESTIONS_RESPONSE_INPUT = gql(`
+  mutation SubmitPersonalityBucketQuestion($input: [UserBucketQuestionResponseInput!]) {
+    submitPersonalityBucketQuestion(input: $input) {
+      status
+      message
+    }
+  }
+`);
+
 export const UPDATE_USER_PROFILE = gql(`
   mutation UPDATE_USER_PROFILE($input: UpdateUserInput!) {
     updateUser(input: $input) {
