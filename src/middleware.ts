@@ -9,12 +9,12 @@ export function middleware(request: NextRequest) {
 	if (!cookie?.value) {
 		return NextResponse.redirect(new URL(appRouteLinks.login, request.url));
 	}
-	if (cookie?.value && request.nextUrl.pathname === '/auth/login') {
-		return NextResponse.redirect(new URL(appRouteLinks.onbording, request.url));
-	}
+	// if (cookie?.value && request.nextUrl.pathname === '/auth/login') {
+	// 	return NextResponse.redirect(new URL(appRouteLinks.onbording, request.url));
+	// }
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-	matcher: ['/pro/:path*', '/auth/login'],
+	matcher: ['/pro/:path*'],
 };
