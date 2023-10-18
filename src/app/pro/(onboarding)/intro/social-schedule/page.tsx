@@ -1,5 +1,4 @@
 'use client';
-
 import ScheduleDaysBox from '@/features/intro/components/ScheduleDaysBox';
 import SocialScheduleAccordion from '@/features/intro/components/SocialScheduleAccordion';
 import { Accordion, Box, Button, Flex, Text } from '@chakra-ui/react';

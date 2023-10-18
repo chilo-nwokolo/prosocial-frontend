@@ -38,6 +38,18 @@ export default function useQuestionCategories() {
 		},
 	});
 
+	const getQuestionsAnswersCount = () => {
+		const answersObject = Object?.values(answers || {}).flat();
+
+		const questionsLength = questions.reduce((acc: number, curr: any) => {
+			return acc + curr.questions.length;
+		}, 0);
+		const answersLength = answersObject.reduce((acc: number, curr: any) => {
+			return acc + Object.keys(curr).length;
+		}, 0);
+		return questionsLength === answersLength;
+	}
+
 	const onSubmit = async () => {
 		onOpen();
 		const profileAnswers = answers['The-basics'];
@@ -65,5 +77,5 @@ export default function useQuestionCategories() {
 		});
 	};
 
-	return { isOpen, questions, onSubmit, onClose, answers } as const;
+	return { isOpen, questions, onSubmit, onClose, answers, getQuestionsAnswersCount } as const;
 }

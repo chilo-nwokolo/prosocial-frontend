@@ -35,7 +35,7 @@ export function combineIntoFormattedArray(
 }
 
 export function decodeUrl(params: string, separator?: string) {
-	return separator ? decodeURI(params).replace(' ', separator) : decodeURI(params);
+	return separator ? decodeURI(params).replaceAll(' ', separator) : decodeURI(params);
 }
 
 export const apolloErrorHandler = (error: ApolloError) => {

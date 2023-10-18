@@ -8,7 +8,7 @@ import LoadingModal from '@/components/General/LoadingModal';
 import useQuestionCategories from '../hooks/useQuestionCategories';
 
 export default function QuestionCategories() {
-	const { isOpen, questions, onSubmit, onClose, answers } = useQuestionCategories();
+	const { isOpen, questions, onSubmit, onClose, answers, getQuestionsAnswersCount } = useQuestionCategories();
 
 	return (
 		<>
@@ -31,7 +31,7 @@ export default function QuestionCategories() {
 									</Text>
 									<Text>
 										{
-											Object.values(answers?.[question.category.replace(' ', '-')] || '')
+											Object.values(answers?.[question.category.replaceAll(' ', '-')] || '')
 												?.length
 										}
 										/{question.totalQuestions}
@@ -44,7 +44,7 @@ export default function QuestionCategories() {
 						</Link>
 					))}
 				</Flex>
-				<Button mt="10" onClick={onSubmit}>
+				<Button mt="10" isDisabled={!getQuestionsAnswersCount()} onClick={onSubmit}>
 					View Results
 				</Button>
 			</Flex>

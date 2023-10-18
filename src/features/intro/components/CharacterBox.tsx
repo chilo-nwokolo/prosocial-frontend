@@ -10,8 +10,7 @@ import {
 	useRadio,
 	useRadioGroup,
 } from '@chakra-ui/react';
-import { AiOutlineCheck } from 'react-icons/ai';
-import { BsXLg } from 'react-icons/bs';
+import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 function RadioCard(props: any) {
 	const { getInputProps, getRadioProps } = useRadio(props);
@@ -27,9 +26,12 @@ function RadioCard(props: any) {
 				cursor="pointer"
 				borderWidth="2px"
 				_checked={{
-					bg: 'teal.600',
+					bg: props.value === 'yes' ? 'teal.600' : 'red.400',
 					color: 'white',
-					borderColor: 'teal.600',
+					borderColor: props.value === 'yes' ? 'teal.600' : 'red.400',
+				}}
+				_active={{
+					color: 'white',
 				}}
 				w="full"
 				textAlign="center"
@@ -49,7 +51,7 @@ type Props = {
 };
 
 export default function CharacterBox({ title, name }: Props) {
-	const options = [false, true];
+	const options = ['no', 'yes'];
 	const { getRootProps, getRadioProps } = useRadioGroup({
 		name,
 	});
@@ -67,7 +69,9 @@ export default function CharacterBox({ title, name }: Props) {
 				w="full"
 			>
 				<Flex flexDir="column" gap="2">
-					<Text fontWeight="medium" fontSize="lg">{title}</Text>
+					<Text fontWeight="medium" fontSize="lg">
+						{title}
+					</Text>
 					<Text fontWeight="normal">
 						You are the type of person who likes to try new things! Whereas other people
 						might feel reluctant or uncomfortable when presented with a new opportunity,
@@ -80,8 +84,8 @@ export default function CharacterBox({ title, name }: Props) {
 					{options?.map((value, i) => {
 						const radio = getRadioProps({ value });
 						return (
-							<RadioCard key={i} {...radio}>
-								{value ? <AiOutlineCheck /> : <BsXLg /> }
+							<RadioCard value={value} key={i} {...radio}>
+								{value === 'yes' ? <AiOutlineCheck /> : <AiOutlineClose />}
 							</RadioCard>
 						);
 					})}
