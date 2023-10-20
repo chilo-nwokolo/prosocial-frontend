@@ -1,8 +1,9 @@
 'use client';
+import AppModal from '@/components/AppModal';
 import LoadingModal from '@/components/General/LoadingModal';
 import CharacterBox from '@/features/intro/components/CharacterBox';
 import useResultPage from '@/features/intro/hooks/useResultPage';
-import { Box, Button, Flex, SimpleGrid, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Flex, SimpleGrid, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import { FcInfo } from 'react-icons/fc';
 
 export default function ResultPage() {
@@ -17,13 +18,14 @@ export default function ResultPage() {
 		onSubmit,
 		submitting,
 	} = useResultPage();
+	const { isOpen, onClose, onOpen } = useDisclosure()
 
 	return (
 		<>
 			<Flex justifyContent="end" alignItems="center" gap="1">
 				<FcInfo />
-				<Tooltip label="Every answer you provided during the registration procuces a score that combines together to place you into a category. If you feel this category is not an accurate reflection of your personality, you will have the opportunity to answer some more questions so we can further refine our understanding of who you are as a person.">
-					<Text fontSize="sm" color="blue.600" cursor="pointer">
+				<Tooltip label="Every answer you provided during the registration procures a score that combines together to place you into a category. If you feel this category is not an accurate reflection of your personality, you will have the opportunity to answer some more questions so we can further refine our understanding of who you are as a person.">
+					<Text fontSize="sm" color="blue.600" cursor="pointer" onClick={onOpen}>
 						How did my answers produce this result?
 					</Text>
 				</Tooltip>
@@ -91,6 +93,12 @@ export default function ResultPage() {
 				</Box>
 			</Flex>
 			<LoadingModal isOpen={loading} onClose={() => {}} />
+			<AppModal
+				title=''
+				description='Every answer you provided during the registration procures a score that combines together to place you into a category. If you feel this category is not an accurate reflection of your personality, you will have the opportunity to answer some more questions so we can further refine our understanding of who you are as a person.'
+				isOpen={isOpen}
+				onClose={onClose}
+			/>
 		</>
 	);
 }

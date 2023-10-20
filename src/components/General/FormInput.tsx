@@ -6,9 +6,11 @@ import {
 	Input,
 	Text,
 	Tooltip,
+	useDisclosure,
 } from '@chakra-ui/react';
 import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
 import { AiFillInfoCircle } from 'react-icons/ai';
+import AppModal from '../AppModal';
 
 type Props = {
 	labelTitle: string;
@@ -39,21 +41,32 @@ export default function FormInput({
   min,
   max
 }: Props) {
+	const { isOpen, onClose, onOpen } = useDisclosure();
 	return (
-		<FormControl>
-			<FormLabel>{labelTitle}</FormLabel>
-			<Input name={name} type={inputType} value={value} onChange={onChange} onBlur={onBlur} min={min} max={max} />
-			<FormHelperText>
-				{error ? (
-					<Text fontSize="xs" color="red.500">{error}</Text>
-				) : tooltip ? (
-					<Tooltip label={tooltip} placement="bottom" fontSize="xs">
-						<Flex alignItems="center" gap="1" fontSize="xs" cursor="default">
-							<AiFillInfoCircle /> {infoText}
-						</Flex>
-					</Tooltip>
-				) : <Text fontSize="xs">{infoText}</Text>}
-			</FormHelperText>
-		</FormControl>
+		<>
+			<FormControl>
+				<FormLabel>{labelTitle}</FormLabel>
+				<Input name={name} type={inputType} value={value} onChange={onChange} onBlur={onBlur} min={min} max={max} />
+				<FormHelperText>
+					{error ? (
+						<Text fontSize="xs" color="red.500">{error}</Text>
+					) : tooltip ? (
+						<Tooltip label={tooltip} placement="bottom" fontSize="xs">
+							<Flex alignItems="center" gap="1" fontSize="xs" cursor="default" onClick={onOpen}>
+								<AiFillInfoCircle /> {infoText}
+							</Flex>
+						</Tooltip>
+					) : <Text fontSize="xs">{infoText}</Text>}
+				</FormHelperText>
+			</FormControl>
+			{
+				tooltip ? <AppModal
+					title=""
+					description={tooltip}
+					isOpen={isOpen}
+					onClose={onClose}
+				/> : null
+			}
+		</>
 	);
 }
