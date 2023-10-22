@@ -8,8 +8,9 @@ export const transformQuestions = (questions: OnBoardCategoriesWithQuestionsQuer
 		meta: sampleData[0]?.meta,
 		description: sampleData[0]?.description,
 		totalQuestions: sampleData[0].questions?.length,
-		questions: sampleData[0].questions,
+		questions: sampleData[0].questions?.sort(() => Math.random() - 0.5),
 	};
+
 	const otherQuestions = questions.onBoardCategoriesWithQuestions?.map((category) => {
 		return {
 			id: category.id,
@@ -20,6 +21,7 @@ export const transformQuestions = (questions: OnBoardCategoriesWithQuestionsQuer
 			questions: category.questions,
 		};
 	});
+	
 	if (otherQuestions?.length) {
 		return [personalQuestions, ...otherQuestions];
 	}
