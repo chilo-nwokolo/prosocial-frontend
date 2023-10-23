@@ -12,13 +12,18 @@ export const transformQuestions = (questions: OnBoardCategoriesWithQuestionsQuer
 	};
 
 	const otherQuestions = questions.onBoardCategoriesWithQuestions?.map((category) => {
+		const questionsClone = [...category.questions!]
+		let questions = questionsClone;
+		if (category.id === "2") {
+			questions = questionsClone?.sort(() => Math.random() - 0.5);
+		}
 		return {
 			id: category.id,
 			category: category.name.replace('&', 'and'),
 			meta: sampleData[parseInt(category.id) - 1]?.meta,
 			description: sampleData[parseInt(category.id) - 1]?.description,
 			totalQuestions: category.questions?.length,
-			questions: category.questions,
+			questions,
 		};
 	});
 	

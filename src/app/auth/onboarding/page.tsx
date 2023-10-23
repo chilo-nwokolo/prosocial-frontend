@@ -39,7 +39,7 @@ export default function OnboardingPage() {
 			<Flex flexDir="column" alignItems="center" gap="5">
 				<Spinner size="xl" />
 				<Text fontSize="xl" fontWeight="medium" textAlign="center">
-					{loading ? 'fetching data...' : 'Logging in...'}
+					{loading ? 'Logging in...' : 'fetching data...'}
 				</Text>
 			</Flex>
 		</Center>
