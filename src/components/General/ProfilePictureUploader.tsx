@@ -1,15 +1,31 @@
-import { Box, Button, Flex, FormLabel, Image, Input, Tooltip } from '@chakra-ui/react';
-import { Dispatch, LegacyRef, SetStateAction, useRef } from 'react';
+import { UPDATE_USER_INFO } from '@/features/dashboard/profile/gql/queries';
+import { useMutation } from '@apollo/client';
+import {
+	Box,
+	Button,
+	Flex,
+	FormLabel,
+	Image,
+	Input,
+	Spinner,
+	Tooltip,
+} from '@chakra-ui/react';
+import { ChangeEvent, Dispatch, LegacyRef, SetStateAction, useRef } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
 
 type Props = {
-	profileImage: File | null;
-	setProfileImage: Dispatch<SetStateAction<File | null>>;
+	profileImage: File | string | null;
+	setProfileImage: Dispatch<SetStateAction<File | string | null>>;
 };
 
 export default function ProfilePictureUploader({ profileImage, setProfileImage }: Props) {
 	const imageUploadRef = useRef<LegacyRef<HTMLInputElement> | null>(null);
+	const [upload, { loading }] = useMutation(UPDATE_USER_INFO, {
+		onCompleted: (data) => {
+			console.log(data);
+		},
+	});
 
 	const UploadProfilePictureButton = () => (
 		<Tooltip label="Upload profile picture" aria-label="A tooltip">
@@ -28,13 +44,58 @@ export default function ProfilePictureUploader({ profileImage, setProfileImage }
 		</Tooltip>
 	);
 
+	const onFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files?.length && e.target.size < 5000) {
+			const uploadedFile = e.target.files[0];
+			console.log(uploadedFile)
+			setProfileImage(uploadedFile);
+			upload({
+				variables: {
+					input: {
+						profile: {
+							avatar: uploadedFile,
+						}
+					}
+				}
+			})
+		}
+	}
+
 	return (
 		<Flex justifyContent="center" alignItems="center" flexDir="column" w="full" mt="10">
 			{profileImage ? (
 				<>
+					{loading ? (
+						<Flex
+							alignItems="center"
+							justifyContent="center"
+							position="absolute"
+							h="150px"
+							w="150px"
+							bg="gray"
+							opacity="0.4"
+							rounded="full"
+							zIndex="banner"
+							mt="-10"
+						>
+							<Spinner
+								thickness="4px"
+								speed="0.65s"
+								emptyColor="white"
+								color="blue.900"
+								size="xl"
+							/>
+						</Flex>
+					) : (
+						<></>
+					)}
 					<Box position="relative">
 						<Image
-							src={URL.createObjectURL(profileImage)}
+							src={
+								typeof profileImage === 'string'
+									? profileImage
+									: URL.createObjectURL(profileImage)
+							}
 							alt="profile image"
 							h="150px"
 							w="150px"
@@ -81,11 +142,7 @@ export default function ProfilePictureUploader({ profileImage, setProfileImage }
 				visibility="hidden"
 				type="file"
 				accept=".png, .jpg, .jpeg"
-				onChange={(e) => {
-					if (e.target.files?.length) {
-						setProfileImage(e.target.files[0]);
-					}
-				}}
+				onChange={onFileUpload}
 			/>
 		</Flex>
 	);

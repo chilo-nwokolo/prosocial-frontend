@@ -1,7 +1,8 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { BASE_URL } from '.';
+import { BASE_URL } from './request';
 import { getCookie } from '../libs/cookies';
+// import { createUploadLink } from 'apollo-upload-client';
 
 const httpLink = createHttpLink({
 	uri: BASE_URL,
@@ -19,7 +20,14 @@ const authLink = setContext((_, { headers }) => {
 	};
 });
 
+// const uploadLink = createUploadLink({
+//   uri: BASE_URL,
+// });
+
+const link = authLink.concat(httpLink);
+
 export const client = new ApolloClient({
-	link: authLink.concat(httpLink),
+	link,
 	cache: new InMemoryCache(),
+	connectToDevTools: process.env.NODE_ENV === "development",
 });

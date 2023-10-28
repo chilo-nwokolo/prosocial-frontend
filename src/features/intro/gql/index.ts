@@ -32,6 +32,7 @@ export const ME_PERSONALITY_SCORE = gql(`
           id
           name
           sub_title
+          image
           description
           bucketQuestions {
             id

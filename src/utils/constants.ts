@@ -1,6 +1,6 @@
 export const ImageLinks = {
   logoWithText: '/logo-text.png',
-  logo: '/logo.png'
+  logo: '/logo.png',
 }
 
 export const appRouteLinks = {
@@ -21,7 +21,10 @@ export const appRouteLinks = {
   intro: '/pro/intro',
   result: '/pro/intro/result',
   resultSuccess: '/pro/intro/result/success',
-  socialSchedule: '/pro/intro/social-schedule'
+  // dashboard routes
+  home: '/pro/home',
+  profile: '/pro/profile/:id',
+  socialSchedule: '/pro/profile/social-schedule',
 }
 
 export const formFeedback = {

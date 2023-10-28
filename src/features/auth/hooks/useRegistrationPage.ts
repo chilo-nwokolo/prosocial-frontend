@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { apolloErrorHandler } from '@/utils/helpers';
 
 export default function UseRegistrationPage() {
-	const [profileImage, setProfileImage] = useState<File | null>(null);
+	const [profileImage, setProfileImage] = useState<File | string | null>(null);
 	const [phone, setPhone] = useState('');
 	const toast = useToast();
   const router = useRouter();

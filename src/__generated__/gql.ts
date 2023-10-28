@@ -18,9 +18,10 @@ const documents = {
     "\n  mutation LOGIN_USER($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      token\n      user {\n        id\n        name\n        phone\n        email\n      }\n    }\n  }\n": types.Login_UserDocument,
     "\n  mutation ResetPasswordLink($email: String!) {\n    requestResetPasswordLink(email: $email) {\n      status\n      message\n    }\n  }": types.ResetPasswordLinkDocument,
     "\n  mutation ResetPassword($token: String!, $new_password: String!) {\n    requestResetPassword(token:$token, new_password:$new_password) {\n      status\n      message\n    }\n  }\n": types.ResetPasswordDocument,
-    "\n  query ME {\n    me {\n      id\n      name\n    }\n  }\n": types.MeDocument,
+    "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n": types.MeDocument,
+    "\n  mutation UPDATE_USER_INFO($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      id\n    }\n  } \n": types.Update_User_InfoDocument,
     "\n  query OnBoardCategoriesWithQuestions {\n    onBoardCategoriesWithQuestions {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n": types.OnBoardCategoriesWithQuestionsDocument,
-    "\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n": types.MePersonalityScoreDocument,
+    "\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          image\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n": types.MePersonalityScoreDocument,
     "\n  mutation QuestionResponse($input: QuestionResponseGroupInput!) {\n    questionResponse(input: $input) {\n      status\n      message\n    }\n  }\n": types.QuestionResponseDocument,
     "\n  mutation SubmitPersonalityBucketQuestion($input: [UserBucketQuestionResponseInput!]) {\n    submitPersonalityBucketQuestion(input: $input) {\n      status\n      message\n    }\n  }\n": types.SubmitPersonalityBucketQuestionDocument,
     "\n  mutation UPDATE_USER_PROFILE($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      profile {\n        id\n        gender\n        race\n        relationship_status\n        level_of_education\n        zip_code\n        political_orientation\n        socialization\n        to_socialization\n        health_rating\n      }\n    }\n  }\n": types.Update_User_ProfileDocument,
@@ -64,7 +65,11 @@ export function gql(source: "\n  mutation ResetPassword($token: String!, $new_pa
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query ME {\n    me {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query ME {\n    me {\n      id\n      name\n    }\n  }\n"];
+export function gql(source: "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n"): (typeof documents)["\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UPDATE_USER_INFO($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      id\n    }\n  } \n"): (typeof documents)["\n  mutation UPDATE_USER_INFO($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      id\n    }\n  } \n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -72,7 +77,7 @@ export function gql(source: "\n  query OnBoardCategoriesWithQuestions {\n    onB
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          image\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          image\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

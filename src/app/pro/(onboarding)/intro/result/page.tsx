@@ -3,7 +3,8 @@ import AppModal from '@/components/AppModal';
 import LoadingModal from '@/components/General/LoadingModal';
 import CharacterBox from '@/features/intro/components/CharacterBox';
 import useResultPage from '@/features/intro/hooks/useResultPage';
-import { Box, Button, Flex, SimpleGrid, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { ImageLinks } from '@/utils/constants';
+import { Box, Button, Flex, Image, SimpleGrid, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import { FcInfo } from 'react-icons/fc';
 
 export default function ResultPage() {
@@ -35,7 +36,7 @@ export default function ResultPage() {
 					Based on your answers, you seem to fit one of our social categories:{' '}
 				</Text>
 				<Flex flexDir="column" alignItems="center" my="8">
-					<Box h="48" border="1px solid black" w="60"></Box>
+					<Image src={result?.image || ImageLinks.logo} alt={result?.name || "Image of character"} w="60" h="60" objectFit="contain" />
 					<Text fontSize="2xl" fontWeight="bold" marginTop="5">
 						{result?.name}
 					</Text>
