@@ -2,7 +2,7 @@
 
 import { Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { appRouteLinks, configExtras } from '@/utils/constants';
+import { AccessToken, appRouteLinks, configExtras } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
 import { QUERY_QUESTIONS } from '@/features/intro/gql';
 import { useOnboardQuestions } from '@/store';
@@ -34,7 +34,7 @@ export default function OnboardingPage() {
 				title: apolloErrorHandler(error),
 				status: 'error',
 			});
-			deleteCookie('accessToken')
+			deleteCookie(AccessToken)
 		},
 		skip: true,
 	});

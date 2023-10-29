@@ -2,6 +2,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BASE_URL } from './request';
 import { getCookie } from '../libs/cookies';
+import { AccessToken } from '@/utils/constants';
 // import { createUploadLink } from 'apollo-upload-client';
 
 const httpLink = createHttpLink({
@@ -10,7 +11,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
 	// get the authentication token from local storage if it exists
-	const token = getCookie('accessToken');
+	const token = getCookie(AccessToken);
 	// return the headers to the context so httpLink can read them
 	return {
 		headers: {
