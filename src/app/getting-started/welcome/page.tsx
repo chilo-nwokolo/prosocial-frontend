@@ -1,4 +1,6 @@
-import { appRouteLinks } from '@/utils/constants';
+'use client';
+import { useConfig } from '@/store/configStore';
+import { appRouteLinks, configExtras } from '@/utils/constants';
 import {
 	Accordion,
 	AccordionButton,
@@ -11,9 +13,20 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLayoutEffect } from 'react';
 import { FaPlay } from 'react-icons/fa';
 
 export default function WelcomePage() {
+	const [config] = useConfig((state) => [state.config]);
+	const router = useRouter();
+
+	useLayoutEffect(() => {
+		if (config[configExtras.user_visited_intro_page]) {
+			router.push(appRouteLinks.login);
+		}
+	}, [config, router]);
+
 	return (
 		<Box mt="20">
 			<Text as="h1" fontSize="2xl" fontWeight="medium">

@@ -23,8 +23,9 @@ export const appRouteLinks = {
   resultSuccess: '/pro/intro/result/success',
   // dashboard routes
   home: '/pro/home',
-  profile: '/pro/profile/:id',
+  profile: '/pro/profile',
   socialSchedule: '/pro/profile/social-schedule',
+  logout: '/pro/logout',
 }
 
 export const formFeedback = {
@@ -37,3 +38,10 @@ export const AnswerType = {
   RATING_SCALE: "RATING_SCALE",
   SINGLE_CHOICE: "SINGLE_CHOICE",
 }
+
+export const configExtras = {
+  user_has_seen_personality_score: 'user_has_seen_personality_score',
+  user_visited_intro_page: 'user_visited_intro_page',
+}
+
+export const AccessToken = 'accessToken';

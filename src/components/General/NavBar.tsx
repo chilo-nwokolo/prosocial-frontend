@@ -1,10 +1,31 @@
 'use client';
 import ProfilePicture from '@/components/General/ProfilePicture';
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Flex, useDisclosure } from '@chakra-ui/react';
+import { appRouteLinks } from '@/utils/constants';
+import {
+	Box,
+	Button,
+	Drawer,
+	DrawerBody,
+	DrawerCloseButton,
+	DrawerContent,
+	DrawerOverlay,
+	Flex,
+	useDisclosure,
+} from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 import { RiMenu2Fill } from 'react-icons/ri';
 
+const links = [
+	{ id: 1, destination: appRouteLinks.home, name: 'Home' },
+	{ id: 2, destination: appRouteLinks.profile, name: 'Profile' },
+	{ id: 3, destination: appRouteLinks.home, name: 'Contact' },
+	{ id: 4, destination: appRouteLinks.logout, name: 'Log Out' },
+];
+
 export default function NavBar() {
-	const { isOpen, onOpen, onClose } = useDisclosure()
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const router = useRouter();
+
 	return (
 		<>
 			<Flex
@@ -28,16 +49,28 @@ export default function NavBar() {
 				<ProfilePicture />
 			</Flex>
 			<Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay />
-        <DrawerContent>
-				<DrawerCloseButton />
-          <DrawerBody>
-            <p>Home</p>
-            <p>Profile</p>
-            <p>Contact</p>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+				<DrawerOverlay />
+				<DrawerContent>
+					<DrawerCloseButton />
+					<DrawerBody>
+						<Flex flexDir="column" gap="4" mt="10">
+							{links.map((link) => (
+								<Box
+									cursor="pointer"
+									_hover={{ textDecor: 'underline' }}
+									onClick={() => {
+										router.push(link.destination);
+										onClose();
+									}}
+									key={link.id}
+								>
+									<Flex>{link.name}</Flex>
+								</Box>
+							))}
+						</Flex>
+					</DrawerBody>
+				</DrawerContent>
+			</Drawer>
 		</>
 	);
 }

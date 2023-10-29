@@ -2,21 +2,26 @@
 
 import { Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { appRouteLinks } from '@/utils/constants';
+import { appRouteLinks, configExtras } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
 import { QUERY_QUESTIONS } from '@/features/intro/gql';
 import { useOnboardQuestions } from '@/store';
 import { transformQuestions } from '@/features/intro/helpers';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { deleteCookie } from '@/libs/cookies';
+import { useConfig } from '@/store/configStore';
+import { useLayoutEffect } from 'react';
 
 export default function OnboardingPage() {
 	const router = useRouter();
+
+	const [config] = useConfig((state) => [state.config]);
+
 	const [updateQuestions] = useOnboardQuestions((state) => [state.updateQuestions]);
 
 	const toast = useToast();
 
-	const { loading } = useQuery(QUERY_QUESTIONS, {
+	const { loading, refetch } = useQuery(QUERY_QUESTIONS, {
 		onCompleted: (data) => {
 			const result = transformQuestions(data);
 			updateQuestions(result);
@@ -30,8 +35,17 @@ export default function OnboardingPage() {
 				status: 'error',
 			});
 			deleteCookie('accessToken')
-		}
+		},
+		skip: true,
 	});
+
+	useLayoutEffect(() => {
+		if (config[configExtras.user_has_seen_personality_score]) {
+			router.push(appRouteLinks.home);
+		} else {
+			refetch();
+		}
+	}, [config, refetch, router]);
 
 
 	return (

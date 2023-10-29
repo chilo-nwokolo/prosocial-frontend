@@ -20,9 +20,9 @@ export const useOnboardQuestions = create<QuestionsState>()(
 		persist(
 			(set) => ({
 				questions: null,
-				updateQuestions: (questions) => set({ questions }),
+				updateQuestions: (questions: any) => set({ questions }),
 				answers: null,
-				updateAnswers: (answers) => set({ answers }),
+				updateAnswers: (answers: any) => set({ answers }),
 				personalityBucketQuestions: [],
 				updatePersonalityBucketQuestions: (personalityBucketQuestions: string[]) =>
 					set({ personalityBucketQuestions }),

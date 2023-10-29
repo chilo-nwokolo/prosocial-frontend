@@ -1,5 +1,6 @@
 'use client';
 
+import { useConfig } from '@/store/configStore';
 import { appRouteLinks } from '@/utils/constants';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
@@ -11,6 +12,8 @@ const modes = [
 
 export default function Page() {
 	const router = useRouter();
+	const [updateConfig] = useConfig((state) => [state.updateConfig]);
+
 	return (
 		<Center minH="100vh">
 			<Flex flexDir="column" gap="10">
@@ -19,6 +22,7 @@ export default function Page() {
 						key={mode.id}
 						onClick={() => {
 							router.push(mode.route);
+							updateConfig({ mode: mode.name })
 						}}
 						border="1px solid"
 						borderColor="gray.400"

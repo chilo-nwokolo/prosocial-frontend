@@ -15,10 +15,10 @@ export const useUser = create<UserState>()(
 	persist(
 		(set) => ({
 			user: null,
-			updateUser: (user: Login_UserMutation) => set({ user }),
+			updateUser: (user) => set({ user }),
 			userProfile: null,
-			setUserProfile: (userProfile: MeQuery) => set({ userProfile }),
+			setUserProfile: (userProfile) => set({ userProfile }),
 		}),
-		{ name: 'user' },
+		{ name: 'prosocial_user' },
 	),
 );
