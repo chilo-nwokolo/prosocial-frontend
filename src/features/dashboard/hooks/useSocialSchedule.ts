@@ -5,6 +5,8 @@ import { UPDATE_USER_SCHEDULE } from '@/features/dashboard/profile/gql/queries';
 import { DayName, TimeRange } from '@/__generated__/graphql';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { useToast } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
+import { appRouteLinks } from '@/utils/constants';
 
 export type NewScheduleDateType = {
 	day_name: DayName;
@@ -25,13 +27,15 @@ export default function useSocialSchedule() {
 		state.selectedSchedules,
 		state.updateSelectedSchedules,
 	]);
+	const router = useRouter();
 	const toast = useToast();
 
 	const [submit, { loading }] = useMutation(UPDATE_USER_SCHEDULE, {
 		onCompleted: () => {
 			toast({
 				title: "Updated Successfully",
-			})
+			});
+			router.push(appRouteLinks.socialScheduleSuccess);
 		},
 		onError: (e) => {
 			apolloErrorHandler(e);

@@ -34,8 +34,7 @@ export default function OnboardingPage() {
 				status: 'error',
 			});
 			deleteCookie(AccessToken)
-		},
-		skip: true,
+		}
 	});
 
 	useLayoutEffect(() => {

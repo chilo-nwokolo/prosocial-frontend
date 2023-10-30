@@ -23,6 +23,11 @@ export const appRouteLinks = {
   resultSuccess: '/pro/intro/result/success',
   // dashboard routes
   home: '/pro/home',
+  growth: '/pro/home/growth',
+  growthPersonality: '/pro/home/growth/personality-quizzes',
+  growthChallenges: '/pro/home/growth/challenges',
+  growthInterests: '/pro/home/growth/interests',
+  growthJournal: '/pro/home/growth/journal',
   profile: '/pro/profile',
   socialSchedule: '/pro/profile/social-schedule',
   socialScheduleSuccess: '/pro/profile/social-schedule/success',

@@ -47,7 +47,6 @@ export default function ProfilePictureUploader({ profileImage, setProfileImage }
 	const onFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files?.length && e.target.size < 5000) {
 			const uploadedFile = e.target.files[0];
-			console.log(uploadedFile)
 			setProfileImage(uploadedFile);
 			upload({
 				variables: {

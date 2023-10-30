@@ -4,18 +4,22 @@ import ProfilePictureUploader from '@/components/General/ProfilePictureUploader'
 import { UPDATE_USER_INFO } from '@/features/dashboard/profile/gql/queries';
 import { useUser } from '@/store';
 import { useMutation } from '@apollo/client';
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 
 export default function ProfilePageId() {
 	const [userProfile] = useUser((state) => [state.userProfile]);
 	const [profileImage, setProfileImage] = useState<File | null | string>(userProfile?.me?.profile?.avatar || null);
+	const toast = useToast();
 
 	// eslint-disable-next-line no-unused-vars
 	const [submit, { loading }] = useMutation(UPDATE_USER_INFO, {
-		onCompleted: (data) => {
-			console.log(data);
+		onCompleted: () => {
+			toast({
+				status: 'success',
+				title: 'Update successful',
+			})
 		},
 		refetchQueries: [`${userProfile?.me?.__typename}:${userProfile?.me?.id}`]
 	});

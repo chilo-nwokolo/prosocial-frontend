@@ -3,9 +3,12 @@ import { useFormik } from 'formik';
 import { useQuery, useMutation } from '@apollo/client';
 import { useUser } from '@/store';
 import { UPDATE_USER_INFO, ME_QUERY } from '@/features/dashboard/profile/gql/queries';
+import { useToast } from '@chakra-ui/react';
 
 export default function useProfilePage() {
 	const [setUserProfile] = useUser((state) => [state.setUserProfile]);
+	const toast = useToast();
+
 	const { loading, error } = useQuery(ME_QUERY, {
 		onCompleted: (data) => {
 			setUserProfile(data);
@@ -18,8 +21,11 @@ export default function useProfilePage() {
 	);
 
 	const [submit, { loading: updating }] = useMutation(UPDATE_USER_INFO, {
-		onCompleted: (data) => {
-			console.log(data);
+		onCompleted: () => {
+			toast({
+				status: 'success',
+				title: 'Update successful',
+			})
 		},
 		refetchQueries: ["ME"],
 	});
