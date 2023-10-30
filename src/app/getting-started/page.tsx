@@ -1,9 +1,9 @@
 'use client';
 
-import { useConfig } from '@/store/configStore';
-import { appRouteLinks } from '@/utils/constants';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
+import { useConfig } from '@/store';
+import { appRouteLinks } from '@/utils/constants';
 
 const modes = [
 	{ id: 1, name: 'Student Mode', route: appRouteLinks.welcome },

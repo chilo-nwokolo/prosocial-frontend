@@ -8,7 +8,7 @@ import { appRouteLinks, formFeedback } from '@/utils/constants';
 import { REGISTER_USER } from '../gql';
 import { useRouter } from 'next/navigation';
 import { apolloErrorHandler } from '@/utils/helpers';
-import { useConfig } from '@/store/configStore';
+import { useConfig } from '@/store';
 
 export default function UseRegistrationPage() {
 	const [profileImage, setProfileImage] = useState<File | string | null>(null);

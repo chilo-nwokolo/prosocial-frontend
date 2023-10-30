@@ -5,11 +5,10 @@ import { useRouter } from 'next/navigation';
 import { AccessToken, appRouteLinks, configExtras } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
 import { QUERY_QUESTIONS } from '@/features/intro/gql';
-import { useOnboardQuestions } from '@/store';
+import { useOnboardQuestions, useConfig } from '@/store';
 import { transformQuestions } from '@/features/intro/helpers';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { deleteCookie } from '@/libs/cookies';
-import { useConfig } from '@/store/configStore';
 import { useLayoutEffect } from 'react';
 
 export default function OnboardingPage() {

@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BASE_URL } from './request';
 import { getCookie } from '../libs/cookies';
-import { AccessToken } from '@/utils/constants';
+import { AccessToken } from '../utils/constants';
 // import { createUploadLink } from 'apollo-upload-client';
 
 const httpLink = createHttpLink({

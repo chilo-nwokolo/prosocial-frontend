@@ -1,4 +1,5 @@
 import {
+	Accordion,
 	AccordionButton,
 	AccordionItem,
 	AccordionPanel,
@@ -11,35 +12,39 @@ import { LiaToggleOnSolid, LiaToggleOffSolid } from 'react-icons/lia';
 type SocialScheduleAccordionProps = {
   title: string;
   children: ReactNode;
+	// eslint-disable-next-line no-unused-vars
+	onChange?: (info: string) => void;
 }
 
-function SocialScheduleAccordion({ title, children }: SocialScheduleAccordionProps) {
+function SocialScheduleAccordion({ title, children, onChange }: SocialScheduleAccordionProps) {
 	return (
-		<AccordionItem>
-			{({ isExpanded }) => (
-				<>
-					<h2>
-						<AccordionButton>
-							<Box as="span" flex="1" textAlign="left">
-								{title}
-							</Box>
-							{isExpanded ? (
-								<Text color="gray.600">
-									<LiaToggleOnSolid style={{ fontSize: '24px' }} />
-								</Text>
-							) : (
-								<Text color="gray.600">
-									<LiaToggleOffSolid style={{ fontSize: '24px' }} />
-								</Text>
-							)}
-						</AccordionButton>
-					</h2>
-					<AccordionPanel mr="0" pr="0" pb={4}>
-						{children}
-					</AccordionPanel>
-				</>
-			)}
-		</AccordionItem>
+		<Accordion allowMultiple onChange={() => onChange && onChange(title)}>
+			<AccordionItem>
+				{({ isExpanded }) => (
+					<>
+						<h2>
+							<AccordionButton>
+								<Box as="span" flex="1" textAlign="left">
+									{title}
+								</Box>
+								{isExpanded ? (
+									<Text color="gray.600">
+										<LiaToggleOnSolid style={{ fontSize: '24px' }} />
+									</Text>
+								) : (
+									<Text color="gray.600">
+										<LiaToggleOffSolid style={{ fontSize: '24px' }} />
+									</Text>
+								)}
+							</AccordionButton>
+						</h2>
+						<AccordionPanel mr="0" pr="0" pb={4}>
+							{children}
+						</AccordionPanel>
+					</>
+				)}
+			</AccordionItem>
+		</Accordion>
 	);
 }
 

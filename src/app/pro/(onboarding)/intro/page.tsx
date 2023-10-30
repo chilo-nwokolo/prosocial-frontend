@@ -1,5 +1,5 @@
 'use client';
-import { useConfig } from '@/store/configStore';
+import { useConfig } from '@/store';
 import { Flex, Text } from '@chakra-ui/react';
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react';

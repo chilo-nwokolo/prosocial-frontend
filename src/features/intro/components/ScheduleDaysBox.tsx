@@ -1,5 +1,6 @@
 import { Accordion, Box, Flex, HStack, useRadio, useRadioGroup } from '@chakra-ui/react';
 import SocialScheduleAccordion from './SocialScheduleAccordion';
+import { useGlobalStore } from '@/store';
 
 const options = [
 	{ id: 1, title: 'Morning \n(7am - 12pm)' },
@@ -58,10 +59,22 @@ function ScheduleDays({
 	day: string;
 	options: (typeof weekdays)[0]['options'];
 }) {
+	const [selectedSchedules, updateSelectedSchedules] = useGlobalStore((state) => [state.selectedSchedules, state.updateSelectedSchedules]);
+
 	const { getRootProps, getRadioProps } = useRadioGroup({
 		name: day,
 		onChange: (range) => {
-			console.log({day, range: range.replace("\n", "")})
+			const result = { day, time_range: range.replace('\n', ''), status: true };
+			const found = selectedSchedules.findIndex((value) => value.day === day);
+
+			if (found < 0) {
+				updateSelectedSchedules([...selectedSchedules, result]);
+			} 
+			if (found >= 0) {
+				const newList = [...selectedSchedules];
+				newList.splice(found, 1);
+				updateSelectedSchedules([...newList, result]);
+			}
 		},
 	});
 	const group = getRootProps();
@@ -79,13 +92,24 @@ function ScheduleDays({
 	);
 }
 
-export default function ScheduleDaysBox({ source }: { source: string }) {
+export default function ScheduleDaysBox({
+	source,
+	toggleAccordion,
+}: {
+	source: string;
+	// eslint-disable-next-line no-unused-vars
+	toggleAccordion: (info: string) => void;
+}) {
 	const category = source === 'weekday' ? weekdays : weekend;
 
 	return (
 		<Accordion allowMultiple>
 			{category.map((days) => (
-				<SocialScheduleAccordion title={days.day} key={days.id}>
+				<SocialScheduleAccordion
+					title={days.day}
+					key={days.id}
+					onChange={toggleAccordion}
+				>
 					<ScheduleDays options={days.options} day={days.day} />
 				</SocialScheduleAccordion>
 			))}

@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useOnboardQuestions } from '@/store';
+import { useOnboardQuestions, useConfig } from '@/store';
 import { useMutation, useQuery } from '@apollo/client';
 import { ME_PERSONALITY_SCORE, USER_BUCKET_QUESTIONS_RESPONSE_INPUT } from '../gql';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
 import { appRouteLinks } from '@/utils/constants';
-import { useConfig } from '@/store/configStore';
 
 export default function useResultPage() {
 	const { data, loading } = useQuery(ME_PERSONALITY_SCORE);

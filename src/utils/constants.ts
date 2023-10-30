@@ -25,6 +25,7 @@ export const appRouteLinks = {
   home: '/pro/home',
   profile: '/pro/profile',
   socialSchedule: '/pro/profile/social-schedule',
+  socialScheduleSuccess: '/pro/profile/social-schedule/success',
   logout: '/pro/logout',
 }
 

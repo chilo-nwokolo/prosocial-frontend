@@ -21,5 +21,13 @@ export const UPDATE_USER_INFO = gql(`
     updateUser(input: $input) {
       id
     }
-  } 
+  }
+`);
+
+export const UPDATE_USER_SCHEDULE = gql(`
+  mutation UpdateUserSchedule($input: SchedulesInput!) {
+    updateUserSchedules(input: $input) {
+      id
+    }
+  }
 `);
