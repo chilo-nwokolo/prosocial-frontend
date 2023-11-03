@@ -34,7 +34,7 @@ export default function OnboardingPage() {
 				status: 'error',
 			});
 			deleteCookie(AccessToken)
-		}
+		},
 	});
 
 	useLayoutEffect(() => {
@@ -44,7 +44,6 @@ export default function OnboardingPage() {
 			refetch();
 		}
 	}, [config, refetch, router]);
-
 
 	return (
 		<Center h="100vh">

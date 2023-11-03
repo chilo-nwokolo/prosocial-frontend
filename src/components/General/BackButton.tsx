@@ -5,13 +5,19 @@ import { BiArrowBack } from 'react-icons/bi';
 
 type Props = {
 	text?: string;
+	destination?: string;
 };
 
-export default function BackButton({ text }: Props) {
+export default function BackButton({ text, destination }: Props) {
 	const router = useRouter();
 	return (
 		<Box>
-			<Button variant="ghost" onClick={() => router.back()}>
+			<Button
+				variant="ghost"
+				onClick={() => {
+					destination ? router.push(destination) : router.back();
+				}}
+			>
 				<Flex alignItems="center" gap="2">
 					<BiArrowBack className="fs-2" />
 					{text ? <Text>{text}</Text> : null}

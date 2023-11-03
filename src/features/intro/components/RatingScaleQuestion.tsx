@@ -13,7 +13,7 @@ import {
 
 type Props = {
 	title: string;
-	options: [{ id: string; title: string; value: string }] | undefined;
+	options: { id: string; title?: string | null | undefined; value?: string | null | undefined }[] | null | undefined;
 	source: string;
 	name: string;
 	error?: string;
@@ -77,14 +77,14 @@ export default function RatingScaleQuestion({ title, options, error, source, nam
 			</FormLabel>
 			<RadioGroup defaultValue={value}>
 				<HStack {...group} gap="0">
-					{options?.map((value) => {
+					{options?.length ? options.map((value) => {
 						const radio = getRadioProps({ value: source === 'The basics' ? value.value : value.id, onChange });
 						return (
 							<RadioCard key={value.id} {...radio}>
-								{source === 'Behaviors and beliefs' ? value.title.charAt(value.title.length - 1) : value.title}
+								{source === 'Behaviors and beliefs' ? value?.title?.charAt(value?.title.length - 1) : value.title}
 							</RadioCard>
 						);
-					})}
+					}):null}
 				</HStack>
 			</RadioGroup>
 			{source === 'Behaviors and beliefs' ? (

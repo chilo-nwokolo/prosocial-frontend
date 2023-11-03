@@ -11,7 +11,7 @@ import { useOnboardQuestions } from '@/store';
 import { useFormik } from 'formik';
 import { decodeUrl, generateQuestions } from '@/utils/helpers';
 
-export default function QuestionsPage({ params }: { params: { slug: string } }) {
+export default function IntroQuestionsPage({ params }: { params: { slug: string } }) {
 	const router = useRouter();
 	const toast = useToast();
 	const [section, setSection] = useState<any>(null);

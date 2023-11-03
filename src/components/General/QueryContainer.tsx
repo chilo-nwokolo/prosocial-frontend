@@ -1,20 +1,33 @@
 import { apolloErrorHandler } from '@/utils/helpers';
-import { Center, Spinner, useToast } from '@chakra-ui/react';
+import { Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
 type Props = {
 	loading: boolean;
 	children: ReactNode;
 	error: any;
+	loadingText?: string;
 };
 
-export default function QueryContainer({ loading, children, error }: Props) {
+export default function QueryContainer({
+	loading,
+	children,
+	error,
+	loadingText = '',
+}: Props) {
 	const toast = useToast();
 
 	if (loading) {
 		return (
 			<Center h="100vh">
-				<Spinner size="xl" />
+				<Flex flexDir="column" py="8" alignItems="center" gap="5">
+					<Spinner size="xl" />
+					{loadingText ? (
+						<Text fontSize="xl" fontWeight="medium" textAlign="center">
+							{loadingText}
+						</Text>
+					) : null}
+				</Flex>
 			</Center>
 		);
 	}
