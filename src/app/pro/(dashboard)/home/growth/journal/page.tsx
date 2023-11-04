@@ -1,26 +1,27 @@
-import { Flex, Text } from '@chakra-ui/react';
 import GrowthLayoutWrapper from '@/features/dashboard/home/growth/components/GrowthLayoutWrapper';
 import { appRouteLinks } from '@/utils/constants';
+import { Flex, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa';
 
-const differentChallenges = [
-	'Interesting or Funny Story',
-	'Commitments',
-	'Curiosity',
+const journalTitles = [
+	'Happiest Childhood Memory',
+	'Greatest Personal Achievement',
+	'Hardest Learned Life Lesson',
+	'Most Valued Relationship',
 ];
 
-export default function ChallengesPage() {
+export default function JournalPage() {
 	return (
 		<GrowthLayoutWrapper
-			title="Challenges"
-			description="Below are a series of personal challenges. We recommend one challenge per day.
-			After you have completed the challenge, you will be prompted to journal about
-			your experiences."
+			title="Journal prompts"
+			description="The opportunity to reflect on our life experiences is an important aspect of
+		personal growth. Below are some journaling prompts. Write as little or as much
+		as you like. If you don’t feel like typing, we recommend using voice to text."
 		>
 			<Flex flexDir="column" gap="5" mt="4">
-				{differentChallenges.map((challenge, i) => (
-					<Link href={`${appRouteLinks.growthChallenges}/${i + 1}`} key={challenge}>
+				{journalTitles.map((journal, i) => (
+					<Link href={`${appRouteLinks.growthJournal}/${i + 1}`} key={journal}>
 						<Flex
 							w="full"
 							border="1px solid"
@@ -32,7 +33,7 @@ export default function ChallengesPage() {
 							alignItems="center"
 						>
 							<Text fontSize="2xl" w="56" fontWeight="medium">
-								{i + 1}: {challenge}
+								{i + 1}: {journal}
 							</Text>
 							<Text>
 								<FaChevronRight />

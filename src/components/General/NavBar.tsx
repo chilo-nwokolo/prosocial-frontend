@@ -18,8 +18,9 @@ import { RiMenu2Fill } from 'react-icons/ri';
 const links = [
 	{ id: 1, destination: appRouteLinks.home, name: 'Home' },
 	{ id: 2, destination: appRouteLinks.profile, name: 'Profile' },
-	{ id: 3, destination: appRouteLinks.home, name: 'Contact' },
-	{ id: 4, destination: appRouteLinks.logout, name: 'Log Out' },
+	{ id: 3, destination: appRouteLinks.about, name: 'About' },
+	{ id: 4, destination: appRouteLinks.contact, name: 'Contact' },
+	{ id: 5, destination: appRouteLinks.logout, name: 'Log Out' },
 ];
 
 export default function NavBar() {

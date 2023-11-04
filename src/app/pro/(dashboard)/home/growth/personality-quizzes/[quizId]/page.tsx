@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import { UserQuestionsType, useUser } from '@/store';
 import RatingScaleQuestion from '@/features/intro/components/RatingScaleQuestion';
 
-export default function PersonalityQuestionsPage({ params }: { params: { id: string } }) {
+export default function PersonalityQuestionsPage({ params }: { params: { quizId: string } }) {
 	const router = useRouter();
 	const toast = useToast();
 	const [sectionQuestions, setSectionQuestions] = useState<
@@ -18,14 +18,14 @@ export default function PersonalityQuestionsPage({ params }: { params: { id: str
 
 	useEffect(() => {
 		const sectionQuestions = questions?.filter(
-			(question) => question.sub_category === decodeURI(params.id),
+			(question) => question.sub_category === decodeURI(params.quizId),
 		);
 		setSectionQuestions(sectionQuestions);
 		return () => {
 			setSectionQuestions(undefined);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [params.id, questions]);
+	}, [params.quizId, questions]);
 
 	const genDefaultValues = () => {
 		const result: { [index: string]: string } = {};
@@ -55,7 +55,7 @@ export default function PersonalityQuestionsPage({ params }: { params: { id: str
 			</Flex>
 			<Flex flexDir="column" gap="5">
 				<Text fontSize="3xl" fontWeight="semibold">
-					Your {decodeURI(params.id)}
+					Your {decodeURI(params.quizId)}
 				</Text>
 				<Text>
 					Below are a number of personality traits that may or may not apply to you. Do
@@ -71,7 +71,7 @@ export default function PersonalityQuestionsPage({ params }: { params: { id: str
 						key={`quest-${sect.id}`}
 						title={sect.text}
 						options={sect.options}
-						source={decodeURI(params.id)}
+						source={decodeURI(params.quizId)}
 						name={sect.id}
 						value={formik.values[sect.id]}
 						onChange={formik.handleChange}

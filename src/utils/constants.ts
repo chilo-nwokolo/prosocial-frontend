@@ -23,6 +23,8 @@ export const appRouteLinks = {
   resultSuccess: '/pro/intro/result/success',
   // dashboard routes
   home: '/pro/home',
+  about: '/pro/about',
+  contact: '/pro/contact',
   growth: '/pro/home/growth',
   growthPersonality: '/pro/home/growth/personality-quizzes',
   growthChallenges: '/pro/home/growth/challenges',
@@ -48,6 +50,10 @@ export const AnswerType = {
 export const configExtras = {
   user_has_seen_personality_score: 'user_has_seen_personality_score',
   user_visited_intro_page: 'user_visited_intro_page',
+}
+
+export const externalLinks = {
+  email: 'prosocialapplication@gmail.com',
 }
 
 export const AccessToken = 'accessToken';
