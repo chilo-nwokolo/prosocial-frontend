@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
 	title: 'ProSocial App',
 	description: 'Connect with your friends',
+	manifest: '/manifest.json',
+	icons: { apple: '/icon-152x152' },
+	themeColor: "#000",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
