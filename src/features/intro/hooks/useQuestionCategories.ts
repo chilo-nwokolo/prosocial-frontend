@@ -1,15 +1,15 @@
-import { useOnboardQuestions } from '@/store';
+import { useAppQuestions } from '@/store';
 import { useMutation } from '@apollo/client';
 import { useDisclosure, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { SURVEY_RESPONSE, UPDATE_USER_PROFILE } from '../gql';
+import { QUESTION_RESPONSE_MUTATION, UPDATE_USER_PROFILE } from '../gql';
 import { appRouteLinks } from '@/utils/constants';
 import { apolloErrorHandler, combineIntoFormattedArray } from '@/utils/helpers';
 
 export default function useQuestionCategories() {
-	const [questions, answers] = useOnboardQuestions((state: any) => [
-		state.questions,
-		state.answers,
+	const [onboardQuestions, onboardAnswers] = useAppQuestions((state) => [
+		state.onboardQuestions,
+		state.onboardAnswers,
 	]);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const router = useRouter();
@@ -24,7 +24,7 @@ export default function useQuestionCategories() {
 			onClose();
 		},
 	});
-	const [submitSurvey] = useMutation(SURVEY_RESPONSE, {
+	const [submitSurvey] = useMutation(QUESTION_RESPONSE_MUTATION, {
 		onError: (error) => {
 			onClose();
 			toast({
@@ -39,9 +39,9 @@ export default function useQuestionCategories() {
 	});
 
 	const getQuestionsAnswersCount = () => {
-		const answersObject = Object?.values(answers || {}).flat();
+		const answersObject = Object?.values(onboardAnswers || {}).flat();
 
-		const questionsLength = questions.reduce((acc: number, curr: any) => {
+		const questionsLength = onboardQuestions.reduce((acc: number, curr: any) => {
 			return acc + curr.questions.length;
 		}, 0);
 		const answersLength = answersObject.reduce((acc: number, curr: any) => {
@@ -52,7 +52,7 @@ export default function useQuestionCategories() {
 
 	const onSubmit = async () => {
 		onOpen();
-		const profileAnswers = answers['The-basics'];
+		const profileAnswers = onboardAnswers['The-basics'];
 
 		await updateProfile({
 			variables: {
@@ -62,9 +62,9 @@ export default function useQuestionCategories() {
 			},
 		});
 
-		delete answers['The-basics'];
+		delete onboardAnswers['The-basics'];
 
-		const allAnswers = Object.values(answers).flat() as any;
+		const allAnswers = Object.values(onboardAnswers).flat() as any;
 
 		const formattedAnswers = combineIntoFormattedArray(allAnswers);
 
@@ -77,5 +77,5 @@ export default function useQuestionCategories() {
 		});
 	};
 
-	return { isOpen, questions, onSubmit, onClose, answers, getQuestionsAnswersCount } as const;
+	return { isOpen, onboardQuestions, onSubmit, onClose, onboardAnswers, getQuestionsAnswersCount } as const;
 }

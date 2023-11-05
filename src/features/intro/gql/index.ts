@@ -50,7 +50,7 @@ export const ME_PERSONALITY_SCORE = gql(`
  * MUTATIONS
  */
 
-export const SURVEY_RESPONSE = gql(`
+export const QUESTION_RESPONSE_MUTATION = gql(`
   mutation QuestionResponse($input: QuestionResponseGroupInput!) {
     questionResponse(input: $input) {
       status

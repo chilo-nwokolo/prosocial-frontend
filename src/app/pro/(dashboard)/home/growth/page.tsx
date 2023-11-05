@@ -50,8 +50,7 @@ export default function GrowthPage() {
 							borderColor="gray.500"
 							pt="16"
 							borderRadius="md"
-						h="full"
-
+						  h="full"
 						>
 							<Flex px="5" pb="16" flexDir="column" gap="4">
 								<Text fontWeight="semibold" fontSize="2xl">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOnboardQuestions, useConfig } from '@/store';
+import { useAppQuestions, useConfig } from '@/store';
 import { useMutation, useQuery } from '@apollo/client';
 import { ME_PERSONALITY_SCORE, USER_BUCKET_QUESTIONS_RESPONSE_INPUT } from '../gql';
 import { apolloErrorHandler } from '@/utils/helpers';
@@ -18,7 +18,7 @@ export default function useResultPage() {
 	}, []);
 
 	const [updatePersonalityBucketQuestions, personalityBucketQuestions] =
-		useOnboardQuestions((state) => [
+		useAppQuestions((state) => [
 			state.updatePersonalityBucketQuestions,
 			state.personalityBucketQuestions,
 		]);

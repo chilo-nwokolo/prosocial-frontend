@@ -8,13 +8,13 @@ import LoadingModal from '@/components/General/LoadingModal';
 import useQuestionCategories from '../hooks/useQuestionCategories';
 
 export default function QuestionCategories() {
-	const { isOpen, questions, onSubmit, onClose, answers, getQuestionsAnswersCount } = useQuestionCategories();
+	const { isOpen, onboardQuestions, onSubmit, onClose, onboardAnswers, getQuestionsAnswersCount } = useQuestionCategories();
 
 	return (
 		<>
 			<Flex flexDir="column">
 				<Flex flexDir="column" gap="8" mt="10">
-					{questions?.map((question: any) => (
+					{onboardQuestions?.map((question: any) => (
 						<Link key={question.id} href={`${appRouteLinks.intro}/${question.category}`}>
 							<Flex
 								border="1px solid"
@@ -31,7 +31,7 @@ export default function QuestionCategories() {
 									</Text>
 									<Text>
 										{
-											Object.values(answers?.[question.category.replaceAll(' ', '-')] || '')
+											Object.values(onboardAnswers?.[question.category.replaceAll(' ', '-')] || '')
 												?.length
 										}
 										/{question.totalQuestions}

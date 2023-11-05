@@ -7,6 +7,9 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { useFormik } from 'formik';
 import { UserQuestionsType, useUser } from '@/store';
 import RatingScaleQuestion from '@/features/intro/components/RatingScaleQuestion';
+import { useMutation } from '@apollo/client';
+import { QUESTION_RESPONSE_MUTATION } from '@/features/intro/gql';
+import { apolloErrorHandler } from '@/utils/helpers';
 
 export default function PersonalityQuestionsPage({ params }: { params: { quizId: string } }) {
 	const router = useRouter();
@@ -20,6 +23,9 @@ export default function PersonalityQuestionsPage({ params }: { params: { quizId:
 		const sectionQuestions = questions?.filter(
 			(question) => question.sub_category === decodeURI(params.quizId),
 		);
+		if (!sectionQuestions?.length) {
+			router.back();
+		}
 		setSectionQuestions(sectionQuestions);
 		return () => {
 			setSectionQuestions(undefined);
@@ -34,6 +40,19 @@ export default function PersonalityQuestionsPage({ params }: { params: { quizId:
 		});
 		return result;
 	};
+
+	// eslint-disable-next-line no-unused-vars
+	const [submitAnswers, { loading }] = useMutation(QUESTION_RESPONSE_MUTATION, {
+		onError: (error) => {
+			toast({
+				status: 'error',
+				title: apolloErrorHandler(error),
+			});
+		},
+		onCompleted: () => {
+			router.push(appRouteLinks.result);
+		},
+	});
 
 	const formik = useFormik({
 		initialValues: genDefaultValues(),

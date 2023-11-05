@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AccessToken, appRouteLinks, configExtras } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
 import { QUERY_QUESTIONS } from '@/features/intro/gql';
-import { useOnboardQuestions, useConfig } from '@/store';
+import { useAppQuestions, useConfig } from '@/store';
 import { transformQuestions } from '@/features/intro/helpers';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { deleteCookie } from '@/libs/cookies';
@@ -16,14 +16,14 @@ export default function OnboardingPage() {
 
 	const [config] = useConfig((state) => [state.config]);
 
-	const [updateQuestions] = useOnboardQuestions((state) => [state.updateQuestions]);
+	const [updateOnboardQuestions] = useAppQuestions((state) => [state.updateOnboardQuestions]);
 
 	const toast = useToast();
 
 	const { loading, refetch } = useQuery(QUERY_QUESTIONS, {
 		onCompleted: (data) => {
 			const result = transformQuestions(data);
-			updateQuestions(result);
+			updateOnboardQuestions(result);
 			setTimeout(() => {
 				router.push(appRouteLinks.intro);
 			}, 1000);

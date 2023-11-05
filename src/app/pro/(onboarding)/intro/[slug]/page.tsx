@@ -7,7 +7,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 import RatingScaleQuestion from '@/features/intro/components/RatingScaleQuestion';
 import SingleChoiceQuestion from '@/features/intro/components/SingleChoiceQuestion';
 import InputQuestions from '@/features/intro/components/InputQuestions';
-import { useOnboardQuestions } from '@/store';
+import { useAppQuestions } from '@/store';
 import { useFormik } from 'formik';
 import { decodeUrl, generateQuestions } from '@/utils/helpers';
 
@@ -15,14 +15,14 @@ export default function IntroQuestionsPage({ params }: { params: { slug: string 
 	const router = useRouter();
 	const toast = useToast();
 	const [section, setSection] = useState<any>(null);
-	const [questions, answers, updateAnswers] = useOnboardQuestions((state) => [
-		state.questions,
-		state.answers,
-		state.updateAnswers,
+	const [onboardQuestions, onboardAnswers, updateOnboardAnswers] = useAppQuestions((state) => [
+		state.onboardQuestions,
+		state.onboardAnswers,
+		state.updateOnboardAnswers,
 	]);
 
 	useEffect(() => {
-		const section = questions?.find(
+		const section = onboardQuestions?.find(
 			(question: any) => question.category === decodeURI(params.slug),
 		);
 		if (!section) {
@@ -30,17 +30,17 @@ export default function IntroQuestionsPage({ params }: { params: { slug: string 
 			return;
 		}
 		setSection(section);
-	}, [params.slug, questions, router]);
+	}, [params.slug, onboardQuestions, router]);
 
 	const formik = useFormik({
-		initialValues: Object.keys(answers?.[decodeUrl(params.slug, '-')] || '')
+		initialValues: Object.keys(onboardAnswers?.[decodeUrl(params.slug, '-')] || '')
 			?.length
-			? answers[decodeUrl(params.slug, '-')]
+			? onboardAnswers[decodeUrl(params.slug, '-')]
 			: generateQuestions(section),
 		onSubmit: (values) => {
 			const source = decodeUrl(params.slug, '-');
-			const updatedAnswers = { ...answers, [source]: values };
-			updateAnswers(updatedAnswers);
+			const updatedAnswers = { ...onboardAnswers, [source]: values };
+			updateOnboardAnswers(updatedAnswers);
 		},
 	});
 

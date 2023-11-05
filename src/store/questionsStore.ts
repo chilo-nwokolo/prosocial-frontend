@@ -2,12 +2,12 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface QuestionsState {
-	questions: any;
+	onboardQuestions: any;
 	// eslint-disable-next-line no-unused-vars
-	updateQuestions: (questions: any) => void;
-	answers: any;
+	updateOnboardQuestions: (questions: any) => void;
+	onboardAnswers: any;
 	// eslint-disable-next-line no-unused-vars
-	updateAnswers: (answers: any) => void;
+	updateOnboardAnswers: (answers: any) => void;
 	personalityBucketQuestions: string[];
 	updatePersonalityBucketQuestions: (
 		// eslint-disable-next-line no-unused-vars
@@ -15,14 +15,14 @@ interface QuestionsState {
 	) => void;
 }
 
-export const useOnboardQuestions = create<QuestionsState>()(
+export const useAppQuestions = create<QuestionsState>()(
 	devtools(
 		persist(
 			(set) => ({
-				questions: null,
-				updateQuestions: (questions: any) => set({ questions }),
-				answers: null,
-				updateAnswers: (answers: any) => set({ answers }),
+				onboardQuestions: null,
+				updateOnboardQuestions: (onboardQuestions: any) => set({ onboardQuestions }),
+				onboardAnswers: null,
+				updateOnboardAnswers: (onboardAnswers: any) => set({ onboardAnswers }),
 				personalityBucketQuestions: [],
 				updatePersonalityBucketQuestions: (personalityBucketQuestions: string[]) =>
 					set({ personalityBucketQuestions }),
