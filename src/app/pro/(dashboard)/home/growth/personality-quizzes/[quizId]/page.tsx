@@ -1,64 +1,18 @@
 'use client';
-import { Button, Flex, Text, useToast } from '@chakra-ui/react';
+import { Button, Flex, Text } from '@chakra-ui/react';
 import { appRouteLinks } from '@/utils/constants';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
-import { useFormik } from 'formik';
-import { UserQuestionsType, useUser } from '@/store';
 import RatingScaleQuestion from '@/features/intro/components/RatingScaleQuestion';
-import { useMutation } from '@apollo/client';
-import { QUESTION_RESPONSE_MUTATION } from '@/features/intro/gql';
-import { apolloErrorHandler } from '@/utils/helpers';
+import usePersonalityQuestionsPage from '@/features/dashboard/home/growth/hooks/usePersonalityQuestionsPage';
 
-export default function PersonalityQuestionsPage({ params }: { params: { quizId: string } }) {
-	const router = useRouter();
-	const toast = useToast();
-	const [sectionQuestions, setSectionQuestions] = useState<
-		UserQuestionsType[] | undefined
-	>(undefined);
-	const [questions] = useUser((state) => [state.questions]);
+export default function PersonalityQuestionsPage({
+	params,
+}: {
+	params: { quizId: string };
+}) {
 
-	useEffect(() => {
-		const sectionQuestions = questions?.filter(
-			(question) => question.sub_category === decodeURI(params.quizId),
-		);
-		if (!sectionQuestions?.length) {
-			router.back();
-		}
-		setSectionQuestions(sectionQuestions);
-		return () => {
-			setSectionQuestions(undefined);
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [params.quizId, questions]);
-
-	const genDefaultValues = () => {
-		const result: { [index: string]: string } = {};
-		sectionQuestions?.forEach((element) => {
-			result[element.id] = '';
-		});
-		return result;
-	};
-
-	// eslint-disable-next-line no-unused-vars
-	const [submitAnswers, { loading }] = useMutation(QUESTION_RESPONSE_MUTATION, {
-		onError: (error) => {
-			toast({
-				status: 'error',
-				title: apolloErrorHandler(error),
-			});
-		},
-		onCompleted: () => {
-			router.push(appRouteLinks.result);
-		},
-	});
-
-	const formik = useFormik({
-		initialValues: genDefaultValues(),
-		onSubmit: (values) => {
-			console.log(values);
-		},
+	const { formik, router, sectionQuestions, loading } = usePersonalityQuestionsPage({
+		quizId: params.quizId,
 	});
 
 	return (
@@ -97,13 +51,10 @@ export default function PersonalityQuestionsPage({ params }: { params: { quizId:
 					/>
 				))}
 				<Button
+					isLoading={loading}
+					loadingText="Saving..."
 					onClick={() => {
 						formik.handleSubmit();
-						router.back();
-						toast({
-							title: 'Saved successfully',
-							status: 'success',
-						});
 					}}
 				>
 					Save

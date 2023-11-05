@@ -13,6 +13,9 @@ interface QuestionsState {
 		// eslint-disable-next-line no-unused-vars
 		personalityBucketQuestions: string[],
 	) => void;
+	userPersonalityAnswers: { [id: string] : number }[];
+	// eslint-disable-next-line no-unused-vars
+	updateUserPersonalityAnswers: (userPersonalityAnswers:  { [id: string] : number }[]) => void;
 }
 
 export const useAppQuestions = create<QuestionsState>()(
@@ -20,14 +23,17 @@ export const useAppQuestions = create<QuestionsState>()(
 		persist(
 			(set) => ({
 				onboardQuestions: null,
-				updateOnboardQuestions: (onboardQuestions: any) => set({ onboardQuestions }),
+				updateOnboardQuestions: (onboardQuestions) => set({ onboardQuestions }),
 				onboardAnswers: null,
-				updateOnboardAnswers: (onboardAnswers: any) => set({ onboardAnswers }),
+				updateOnboardAnswers: (onboardAnswers) => set({ onboardAnswers }),
 				personalityBucketQuestions: [],
-				updatePersonalityBucketQuestions: (personalityBucketQuestions: string[]) =>
+				updatePersonalityBucketQuestions: (personalityBucketQuestions) =>
 					set({ personalityBucketQuestions }),
+				userPersonalityAnswers: [],
+				updateUserPersonalityAnswers: (userPersonalityAnswers) =>
+				set({ userPersonalityAnswers }),
 			}),
-			{ name: 'questions' },
+			{ name: 'prosocial_questions' },
 		),
 	),
 );

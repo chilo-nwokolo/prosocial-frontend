@@ -2,7 +2,7 @@
 import { Flex, Text } from '@chakra-ui/react';
 import QueryContainer from '@/components/General/QueryContainer';
 import usePersonalityQuizzesPage from '@/features/dashboard/hooks/usePersonalityQuizzesPage';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaCheckCircle, FaChevronRight } from 'react-icons/fa';
 import Link from 'next/link';
 import { appRouteLinks } from '@/utils/constants';
 import GrowthLayoutWrapper from '@/features/dashboard/home/growth/components/GrowthLayoutWrapper';
@@ -10,7 +10,7 @@ import GrowthLayoutWrapper from '@/features/dashboard/home/growth/components/Gro
 const questionCategories = ['Personality 1', 'Personality 2', 'Personality 3'];
 
 export default function PersonalityQuizzesPage() {
-	const { error, loading } = usePersonalityQuizzesPage();
+	const { error, loading, checkIfCompleted } = usePersonalityQuizzesPage();
 
 	return (
 		<QueryContainer loading={loading} error={error}>
@@ -38,7 +38,15 @@ export default function PersonalityQuizzesPage() {
 									<Text fontSize="lg" fontWeight="semibold">
 										{question}
 									</Text>
-									<Text>10 questions</Text>
+									{checkIfCompleted(question) ===
+									10 ? (
+										<Flex color="green.500" gap="2" alignItems="center">
+											<FaCheckCircle />
+											<Text fontWeight="semibold">Completed</Text>
+										</Flex>
+									) : (
+										<Text>10 questions</Text>
+									)}
 								</Flex>
 								<Text>
 									<FaChevronRight />
