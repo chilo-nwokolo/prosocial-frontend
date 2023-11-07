@@ -1,4 +1,5 @@
-import { UPDATE_USER_INFO } from '@/features/dashboard/profile/gql/queries';
+import { UPDATE_PROFILE_PICTURE } from '@/features/dashboard/profile/gql/queries';
+import { client } from '@/service';
 import { useMutation } from '@apollo/client';
 import {
 	Box,
@@ -9,8 +10,16 @@ import {
 	Input,
 	Spinner,
 	Tooltip,
+	useToast,
 } from '@chakra-ui/react';
-import { ChangeEvent, Dispatch, LegacyRef, SetStateAction, useRef } from 'react';
+import {
+	ChangeEvent,
+	Dispatch,
+	LegacyRef,
+	SetStateAction,
+	useRef,
+	useState,
+} from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
 
@@ -21,9 +30,18 @@ type Props = {
 
 export default function ProfilePictureUploader({ profileImage, setProfileImage }: Props) {
 	const imageUploadRef = useRef<LegacyRef<HTMLInputElement> | null>(null);
-	const [upload, { loading }] = useMutation(UPDATE_USER_INFO, {
-		onCompleted: (data) => {
-			console.log(data);
+	const [key, setKey] = useState(1);
+	const toast = useToast();
+
+	const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
+		onCompleted: () => {
+			setKey(key + 1);
+			client.refetchQueries({
+				include: ['ME'],
+				updateCache(cache) {
+					cache.evict({ fieldName: 'ME' });
+				},
+			});
 		},
 	});
 
@@ -45,7 +63,14 @@ export default function ProfilePictureUploader({ profileImage, setProfileImage }
 	);
 
 	const onFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files?.length && e.target.size < 5000) {
+		if (e.target.files && e.target.files?.[0]?.size > 2000000) {
+			toast({
+				title: "The image you uploaded is too large.",
+				status: "error"
+			})
+			return;
+		}
+		if (e.target.files?.length) {
 			const uploadedFile = e.target.files[0];
 			setProfileImage(uploadedFile);
 			upload({
@@ -53,12 +78,12 @@ export default function ProfilePictureUploader({ profileImage, setProfileImage }
 					input: {
 						profile: {
 							avatar: uploadedFile,
-						}
-					}
-				}
-			})
+						},
+					},
+				},
+			});
 		}
-	}
+	};
 
 	return (
 		<Flex justifyContent="center" alignItems="center" flexDir="column" w="full" mt="10">
@@ -95,6 +120,7 @@ export default function ProfilePictureUploader({ profileImage, setProfileImage }
 									? profileImage
 									: URL.createObjectURL(profileImage)
 							}
+							key={key}
 							alt="profile image"
 							h="150px"
 							w="150px"

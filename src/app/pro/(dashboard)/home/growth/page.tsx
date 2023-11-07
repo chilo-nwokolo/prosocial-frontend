@@ -1,4 +1,5 @@
 'use client';
+import BackButton from '@/components/General/BackButton';
 import { useAppQuestions } from '@/store';
 import { appRouteLinks } from '@/utils/constants';
 import { Box, Flex, SimpleGrid, Text } from '@chakra-ui/react';
@@ -14,7 +15,7 @@ export default function GrowthPage() {
 			const data = Object.values(value);
 			if (data[0] === 10) {
 				completed++;
-			} 
+			}
 		})
 		return completed;
 	}
@@ -67,6 +68,7 @@ export default function GrowthPage() {
 
 	return (
 		<Flex flexDir="column" w="full" gap="5">
+			<BackButton destination={appRouteLinks.home} />
 			<Text fontSize="2xl" textAlign="center" fontWeight="semibold">
 				Growth
 			</Text>

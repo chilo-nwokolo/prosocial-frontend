@@ -24,6 +24,14 @@ export const UPDATE_USER_INFO = gql(`
   }
 `);
 
+export const UPDATE_PROFILE_PICTURE = gql(`
+  mutation UPDATE_PROFILE_PICTURE($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+    }
+  }
+`);
+
 export const UPDATE_USER_SCHEDULE = gql(`
   mutation UpdateUserSchedule($input: SchedulesInput!) {
     updateUserSchedules(input: $input) {

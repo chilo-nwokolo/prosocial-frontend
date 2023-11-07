@@ -17,7 +17,7 @@ export default function BackButton({ text, destination, icon }: Props) {
 			<Button
 				variant="ghost"
 				onClick={() => {
-					destination ? router.push(destination) : router.back();
+					destination ? router.replace(destination) : router.back();
 				}}
 			>
 				<Flex alignItems="center" gap="2">

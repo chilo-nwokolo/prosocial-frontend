@@ -1,7 +1,22 @@
+'use client';
 import NavBar from '@/components/General/NavBar';
-import { Box } from '@chakra-ui/react';
+import { Box, usePrevious } from '@chakra-ui/react';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function ProLayout({ children }: { children: React.ReactNode }) {
+	const pathname = usePathname();
+	const previousPathname = usePrevious(pathname);
+
+	useEffect(() => {
+		const handleRouteChange = () => {
+			window.scrollTo(0, 0);
+		};
+		
+		if (previousPathname !== pathname) {
+			handleRouteChange();
+		}
+	}, [pathname, previousPathname]);
 	return (
 		<Box as="section" maxWidth="lg" minWidth="xs" mx="auto">
 			<NavBar />

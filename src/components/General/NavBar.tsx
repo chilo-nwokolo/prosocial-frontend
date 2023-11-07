@@ -3,17 +3,16 @@ import ProfilePicture from '@/components/General/ProfilePicture';
 import { appRouteLinks } from '@/utils/constants';
 import {
 	Box,
-	Button,
 	Drawer,
 	DrawerBody,
 	DrawerCloseButton,
 	DrawerContent,
 	DrawerOverlay,
 	Flex,
+	Text,
 	useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { RiMenu2Fill } from 'react-icons/ri';
 
 const links = [
 	{ id: 1, destination: appRouteLinks.home, name: 'Home' },
@@ -44,10 +43,10 @@ export default function NavBar() {
 				zIndex="modal"
 				alignItems="center"
 			>
-				<Button size="lg" px="3" variant="outline" onClick={onOpen}>
-					<RiMenu2Fill style={{ fontSize: '24px' }} />
-				</Button>
-				<ProfilePicture />
+				<Text fontWeight="semibold" fontSize="2xl">ProSocial</Text>
+				<Box onClick={onOpen}>
+					<ProfilePicture />
+				</Box>
 			</Flex>
 			<Drawer placement="left" onClose={onClose} isOpen={isOpen}>
 				<DrawerOverlay />
