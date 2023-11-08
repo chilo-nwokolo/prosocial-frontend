@@ -10,7 +10,7 @@ export default function ProfilePicture() {
 
 	return (
 		<Box
-			border="1px solid"
+			border="2px solid"
 			borderColor="primary.100"
 			borderRadius="full"
 			p="1"
