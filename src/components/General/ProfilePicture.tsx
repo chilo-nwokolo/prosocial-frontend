@@ -11,10 +11,10 @@ export default function ProfilePicture() {
 	return (
 		<Box
 			border="1px solid"
-			borderColor="gray.300"
+			borderColor="primary.100"
 			borderRadius="full"
 			p="1"
-			shadow="sm"
+			shadow="rgba(0, 0, 0, 0.1) 0px 4px 12px;"
 			cursor="pointer"
 		>
 			{loading ? (

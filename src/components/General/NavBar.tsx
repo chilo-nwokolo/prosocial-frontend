@@ -38,8 +38,8 @@ export default function NavBar() {
 				position="fixed"
 				width="full"
 				maxW="lg"
+				bg="bg"
 				minWidth="xs"
-				bg="white"
 				zIndex="modal"
 				alignItems="center"
 			>
