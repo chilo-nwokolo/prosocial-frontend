@@ -11,24 +11,26 @@ import { apolloErrorHandler } from '@/utils/helpers';
 import { useConfig } from '@/store';
 
 export default function UseRegistrationPage() {
-	const [profileImage, setProfileImage] = useState<File | string | null>(null);
 	const [phone, setPhone] = useState('');
 	const toast = useToast();
-  const router = useRouter();
+	const router = useRouter();
 
 	const [updateConfig] = useConfig((state) => [state.updateConfig]);
 
 	useEffect(() => {
 		updateConfig({ user_visited_intro_page: true });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	const [register, { loading }] = useMutation(REGISTER_USER);
 
 	const validationSchema = yup.object({
 		dob: yup.date().required(formFeedback.required),
 		email: yup.string().email(formFeedback.invalidEmail).required(formFeedback.required),
-		password: yup.string().min(8, formFeedback.minPassword).required(formFeedback.required),
+		password: yup
+			.string()
+			.min(8, formFeedback.minPassword)
+			.required(formFeedback.required),
 		firstName: yup.string().required(formFeedback.required),
 		lastName: yup.string().required(formFeedback.required),
 	});
@@ -60,19 +62,19 @@ export default function UseRegistrationPage() {
 						password,
 					},
 				},
-        onCompleted: () => {
-          router.push(appRouteLinks.confirmEmail);
-        },
-        onError: (error) => {
-          toast({
-            title: "Registration failed",
-            description: apolloErrorHandler(error),
-          })
-        }
+				onCompleted: () => {
+					router.push(appRouteLinks.confirmEmail);
+				},
+				onError: (error) => {
+					toast({
+						title: 'Registration failed',
+						description: apolloErrorHandler(error),
+					});
+				},
 			});
 		},
 		validationSchema,
 	});
 
-	return { formik, profileImage, setProfileImage, setPhone, phone, loading } as const;
+	return { formik, setPhone, phone, loading } as const;
 }

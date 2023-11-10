@@ -9,7 +9,7 @@ import { useAppQuestions, useConfig } from '@/store';
 import { transformQuestions } from '@/features/intro/helpers';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { deleteCookie } from '@/libs/cookies';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 export default function OnboardingPage() {
 	const router = useRouter();
@@ -19,6 +19,8 @@ export default function OnboardingPage() {
 	const [updateOnboardQuestions] = useAppQuestions((state) => [state.updateOnboardQuestions]);
 
 	const toast = useToast();
+
+	const [skipQuery, setSkipQuery] = useState(false);
 
 	const { loading, refetch } = useQuery(QUERY_QUESTIONS, {
 		onCompleted: (data) => {
@@ -35,11 +37,16 @@ export default function OnboardingPage() {
 			});
 			deleteCookie(AccessToken)
 		},
+		skip: skipQuery,
 	});
 
+	console.log(skipQuery, "skipquery")
 	useLayoutEffect(() => {
 		if (config[configExtras.user_has_seen_personality_score]) {
+			console.log(config[configExtras.user_has_seen_personality_score]);
+			console.log({config});
 			router.push(appRouteLinks.home);
+			setSkipQuery(true);
 		} else {
 			refetch();
 		}

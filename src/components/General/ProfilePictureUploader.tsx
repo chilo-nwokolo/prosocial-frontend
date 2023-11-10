@@ -14,9 +14,7 @@ import {
 } from '@chakra-ui/react';
 import {
 	ChangeEvent,
-	Dispatch,
 	LegacyRef,
-	SetStateAction,
 	useRef,
 	useState,
 } from 'react';
@@ -24,14 +22,15 @@ import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
 
 type Props = {
-	profileImage: File | string | null;
-	setProfileImage: Dispatch<SetStateAction<File | string | null>>;
+	currentImage?: File | string | null;
 };
 
-export default function ProfilePictureUploader({ profileImage, setProfileImage }: Props) {
+export default function ProfilePictureUploader({ currentImage }: Props) {
 	const imageUploadRef = useRef<LegacyRef<HTMLInputElement> | null>(null);
 	const [key, setKey] = useState(1);
 	const toast = useToast();
+	const [profileImage, setProfileImage] = useState<File | string | null | undefined>(currentImage);
+
 
 	const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
 		onCompleted: () => {

@@ -6,11 +6,9 @@ import { useUser } from '@/store';
 import { useMutation } from '@apollo/client';
 import { Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useState } from 'react';
 
 export default function ProfilePageId() {
 	const [userProfile] = useUser((state) => [state.userProfile]);
-	const [profileImage, setProfileImage] = useState<File | null | string>(userProfile?.me?.profile?.avatar || null);
 	const toast = useToast();
 
 	// eslint-disable-next-line no-unused-vars
@@ -50,10 +48,7 @@ export default function ProfilePageId() {
 	return (
 		<Flex flexDir="column" p="5">
       <Text textAlign="center" fontSize="lg" fontWeight="medium">Profile Photo</Text>
-			<ProfilePictureUploader
-				setProfileImage={setProfileImage}
-				profileImage={profileImage}
-			/>
+			<ProfilePictureUploader />
 			<form onSubmit={formik.handleSubmit}>
 				<Flex flexDir="column" gap="5" mb="10">
 					<EditableFormInput

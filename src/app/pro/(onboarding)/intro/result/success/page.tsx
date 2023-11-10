@@ -14,7 +14,7 @@ export default function SuccessPage() {
 					outing.
 				</Text>
 				<Flex flexDir="column" gap="4" mt="10">
-					<Link href={appRouteLinks.socialSchedule}>
+					<Link href={`${appRouteLinks.socialPreference}?newUser=true`}>
 						<Button w="full">Next</Button>
 					</Link>
 				</Flex>

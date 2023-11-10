@@ -7,7 +7,7 @@ import ProfilePictureUploader from '@/components/General/ProfilePictureUploader'
 import useProfilePage from '@/features/dashboard/hooks/useProfilePage';
 
 export default function ProfilePage() {
-	const { formik, loading, error, profileImage, setProfileImage, updating } =
+	const { formik, loading, error, updating, profileImage } =
 		useProfilePage();
 
 	return (
@@ -16,10 +16,7 @@ export default function ProfilePage() {
 				<Text textAlign="center" fontSize="lg" fontWeight="medium">
 					Profile Photo
 				</Text>
-				<ProfilePictureUploader
-					setProfileImage={setProfileImage}
-					profileImage={profileImage}
-				/>
+				<ProfilePictureUploader currentImage={profileImage} />
 				<form onSubmit={formik.handleSubmit}>
 					<Flex flexDir="column" gap="5" mb="10">
 						<EditableFormInput

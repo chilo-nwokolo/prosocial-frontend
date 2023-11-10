@@ -20,7 +20,7 @@ const homeSections = [
 		icon: <FaPeopleArrows style={{ fontSize: '30px' }} />,
 		desc: '',
 		subText: 'Update your weekly availability',
-		destination: appRouteLinks.socialSchedule,
+		destination: appRouteLinks.socialPreference,
 	},
 ];
 

@@ -31,8 +31,8 @@ export const appRouteLinks = {
   growthInterests: '/pro/home/growth/interests',
   growthJournal: '/pro/home/growth/journal',
   profile: '/pro/profile',
-  socialSchedule: '/pro/profile/social-schedule',
-  socialScheduleSuccess: '/pro/profile/social-schedule/success',
+  socialPreference: '/pro/profile/social-preference',
+  socialScheduleSuccess: '/pro/profile/social-preference/success',
   logout: '/pro/logout',
 }
 

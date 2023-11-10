@@ -6,7 +6,7 @@ import { UPDATE_USER_INFO, ME_QUERY } from '@/features/dashboard/profile/gql/que
 import { useToast } from '@chakra-ui/react';
 
 export default function useProfilePage() {
-	const [setUserProfile] = useUser((state) => [state.setUserProfile]);
+	const [setUserProfile, userProfile] = useUser((state) => [state.setUserProfile, state.userProfile]);
 	const toast = useToast();
 
 	const { loading, error } = useQuery(ME_QUERY, {
@@ -15,10 +15,7 @@ export default function useProfilePage() {
 		},
 	});
 
-	const [userProfile] = useUser((state) => [state.userProfile]);
-	const [profileImage, setProfileImage] = useState<File | null | string>(
-		userProfile?.me?.profile?.avatar || null,
-	);
+	const [profileImage] = useState(userProfile?.me?.profile?.avatar || null);
 
 	const [submit, { loading: updating }] = useMutation(UPDATE_USER_INFO, {
 		onCompleted: () => {
@@ -64,7 +61,6 @@ export default function useProfilePage() {
 		error,
 		submit,
 		updating,
-		profileImage,
-		setProfileImage,
+		profileImage
 	} as const;
 }

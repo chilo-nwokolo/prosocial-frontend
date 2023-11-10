@@ -13,25 +13,18 @@ import {
 } from '@chakra-ui/react';
 import TelInput from 'react-phone-number-input/input';
 import { AiFillInfoCircle } from 'react-icons/ai';
-import ProfilePictureUploader from '@/components/General/ProfilePictureUploader';
 import FormInput from '@/components/General/FormInput';
 import UseRegistrationPage from '@/features/auth/hooks/useRegistrationPage';
 import AppModal from '@/components/AppModal';
 
 export default function RegistrationPage() {
-	const { formik, profileImage, setProfileImage, setPhone, phone, loading } =
+	const { formik, setPhone, phone, loading } =
 		UseRegistrationPage();
 
 	const {
 		isOpen: isPhoneInfo,
 		onClose: onPhoneInfoClose,
 		onOpen: onPhoneInfoOpen,
-	} = useDisclosure();
-
-	const {
-		isOpen: isDpInfo,
-		onClose: onCloseDpInfo,
-		onOpen: onOpenDpInfo,
 	} = useDisclosure();
 
 	return (
@@ -133,33 +126,8 @@ export default function RegistrationPage() {
 							onBlur={formik.handleBlur}
 							error={formik.errors.password}
 						/>
-						{/* Profile Photo */}
-						<FormControl>
-							<Text fontWeight="medium">Upload your profile photo</Text>
-							<FormHelperText>
-								<Tooltip
-									label="Your profile photo is not public. It will be seen by potential friends once an outing has been completed. The only 
-									members who can see your photo are perpetually members in your ProSocial circle and friends who have linked with your account"
-									placement="bottom"
-									fontSize="xs"
-								>
-									<Flex
-										alignItems="center"
-										gap="1"
-										fontSize="xs"
-										cursor="default"
-										onClick={onOpenDpInfo}
-									>
-										<AiFillInfoCircle /> Why do I need a profile picture?
-									</Flex>
-								</Tooltip>
-							</FormHelperText>
-							<ProfilePictureUploader
-								setProfileImage={setProfileImage}
-								profileImage={profileImage}
-							/>
-						</FormControl>
 						<Button
+							mt="5"
 							w="full"
 							type="submit"
 							isLoading={loading}
@@ -175,13 +143,6 @@ export default function RegistrationPage() {
 				description="We need your phone number for push notifications and account recovery purposes."
 				isOpen={isPhoneInfo}
 				onClose={onPhoneInfoClose}
-			/>
-			<AppModal
-				title=""
-				description="Your profile photo is not public. It will be seen by potential friends once an outing has been completed. The only 
-				members who can see your photo are perpetually members in your ProSocial circle and friends who have linked with your account"
-				isOpen={isDpInfo}
-				onClose={onCloseDpInfo}
 			/>
 		</>
 	);
