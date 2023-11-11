@@ -16,10 +16,11 @@ import { AiFillInfoCircle } from 'react-icons/ai';
 import FormInput from '@/components/General/FormInput';
 import UseRegistrationPage from '@/features/auth/hooks/useRegistrationPage';
 import AppModal from '@/components/AppModal';
+import Link from 'next/link';
+import { appRouteLinks } from '@/utils/constants';
 
 export default function RegistrationPage() {
-	const { formik, setPhone, phone, loading } =
-		UseRegistrationPage();
+	const { formik, setPhone, phone, loading } = UseRegistrationPage();
 
 	const {
 		isOpen: isPhoneInfo,
@@ -137,6 +138,20 @@ export default function RegistrationPage() {
 						</Button>
 					</Flex>
 				</form>
+				<Flex mt="5" fontSize="sm" justifyContent="center" alignItems="center">
+					Already have an account?&nbsp;
+					<Link href={appRouteLinks.login}>
+						<Text
+							fontSize="sm"
+							color="blue.400"
+							cursor="pointer"
+							_hover={{ textDecor: 'none' }}
+							textDecor="underline"
+						>
+							Click to Login
+						</Text>
+					</Link>
+				</Flex>
 			</Box>
 			<AppModal
 				title=""
