@@ -32,8 +32,8 @@ export default function SingleChoiceQuestion({
 			<FormLabel as="legend" fontWeight="medium" fontSize="lg">
 				{title}
 			</FormLabel>
-			<RadioGroup defaultValue={value}>
-				<VStack alignItems="start" spacing="12px">
+			<RadioGroup defaultValue={value} mt="3">
+				<VStack alignItems="start" spacing="15px">
 					{options?.map((option) => (
 						<Radio
 							key={`${option.value}-${option.id}`}
