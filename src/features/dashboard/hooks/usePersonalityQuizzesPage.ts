@@ -1,23 +1,36 @@
 import { useQuery } from '@apollo/client';
 import { ALL_QUESTIONS } from '../home/growth/queries';
 import { useAppQuestions, useUser } from '@/store';
+import { ME_QUESTION_RESPONSES } from '../profile/gql/queries';
 
 export default function usePersonalityQuizzesPage() {
 	const [questions, updateQuestions] = useUser((state) => [
 		state.questions,
 		state.updateQuestions,
 	]);
-	const [userPersonalityAnswers] = useAppQuestions((state) => [
+	const [userPersonalityAnswers, updateMeAnswers] = useAppQuestions((state) => [
 		state.userPersonalityAnswers,
+		state.updateMeAnswers
 	]);
 
 	const { loading, error } = useQuery(ALL_QUESTIONS, {
 		onCompleted: (data) => {
 			const questions = data.questionCategories?.[1].questions;
-			const questionsClone = [...questions!];
-			const randomizedQuestions = questionsClone?.sort(() => Math.random() - 0.5);
-			updateQuestions(randomizedQuestions);
+			updateQuestions(questions);
 		},
+	});
+
+	useQuery(ME_QUESTION_RESPONSES, {
+		onCompleted: (data) => {
+			const answers = data.me?.question_responses?.map((q) => {
+				return {
+					questionId: q.question?.id || "",
+					answerId: q.answer?.id || "",
+					value: q.answer?.value || "",
+				}
+			})
+			updateMeAnswers(answers || []);
+		}
 	});
 
 	const checkIfCompleted = (question: string) => {

@@ -2,7 +2,7 @@
 import { useToast } from '@chakra-ui/react';
 import { appRouteLinks } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { UserQuestionsType, useAppQuestions, useUser } from '@/store';
 import { useMutation } from '@apollo/client';
@@ -20,8 +20,8 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
 		UserQuestionsType[] | undefined
 	>(undefined);
 	const [questions] = useUser((state) => [state.questions]);
-	const [userPersonalityAnswers, updateUserPersonalityAnswers] = useAppQuestions(
-		(state) => [state.userPersonalityAnswers, state.updateUserPersonalityAnswers],
+	const [userPersonalityAnswers, updateUserPersonalityAnswers, meAnswers] = useAppQuestions(
+		(state) => [state.userPersonalityAnswers, state.updateUserPersonalityAnswers, state.meAnswers],
 	);
 
 	useEffect(() => {
@@ -37,16 +37,7 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [quizId, questions]);
-
-	const genDefaultValues = () => {
-		const result: { [index: string]: string } = {};
-		sectionQuestions?.forEach((element) => {
-			result[element.id] = '';
-		});
-		return result;
-	};
-
-	// eslint-disable-next-line no-unused-vars
+	
 	const [submitAnswers, { loading }] = useMutation(QUESTION_RESPONSE_MUTATION, {
 		onError: (error) => {
 			toast({
@@ -61,10 +52,21 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
 			});
 			router.push(appRouteLinks.growthPersonality);
 		},
+		refetchQueries: ["ALL_QUESTIONS"]
 	});
 
+	const genInitialValues = useCallback(() => {
+		const result: Record<string, string> = {};
+		sectionQuestions?.forEach((element) => {
+			const answer = meAnswers.find((el) => el.questionId === element.id)
+			result[element.id] = answer?.answerId || '';
+		});
+		return result;
+	}, [meAnswers, sectionQuestions]);
+
 	const formik = useFormik({
-		initialValues: genDefaultValues(),
+		initialValues: genInitialValues(),
+		enableReinitialize: true,
 		onSubmit: async (values) => {
       const location = decodeURI(quizId);
       const locationIndex = userPersonalityAnswers.findIndex((answer) => answer[location])

@@ -2,8 +2,12 @@
 import { Button, Flex, Text } from '@chakra-ui/react';
 import { appRouteLinks } from '@/utils/constants';
 import { FaChevronLeft } from 'react-icons/fa';
-import RatingScaleQuestion from '@/features/intro/components/RatingScaleQuestion';
+import dynamic from 'next/dynamic';
 import usePersonalityQuestionsPage from '@/features/dashboard/home/growth/hooks/usePersonalityQuestionsPage';
+
+const RatingScaleQuestion = dynamic(
+	() => import('@/features/intro/components/RatingScaleQuestion'),
+);
 
 export default function PersonalityQuestionsPage({
 	params,

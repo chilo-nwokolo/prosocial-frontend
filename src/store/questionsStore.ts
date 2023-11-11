@@ -16,6 +16,9 @@ interface QuestionsState {
 	userPersonalityAnswers: { [id: string] : number }[];
 	// eslint-disable-next-line no-unused-vars
 	updateUserPersonalityAnswers: (userPersonalityAnswers:  { [id: string] : number }[]) => void;
+	meAnswers: { questionId: string; answerId: string, value: string }[],
+	// eslint-disable-next-line no-unused-vars
+	updateMeAnswers: (meAnswers: { questionId: string; answerId: string; value: string; }[]) => void;
 }
 
 export const useAppQuestions = create<QuestionsState>()(
@@ -32,6 +35,9 @@ export const useAppQuestions = create<QuestionsState>()(
 				userPersonalityAnswers: [],
 				updateUserPersonalityAnswers: (userPersonalityAnswers) =>
 				set({ userPersonalityAnswers }),
+				meAnswers: [],
+				updateMeAnswers: (meAnswers) =>
+				set({ meAnswers }),
 			}),
 			{ name: 'prosocial_questions' },
 		),

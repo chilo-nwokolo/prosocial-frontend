@@ -22,8 +22,8 @@ export default function ProfilePicture() {
 			) : (
 				<Image
 					src={data?.me?.profile?.avatar ? data?.me?.profile?.avatar : ImageLinks.logo}
-					width="12"
-					height="12"
+					width="10"
+					height="10"
 					alt="profile picture"
           objectFit="cover"
           borderRadius="full"

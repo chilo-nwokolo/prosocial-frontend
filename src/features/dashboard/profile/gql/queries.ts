@@ -16,6 +16,37 @@ export const ME_QUERY = gql(`
   }
 `);
 
+export const ME_QUESTION_RESPONSES = gql(`
+  query ME_QUESTION_RESPONSES {
+    me {
+      id
+      question_responses {
+        id
+        question {
+          id
+        }
+        answer {
+          id
+          value
+        }
+      }
+    }
+  }
+`);
+
+export const ME_SCHEDULES = gql(`
+  query ME_SCHEDULES {
+    me {
+      schedules {
+        id
+        day_name
+        time_range
+        status
+      }
+    }
+  }
+`);
+
 export const UPDATE_USER_INFO = gql(`
   mutation UPDATE_USER_INFO($input: UpdateUserInput!) {
     updateUser(input: $input) {

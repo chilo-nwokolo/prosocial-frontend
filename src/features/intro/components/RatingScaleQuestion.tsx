@@ -62,7 +62,7 @@ export default function RatingScaleQuestion({ title, options, error, source, nam
 	});
 
 	const group = getRootProps({ onChange });
-
+	
 	return (
 		<FormControl as="fieldset">
 			<FormLabel

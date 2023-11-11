@@ -40,11 +40,8 @@ export default function OnboardingPage() {
 		skip: skipQuery,
 	});
 
-	console.log(skipQuery, "skipquery")
 	useLayoutEffect(() => {
 		if (config[configExtras.user_has_seen_personality_score]) {
-			console.log(config[configExtras.user_has_seen_personality_score]);
-			console.log({config});
 			router.push(appRouteLinks.home);
 			setSkipQuery(true);
 		} else {
