@@ -1,6 +1,7 @@
 export const ImageLinks = {
   logoWithText: '/logo-text.png',
   logo: '/logo.png',
+  dpPlaceholder: '/profile_placeholder.jpeg',
 }
 
 export const appRouteLinks = {

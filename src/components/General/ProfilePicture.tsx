@@ -10,7 +10,7 @@ export default function ProfilePicture() {
 
 	return (
 		<Box
-			border="2px solid"
+			border="1px solid"
 			borderColor="primary.100"
 			borderRadius="full"
 			p="1"
@@ -21,7 +21,7 @@ export default function ProfilePicture() {
 				<SkeletonCircle size="10" />
 			) : (
 				<Image
-					src={data?.me?.profile?.avatar ? data?.me?.profile?.avatar : ImageLinks.logo}
+					src={data?.me?.profile?.avatar ? data?.me?.profile?.avatar : ImageLinks.dpPlaceholder}
 					width="10"
 					height="10"
 					alt="profile picture"
