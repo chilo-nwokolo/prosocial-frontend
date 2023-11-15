@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useGlobalStore } from '@/store';
-import { useMutation } from '@apollo/client';
-import { UPDATE_USER_SCHEDULE } from '@/features/dashboard/profile/gql/queries';
+import { ScheduleDateType, useUserStore } from '@/store';
+import { useMutation, useQuery } from '@apollo/client';
+import { ME_SCHEDULES, UPDATE_USER_SCHEDULE } from '@/features/dashboard/profile/gql/queries';
 import { DayName, TimeRange } from '@/__generated__/graphql';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { useToast } from '@chakra-ui/react';
@@ -10,25 +10,29 @@ import { appRouteLinks } from '@/utils/constants';
 
 export type NewScheduleDateType = {
 	day_name: DayName;
-	time_range: TimeRange;
+	time_range: TimeRange[];
 	status: boolean;
 };
 
-const times = {
-	'Morning (7am - 12pm)': 'MORNING',
-	'Afternoon (12 - 5pm)': 'AFTERNOON',
-	'Evening (5 - 9pm)': 'EVENING',
-};
-
-
 export default function useSocialSchedule() {
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
-	const [selectedSchedules, updateSelectedSchedules] = useGlobalStore((state) => [
+	const [selectedSchedules, updateSelectedSchedules] = useUserStore((state) => [
 		state.selectedSchedules,
 		state.updateSelectedSchedules,
 	]);
 	const router = useRouter();
 	const toast = useToast();
+
+	const { loading: loadingSchedules, error } = useQuery(ME_SCHEDULES, {
+		onCompleted: (data) => {
+			const schedule = data.me?.schedules || [];
+			const updatedSchedules: ScheduleDateType[] = [];
+			schedule.forEach((sch) => {
+				updatedSchedules.push({ day: sch.day_name, timeRange: sch.time_range, status: sch.status })
+			})
+			updateSelectedSchedules(updatedSchedules);
+		}
+	});
 
 	const [submit, { loading }] = useMutation(UPDATE_USER_SCHEDULE, {
 		onCompleted: () => {
@@ -62,15 +66,23 @@ export default function useSocialSchedule() {
 	};
 
 	const submitSocialSchedule = () => {
+		if (!selectedDays.length) {
+			toast({
+				status: 'error',
+				title: 'You have not selected a valid time for your outings',
+			})
+			return;
+		}
+
 		const result: NewScheduleDateType[] = [];
 
 		selectedSchedules.forEach((schedule) => {
 			if (selectedDays.includes(schedule.day)) {
 				result.push({
 					day_name: schedule.day.toUpperCase() as DayName,
-					time_range: times[schedule.time_range as keyof typeof times] as TimeRange,
+					time_range: schedule.timeRange as TimeRange[],
 					status: schedule.status,
-				});
+				})
 			}
 		});
 
@@ -78,5 +90,5 @@ export default function useSocialSchedule() {
 			variables: { input: { schedules: result } },
 		});
 	};
-  return { loading, submitSocialSchedule, toggleAccordion } as const;
+  return { loading, submitSocialSchedule, toggleAccordion, loadingSchedules, error } as const;
 }

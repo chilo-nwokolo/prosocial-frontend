@@ -2,13 +2,13 @@
 import EditableFormInput from '@/components/General/EditableFormInput';
 import ProfilePictureUploader from '@/components/General/ProfilePictureUploader';
 import { UPDATE_USER_INFO } from '@/features/dashboard/profile/gql/queries';
-import { useUser } from '@/store';
+import { useUserStore } from '@/store';
 import { useMutation } from '@apollo/client';
 import { Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 
 export default function ProfilePageId() {
-	const [userProfile] = useUser((state) => [state.userProfile]);
+	const [userProfile] = useUserStore((state) => [state.userProfile]);
 	const toast = useToast();
 
 	// eslint-disable-next-line no-unused-vars

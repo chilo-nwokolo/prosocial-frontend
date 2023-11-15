@@ -13,6 +13,7 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
+import { RiMenu2Fill } from 'react-icons/ri';
 
 const links = [
 	{ id: 1, destination: appRouteLinks.home, name: 'Home' },
@@ -43,6 +44,7 @@ export default function NavBar() {
 				zIndex="modal"
 				alignItems="center"
 			>
+				<RiMenu2Fill style={{ fontSize: "24px" }} />
 				<Text fontWeight="semibold" fontSize="2xl">ProSocial</Text>
 				<Box onClick={onOpen}>
 					<ProfilePicture />

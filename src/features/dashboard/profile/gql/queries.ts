@@ -38,7 +38,6 @@ export const ME_SCHEDULES = gql(`
   query ME_SCHEDULES {
     me {
       schedules {
-        id
         day_name
         time_range
         status
@@ -46,6 +45,10 @@ export const ME_SCHEDULES = gql(`
     }
   }
 `);
+
+/**
+ * MUTATIONS
+ */
 
 export const UPDATE_USER_INFO = gql(`
   mutation UPDATE_USER_INFO($input: UpdateUserInput!) {

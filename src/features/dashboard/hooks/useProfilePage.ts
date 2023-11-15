@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useQuery, useMutation } from '@apollo/client';
-import { useUser } from '@/store';
+import { useUserStore } from '@/store';
 import { UPDATE_USER_INFO, ME_QUERY } from '@/features/dashboard/profile/gql/queries';
 import { useToast } from '@chakra-ui/react';
 
 export default function useProfilePage() {
-	const [setUserProfile, userProfile] = useUser((state) => [state.setUserProfile, state.userProfile]);
+	const [setUserProfile, userProfile] = useUserStore((state) => [state.setUserProfile, state.userProfile]);
 	const toast = useToast();
 
 	const { loading, error } = useQuery(ME_QUERY, {

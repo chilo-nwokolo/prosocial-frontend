@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { ALL_QUESTIONS } from '../home/growth/queries';
-import { useAppQuestions, useUser } from '@/store';
+import { useAppQuestions, useUserStore } from '@/store';
 import { ME_QUESTION_RESPONSES } from '../profile/gql/queries';
 
 export default function usePersonalityQuizzesPage() {
-	const [questions, updateQuestions] = useUser((state) => [
+	const [questions, updateQuestions] = useUserStore((state) => [
 		state.questions,
 		state.updateQuestions,
 	]);

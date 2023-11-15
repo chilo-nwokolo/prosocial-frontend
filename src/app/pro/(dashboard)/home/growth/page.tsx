@@ -14,7 +14,11 @@ export default function GrowthPage() {
 			<Text fontSize="2xl" textAlign="center" fontWeight="semibold">
 				Growth
 			</Text>
-			<SimpleGrid columns={2} gap="4">
+			<SimpleGrid 
+				columns={2} 
+				// columns={{ base: 1, xs: 2 }} 
+				gap="4"
+			>
 				{growthSections.map((section) => (
 					<Link href={section.destination} key={section.id}>
 						<Flex

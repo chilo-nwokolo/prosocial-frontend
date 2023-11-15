@@ -1,20 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type ScheduleDateType = { day: string; time_range: string; status: boolean }
-
-interface GlobalState {
-	selectedSchedules: ScheduleDateType[];
-	// eslint-disable-next-line no-unused-vars
-	updateSelectedSchedules: (selectedSchedules: ScheduleDateType[]) => void;
-}
+interface GlobalState {}
 
 export const useGlobalStore = create<GlobalState>()(
-	persist(
-		(set) => ({
-			selectedSchedules: [],
-      updateSelectedSchedules: (selectedSchedules) => set({ selectedSchedules }),
-		}),
-		{ name: 'prosocial_global' },
-	),
+	persist((set) => ({}), { name: 'prosocial_global' }),
 );

@@ -4,7 +4,7 @@ import { appRouteLinks } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { UserQuestionsType, useAppQuestions, useUser } from '@/store';
+import { UserQuestionsType, useAppQuestions, useUserStore } from '@/store';
 import { useMutation } from '@apollo/client';
 import { QUESTION_RESPONSE_MUTATION } from '@/features/intro/gql';
 import { apolloErrorHandler, combineIntoFormattedArray } from '@/utils/helpers';
@@ -19,7 +19,7 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
 	const [sectionQuestions, setSectionQuestions] = useState<
 		UserQuestionsType[] | undefined
 	>(undefined);
-	const [questions] = useUser((state) => [state.questions]);
+	const [questions] = useUserStore((state) => [state.questions]);
 	const [userPersonalityAnswers, updateUserPersonalityAnswers, meAnswers] = useAppQuestions(
 		(state) => [state.userPersonalityAnswers, state.updateUserPersonalityAnswers, state.meAnswers],
 	);

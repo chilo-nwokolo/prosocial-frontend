@@ -1,31 +1,39 @@
-import { Accordion, Box, Flex, HStack, useRadio, useRadioGroup } from '@chakra-ui/react';
+import {
+	Accordion,
+	Box,
+	Flex,
+	HStack,
+	useCheckbox,
+	useCheckboxGroup,
+} from '@chakra-ui/react';
 import SocialScheduleAccordion from './SocialScheduleAccordion';
-import { useGlobalStore } from '@/store';
+import { useEffect, useState } from 'react';
+import { ScheduleDateType, useUserStore } from '@/store';
 
 const options = [
-	{ id: 1, title: 'Morning \n(7am - 12pm)' },
-	{ id: 2, title: 'Afternoon \n(12 - 5pm)' },
-	{ id: 3, title: 'Evening \n(5 - 9pm)' },
+	{ id: 1, title: 'Morning \n(7am - 12pm)', value: 'MORNING' },
+	{ id: 2, title: 'Afternoon \n(12 - 5pm)', value: 'AFTERNOON' },
+	{ id: 3, title: 'Evening \n(5 - 9pm)', value: 'EVENING' },
 ];
 
 const weekdays = [
-	{ id: 1, day: 'Monday', options },
-	{ id: 2, day: 'Tuesday', options },
-	{ id: 3, day: 'Wednesday', options },
-	{ id: 4, day: 'Thursday', options },
-	{ id: 5, day: 'Friday', options },
+	{ id: 1, day: 'Monday', value: 'MONDAY', options },
+	{ id: 2, day: 'Tuesday', value: 'TUESDAY', options },
+	{ id: 3, day: 'Wednesday', value: 'WEDNESDAY', options },
+	{ id: 4, day: 'Thursday', value: 'THURSDAY', options },
+	{ id: 5, day: 'Friday', value: 'FRIDAY', options },
 ];
 
 const weekend = [
-	{ id: 1, day: 'Saturday', options },
-	{ id: 2, day: 'Sunday', options },
+	{ id: 1, day: 'Saturday', value: 'SATURDAY', options },
+	{ id: 2, day: 'Sunday', value: 'SUNDAY', options },
 ];
 
-function RadioCard(props: any) {
-	const { getInputProps, getRadioProps } = useRadio(props);
+function CheckboxCard(props: any) {
+	const { getInputProps, getCheckboxProps } = useCheckbox(props);
 
 	const input = getInputProps();
-	const checkbox = getRadioProps();
+	const checkbox = getCheckboxProps();
 
 	return (
 		<Box as="label" w="full">
@@ -55,37 +63,35 @@ function RadioCard(props: any) {
 function ScheduleDays({
 	day,
 	options,
+	onChecked,
+	selectedSchedules,
 }: {
 	day: string;
 	options: (typeof weekdays)[0]['options'];
+	// eslint-disable-next-line no-unused-vars
+	onChecked: (day: string, timeRange: string[]) => void;
+	selectedSchedules: ScheduleDateType[];
 }) {
-	const [selectedSchedules, updateSelectedSchedules] = useGlobalStore((state) => [state.selectedSchedules, state.updateSelectedSchedules]);
-
-	const { getRootProps, getRadioProps } = useRadioGroup({
-		name: day,
-		onChange: (range) => {
-			const result = { day, time_range: range.replace('\n', ''), status: true };
-			const found = selectedSchedules.findIndex((value) => value.day === day);
-
-			if (found < 0) {
-				updateSelectedSchedules([...selectedSchedules, result]);
-			} 
-			if (found >= 0) {
-				const newList = [...selectedSchedules];
-				newList.splice(found, 1);
-				updateSelectedSchedules([...newList, result]);
-			}
+	const [state, setState] = useState<string[]>([]);
+	const { value, getCheckboxProps } = useCheckboxGroup({
+		defaultValue: state,
+		onChange: () => {
+			onChecked(day, value as string[]);
 		},
 	});
-	const group = getRootProps();
+
+	useEffect(() => {
+		setState(selectedSchedules.find((sch) => sch.day === day)?.timeRange || []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [day, value]);
+
 	return (
-		<HStack {...group} gap="0">
+		<HStack gap="0">
 			{options.map((value) => {
-				const radio = getRadioProps({ value: `${value.title}` });
 				return (
-					<RadioCard key={value.id} {...radio}>
+					<CheckboxCard key={value.id} {...getCheckboxProps({ value: value.value })}>
 						{value.title}
-					</RadioCard>
+					</CheckboxCard>
 				);
 			})}
 		</HStack>
@@ -101,6 +107,22 @@ export default function ScheduleDaysBox({
 	toggleAccordion: (info: string) => void;
 }) {
 	const category = source === 'weekday' ? weekdays : weekend;
+	const [selectedSchedules, updateSelectedSchedules] = useUserStore((state) => [
+		state.selectedSchedules,
+		state.updateSelectedSchedules,
+	]);
+
+	const onChecked = (day: string, timeRange: string[]) => {
+		const scheduleIndex = selectedSchedules.findIndex((schedule) => schedule.day === day);
+		if (scheduleIndex >= 0) {
+			const newSchedule = { day, timeRange: timeRange, status: true };
+			const scheduleDup = [...selectedSchedules];
+			scheduleDup.splice(scheduleIndex, 1, newSchedule);
+			updateSelectedSchedules(scheduleDup);
+			return;
+		}
+		updateSelectedSchedules([...selectedSchedules, { day, timeRange, status: true }]);
+	};
 
 	return (
 		<Accordion allowMultiple>
@@ -108,9 +130,14 @@ export default function ScheduleDaysBox({
 				<SocialScheduleAccordion
 					title={days.day}
 					key={days.id}
-					onChange={toggleAccordion}
+					onChange={() => toggleAccordion(days.value)}
 				>
-					<ScheduleDays options={days.options} day={days.day} />
+					<ScheduleDays
+						selectedSchedules={selectedSchedules}
+						options={days.options}
+						day={days.value}
+						onChecked={onChecked}
+					/>
 				</SocialScheduleAccordion>
 			))}
 		</Accordion>

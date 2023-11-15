@@ -1,6 +1,8 @@
-import { Login_UserMutation, MeQuery } from '@/__generated__/graphql';
+import { Login_UserMutation, MeQuery, TimeRange } from '@/__generated__/graphql';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+export type ScheduleDateType = { day: string; timeRange: TimeRange[] | string[] | null | undefined; status: boolean }
 
 export type UserQuestionsType = {
 	__typename?: 'Question' | undefined;
@@ -27,9 +29,12 @@ interface UserState {
 	questions: UserQuestionsType[] | null | undefined;
 	// eslint-disable-next-line no-unused-vars
 	updateQuestions: (questions: UserQuestionsType[] | null | undefined) => void;
+	selectedSchedules: ScheduleDateType[];
+	// eslint-disable-next-line no-unused-vars
+	updateSelectedSchedules: (selectedSchedules: ScheduleDateType[]) => void;
 }
 
-export const useUser = create<UserState>()(
+export const useUserStore = create<UserState>()(
 	persist(
 		(set) => ({
 			user: null,
@@ -40,6 +45,9 @@ export const useUser = create<UserState>()(
 
 			questions: [],
 			updateQuestions: (questions) => set({ questions }),
+
+			selectedSchedules: [],
+      updateSelectedSchedules: (selectedSchedules) => set({ selectedSchedules }),
 		}),
 		{ name: 'prosocial_user' },
 	),
