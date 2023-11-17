@@ -13,17 +13,12 @@ import {
 	Switch,
 	Text,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
 import { GrClose } from 'react-icons/gr';
 
 export default function InterestedExtendedPage() {
 	const result = client.readQuery({
 		query: INTERESTS_BY_NONE_TRAITS,
 	});
-	const router = useRouter();
-	if (!result) {
-		router.push(appRouteLinks.interestsExpaned);
-	}
 	return (
 		<Flex flexDir="column">
 			<Flex justifyContent="flex-end">
