@@ -1,9 +1,9 @@
 'use client';
 import BackButton from '@/components/General/BackButton';
-import { SUBMIT_USER_INTERESTS } from '@/features/dashboard/home/growth/queries';
+import { INTERESTS_BY_NONE_TRAITS, SUBMIT_USER_INTERESTS } from '@/features/dashboard/home/growth/queries';
 import { useAppQuestions } from '@/store';
 import { appRouteLinks } from '@/utils/constants';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -14,6 +14,8 @@ export default function InterestedExtendedPage() {
 	const [interestsAnswer] = useAppQuestions((state) => [state.interestsAnswer]);
 	const toast = useToast();
 	const [proceed, setProceed] = useState(false);
+
+	useQuery(INTERESTS_BY_NONE_TRAITS);
 
 	const ref = useRef(true);
 

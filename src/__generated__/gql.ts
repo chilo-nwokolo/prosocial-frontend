@@ -20,7 +20,7 @@ const documents = {
     "\n  mutation ResetPassword($token: String!, $new_password: String!) {\n    requestResetPassword(token:$token, new_password:$new_password) {\n      status\n      message\n    }\n  }\n": types.ResetPasswordDocument,
     "\n  query Questions {\n    questionCategories {\n      id\n      questions {\n        id\n        text\n        sub_category\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n": types.QuestionsDocument,
     "\n  query INTERESTS_BY_TRAITS {\n    interestsByTrait {\n      id\n      title\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n": types.Interests_By_TraitsDocument,
-    "\n  query INTERESTS_BY_NONE_TRAITS {\n    interestsByNoneTrait {\n      id\n      title\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n": types.Interests_By_None_TraitsDocument,
+    "\n  query INTERESTS_BY_NONE_TRAITS {\n    interestsByNoneTrait {\n      id\n      title\n      image_url\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n": types.Interests_By_None_TraitsDocument,
     "\n  mutation SUBMIT_USER_INTERESTS ($input: UserInterestInputs!) {\n    submitUserInterest(input: $input) {\n      status\n      message\n    }\n  }\n": types.Submit_User_InterestsDocument,
     "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query ME_QUESTION_RESPONSES {\n    me {\n      id\n      question_responses {\n        id\n        question {\n          id\n        }\n        answer {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.Me_Question_ResponsesDocument,
@@ -81,7 +81,7 @@ export function gql(source: "\n  query INTERESTS_BY_TRAITS {\n    interestsByTra
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query INTERESTS_BY_NONE_TRAITS {\n    interestsByNoneTrait {\n      id\n      title\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n"): (typeof documents)["\n  query INTERESTS_BY_NONE_TRAITS {\n    interestsByNoneTrait {\n      id\n      title\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query INTERESTS_BY_NONE_TRAITS {\n    interestsByNoneTrait {\n      id\n      title\n      image_url\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n"): (typeof documents)["\n  query INTERESTS_BY_NONE_TRAITS {\n    interestsByNoneTrait {\n      id\n      title\n      image_url\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

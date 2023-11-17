@@ -1,3 +1,4 @@
+'use client';
 import YoutubeEmbed from '@/components/General/YoutubeEmbed';
 import { appRouteLinks, youtubeLinks } from '@/utils/constants';
 import {
@@ -12,8 +13,11 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function WelcomePage() {
+	const [inView, setInView] = useState(true)
+
 	return (
 		<Box mt="20">
 			<Text as="h1" fontSize="2xl" fontWeight="medium">
@@ -25,7 +29,7 @@ export default function WelcomePage() {
 				</Text>
 				<Text>Here&apos;s what to expect as you start your journey:</Text>
 			</Flex>
-			<YoutubeEmbed embedId={youtubeLinks.welcomePageDesktop} />
+			<YoutubeEmbed embedId={inView ? youtubeLinks.welcomePageDesktop : youtubeLinks.welcomePageMobile} />
 			<Accordion allowToggle mt="5">
 				<AccordionItem>
 					<h2>
@@ -49,10 +53,11 @@ export default function WelcomePage() {
 					</AccordionPanel>
 				</AccordionItem>
 			</Accordion>
-      <Flex justifyContent="center" mt="8">
+      <Flex justifyContent="center" flexDir="column" gap="4" my="8">
         <Link href={appRouteLinks.serviceTerms}>
-          <Button>Next</Button>
+          <Button w="full">Next</Button>
         </Link>
+				<Button onClick={() => setInView(!inView)}>Switch to { inView ? 'Mobile' : 'Widescreen' }</Button>
       </Flex>
 		</Box>
 	);

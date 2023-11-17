@@ -37,6 +37,7 @@ export const INTERESTS_BY_NONE_TRAITS = gql(`
     interestsByNoneTrait {
       id
       title
+      image_url
       interests {
         id
         title
