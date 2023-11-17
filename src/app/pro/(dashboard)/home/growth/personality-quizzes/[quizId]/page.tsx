@@ -46,7 +46,7 @@ export default function PersonalityQuestionsPage({
 				{sectionQuestions?.map((sect) => (
 					<RatingScaleQuestion
 						key={`quest-${sect.id}`}
-						title={sect.text}
+						title={sect.text.toLowerCase()}
 						options={sect.options}
 						source={decodeURI(params.quizId)}
 						name={sect.id}

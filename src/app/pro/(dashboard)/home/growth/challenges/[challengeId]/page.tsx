@@ -1,18 +1,27 @@
 import { Box, Button, Flex, Text, Textarea } from '@chakra-ui/react';
-import { GrClose } from 'react-icons/gr';
 import BackButton from '@/components/General/BackButton';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const titles = [
-  '',
+	'',
 	'Write down an interesting or Funny Story',
 	'Write down your commitments commitments',
 	'What are you curious about',
 ];
 
-export default function ViewJournalPage({ params: { challengeId } }: { params: { challengeId: number } }) {
+export default function ViewJournalPage({
+	params: { challengeId },
+}: {
+	params: { challengeId: number };
+}) {
 	return (
 		<Flex flexDir="column">
-      <Flex justifyContent="flex-end"><BackButton icon={<GrClose />} /></Flex>
+			<Flex justifyContent="space-between" alignItems="center">
+				<BackButton />
+				<Button variant="outline" leftIcon={<RiDeleteBin6Line />} textTransform="capitalize">
+					Clear Entry
+				</Button>
+			</Flex>
 			<Text fontSize="lg" fontWeight="medium">
 				Challenge {challengeId}
 			</Text>

@@ -4,7 +4,6 @@ export const Button = defineStyleConfig({
   // The styles all button have in common
   baseStyle: {
     fontWeight: 'bold',
-    textTransform: 'uppercase',
     borderRadius: 'base', // <-- border radius is same for all variants and sizes
   },
   // Two sizes: sm and md
@@ -28,6 +27,7 @@ export const Button = defineStyleConfig({
       boxShadow: '2px 2px 1px 0px #000',
       fontSize: '16px',
       fontWeight: 'bold',
+      textTransform: 'uppercase',
       _hover: {
         bg: '#f95c47',
         color: 'white',
@@ -38,9 +38,15 @@ export const Button = defineStyleConfig({
       }
     },
     outline: {
-      background: '#f95c47',
-      borderColor: 'purple.500',
-      color: 'purple.500',
+      background: 'transparent',
+      borderColor: '#f95c47',
+      color: 'black',
+      fontWeight: 'normal',
+      borderRadius: 'lg',
+      _hover: {
+        bg: '#f95c47',
+        color: 'white'
+      }
     },
   },
   // The default size and variant values

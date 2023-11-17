@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text, Textarea } from '@chakra-ui/react';
-import { GrClose } from 'react-icons/gr';
 import BackButton from '@/components/General/BackButton';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const titles = [
   '',
@@ -13,8 +13,13 @@ const titles = [
 export default function ViewJournalPage({ params: { journalId } }: { params: { journalId: number } }) {
 	return (
 		<Flex flexDir="column">
-      <Flex justifyContent="flex-end"><BackButton icon={<GrClose />} /></Flex>
-			<Text fontSize="lg" fontWeight="medium">
+      <Flex justifyContent="space-between" alignItems="center">
+				<BackButton />
+				<Button variant="outline" leftIcon={<RiDeleteBin6Line />} textTransform="capitalize">
+					Clear Entry
+				</Button>
+			</Flex>
+			<Text fontSize="lg" mt="4" fontWeight="medium">
 				Journal {journalId}
 			</Text>
 			<Text mt="2">{titles[journalId]}</Text>

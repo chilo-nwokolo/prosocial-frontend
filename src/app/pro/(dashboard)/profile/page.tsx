@@ -5,8 +5,11 @@ import QueryContainer from '@/components/General/QueryContainer';
 import EditableFormInput from '@/components/General/EditableFormInput';
 import ProfilePictureUploader from '@/components/General/ProfilePictureUploader';
 import useProfilePage from '@/features/dashboard/hooks/useProfilePage';
+import { useRouter } from 'next/navigation';
+import { appRouteLinks } from '@/utils/constants';
 
 export default function ProfilePage() {
+	const router = useRouter();
 	const { formik, loading, error, updating, profileImage } =
 		useProfilePage();
 
@@ -49,6 +52,9 @@ export default function ProfilePage() {
 						/>
 						<Button type="submit" loadingText="Saving" isLoading={updating}>
 							Save
+						</Button>
+						<Button onClick={() => router.push(appRouteLinks.home)}>
+							Go Home
 						</Button>
 					</Flex>
 				</form>

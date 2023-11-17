@@ -27,12 +27,12 @@ export default function JournalPage() {
 							border="1px solid"
 							borderRadius="lg"
 							px="5"
-							py="10"
+							py="8"
 							borderColor="black"
 							justifyContent="space-between"
 							alignItems="center"
 						>
-							<Text fontSize="2xl" w="56" fontWeight="medium">
+							<Text fontSize="xl" w="56" fontWeight="medium">
 								{i + 1}: {journal}
 							</Text>
 							<Text>
