@@ -1,6 +1,5 @@
-'use client';
-import { useConfig } from '@/store';
-import { appRouteLinks, configExtras } from '@/utils/constants';
+import YoutubeEmbed from '@/components/General/YoutubeEmbed';
+import { appRouteLinks, youtubeLinks } from '@/utils/constants';
 import {
 	Accordion,
 	AccordionButton,
@@ -13,20 +12,8 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useLayoutEffect } from 'react';
-import { FaPlay } from 'react-icons/fa';
 
 export default function WelcomePage() {
-	const [config] = useConfig((state) => [state.config]);
-	const router = useRouter();
-
-	useLayoutEffect(() => {
-		if (config[configExtras.user_visited_intro_page]) {
-			router.push(appRouteLinks.login);
-		}
-	}, [config, router]);
-
 	return (
 		<Box mt="20">
 			<Text as="h1" fontSize="2xl" fontWeight="medium">
@@ -38,9 +25,7 @@ export default function WelcomePage() {
 				</Text>
 				<Text>Here&apos;s what to expect as you start your journey:</Text>
 			</Flex>
-			<Flex justifyContent="center" alignItems="center" bg="black" h="56" w="full" color="white" borderRadius="md">
-        <FaPlay style={{ fontSize: "50px" }} />
-      </Flex>
+			<YoutubeEmbed embedId={youtubeLinks.welcomePageDesktop} />
 			<Accordion allowToggle mt="5">
 				<AccordionItem>
 					<h2>

@@ -1,3 +1,4 @@
+import { SubmitUserInterestInput } from '@/__generated__/graphql';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
@@ -19,6 +20,9 @@ interface QuestionsState {
 	meAnswers: { questionId: string; answerId: string, value: string }[],
 	// eslint-disable-next-line no-unused-vars
 	updateMeAnswers: (meAnswers: { questionId: string; answerId: string; value: string; }[]) => void;
+	interestsAnswer: SubmitUserInterestInput[];
+	// eslint-disable-next-line no-unused-vars
+	updateInterestsAnswer: (interestsAnswer: SubmitUserInterestInput[]) => void;
 }
 
 export const useAppQuestions = create<QuestionsState>()(
@@ -38,6 +42,9 @@ export const useAppQuestions = create<QuestionsState>()(
 				meAnswers: [],
 				updateMeAnswers: (meAnswers) =>
 				set({ meAnswers }),
+				interestsAnswer: [],
+				updateInterestsAnswer: (interestsAnswer) =>
+				set({ interestsAnswer }),
 			}),
 			{ name: 'prosocial_questions' },
 		),

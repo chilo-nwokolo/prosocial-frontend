@@ -1,23 +1,33 @@
+'use client';
 import BackButton from '@/components/General/BackButton';
+import QueryContainer from '@/components/General/QueryContainer';
+import { INTERESTS_BY_NONE_TRAITS, INTERESTS_BY_TRAITS } from '@/features/dashboard/home/growth/queries';
+import { appRouteLinks } from '@/utils/constants';
+import { useQuery } from '@apollo/client';
 import { Button, Center, Flex, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 
 export default function InterestsPage() {
+	const router = useRouter();
+	const { loading, error } = useQuery(INTERESTS_BY_TRAITS);
+	useQuery(INTERESTS_BY_NONE_TRAITS);
+	
 	return (
-		<Center h="80vh">
-			<Flex flexDir="column" w="full" h="full" gap="5">
-        <BackButton />
-				<Flex flexDir="column" h="full" justifyContent="center" gap="4">
-					<Text fontSize="2xl" fontWeight="semibold">
-						Talents and gifts inventory
-					</Text>
-					<Text mt="2">
-						You will be shown pairs of photographs. All you have to do is choose which one
-						you like more. This will help us match your interests with others who enjoy
-						similar types of activities.
-					</Text>
+		<QueryContainer loading={loading} error={error}>
+			<Center h="80vh">
+				<Flex flexDir="column" w="full" h="full" gap="5">
+					<BackButton />
+					<Flex flexDir="column" h="full" justifyContent="center" gap="4">
+						<Text fontSize="2xl" fontWeight="semibold">
+							Interests Inventory
+						</Text>
+						<Text mt="2">
+							In this exercise, we&apos;ll show you pairs of photos. Choose whcih one you like more. This will help us match your interests with others who enjoy similar types of activities.
+						</Text>
+					</Flex>
+					<Button mt="auto" onClick={() => { router.push(`${appRouteLinks.interestsPair}?question=1`) }}>Begin</Button>
 				</Flex>
-				<Button mt="auto">Begin</Button>
-			</Flex>
-		</Center>
+			</Center>
+		</QueryContainer>
 	);
 }

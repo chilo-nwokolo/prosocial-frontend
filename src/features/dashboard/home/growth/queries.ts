@@ -17,3 +17,46 @@ export const ALL_QUESTIONS = gql(`
     }
   }
 `);
+
+export const INTERESTS_BY_TRAITS = gql(`
+  query INTERESTS_BY_TRAITS {
+    interestsByTrait {
+      id
+      title
+      interests {
+        id
+        title
+        image_url
+      }
+    }
+  }
+`)
+
+export const INTERESTS_BY_NONE_TRAITS = gql(`
+  query INTERESTS_BY_NONE_TRAITS {
+    interestsByNoneTrait {
+      id
+      title
+      interests {
+        id
+        title
+        image_url
+      }
+    }
+  }
+`)
+
+
+/**
+ * 
+ * MUTATIONS
+ */
+
+export const SUBMIT_USER_INTERESTS = gql(`
+  mutation SUBMIT_USER_INTERESTS ($input: UserInterestInputs!) {
+    submitUserInterest(input: $input) {
+      status
+      message
+    }
+  }
+`)

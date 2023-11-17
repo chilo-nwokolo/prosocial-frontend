@@ -9,7 +9,7 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import ScheduleDaysBox from '@/features/intro/components/ScheduleDaysBox';
-import SocialScheduleAccordion from '@/features/intro/components/SocialScheduleAccordion';
+import SocialScheduleAccordion from '@/components/General/SwitchAccordion';
 import useSocialSchedule from '@/features/dashboard/hooks/useSocialSchedule';
 import BackButton from '@/components/General/BackButton';
 import { AiFillInfoCircle } from 'react-icons/ai';

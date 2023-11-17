@@ -64,6 +64,20 @@ export enum GenderEnum {
   Transgender = 'TRANSGENDER'
 }
 
+export type Interest = {
+  __typename?: 'Interest';
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  interestCategory?: Maybe<Interest>;
+  interests?: Maybe<Array<Interest>>;
+  is_organized_by_trait?: Maybe<Scalars['Boolean']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  users?: Maybe<Array<User>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   login: AuthResponse;
@@ -73,6 +87,7 @@ export type Mutation = {
   requestResetPassword: BasicResponse;
   requestResetPasswordLink: BasicResponse;
   submitPersonalityBucketQuestion: BasicResponse;
+  submitUserInterest?: Maybe<BasicResponse>;
   updateUser: User;
   updateUserSchedules?: Maybe<Array<Schedule>>;
   verifyUser: BasicResponse;
@@ -108,6 +123,11 @@ export type MutationRequestResetPasswordLinkArgs = {
 
 export type MutationSubmitPersonalityBucketQuestionArgs = {
   input?: InputMaybe<Array<UserBucketQuestionResponseInput>>;
+};
+
+
+export type MutationSubmitUserInterestArgs = {
+  input: UserInterestInputs;
 };
 
 
@@ -220,6 +240,9 @@ export type ProfileInput = {
 export type Query = {
   __typename?: 'Query';
   answerResponses?: Maybe<Array<QuestionResponse>>;
+  interests?: Maybe<Array<Interest>>;
+  interestsByNoneTrait?: Maybe<Array<Interest>>;
+  interestsByTrait?: Maybe<Array<Interest>>;
   me?: Maybe<User>;
   onBoardCategoriesWithQuestions?: Maybe<Array<QuestionCategory>>;
   questionCategories?: Maybe<Array<QuestionCategory>>;
@@ -348,6 +371,11 @@ export enum SortOrder {
   Desc = 'DESC'
 }
 
+export type SubmitUserInterestInput = {
+  interest_id: Scalars['ID']['input'];
+  response: Scalars['String']['input'];
+};
+
 export enum TimeRange {
   Afternoon = 'AFTERNOON',
   Evening = 'EVENING',
@@ -380,6 +408,7 @@ export type User = {
   email_verified_at?: Maybe<Scalars['DateTime']['output']>;
   /** Unique primary key. */
   id: Scalars['ID']['output'];
+  interests?: Maybe<Array<Interest>>;
   name: Scalars['String']['output'];
   personalityScore?: Maybe<PersonalityScore>;
   phone?: Maybe<Scalars['String']['output']>;
@@ -401,6 +430,10 @@ export type UserBucketQuestionResponse = {
 export type UserBucketQuestionResponseInput = {
   bucket_id: Scalars['ID']['input'];
   response: Scalars['String']['input'];
+};
+
+export type UserInterestInputs = {
+  inputs: Array<SubmitUserInterestInput>;
 };
 
 /** A paginated list of User items. */
@@ -473,6 +506,23 @@ export type QuestionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type QuestionsQuery = { __typename?: 'Query', questionCategories?: Array<{ __typename?: 'QuestionCategory', id: string, questions?: Array<{ __typename?: 'Question', id: string, text: string, sub_category?: string | null, options?: Array<{ __typename?: 'QuestionOption', id: string, title?: string | null, value?: string | null }> | null }> | null }> | null };
+
+export type Interests_By_TraitsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Interests_By_TraitsQuery = { __typename?: 'Query', interestsByTrait?: Array<{ __typename?: 'Interest', id?: string | null, title?: string | null, interests?: Array<{ __typename?: 'Interest', id?: string | null, title?: string | null, image_url?: string | null }> | null }> | null };
+
+export type Interests_By_None_TraitsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Interests_By_None_TraitsQuery = { __typename?: 'Query', interestsByNoneTrait?: Array<{ __typename?: 'Interest', id?: string | null, title?: string | null, interests?: Array<{ __typename?: 'Interest', id?: string | null, title?: string | null, image_url?: string | null }> | null }> | null };
+
+export type Submit_User_InterestsMutationVariables = Exact<{
+  input: UserInterestInputs;
+}>;
+
+
+export type Submit_User_InterestsMutation = { __typename?: 'Mutation', submitUserInterest?: { __typename?: 'BasicResponse', status: string, message?: string | null } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -553,6 +603,9 @@ export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"Ope
 export const ResetPasswordLinkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ResetPasswordLink"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"requestResetPasswordLink"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<ResetPasswordLinkMutation, ResetPasswordLinkMutationVariables>;
 export const ResetPasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ResetPassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"new_password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"requestResetPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"Argument","name":{"kind":"Name","value":"new_password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"new_password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<ResetPasswordMutation, ResetPasswordMutationVariables>;
 export const QuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Questions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questionCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"questions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"sub_category"}},{"kind":"Field","name":{"kind":"Name","value":"options"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<QuestionsQuery, QuestionsQueryVariables>;
+export const Interests_By_TraitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"INTERESTS_BY_TRAITS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"interestsByTrait"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"interests"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image_url"}}]}}]}}]}}]} as unknown as DocumentNode<Interests_By_TraitsQuery, Interests_By_TraitsQueryVariables>;
+export const Interests_By_None_TraitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"INTERESTS_BY_NONE_TRAITS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"interestsByNoneTrait"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"interests"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"image_url"}}]}}]}}]}}]} as unknown as DocumentNode<Interests_By_None_TraitsQuery, Interests_By_None_TraitsQueryVariables>;
+export const Submit_User_InterestsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SUBMIT_USER_INTERESTS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserInterestInputs"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"submitUserInterest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<Submit_User_InterestsMutation, Submit_User_InterestsMutationVariables>;
 export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ME"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"unique_id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
 export const Me_Question_ResponsesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ME_QUESTION_RESPONSES"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"question_responses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"answer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Me_Question_ResponsesQuery, Me_Question_ResponsesQueryVariables>;
 export const Me_SchedulesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ME_SCHEDULES"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"schedules"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"day_name"}},{"kind":"Field","name":{"kind":"Name","value":"time_range"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]}}]} as unknown as DocumentNode<Me_SchedulesQuery, Me_SchedulesQueryVariables>;

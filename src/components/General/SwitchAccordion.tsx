@@ -9,14 +9,14 @@ import {
 import { ReactNode } from 'react';
 import { LiaToggleOnSolid, LiaToggleOffSolid } from 'react-icons/lia';
 
-type SocialScheduleAccordionProps = {
+type SwitchAccordionProps = {
   title: string;
   children: ReactNode;
 	// eslint-disable-next-line no-unused-vars
 	onChange?: (info: string) => void;
 }
 
-function SocialScheduleAccordion({ title, children, onChange }: SocialScheduleAccordionProps) {
+function SwitchAccordion({ title, children, onChange }: SwitchAccordionProps) {
 	return (
 		<Accordion allowMultiple onChange={() => onChange && onChange(title)}>
 			<AccordionItem>
@@ -48,4 +48,4 @@ function SocialScheduleAccordion({ title, children, onChange }: SocialScheduleAc
 	);
 }
 
-export default SocialScheduleAccordion;
+export default SwitchAccordion;

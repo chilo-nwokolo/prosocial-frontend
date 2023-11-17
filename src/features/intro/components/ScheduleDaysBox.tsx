@@ -6,7 +6,7 @@ import {
 	useCheckbox,
 	useCheckboxGroup,
 } from '@chakra-ui/react';
-import SocialScheduleAccordion from './SocialScheduleAccordion';
+import SocialScheduleAccordion from '@/components/General/SwitchAccordion';
 import { useEffect, useState } from 'react';
 import { ScheduleDateType, useUserStore } from '@/store';
 

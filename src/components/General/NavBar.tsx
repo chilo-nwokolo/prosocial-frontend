@@ -12,15 +12,20 @@ import {
 	Text,
 	useDisclosure,
 } from '@chakra-ui/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { AiOutlineHome } from 'react-icons/ai';
+import { BiExit, BiUserCircle } from 'react-icons/bi';
+import { CgNotes } from 'react-icons/cg';
+import { MdOutlineContactEmergency } from 'react-icons/md';
 import { RiMenu2Fill } from 'react-icons/ri';
 
 const links = [
-	{ id: 1, destination: appRouteLinks.home, name: 'Home' },
-	{ id: 2, destination: appRouteLinks.profile, name: 'Profile' },
-	{ id: 3, destination: appRouteLinks.about, name: 'About' },
-	{ id: 4, destination: appRouteLinks.contact, name: 'Contact' },
-	{ id: 5, destination: appRouteLinks.logout, name: 'Log Out' },
+	{ id: 1, destination: appRouteLinks.home, name: 'Home', icon: <AiOutlineHome /> },
+	{ id: 2, destination: appRouteLinks.profile, name: 'Profile', icon: <BiUserCircle /> },
+	{ id: 3, destination: appRouteLinks.about, name: 'About', icon: <CgNotes /> },
+	{ id: 4, destination: appRouteLinks.contact, name: 'Contact', icon: <MdOutlineContactEmergency /> },
+	{ id: 5, destination: appRouteLinks.logout, name: 'Log Out', icon: <BiExit /> },
 ];
 
 export default function NavBar() {
@@ -44,10 +49,14 @@ export default function NavBar() {
 				zIndex="modal"
 				alignItems="center"
 			>
-				<RiMenu2Fill style={{ fontSize: "24px" }} />
-				<Text fontWeight="semibold" fontSize="2xl">ProSocial</Text>
-				<Box onClick={onOpen}>
+				<Link href={appRouteLinks.profile}>
 					<ProfilePicture />
+				</Link>
+				<Text fontWeight="semibold" fontSize="2xl">
+					ProSocial
+				</Text>
+				<Box onClick={onOpen} cursor="pointer" p="2">
+					<RiMenu2Fill style={{ fontSize: '24px' }} />
 				</Box>
 			</Flex>
 			<Drawer placement="left" onClose={onClose} isOpen={isOpen}>
@@ -66,7 +75,7 @@ export default function NavBar() {
 									}}
 									key={link.id}
 								>
-									<Flex>{link.name}</Flex>
+									<Flex alignItems="center" gap="3"><Text>{link.icon}</Text><Text>{link.name}</Text></Flex>
 								</Box>
 							))}
 						</Flex>
