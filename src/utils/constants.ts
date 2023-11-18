@@ -44,6 +44,7 @@ export const formFeedback = {
 	required: 'This field is required',
 	invalidEmail: 'Please enter a valid email',
 	minPassword: 'Password must exceed 8 characters',
+	passwordRequirement: 'Password must contain at least 8 characters and a combination of uppercase letters, lowercase letters, numbers, and symbols.',
 };
 
 export const AnswerType = {

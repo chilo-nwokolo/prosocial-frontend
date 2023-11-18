@@ -9,7 +9,7 @@ export default function LogoutPage() {
 	const router = useRouter();
 	useEffect(() => {
 		deleteCookie(AccessToken);
-		router.replace(appRouteLinks.login);
+		router.push(appRouteLinks.login);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

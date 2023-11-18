@@ -29,8 +29,11 @@ export default function UseRegistrationPage() {
 		email: yup.string().email(formFeedback.invalidEmail).required(formFeedback.required),
 		password: yup
 			.string()
-			.min(8, formFeedback.minPassword)
-			.required(formFeedback.required),
+			.required(formFeedback.required)
+			.matches(
+				/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/,
+				formFeedback.passwordRequirement,
+			),
 		firstName: yup.string().required(formFeedback.required),
 		lastName: yup.string().required(formFeedback.required),
 	});

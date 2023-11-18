@@ -25,20 +25,20 @@ function InterestsAccordion({ title, children, onChange }: SwitchAccordionProps)
 				{({ isExpanded }) => (
 					<>
 						<h2>
-							<AccordionButton py="5">
+							<AccordionButton>
 								{isExpanded ? (
 									<Text color="gray.600">
-										<LiaToggleOnSolid style={{ fontSize: '24px' }} />
+										<LiaToggleOnSolid style={{ fontSize: '30px' }} />
 									</Text>
 								) : (
 									<Text color="gray.600">
-										<LiaToggleOffSolid style={{ fontSize: '24px' }} />
+										<LiaToggleOffSolid style={{ fontSize: '30px' }} />
 									</Text>
 								)}
 								<Box as="span" flex="1" ml="3" textAlign="left">
 									{title}
 								</Box>
-                <Image src={ImageLinks.logo} width={50} height={50} alt='image' />
+                <Image src={ImageLinks.logo} width={75} height={75} alt='image' objectFit='contain' />
 							</AccordionButton>
 						</h2>
 						<AccordionPanel mr="0" pr="0" pb={4}>

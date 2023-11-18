@@ -18,7 +18,7 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
 		}
 	}, [pathname, previousPathname]);
 	return (
-		<Box as="section" maxWidth="lg" minWidth="xs" mx="auto">
+		<Box as="section" maxWidth="lg" minWidth="250px" mx="auto">
 			<NavBar />
 			<Box
 				as="section"

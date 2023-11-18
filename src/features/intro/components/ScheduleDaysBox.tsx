@@ -1,3 +1,4 @@
+'use client';
 import {
 	Accordion,
 	Box,
@@ -7,7 +8,6 @@ import {
 	useCheckboxGroup,
 } from '@chakra-ui/react';
 import SocialScheduleAccordion from '@/components/General/SwitchAccordion';
-import { useEffect, useState } from 'react';
 import { ScheduleDateType, useUserStore } from '@/store';
 
 const options = [
@@ -72,22 +72,17 @@ function ScheduleDays({
 	onChecked: (day: string, timeRange: string[]) => void;
 	selectedSchedules: ScheduleDateType[];
 }) {
-	const [state, setState] = useState<string[]>([]);
-	const { value, getCheckboxProps } = useCheckboxGroup({
-		defaultValue: state,
-		onChange: () => {
-			onChecked(day, value as string[]);
+	// console.log(selectedSchedules);
+	const { getCheckboxProps } = useCheckboxGroup({
+		defaultValue: selectedSchedules.find((sch) => sch.day === day)?.timeRange as string[],
+		onChange: (result) => {
+			onChecked(day, result as string[]);
 		},
 	});
 
-	useEffect(() => {
-		setState(selectedSchedules.find((sch) => sch.day === day)?.timeRange || []);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [day, value]);
-
 	return (
 		<HStack gap="0">
-			{options.map((value) => {
+			{options?.map((value) => {
 				return (
 					<CheckboxCard key={value.id} {...getCheckboxProps({ value: value.value })}>
 						{value.title}

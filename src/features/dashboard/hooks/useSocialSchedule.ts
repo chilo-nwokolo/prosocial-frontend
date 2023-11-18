@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ScheduleDateType, useUserStore } from '@/store';
 import { useMutation, useQuery } from '@apollo/client';
 import { ME_SCHEDULES, UPDATE_USER_SCHEDULE } from '@/features/dashboard/profile/gql/queries';
@@ -20,6 +20,7 @@ export default function useSocialSchedule() {
 		state.selectedSchedules,
 		state.updateSelectedSchedules,
 	]);
+
 	const router = useRouter();
 	const toast = useToast();
 
@@ -43,13 +44,9 @@ export default function useSocialSchedule() {
 		},
 		onError: (e) => {
 			apolloErrorHandler(e);
-		}
+		},
+		refetchQueries: [ME_SCHEDULES]
 	});
-
-	useEffect(() => {
-		updateSelectedSchedules([]);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	const toggleAccordion = (day: string) => {
 		const index = selectedDays.indexOf(day);
@@ -85,6 +82,8 @@ export default function useSocialSchedule() {
 				})
 			}
 		});
+
+		console.log(result);
 
 		submit({
 			variables: { input: { schedules: result } },
