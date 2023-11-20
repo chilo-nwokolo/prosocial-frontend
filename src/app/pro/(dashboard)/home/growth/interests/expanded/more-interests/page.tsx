@@ -4,7 +4,7 @@ import QueryContainer from '@/components/General/QueryContainer';
 import InterestsAccordion from '@/features/dashboard/home/growth/components/InterestsAccordion';
 import InterestsSwitch from '@/features/dashboard/home/growth/components/InterestsSwitch';
 import {
-	INTERESTS_BY_NONE_TRAITS,
+	QUERY_INTERESTS_BY_NONE_TRAITS,
 	SUBMIT_USER_INTERESTS,
 } from '@/features/dashboard/home/growth/queries';
 import { useAppQuestions } from '@/store';
@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { GrClose } from 'react-icons/gr';
 
 export default function InterestedExtendedPage() {
-	const { data: result, loading: isLoading, error } = useQuery(INTERESTS_BY_NONE_TRAITS);
+	const { data: result, loading: isLoading, error } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
 
 	const [interestsAnswer, updateInterestsAnswer] = useAppQuestions((state) => [
 		state.interestsAnswer,

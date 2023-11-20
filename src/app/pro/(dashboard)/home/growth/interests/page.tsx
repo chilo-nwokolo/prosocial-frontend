@@ -1,7 +1,7 @@
 'use client';
 import BackButton from '@/components/General/BackButton';
 import QueryContainer from '@/components/General/QueryContainer';
-import { INTERESTS_BY_TRAITS } from '@/features/dashboard/home/growth/queries';
+import { QUERY_INTERESTS_BY_TRAITS } from '@/features/dashboard/home/growth/queries';
 import { appRouteLinks } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
 import { Button, Center, Flex, Text } from '@chakra-ui/react';
@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 export default function InterestsPage() {
 	const router = useRouter();
-	const { loading, error } = useQuery(INTERESTS_BY_TRAITS);
+	const { loading, error } = useQuery(QUERY_INTERESTS_BY_TRAITS);
 	
 	return (
 		<QueryContainer loading={loading} error={error}>

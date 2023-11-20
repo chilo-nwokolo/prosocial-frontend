@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { ALL_QUESTIONS } from '../home/growth/queries';
+import { QUERY_ALL_QUESTIONS } from '../home/growth/queries';
 import { useAppQuestions, useUserStore } from '@/store';
 import { ME_QUESTION_RESPONSES } from '../profile/gql/queries';
 
@@ -13,7 +13,7 @@ export default function usePersonalityQuizzesPage() {
 		state.updateMeAnswers
 	]);
 
-	const { loading, error } = useQuery(ALL_QUESTIONS, {
+	const { loading, error } = useQuery(QUERY_ALL_QUESTIONS, {
 		onCompleted: (data) => {
 			const questions = data.questionCategories?.[1].questions;
 			updateQuestions(questions);

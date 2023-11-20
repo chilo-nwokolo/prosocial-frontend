@@ -52,7 +52,7 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
 			});
 			router.push(appRouteLinks.growthPersonality);
 		},
-		refetchQueries: ["ALL_QUESTIONS"]
+		refetchQueries: ["QUERY_ALL_QUESTIONS"]
 	});
 
 	const genInitialValues = useCallback(() => {

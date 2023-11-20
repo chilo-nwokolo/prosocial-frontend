@@ -1,7 +1,7 @@
 import { gql } from "@/__generated__";
 
-export const ALL_QUESTIONS = gql(`
-  query Questions {
+export const QUERY_ALL_QUESTIONS = gql(`
+  query QUERY_ALL_QUESTIONS {
     questionCategories {
       id
       questions {
@@ -18,8 +18,8 @@ export const ALL_QUESTIONS = gql(`
   }
 `);
 
-export const INTERESTS_BY_TRAITS = gql(`
-  query INTERESTS_BY_TRAITS {
+export const QUERY_INTERESTS_BY_TRAITS = gql(`
+  query QUERY_INTERESTS_BY_TRAITS {
     interestsByTrait {
       id
       title
@@ -32,8 +32,8 @@ export const INTERESTS_BY_TRAITS = gql(`
   }
 `)
 
-export const INTERESTS_BY_NONE_TRAITS = gql(`
-  query INTERESTS_BY_NONE_TRAITS {
+export const QUERY_INTERESTS_BY_NONE_TRAITS = gql(`
+  query QUERY_INTERESTS_BY_NONE_TRAITS {
     interestsByNoneTrait {
       id
       title
@@ -42,6 +42,20 @@ export const INTERESTS_BY_NONE_TRAITS = gql(`
         id
         title
         image_url
+      }
+    }
+  }
+`)
+
+export const QUERY_ME_JOURNALS = gql(`
+  query QUERY_ME_JOURNALS {
+    me {
+      journals {
+        id
+        input
+        category {
+          id
+        }
       }
     }
   }
@@ -58,6 +72,17 @@ export const SUBMIT_USER_INTERESTS = gql(`
     submitUserInterest(input: $input) {
       status
       message
+    }
+  }
+`)
+
+export const CREATE_JOURNAL_ENTRY = gql(`
+  mutation CREATE_JOURNAL_ENTRY ($input: String!, $journal_category_id: ID!) {
+    mutateJournal(input: $input, journal_category_id: $journal_category_id) {
+      id
+      category {
+        id
+      }
     }
   }
 `)

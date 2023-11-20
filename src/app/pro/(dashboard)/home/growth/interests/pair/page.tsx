@@ -1,7 +1,7 @@
 'use client';
 import { Interest } from '@/__generated__/graphql';
 import BackButton from '@/components/General/BackButton';
-import { INTERESTS_BY_TRAITS } from '@/features/dashboard/home/growth/queries';
+import { QUERY_INTERESTS_BY_TRAITS } from '@/features/dashboard/home/growth/queries';
 import { client } from '@/service';
 import { useAppQuestions } from '@/store';
 import { ImageLinks, appRouteLinks } from '@/utils/constants';
@@ -17,7 +17,7 @@ export default function InterestsPairPage() {
 	const [interestsAnswer, updateInterestsAnswer] = useAppQuestions((state) => [state.interestsAnswer, state.updateInterestsAnswer])
 
 	const result = client.readQuery({
-		query: INTERESTS_BY_TRAITS,
+		query: QUERY_INTERESTS_BY_TRAITS,
 	});
 
 	if (!questionId) {

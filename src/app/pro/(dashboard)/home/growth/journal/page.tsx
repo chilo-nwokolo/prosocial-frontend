@@ -18,6 +18,7 @@ export default function JournalPage() {
 			description="The opportunity to reflect on our life experiences is an important aspect of
 		personal growth. Below are some journaling prompts. Write as little or as much
 		as you like. If you don’t feel like typing, we recommend using voice to text."
+		destination={appRouteLinks.growth}
 		>
 			<Flex flexDir="column" gap="5" mt="4">
 				{journalTitles.map((journal, i) => (
