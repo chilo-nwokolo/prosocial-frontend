@@ -30,6 +30,7 @@ type Props = {
 	error?: string;
 	min?: string | number;
 	max?: string | number;
+	autoComplete?: string;
 };
 
 export default function FormInput({
@@ -44,6 +45,7 @@ export default function FormInput({
 	error,
 	min,
 	max,
+	autoComplete = "new-password"
 }: Props) {
 	const { isOpen, onClose, onOpen } = useDisclosure();
 	const [show, setShow] = useBoolean();
@@ -60,6 +62,8 @@ export default function FormInput({
 							value={value}
 							onChange={onChange}
 							onBlur={onBlur}
+							autoComplete={autoComplete}
+							// outline={ autoComplete !== "current-password" ? error?.length ? "2px solid red.400" : value.length && !error?.length ? "2px solid green" : "2px solid blue" : "" }
 							isInvalid={!!error}
 							errorBorderColor='red.400'
 						/>

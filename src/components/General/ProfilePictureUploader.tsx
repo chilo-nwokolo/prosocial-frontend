@@ -144,6 +144,7 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
 							outlineOffset: '10px',
 							outlineStyle: 'dashed',
 						}}
+						key={key}
 						border="1px solid"
 						borderColor="gray.300"
 						borderRadius="full"

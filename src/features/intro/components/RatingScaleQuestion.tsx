@@ -73,7 +73,7 @@ export default function RatingScaleQuestion({ title, options, error, source, nam
 				p="5"
 				w="full"
 			>
-				{title}
+				{source === 'The basics' ? title : title.toLowerCase()}
 			</FormLabel>
 			<RadioGroup defaultValue={value}>
 				<HStack {...group} gap="0">

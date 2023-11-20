@@ -27,7 +27,7 @@ export default function TermsAndConditionsPage() {
 					))}
 				</Box>
 				<Flex justifyContent="center" gap="4" mt="8">
-					<Button onClick={openDeclineModal}>Decline</Button>
+					<Button variant="secondary" onClick={openDeclineModal}>Decline</Button>
           <Link href={appRouteLinks.register}>
 						<Button>Accept</Button>
           </Link>

@@ -5,6 +5,7 @@ export const Button = defineStyleConfig({
   baseStyle: {
     fontWeight: 'bold',
     borderRadius: 'base', // <-- border radius is same for all variants and sizes
+    fontSize: '16px',
   },
   // Two sizes: sm and md
   sizes: {
@@ -25,8 +26,6 @@ export const Button = defineStyleConfig({
       bg: '#f95c47',
       color: 'white',
       boxShadow: '2px 2px 1px 0px #000',
-      fontSize: '16px',
-      fontWeight: 'bold',
       textTransform: 'uppercase',
       _hover: {
         bg: '#f95c47',
@@ -34,6 +33,20 @@ export const Button = defineStyleConfig({
       },
       _active: {
         bg: '#f95c47',
+        boxShadow: '0px 0px 1px 0px #000',
+      }
+    },
+    secondary: {
+      bg: '#e3d5d6',
+      color: '#3a3738',
+      boxShadow: '2px 2px 1px 0px #876a6c',
+      textTransform: 'uppercase',
+      _hover: {
+        bg: '#f95c47',
+        color: 'white',
+      },
+      _active: {
+        bg: '#e3d5d6',
         boxShadow: '0px 0px 1px 0px #000',
       }
     },

@@ -14,13 +14,14 @@ import { LiaToggleOnSolid, LiaToggleOffSolid } from 'react-icons/lia';
 type SwitchAccordionProps = {
 	title: string;
 	children: ReactNode;
+	id: string;
 	// eslint-disable-next-line no-unused-vars
-	onChange?: (info: string) => void;
+	onChange?: (info: string, id: string) => void;
 };
 
-function InterestsAccordion({ title, children, onChange }: SwitchAccordionProps) {
+function InterestsAccordion({ title, children, onChange, id }: SwitchAccordionProps) {
 	return (
-		<Accordion allowMultiple onChange={() => onChange && onChange(title)}>
+		<Accordion allowMultiple onChange={() => onChange && onChange(title, id)}>
 			<AccordionItem>
 				{({ isExpanded }) => (
 					<>

@@ -4,21 +4,19 @@ import * as yup from 'yup';
 import { useMutation } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
-import { appRouteLinks, formFeedback } from '@/utils/constants';
+import { appRouteLinks, configExtras, formFeedback } from '@/utils/constants';
 import { REGISTER_USER } from '../gql';
 import { useRouter } from 'next/navigation';
 import { apolloErrorHandler } from '@/utils/helpers';
-import { useConfig } from '@/store';
+import { setCookie } from '@/libs/cookies';
 
 export default function UseRegistrationPage() {
 	const [phone, setPhone] = useState('');
 	const toast = useToast();
 	const router = useRouter();
 
-	const [updateConfig] = useConfig((state) => [state.updateConfig]);
-
 	useEffect(() => {
-		updateConfig({ user_visited_intro_page: true });
+		setCookie(configExtras.user_visited_intro_page, "true");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

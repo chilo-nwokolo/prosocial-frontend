@@ -20,10 +20,10 @@ export default function WelcomePage() {
 
 	return (
 		<Box mt="20">
-			<Text as="h1" fontSize="2xl" fontWeight="medium">
+			<Text as="h1" fontSize="2xl" color="primary.200" fontWeight="medium">
 				Welcome to ProSocial
 			</Text>
-			<Flex flexDir="column" gap="5" my="5">
+			<Flex flexDir="column" gap="5" color="primary.200" my="5">
 				<Text>
 					We offer the opportunity to discover new friendships with amazing people!
 				</Text>
@@ -33,7 +33,7 @@ export default function WelcomePage() {
 			<Accordion allowToggle mt="5">
 				<AccordionItem>
 					<h2>
-						<AccordionButton>
+						<AccordionButton borderY="1px solid" borderColor="#876a6c">
 							<Box as="span" flex="1" textAlign="left">
 								Transcript
 							</Box>

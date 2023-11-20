@@ -1,9 +1,9 @@
 'use client';
 import BackButton from '@/components/General/BackButton';
-import { INTERESTS_BY_NONE_TRAITS, SUBMIT_USER_INTERESTS } from '@/features/dashboard/home/growth/queries';
+import { SUBMIT_USER_INTERESTS } from '@/features/dashboard/home/growth/queries';
 import { useAppQuestions } from '@/store';
 import { appRouteLinks } from '@/utils/constants';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -14,8 +14,6 @@ export default function InterestedExtendedPage() {
 	const [interestsAnswer] = useAppQuestions((state) => [state.interestsAnswer]);
 	const toast = useToast();
 	const [proceed, setProceed] = useState(false);
-
-	useQuery(INTERESTS_BY_NONE_TRAITS);
 
 	const ref = useRef(true);
 
@@ -45,7 +43,6 @@ export default function InterestedExtendedPage() {
 		}
 	}, [mutate])
 
-
 	return (
 		<Flex flexDir="column">
 			<Flex justifyContent="flex-end">
@@ -58,7 +55,7 @@ export default function InterestedExtendedPage() {
 					interests that you enjoy and we&apos;ll use this information to refine your social
 					matches.
 				</Text>
-        <Button isDisabled={proceed} onClick={() => {router.push(appRouteLinks.interestsExpanedMore)}}>Begin</Button>
+        <Button isDisabled={!proceed} onClick={() => {router.push(appRouteLinks.interestsExpanedMore)}}>Begin</Button>
 			</Flex>
 		</Flex>
 	);

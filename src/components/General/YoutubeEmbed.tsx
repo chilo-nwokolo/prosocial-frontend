@@ -5,7 +5,7 @@ type Props = { embedId: string };
 
 export default function YoutubeEmbed({ embedId }: Props) {
 	return (
-		<Box>
+		<Box border="1px solid" color="primary.200">
 			<iframe
         className='youtube-iframe'
 				width="100%"

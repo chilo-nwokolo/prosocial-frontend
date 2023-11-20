@@ -14,7 +14,7 @@ export default function LoginPage() {
 		<Center h="90vh">
 			<Box my="auto">
 				<Image src={ImageLinks.logo} width={75} height={75} alt="app logo" />
-				<Text my="4" as="h1" fontSize="2xl" fontWeight="medium">
+				<Text my="4" as="h1" color="primary.200" fontSize="2xl" fontWeight="medium">
 					Welcome to ProSocial
 				</Text>
 				<Text fontSize="lg" mb="10">
@@ -38,6 +38,7 @@ export default function LoginPage() {
 								inputType="password"
 								labelTitle="Password"
 								name="password"
+								autoComplete="current-password"
 								onBlur={formik.handleBlur}
 								onChange={formik.handleChange}
 								value={formik.values.password}
