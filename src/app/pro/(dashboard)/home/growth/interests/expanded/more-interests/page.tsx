@@ -5,22 +5,46 @@ import InterestsAccordion from '@/features/dashboard/home/growth/components/Inte
 import InterestsSwitch from '@/features/dashboard/home/growth/components/InterestsSwitch';
 import {
 	QUERY_INTERESTS_BY_NONE_TRAITS,
+	QUERY_ME_INTERESTS,
 	SUBMIT_USER_INTERESTS,
 } from '@/features/dashboard/home/growth/queries';
+import { client } from '@/service';
 import { useAppQuestions } from '@/store';
 import { appRouteLinks } from '@/utils/constants';
 import { useMutation, useQuery } from '@apollo/client';
 import { Button, Flex, RadioGroup, Stack, Text, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { GrClose } from 'react-icons/gr';
 
 export default function InterestedExtendedPage() {
-	const { data: result, loading: isLoading, error } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
+	const [flattenedInterests, setFlattenedInterets] = useState<string[] | null>(null);
+	
+	const [key, setKey] = useState(1);
 
 	const [interestsAnswer, updateInterestsAnswer] = useAppQuestions((state) => [
 		state.interestsAnswer,
 		state.updateInterestsAnswer,
 	]);
+
+	const { data: result, loading: isLoading, error } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
+
+	const { loading: loadingInterests } = useQuery(QUERY_ME_INTERESTS, {
+		onCompleted: (data) => {
+			const interests: string[] = [];
+			if (data.me?.interests?.length) {
+				data.me?.interests?.forEach((interest) => {
+					interests.push(""+interest.title);
+				})
+				setFlattenedInterets(interests);
+				setKey(key + 1)
+				return;
+			}
+			setFlattenedInterets([]);
+		},
+	});
+
+	
 	const toast = useToast();
 	const router = useRouter();
 
@@ -36,11 +60,12 @@ export default function InterestedExtendedPage() {
 				title: 'Unable to save interests. Please try again.',
 			});
 		},
-		onCompleted: () => {
+		onCompleted: async () => {
 			toast({
 				status: 'success',
 				title: 'Interests updated successfully',
 			});
+			await client.refetchQueries({ include: ["QUERY_INTERESTS_BY_NONE_TRAITS"] })
 			router.push(appRouteLinks.growth);
 		},
 	});
@@ -50,9 +75,9 @@ export default function InterestedExtendedPage() {
 			(interest) => interest.interest_id === id,
 		);
 
-		if (foundIndex < 0) {
+		if (foundIndex < 0 && !flattenedInterests?.includes(value)) {
 			updateInterestsAnswer([...interestsAnswer, { response: value, interest_id: id }]);
-		} else if (foundIndex >= 0) {
+		} else if (foundIndex >= 0 || flattenedInterests?.includes(value)) {
 			const result = [...interestsAnswer];
 			result.splice(foundIndex, 1);
 			updateInterestsAnswer(result);
@@ -60,7 +85,7 @@ export default function InterestedExtendedPage() {
 	};
 
 	return (
-		<QueryContainer loading={isLoading} error={error}>
+		<QueryContainer loading={isLoading || loadingInterests} error={error}>
 			<Flex flexDir="column">
 				<Flex justifyContent="flex-end">
 					<BackButton icon={<GrClose />} destination={appRouteLinks.interestsExpaned} />
@@ -72,10 +97,11 @@ export default function InterestedExtendedPage() {
 					{result?.interestsByNoneTrait?.length ? (
 						result?.interestsByNoneTrait?.map((trait) => (
 							<InterestsAccordion
-								key={trait.id}
+								key={""+trait.id + key}
 								title={trait.title as string}
 								id={trait.id as string}
 								onChange={onChange}
+								defaultIndex={flattenedInterests?.includes(""+trait.title) ? [0] : []}
 							>
 								<Flex flexDir="column">
 									<RadioGroup>
@@ -86,7 +112,7 @@ export default function InterestedExtendedPage() {
 													p="3"
 													bg={i % 2 === 0 ? '#f4ede2' : 'transparent'}
 												>
-													<InterestsSwitch interest={interest} onChange={onChange} />
+													<InterestsSwitch isChecked={flattenedInterests?.includes(interest.title as string)} interest={interest} onChange={onChange} />
 												</Flex>
 											))}
 										</Stack>

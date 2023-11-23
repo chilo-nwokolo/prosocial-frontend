@@ -59,8 +59,19 @@ export const QUERY_ME_JOURNALS = gql(`
       }
     }
   }
-`)
+`);
 
+export const QUERY_ME_INTERESTS = gql(`
+  query QUERY_ME_INTERESTS {
+    me {
+      id
+      interests {
+        id
+        title
+      }
+    }
+  }
+`);
 
 /**
  * 
