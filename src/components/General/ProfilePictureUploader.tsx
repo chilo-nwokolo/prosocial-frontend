@@ -12,12 +12,7 @@ import {
 	Tooltip,
 	useToast,
 } from '@chakra-ui/react';
-import {
-	ChangeEvent,
-	LegacyRef,
-	useRef,
-	useState,
-} from 'react';
+import { ChangeEvent, LegacyRef, useRef, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
 
@@ -27,19 +22,28 @@ type Props = {
 
 export default function ProfilePictureUploader({ currentImage }: Props) {
 	const imageUploadRef = useRef<LegacyRef<HTMLInputElement> | null>(null);
+	const uploadedImage = useRef<File | null>(null);
 	const [key, setKey] = useState(1);
 	const toast = useToast();
-	const [profileImage, setProfileImage] = useState<File | string | null | undefined>(currentImage);
-
+	const [profileImage, setProfileImage] = useState<File | string | null | undefined>(
+		currentImage,
+	);
 
 	const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
 		onCompleted: () => {
 			setKey(key + 1);
+			setProfileImage(uploadedImage.current);
 			client.refetchQueries({
 				include: ['ME'],
 				updateCache(cache) {
 					cache.evict({ fieldName: 'ME' });
 				},
+			});
+		},
+		onError: () => {
+			toast({
+				title: 'Picture upload failed. Please try again',
+				status: 'error',
 			});
 		},
 	});
@@ -64,14 +68,14 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
 	const onFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files?.[0]?.size > 2000000) {
 			toast({
-				title: "The image you uploaded is too large.",
-				status: "error"
-			})
+				title: 'The image you uploaded is too large.',
+				status: 'error',
+			});
 			return;
 		}
 		if (e.target.files?.length) {
 			const uploadedFile = e.target.files[0];
-			setProfileImage(uploadedFile);
+			uploadedImage.current = uploadedFile;
 			upload({
 				variables: {
 					input: {
