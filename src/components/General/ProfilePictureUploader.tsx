@@ -15,6 +15,7 @@ import {
 import { ChangeEvent, LegacyRef, useRef, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
+import imageCompression from 'browser-image-compression';
 
 type Props = {
 	currentImage?: File | string | null;
@@ -28,6 +29,7 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
 	const [profileImage, setProfileImage] = useState<File | string | null | undefined>(
 		currentImage,
 	);
+	const [ compressingImage, setCompressingImage ] = useState(false);
 
 	const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
 		onCompleted: () => {
@@ -39,8 +41,10 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
 					cache.evict({ fieldName: 'ME' });
 				},
 			});
+			setCompressingImage(false);
 		},
 		onError: () => {
+			setCompressingImage(false);
 			toast({
 				title: 'Picture upload failed. Please try again',
 				status: 'error',
@@ -65,16 +69,27 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
 		</Tooltip>
 	);
 
-	const onFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files && e.target.files?.[0]?.size > 2000000) {
-			toast({
-				title: 'The image you uploaded is too large.',
-				status: 'error',
-			});
-			return;
+	const onFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+		let uploadedFile = e.target.files![0];
+		if (uploadedFile && uploadedFile?.size > 1000000) {
+			setCompressingImage(true);
+			const controller = new AbortController();
+			const response = await imageCompression(uploadedFile, { maxSizeMB: 0.9, signal: controller.signal });
+			if (response) {
+				uploadedFile = response;
+			}
+			if (!response) {
+				toast({
+					title: 'Picture upload failed. Please try again',
+					status: 'error',
+				});
+				return;
+			}
+			setTimeout(() => {
+				controller.abort(new Error('Image is taking too long'));
+			}, 20000);
 		}
 		if (e.target.files?.length) {
-			const uploadedFile = e.target.files[0];
 			uploadedImage.current = uploadedFile;
 			upload({
 				variables: {
@@ -92,7 +107,7 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
 		<Flex justifyContent="center" alignItems="center" flexDir="column" w="full" mt="10">
 			{profileImage ? (
 				<>
-					{loading ? (
+					{loading || compressingImage ? (
 						<Flex
 							alignItems="center"
 							justifyContent="center"
