@@ -11,3 +11,6 @@ public
 .husky
 .next
 node_modules
+.eslintrc.json
+package.json
+README.md
