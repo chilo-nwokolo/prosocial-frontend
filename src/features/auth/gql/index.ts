@@ -1,4 +1,4 @@
-import { gql } from '@/__generated__';
+import { gql } from "@/__generated__";
 
 export const REGISTER_USER = gql(`
   mutation Register($input: RegisterUserInput!) {
@@ -38,8 +38,7 @@ export const RESET_PASSWORD_LINK = gql(`
       status
       message
     }
-  }`
-);
+  }`);
 
 export const RESET_PASSWORD = gql(`
   mutation ResetPassword($token: String!, $new_password: String!) {

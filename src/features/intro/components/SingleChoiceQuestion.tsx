@@ -1,52 +1,52 @@
 import {
-	FormControl,
-	FormHelperText,
-	FormLabel,
-	Radio,
-	RadioGroup,
-	VStack,
-} from '@chakra-ui/react';
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  VStack,
+} from "@chakra-ui/react";
 
 type Props = {
-	title: string;
-	options: [{ id: string; title: string; value: string }] | undefined;
-	value: string;
-	// eslint-disable-next-line no-unused-vars
-	onChange: (e: any) => void;
-	name: string;
-	source: string;
-	error?: string;
+  title: string;
+  options: [{ id: string; title: string; value: string }] | undefined;
+  value: string;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (e: any) => void;
+  name: string;
+  source: string;
+  error?: string;
 };
 
 export default function SingleChoiceQuestion({
-	title,
-	options,
-	error,
-	name,
-	onChange,
-	value,
-	source,
+  title,
+  options,
+  error,
+  name,
+  onChange,
+  value,
+  source,
 }: Props) {
-	return (
-		<FormControl as="fieldset">
-			<FormLabel as="legend" fontWeight="medium" fontSize="lg">
-				{title}
-			</FormLabel>
-			<RadioGroup defaultValue={value} mt="3">
-				<VStack alignItems="start" spacing="15px">
-					{options?.map((option) => (
-						<Radio
-							key={`${option.value}-${option.id}`}
-							value={source === 'The basics' ? option.value : option.id}
-							name={name}
-							onChange={onChange}
-						>
-							{option.title}
-						</Radio>
-					))}
-				</VStack>
-			</RadioGroup>
-			{error ? <FormHelperText>{error}</FormHelperText> : null}
-		</FormControl>
-	);
+  return (
+    <FormControl as="fieldset">
+      <FormLabel as="legend" fontWeight="medium" fontSize="lg">
+        {title}
+      </FormLabel>
+      <RadioGroup defaultValue={value} mt="3">
+        <VStack alignItems="start" spacing="15px">
+          {options?.map((option) => (
+            <Radio
+              key={`${option.value}-${option.id}`}
+              value={source === "The basics" ? option.value : option.id}
+              name={name}
+              onChange={onChange}
+            >
+              {option.title}
+            </Radio>
+          ))}
+        </VStack>
+      </RadioGroup>
+      {error ? <FormHelperText>{error}</FormHelperText> : null}
+    </FormControl>
+  );
 }

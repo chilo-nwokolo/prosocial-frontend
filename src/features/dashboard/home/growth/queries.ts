@@ -30,7 +30,7 @@ export const QUERY_INTERESTS_BY_TRAITS = gql(`
       }
     }
   }
-`)
+`);
 
 export const QUERY_INTERESTS_BY_NONE_TRAITS = gql(`
   query QUERY_INTERESTS_BY_NONE_TRAITS {
@@ -45,7 +45,7 @@ export const QUERY_INTERESTS_BY_NONE_TRAITS = gql(`
       }
     }
   }
-`)
+`);
 
 export const QUERY_ME_JOURNALS = gql(`
   query QUERY_ME_JOURNALS {
@@ -81,7 +81,7 @@ export const QUERY_CHALLENGE_CATEGORIES = gql(`
       type
     }
   }
-`)
+`);
 
 export const QUERY_JOURNAL_CATEGORIES = gql(`
   query QUERY_JOURNAL_CATEGORIES {
@@ -95,7 +95,7 @@ export const QUERY_JOURNAL_CATEGORIES = gql(`
       }
     }
   }
-`)
+`);
 
 export const QUERY_ME_CHALLENGE_CATEGORIES = gql(`
   query QUERY_ME_CHALLENGE_CATEGORIES {
@@ -110,10 +110,10 @@ export const QUERY_ME_CHALLENGE_CATEGORIES = gql(`
       }
     }
   }
-`)
+`);
 
 /**
- * 
+ *
  * MUTATIONS
  */
 
@@ -124,7 +124,7 @@ export const SUBMIT_USER_INTERESTS = gql(`
       message
     }
   }
-`)
+`);
 
 export const CREATE_JOURNAL_ENTRY = gql(`
   mutation CREATE_JOURNAL_ENTRY ($input: String!, $journal_category_id: ID!) {
@@ -135,4 +135,4 @@ export const CREATE_JOURNAL_ENTRY = gql(`
       }
     }
   }
-`)
+`);

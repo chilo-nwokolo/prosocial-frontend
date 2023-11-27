@@ -1,25 +1,26 @@
-import { Box } from '@chakra-ui/react';
-import React from 'react';
+import { Box } from "@chakra-ui/react";
+import React from "react";
 
 type Props = { embedId: string };
 
 export default function YoutubeEmbed({ embedId }: Props) {
-	return (
-		<Box border="1px solid" color="primary.200">
-			<iframe
-        className='youtube-iframe'
-				width="100%"
-				height="480"
-				src={`https://www.youtube.com/embed/${embedId}`}
-				frameBorder="0"
-				allowFullScreen
-				title="Embedded youtube"
-			/>
-		</Box>
-	);
+  return (
+    <Box border="1px solid" color="primary.200">
+      <iframe
+        className="youtube-iframe"
+        width="100%"
+        height="480"
+        src={`https://www.youtube.com/embed/${embedId}`}
+        frameBorder="0"
+        allowFullScreen
+        title="Embedded youtube"
+      />
+    </Box>
+  );
 }
 
-{/* <iframe
+{
+  /* <iframe
 	width="1023"
 	height="575"
 	src="https://www.youtube.com/embed/nt4VRSr0JNs"
@@ -27,4 +28,5 @@ export default function YoutubeEmbed({ embedId }: Props) {
 	frameborder="0"
 	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 	allowfullscreen
-></iframe>; */}
+></iframe>; */
+}

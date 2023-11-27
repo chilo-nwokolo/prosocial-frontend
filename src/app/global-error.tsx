@@ -1,15 +1,14 @@
-'use client'
+"use client";
 
-import { Button } from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react";
 
- 
 export default function GlobalError({
   // eslint-disable-next-line no-unused-vars
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   return (
     <html>
@@ -18,5 +17,5 @@ export default function GlobalError({
         <Button onClick={() => reset()}>Try again</Button>
       </body>
     </html>
-  )
+  );
 }

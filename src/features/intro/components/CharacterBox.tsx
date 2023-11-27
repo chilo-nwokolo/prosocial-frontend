@@ -1,130 +1,132 @@
-'use client';
+"use client";
 import {
-	Box,
-	Flex,
-	FormControl,
-	FormLabel,
-	HStack,
-	RadioGroup,
-	Text,
-	useRadio,
-	useRadioGroup,
-} from '@chakra-ui/react';
-import { Dispatch, SetStateAction } from 'react';
-import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
+  Box,
+  Flex,
+  FormControl,
+  FormLabel,
+  HStack,
+  RadioGroup,
+  Text,
+  useRadio,
+  useRadioGroup,
+} from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 function RadioCard(props: any) {
-	const { getInputProps, getRadioProps } = useRadio(props);
+  const { getInputProps, getRadioProps } = useRadio(props);
 
-	const input = getInputProps();
-	const checkbox = getRadioProps();
+  const input = getInputProps();
+  const checkbox = getRadioProps();
 
-	return (
-		<Box as="label" w="full">
-			<input {...input} />
-			<Flex
-				{...checkbox}
-				cursor="pointer"
-				borderWidth="2px"
-				_checked={{
-					bg: props.value === 'yes' ? 'teal.600' : 'red.400',
-					color: 'white',
-					borderColor: props.value === 'yes' ? 'teal.600' : 'red.400',
-				}}
-				_active={{
-					color: 'white',
-				}}
-				w="full"
-				textAlign="center"
-				alignItems="center"
-				justifyContent="center"
-				py="3"
-			>
-				{props.children}
-			</Flex>
-		</Box>
-	);
+  return (
+    <Box as="label" w="full">
+      <input {...input} />
+      <Flex
+        {...checkbox}
+        cursor="pointer"
+        borderWidth="2px"
+        _checked={{
+          bg: props.value === "yes" ? "teal.600" : "red.400",
+          color: "white",
+          borderColor: props.value === "yes" ? "teal.600" : "red.400",
+        }}
+        _active={{
+          color: "white",
+        }}
+        w="full"
+        textAlign="center"
+        alignItems="center"
+        justifyContent="center"
+        py="3"
+      >
+        {props.children}
+      </Flex>
+    </Box>
+  );
 }
 
 type Props = {
-	title: string;
-	description: string;
-	id: string;
-	personalityBucketQuestions: string[];
-	// eslint-disable-next-line no-unused-vars
-	updatePersonalityBucketQuestions: (personalityBucketQuestions: string[]) => void;
-	setSelected: Dispatch<SetStateAction<string[]>>;
-	selected: string[];
+  title: string;
+  description: string;
+  id: string;
+  personalityBucketQuestions: string[];
+  updatePersonalityBucketQuestions: (
+    // eslint-disable-next-line no-unused-vars
+    personalityBucketQuestions: string[],
+  ) => void;
+  setSelected: Dispatch<SetStateAction<string[]>>;
+  selected: string[];
 };
 
 export default function CharacterBox({
-	title,
-	description,
-	id,
-	updatePersonalityBucketQuestions,
-	personalityBucketQuestions,
-	selected,
-	setSelected,
+  title,
+  description,
+  id,
+  updatePersonalityBucketQuestions,
+  personalityBucketQuestions,
+  selected,
+  setSelected,
 }: Props) {
-	const options = ['no', 'yes'];
+  const options = ["no", "yes"];
 
-	const removeItemFromList = (id: string) => {
-		const newResult = personalityBucketQuestions;
-		const index = newResult.indexOf(id);
-		newResult.splice(index, 1);
-		updatePersonalityBucketQuestions(newResult);
-	};
+  const removeItemFromList = (id: string) => {
+    const newResult = personalityBucketQuestions;
+    const index = newResult.indexOf(id);
+    newResult.splice(index, 1);
+    updatePersonalityBucketQuestions(newResult);
+  };
 
-	const { getRootProps, getRadioProps } = useRadioGroup({
-		name: id,
-		onChange: (value) => {
-			if (!selected.includes(id)) {
-				setSelected([...selected, id]);
-			}
-			if (personalityBucketQuestions.includes(id) && value === 'no') {
-				// Remove Answer
-				removeItemFromList(id);
-				return;
-			}
-			if (value === 'yes') {
-				// Add Answer
-				if (personalityBucketQuestions.includes(id)) return;
-				updatePersonalityBucketQuestions([...personalityBucketQuestions, id]);
-			}
-		},
-	});
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: id,
+    onChange: (value) => {
+      if (!selected.includes(id)) {
+        setSelected([...selected, id]);
+      }
+      if (personalityBucketQuestions.includes(id) && value === "no") {
+        // Remove Answer
+        removeItemFromList(id);
+        return;
+      }
+      if (value === "yes") {
+        // Add Answer
+        if (personalityBucketQuestions.includes(id)) return;
+        updatePersonalityBucketQuestions([...personalityBucketQuestions, id]);
+      }
+    },
+  });
 
-	const group = getRootProps();
+  const group = getRootProps();
 
-	return (
-		<FormControl as="fieldset">
-			<FormLabel
-				as="legend"
-				mb="0"
-				border="2px solid"
-				borderColor="gray.200"
-				p="5"
-				w="full"
-			>
-				<Flex flexDir="column" gap="2">
-					<Text fontWeight="medium" fontSize="lg">
-						{title}
-					</Text>
-					<Text fontWeight="normal">{description}</Text>
-				</Flex>
-			</FormLabel>
-			<RadioGroup>
-				<HStack {...group} gap="0">
-					{options?.map((value, i) => {
-						const radio = getRadioProps({ value });
-						return (
-							<RadioCard value={value} key={i} {...radio}>
-								{value === 'yes' ? <AiOutlineCheck /> : <AiOutlineClose />}
-							</RadioCard>
-						);
-					})}
-				</HStack>
-			</RadioGroup>
-		</FormControl>
-	);
+  return (
+    <FormControl as="fieldset">
+      <FormLabel
+        as="legend"
+        mb="0"
+        border="2px solid"
+        borderColor="gray.200"
+        p="5"
+        w="full"
+      >
+        <Flex flexDir="column" gap="2">
+          <Text fontWeight="medium" fontSize="lg">
+            {title}
+          </Text>
+          <Text fontWeight="normal">{description}</Text>
+        </Flex>
+      </FormLabel>
+      <RadioGroup>
+        <HStack {...group} gap="0">
+          {options?.map((value, i) => {
+            const radio = getRadioProps({ value });
+            return (
+              <RadioCard value={value} key={i} {...radio}>
+                {value === "yes" ? <AiOutlineCheck /> : <AiOutlineClose />}
+              </RadioCard>
+            );
+          })}
+        </HStack>
+      </RadioGroup>
+    </FormControl>
+  );
 }

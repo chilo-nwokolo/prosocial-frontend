@@ -1,42 +1,49 @@
 import {
   Flex,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalOverlay,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
   Text,
   ThemingProps,
-} from '@chakra-ui/react';
-import { ReactNode } from 'react';
+} from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 type Props = {
-	description: string;
-	title: string;
+  description: string;
+  title: string;
   isOpen: boolean;
   onClose: () => void;
   size?: ThemingProps<"Modal">["size"];
   actionButtons?: ReactNode;
 };
 
-export default function AppModal({ description, title, isOpen, onClose, actionButtons, size }: Props) {
-	return (
-		<Modal onClose={onClose} isOpen={isOpen} isCentered size={size}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalBody pb="10">
+export default function AppModal({
+  description,
+  title,
+  isOpen,
+  onClose,
+  actionButtons,
+  size,
+}: Props) {
+  return (
+    <Modal onClose={onClose} isOpen={isOpen} isCentered size={size}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalBody pb="10">
           <Flex my="5" alignItems="center">
-            <Text fontSize="lg" fontWeight="semibold">{title}</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              {title}
+            </Text>
             <ModalCloseButton />
           </Flex>
-          <Text textAlign="center">
-            {description}
-          </Text>
+          <Text textAlign="center">{description}</Text>
           <Flex mt="5" justifyContent="center" gap="5">
             {actionButtons}
           </Flex>
         </ModalBody>
-			</ModalContent>
-		</Modal>
-	);
+      </ModalContent>
+    </Modal>
+  );
 }

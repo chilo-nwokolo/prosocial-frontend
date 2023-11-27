@@ -7,8 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint . --fix",
     "compile": "graphql-codegen",
-    "watch": "graphql-codegen -w"
+    "watch": "graphql-codegen -w",
+    "prepare": "husky install",
+    "prettier": "npx prettier . --check",
+    "prettier:fix": "npx prettier . --write ."
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",
@@ -46,6 +50,11 @@
     "@types/react-dom": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "prettier": "^3.1.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.2.2"
   }
 }

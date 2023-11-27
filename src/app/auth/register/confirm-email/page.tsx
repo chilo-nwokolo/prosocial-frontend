@@ -10,14 +10,14 @@ export default function EmailConfirmationPage() {
           Confirm your email address
         </Text>
         <Text>
-          We have sent you an email to verify your email address. Verifying your email address give you access to all the awesome features in ProSocial.
+          We have sent you an email to verify your email address. Verifying your
+          email address give you access to all the awesome features in
+          ProSocial.
         </Text>
         <Link href={appRouteLinks.login}>
-          <Button w="full">
-            Go to Login
-          </Button>
+          <Button w="full">Go to Login</Button>
         </Link>
       </Flex>
     </Center>
-  )
+  );
 }

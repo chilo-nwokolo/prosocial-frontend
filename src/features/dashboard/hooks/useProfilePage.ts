@@ -1,66 +1,72 @@
-import { useState } from 'react';
-import { useFormik } from 'formik';
-import { useQuery, useMutation } from '@apollo/client';
-import { useUserStore } from '@/store';
-import { UPDATE_USER_INFO, ME_QUERY } from '@/features/dashboard/profile/gql/queries';
-import { useToast } from '@chakra-ui/react';
+import { useState } from "react";
+import { useFormik } from "formik";
+import { useQuery, useMutation } from "@apollo/client";
+import { useUserStore } from "@/store";
+import {
+  UPDATE_USER_INFO,
+  ME_QUERY,
+} from "@/features/dashboard/profile/gql/queries";
+import { useToast } from "@chakra-ui/react";
 
 export default function useProfilePage() {
-	const [setUserProfile, userProfile] = useUserStore((state) => [state.setUserProfile, state.userProfile]);
-	const toast = useToast();
+  const [setUserProfile, userProfile] = useUserStore((state) => [
+    state.setUserProfile,
+    state.userProfile,
+  ]);
+  const toast = useToast();
 
-	const { loading, error } = useQuery(ME_QUERY, {
-		onCompleted: (data) => {
-			setUserProfile(data);
-		},
-	});
+  const { loading, error } = useQuery(ME_QUERY, {
+    onCompleted: (data) => {
+      setUserProfile(data);
+    },
+  });
 
-	const [profileImage] = useState(userProfile?.me?.profile?.avatar || null);
+  const [profileImage] = useState(userProfile?.me?.profile?.avatar || null);
 
-	const [submit, { loading: updating }] = useMutation(UPDATE_USER_INFO, {
-		onCompleted: () => {
-			toast({
-				status: 'success',
-				title: 'Update successful',
-			})
-		},
-		refetchQueries: ["ME"],
-	});
+  const [submit, { loading: updating }] = useMutation(UPDATE_USER_INFO, {
+    onCompleted: () => {
+      toast({
+        status: "success",
+        title: "Update successful",
+      });
+    },
+    refetchQueries: ["ME"],
+  });
 
-	const password = 'password';
+  const password = "password";
 
-	const formik = useFormik({
-		initialValues: {
-			phone: userProfile?.me?.phone || '+123223233',
-			email: userProfile?.me?.email || 'sample@mail.com',
-			password,
-		},
-		onSubmit: (values) => {
-			const formData: Partial<typeof values> = {};
-			if (values.email !== userProfile?.me?.email) {
-				formData.email = values.email;
-			}
-			if (values.phone !== userProfile?.me?.phone) {
-				formData.phone = values.phone;
-			}
-			if (values.password !== password) {
-				formData.password = values.password;
-			}
+  const formik = useFormik({
+    initialValues: {
+      phone: userProfile?.me?.phone || "+123223233",
+      email: userProfile?.me?.email || "sample@mail.com",
+      password,
+    },
+    onSubmit: (values) => {
+      const formData: Partial<typeof values> = {};
+      if (values.email !== userProfile?.me?.email) {
+        formData.email = values.email;
+      }
+      if (values.phone !== userProfile?.me?.phone) {
+        formData.phone = values.phone;
+      }
+      if (values.password !== password) {
+        formData.password = values.password;
+      }
       if (!Object.values(formData).length) return;
-			submit({
+      submit({
         variables: {
           input: formData,
-        }
-      })
-		},
-	});
+        },
+      });
+    },
+  });
 
-	return {
-		formik,
-		loading,
-		error,
-		submit,
-		updating,
-		profileImage
-	} as const;
+  return {
+    formik,
+    loading,
+    error,
+    submit,
+    updating,
+    profileImage,
+  } as const;
 }

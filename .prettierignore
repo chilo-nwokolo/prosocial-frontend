@@ -1,0 +1,13 @@
+/src/__generated__
+src/app/_offline.js
+src/app/not-found.js
+tsconfig.json
+.prettierrc
+codegen.ts
+ecosystem.config.js
+next.config.js
+public
+.github
+.husky
+.next
+node_modules
