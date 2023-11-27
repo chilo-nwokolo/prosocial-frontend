@@ -1,17 +1,18 @@
 'use client';
-import { setCookie } from '@/libs/cookies';
+import useAppConfig from '@/hooks/useAppConfig';
 import { configExtras } from '@/utils/constants';
 import { Flex, Text } from '@chakra-ui/react';
-import dynamic from 'next/dynamic'
-import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 
-const QuestionCategories = dynamic(() => import('@/features/intro/components/QuestionCategories'), { ssr: false });
+const QuestionCategories = dynamic(
+	() => import('@/features/intro/components/QuestionCategories'),
+	{ ssr: false },
+);
 
 export default function IntroPage() {
-	useEffect(() => {
-		setCookie(configExtras.user_visited_intro_page, "true");
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	useAppConfig({
+		initialConfig: [{ key: configExtras.user_visited_intro_page, value: 'true' }],
+	});
 
 	return (
 		<Flex mt="5" flexDir="column">

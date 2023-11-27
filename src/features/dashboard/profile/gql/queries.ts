@@ -46,6 +46,19 @@ export const ME_SCHEDULES = gql(`
   }
 `);
 
+export const QUERY_ME_SETTINGS = gql(`
+  query QUERY_ME_SETTINGS {
+    me {
+      settings {
+        preference_settings {
+          key
+          value 
+        }
+      }
+    }
+  }
+`);
+
 /**
  * MUTATIONS
  */
@@ -70,6 +83,20 @@ export const UPDATE_USER_SCHEDULE = gql(`
   mutation UpdateUserSchedule($input: SchedulesInput!) {
     updateUserSchedules(input: $input) {
       id
+    }
+  }
+`);
+
+export const UPDATE_USER_SETTINGS = gql(`
+  mutation UPDATE_USER_SETTINGS($input: UserSettingInput!) {
+    updateUserSettings(input: $input) {
+      id
+      settings {
+        preference_settings {
+          key
+          value
+        }
+      }
     }
   }
 `);

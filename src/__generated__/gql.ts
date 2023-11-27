@@ -31,9 +31,11 @@ const documents = {
     "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query ME_QUESTION_RESPONSES {\n    me {\n      id\n      question_responses {\n        id\n        question {\n          id\n        }\n        answer {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.Me_Question_ResponsesDocument,
     "\n  query ME_SCHEDULES {\n    me {\n      schedules {\n        day_name\n        time_range\n        status\n      }\n    }\n  }\n": types.Me_SchedulesDocument,
+    "\n  query QUERY_ME_SETTINGS {\n    me {\n      settings {\n        preference_settings {\n          key\n          value \n        }\n      }\n    }\n  }\n": types.Query_Me_SettingsDocument,
     "\n  mutation UPDATE_USER_INFO($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      id\n    }\n  }\n": types.Update_User_InfoDocument,
     "\n  mutation UPDATE_PROFILE_PICTURE($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      id\n    }\n  }\n": types.Update_Profile_PictureDocument,
     "\n  mutation UpdateUserSchedule($input: SchedulesInput!) {\n    updateUserSchedules(input: $input) {\n      id\n    }\n  }\n": types.UpdateUserScheduleDocument,
+    "\n  mutation UPDATE_USER_SETTINGS($input: UserSettingInput!) {\n    updateUserSettings(input: $input) {\n      id\n      settings {\n        preference_settings {\n          key\n          value\n        }\n      }\n    }\n  }\n": types.Update_User_SettingsDocument,
     "\n  query OnBoardCategoriesWithQuestions {\n    onBoardCategoriesWithQuestions {\n      id\n      name\n      questions {\n        id\n        text\n        type\n        options {\n          id\n          title\n          value\n        }\n      }\n    }\n  }\n": types.OnBoardCategoriesWithQuestionsDocument,
     "\n  query MePersonalityScore {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n          image\n          description\n          bucketQuestions {\n            id\n            title\n            text\n          }\n        }\n      }\n    }\n  }\n": types.MePersonalityScoreDocument,
     "\n  mutation QuestionResponse($input: QuestionResponseGroupInput!) {\n    questionResponse(input: $input) {\n      status\n      message\n    }\n  }\n": types.QuestionResponseDocument,
@@ -131,6 +133,10 @@ export function gql(source: "\n  query ME_SCHEDULES {\n    me {\n      schedules
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  query QUERY_ME_SETTINGS {\n    me {\n      settings {\n        preference_settings {\n          key\n          value \n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query QUERY_ME_SETTINGS {\n    me {\n      settings {\n        preference_settings {\n          key\n          value \n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  mutation UPDATE_USER_INFO($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UPDATE_USER_INFO($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -140,6 +146,10 @@ export function gql(source: "\n  mutation UPDATE_PROFILE_PICTURE($input: UpdateU
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation UpdateUserSchedule($input: SchedulesInput!) {\n    updateUserSchedules(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateUserSchedule($input: SchedulesInput!) {\n    updateUserSchedules(input: $input) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UPDATE_USER_SETTINGS($input: UserSettingInput!) {\n    updateUserSettings(input: $input) {\n      id\n      settings {\n        preference_settings {\n          key\n          value\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UPDATE_USER_SETTINGS($input: UserSettingInput!) {\n    updateUserSettings(input: $input) {\n      id\n      settings {\n        preference_settings {\n          key\n          value\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

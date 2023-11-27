@@ -105,9 +105,9 @@ export type Mutation = {
   requestResetPasswordLink: BasicResponse;
   submitPersonalityBucketQuestion: BasicResponse;
   submitUserInterest?: Maybe<BasicResponse>;
-  updateJournal?: Maybe<Journal>;
   updateUser: User;
   updateUserSchedules?: Maybe<Array<Schedule>>;
+  updateUserSettings: User;
   verifyUser: BasicResponse;
 };
 
@@ -155,13 +155,6 @@ export type MutationSubmitUserInterestArgs = {
 };
 
 
-export type MutationUpdateJournalArgs = {
-  id: Scalars['ID']['input'];
-  input?: InputMaybe<Scalars['String']['input']>;
-  journal_category_id?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
@@ -169,6 +162,11 @@ export type MutationUpdateUserArgs = {
 
 export type MutationUpdateUserSchedulesArgs = {
   input: SchedulesInput;
+};
+
+
+export type MutationUpdateUserSettingsArgs = {
+  input: UserSettingInput;
 };
 
 
@@ -253,6 +251,17 @@ export type PersonalityScore = {
   personalityBucketType?: Maybe<PersonalityBucketType>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   user?: Maybe<User>;
+};
+
+export type PreferenceSetting = {
+  __typename?: 'PreferenceSetting';
+  key: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type PreferenceSettingInput = {
+  key: Scalars['String']['input'];
+  value: Scalars['String']['input'];
 };
 
 export type ProfileInput = {
@@ -450,6 +459,7 @@ export type User = {
   profile?: Maybe<UserProfile>;
   question_responses?: Maybe<Array<QuestionResponse>>;
   schedules?: Maybe<Array<Schedule>>;
+  settings?: Maybe<UserSetting>;
   unique_id: Scalars['String']['output'];
   updated_at: Scalars['DateTime']['output'];
 };
@@ -494,6 +504,16 @@ export type UserProfile = {
   to_socialization?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   zip_code?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserSetting = {
+  __typename?: 'UserSetting';
+  preference_settings?: Maybe<Array<PreferenceSetting>>;
+  user: User;
+};
+
+export type UserSettingInput = {
+  preferenceSettings?: InputMaybe<Array<PreferenceSettingInput>>;
 };
 
 export type VerifyUserInput = {
@@ -607,6 +627,11 @@ export type Me_SchedulesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type Me_SchedulesQuery = { __typename?: 'Query', me?: { __typename?: 'User', schedules?: Array<{ __typename?: 'Schedule', day_name: DayName, time_range?: Array<TimeRange> | null, status: boolean }> | null } | null };
 
+export type Query_Me_SettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Query_Me_SettingsQuery = { __typename?: 'Query', me?: { __typename?: 'User', settings?: { __typename?: 'UserSetting', preference_settings?: Array<{ __typename?: 'PreferenceSetting', key: string, value: string }> | null } | null } | null };
+
 export type Update_User_InfoMutationVariables = Exact<{
   input: UpdateUserInput;
 }>;
@@ -627,6 +652,13 @@ export type UpdateUserScheduleMutationVariables = Exact<{
 
 
 export type UpdateUserScheduleMutation = { __typename?: 'Mutation', updateUserSchedules?: Array<{ __typename?: 'Schedule', id?: string | null }> | null };
+
+export type Update_User_SettingsMutationVariables = Exact<{
+  input: UserSettingInput;
+}>;
+
+
+export type Update_User_SettingsMutation = { __typename?: 'Mutation', updateUserSettings: { __typename?: 'User', id: string, settings?: { __typename?: 'UserSetting', preference_settings?: Array<{ __typename?: 'PreferenceSetting', key: string, value: string }> | null } | null } };
 
 export type OnBoardCategoriesWithQuestionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -683,9 +715,11 @@ export const Create_Journal_EntryDocument = {"kind":"Document","definitions":[{"
 export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ME"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"unique_id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
 export const Me_Question_ResponsesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ME_QUESTION_RESPONSES"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"question_responses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"answer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Me_Question_ResponsesQuery, Me_Question_ResponsesQueryVariables>;
 export const Me_SchedulesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ME_SCHEDULES"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"schedules"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"day_name"}},{"kind":"Field","name":{"kind":"Name","value":"time_range"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]}}]} as unknown as DocumentNode<Me_SchedulesQuery, Me_SchedulesQueryVariables>;
+export const Query_Me_SettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_ME_SETTINGS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"settings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"preference_settings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Query_Me_SettingsQuery, Query_Me_SettingsQueryVariables>;
 export const Update_User_InfoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UPDATE_USER_INFO"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<Update_User_InfoMutation, Update_User_InfoMutationVariables>;
 export const Update_Profile_PictureDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UPDATE_PROFILE_PICTURE"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<Update_Profile_PictureMutation, Update_Profile_PictureMutationVariables>;
 export const UpdateUserScheduleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUserSchedule"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SchedulesInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserSchedules"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateUserScheduleMutation, UpdateUserScheduleMutationVariables>;
+export const Update_User_SettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UPDATE_USER_SETTINGS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserSettingInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserSettings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"settings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"preference_settings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Update_User_SettingsMutation, Update_User_SettingsMutationVariables>;
 export const OnBoardCategoriesWithQuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"OnBoardCategoriesWithQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"onBoardCategoriesWithQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"questions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"options"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<OnBoardCategoriesWithQuestionsQuery, OnBoardCategoriesWithQuestionsQueryVariables>;
 export const MePersonalityScoreDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MePersonalityScore"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"personalityScore"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"personalityBucketType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sub_title"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"bucketQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<MePersonalityScoreQuery, MePersonalityScoreQueryVariables>;
 export const QuestionResponseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"QuestionResponse"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"QuestionResponseGroupInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questionResponse"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<QuestionResponseMutation, QuestionResponseMutationVariables>;

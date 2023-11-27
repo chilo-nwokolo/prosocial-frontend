@@ -5,16 +5,17 @@ import { useRouter } from 'next/navigation';
 import { AccessToken, appRouteLinks, configExtras } from '@/utils/constants';
 import { useQuery } from '@apollo/client';
 import { QUERY_QUESTIONS } from '@/features/intro/gql';
-import { useAppQuestions, useConfig } from '@/store';
+import { useAppQuestions } from '@/store';
 import { transformQuestions } from '@/features/intro/helpers';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { deleteCookie } from '@/libs/cookies';
 import { useLayoutEffect, useState } from 'react';
+import useAppConfig from '@/hooks/useAppConfig';
 
 export default function OnboardingPage() {
 	const router = useRouter();
 
-	const [config] = useConfig((state) => [state.config]);
+	const { config } = useAppConfig({});
 
 	const [updateOnboardQuestions] = useAppQuestions((state) => [state.updateOnboardQuestions]);
 
@@ -41,7 +42,7 @@ export default function OnboardingPage() {
 	});
 
 	useLayoutEffect(() => {
-		if (config[configExtras.user_has_seen_personality_score]) {
+		if (config?.[configExtras.user_has_seen_personality_score]) {
 			router.push(appRouteLinks.home);
 			setSkipQuery(true);
 		} else {

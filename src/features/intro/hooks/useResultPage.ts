@@ -1,21 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useAppQuestions, useConfig } from '@/store';
+import { useState } from 'react';
+import { useAppQuestions } from '@/store';
 import { useMutation, useQuery } from '@apollo/client';
 import { ME_PERSONALITY_SCORE, USER_BUCKET_QUESTIONS_RESPONSE_INPUT } from '../gql';
 import { apolloErrorHandler } from '@/utils/helpers';
 import { useRouter } from 'next/navigation';
-import { appRouteLinks } from '@/utils/constants';
+import { appRouteLinks, configExtras } from '@/utils/constants';
+import useAppConfig from '@/hooks/useAppConfig';
 
 export default function useResultPage() {
 	const { data, loading } = useQuery(ME_PERSONALITY_SCORE);
 	const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
-	const [updateConfig] = useConfig((state) => [state.updateConfig]);
 
-	useEffect(() => {
-		updateConfig({ user_has_seen_personality_score: true })
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	useAppConfig({initialConfig: [{ key: configExtras.user_has_seen_personality_score, value: "true"}]})
 
 	const [updatePersonalityBucketQuestions, personalityBucketQuestions] =
 		useAppQuestions((state) => [
