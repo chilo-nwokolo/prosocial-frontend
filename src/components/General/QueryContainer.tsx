@@ -35,7 +35,7 @@ export default function QueryContainer({
 	if (error) {
 		toast({
 			status: 'error',
-			description: 'Invalid token',
+			description: 'Error',
 			title: apolloErrorHandler(error),
 		});
 	}

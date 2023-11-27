@@ -32,10 +32,10 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
 	const [ compressingImage, setCompressingImage ] = useState(false);
 
 	const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
-		onCompleted: () => {
+		onCompleted: async () => {
 			setKey(key + 1);
 			setProfileImage(uploadedImage.current);
-			client.refetchQueries({
+			await client.refetchQueries({
 				include: ['ME'],
 				updateCache(cache) {
 					cache.evict({ fieldName: 'ME' });

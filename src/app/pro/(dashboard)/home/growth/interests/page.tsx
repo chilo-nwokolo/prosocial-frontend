@@ -15,7 +15,7 @@ export default function InterestsPage() {
 		<QueryContainer loading={loading} error={error}>
 			<Center h="80vh">
 				<Flex flexDir="column" w="full" h="full" gap="5">
-					<BackButton />
+					<BackButton destination={appRouteLinks.growth} />
 					<Flex flexDir="column" h="full" justifyContent="center" gap="4">
 						<Text fontSize="2xl" fontWeight="semibold">
 							Interests Inventory

@@ -73,6 +73,45 @@ export const QUERY_ME_INTERESTS = gql(`
   }
 `);
 
+export const QUERY_CHALLENGE_CATEGORIES = gql(`
+  query QUERY_CHALLENGE_CATEGORIES {
+    challengeCategories {
+      id
+      title
+      type
+    }
+  }
+`)
+
+export const QUERY_JOURNAL_CATEGORIES = gql(`
+  query QUERY_JOURNAL_CATEGORIES {
+    journalCategories {
+      id
+      title
+      type 
+      journals {
+        id
+        input
+      }
+    }
+  }
+`)
+
+export const QUERY_ME_CHALLENGE_CATEGORIES = gql(`
+  query QUERY_ME_CHALLENGE_CATEGORIES {
+    me {
+      challenges {
+        id
+        input
+        category {
+          id
+          title
+        }
+      }
+    }
+  }
+`)
+
 /**
  * 
  * MUTATIONS
