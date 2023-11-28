@@ -53,10 +53,12 @@ export default function FormInput({
   return (
     <>
       <FormControl>
-        <FormLabel>{labelTitle}</FormLabel>
+        <FormLabel color="primary.200">{labelTitle}</FormLabel>
         {inputType === "password" ? (
           <InputGroup>
             <Input
+              borderRadius="0"
+              border="0.75px solid #876a6c"
               name={name}
               type={show ? "text" : "password"}
               value={value}
@@ -68,23 +70,23 @@ export default function FormInput({
                   ? !value
                     ? ""
                     : error?.length
-                      ? "2px solid red.400"
+                      ? "2px solid #f95c47"
                       : value.length && !error?.length
-                        ? "2px solid green"
+                        ? "2px solid #389974"
                         : ""
                   : ""
               }
               isInvalid={!!error}
-              errorBorderColor="red.400"
+              errorBorderColor="#f95c47"
             />
             <InputRightElement onClick={setShow.toggle}>
               {show ? (
                 <Text cursor="pointer">
-                  <FaRegEyeSlash />
+                  <FaRegEyeSlash style={{ color: "#3a3738" }} />
                 </Text>
               ) : (
                 <Text cursor="pointer">
-                  <FaRegEye />
+                  <FaRegEye style={{ color: "#3a3738" }} />
                 </Text>
               )}
             </InputRightElement>
@@ -98,11 +100,15 @@ export default function FormInput({
             onBlur={onBlur}
             min={min}
             max={max}
+            borderRadius="0"
+            bg="#fff"
+            border="0.75px solid #876a6c"
+            _focus={{ border: "1.5px solid #7bb4ce", bg: "#fff" }}
           />
         )}
         <FormHelperText>
           {error ? (
-            <Text fontSize="xs" color="red.500">
+            <Text fontSize="xs" color="#f95c47">
               {error}
             </Text>
           ) : tooltip ? (
@@ -118,7 +124,9 @@ export default function FormInput({
               </Flex>
             </Tooltip>
           ) : (
-            <Text fontSize="xs">{infoText}</Text>
+            <Text color="primary.200" fontSize="xs" fontStyle="italic">
+              {infoText}
+            </Text>
           )}
         </FormHelperText>
       </FormControl>

@@ -1,21 +1,27 @@
 "use client";
-
 import { Center, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { AccessToken, appRouteLinks, configExtras } from "@/utils/constants";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { QUERY_QUESTIONS } from "@/features/intro/gql";
 import { useAppQuestions } from "@/store";
 import { transformQuestions } from "@/features/intro/helpers";
 import { apolloErrorHandler } from "@/utils/helpers";
 import { deleteCookie } from "@/libs/cookies";
-import { useLayoutEffect, useState } from "react";
 import useAppConfig from "@/hooks/useAppConfig";
 
 export default function OnboardingPage() {
   const router = useRouter();
 
-  const { config } = useAppConfig({});
+  useAppConfig({
+    onSuccess: (settings) => {
+      if (settings?.[configExtras.user_has_seen_personality_score]) {
+        router.push(appRouteLinks.home);
+      } else {
+        getQuestions();
+      }
+    },
+  });
 
   const [updateOnboardQuestions] = useAppQuestions((state) => [
     state.updateOnboardQuestions,
@@ -23,9 +29,7 @@ export default function OnboardingPage() {
 
   const toast = useToast();
 
-  const [skipQuery, setSkipQuery] = useState(false);
-
-  const { loading, refetch } = useQuery(QUERY_QUESTIONS, {
+  const [getQuestions, { loading }] = useLazyQuery(QUERY_QUESTIONS, {
     onCompleted: (data) => {
       const result = transformQuestions(data);
       updateOnboardQuestions(result);
@@ -40,17 +44,7 @@ export default function OnboardingPage() {
       });
       deleteCookie(AccessToken);
     },
-    skip: skipQuery,
   });
-
-  useLayoutEffect(() => {
-    if (config?.[configExtras.user_has_seen_personality_score]) {
-      router.push(appRouteLinks.home);
-      setSkipQuery(true);
-    } else {
-      refetch();
-    }
-  }, [config, refetch, router]);
 
   return (
     <Center h="100vh">

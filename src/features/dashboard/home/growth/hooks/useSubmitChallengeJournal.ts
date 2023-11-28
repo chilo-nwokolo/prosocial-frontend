@@ -9,6 +9,7 @@ import {
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { useDisclosure, useToast } from "@chakra-ui/react";
+// import useAppConfig from "@/hooks/useAppConfig";
 type Props = {
   id: number;
   initialValue: string;
@@ -24,12 +25,21 @@ export default function useSubmitChallengeJournal({
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // const { updateConfig, config } = useAppConfig({});
+
   const [mutate, { loading }] = useMutation(CREATE_JOURNAL_ENTRY, {
     onCompleted: () => {
       toast({
         status: "success",
         title: "Your entry was saved successfully.",
       });
+
+      // if (source === "challenges") {
+      //   updateConfig([{ key: "user_challenges_story", value: "" }]);
+      // } else if (source === "journal") {
+      //   updateConfig([{ key: "user_journal_story", value: "" }]);
+      // }
+
       source === "challenges"
         ? router.push(appRouteLinks.growthChallenges)
         : router.push(appRouteLinks.growthJournal);

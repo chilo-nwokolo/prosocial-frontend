@@ -2,11 +2,12 @@
 import BackButton from "@/components/General/BackButton";
 import useGrowthPage from "@/features/dashboard/home/growth/hooks/useGrowthPage";
 import { appRouteLinks } from "@/utils/constants";
+import { calculateGrowthProgress } from "@/utils/helpers";
 import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 export default function GrowthPage() {
-  const { calculateProgress, growthSections } = useGrowthPage();
+  const { growthSections } = useGrowthPage();
 
   return (
     <Flex flexDir="column" w="full" gap="5">
@@ -34,7 +35,7 @@ export default function GrowthPage() {
               </Flex>
               <Box
                 mt="auto"
-                bg={`linear-gradient(to right, ${calculateProgress(
+                bg={`linear-gradient(to right, ${calculateGrowthProgress(
                   section.answers,
                   section.progress,
                 )})`}

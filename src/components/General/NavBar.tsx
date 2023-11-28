@@ -83,7 +83,7 @@ export default function NavBar() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerBody>
+          <DrawerBody bg="bg">
             <Flex flexDir="column" gap="4" mt="10">
               {links.map((link) => (
                 <Box

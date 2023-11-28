@@ -41,7 +41,7 @@ export default function PersonalityQuizzesPage() {
                   <Text fontSize="lg" fontWeight="semibold">
                     {question}
                   </Text>
-                  {checkIfCompleted(question) === 10 ? (
+                  {checkIfCompleted(question) ? (
                     <Flex color="green.500" gap="2" alignItems="center">
                       <FaCheckCircle />
                       <Text fontWeight="semibold">Completed</Text>

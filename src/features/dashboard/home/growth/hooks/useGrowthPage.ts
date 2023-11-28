@@ -1,24 +1,21 @@
-import { useAppQuestions } from "@/store";
+import useAppConfig from "@/hooks/useAppConfig";
 import { appRouteLinks } from "@/utils/constants";
 
 export default function useGrowthPage() {
-  const [userPersonalityAnswers] = useAppQuestions((state) => [
-    state.userPersonalityAnswers,
-  ]);
+  const { config } = useAppConfig({});
 
-  const checkAnswers = (answers: { [id: string]: number }[]) => {
-    let completed = 0;
-
-    answers.forEach((value) => {
-      const data = Object.values(value);
-      if (data[0] === 10) {
-        completed++;
+  const checkPersonalityProgress = () => {
+    const progress = { personalityQuiz: 0, interests: 0 };
+    for (let key in config) {
+      if (key.includes("user_quiz_personality-")) {
+        progress.personalityQuiz += 1;
       }
-    });
-    return completed;
+      if (key.includes("user_completed_interests_2")) {
+        progress.interests += 1;
+      }
+    }
+    return progress;
   };
-
-  checkAnswers(userPersonalityAnswers);
 
   const growthSections = [
     {
@@ -27,7 +24,7 @@ export default function useGrowthPage() {
       description: "Learn about yourself and get even better social matches",
       progress: 3,
       destination: appRouteLinks.growthPersonality,
-      answers: checkAnswers(userPersonalityAnswers),
+      answers: checkPersonalityProgress().personalityQuiz,
     },
     {
       id: 2,
@@ -36,7 +33,7 @@ export default function useGrowthPage() {
         "Tell us about your interests so we can help you find like-minded people",
       progress: 1,
       destination: appRouteLinks.growthInterests,
-      answers: 0,
+      answers: checkPersonalityProgress().interests,
     },
     {
       id: 3,
@@ -58,12 +55,5 @@ export default function useGrowthPage() {
     },
   ];
 
-  const calculateProgress = (qty: number, total: number) => {
-    if (qty === 0) return `white 100%`;
-    const breakdown = 100 / total;
-
-    return `green ${breakdown * qty}%, #fdf5e9 0%`;
-  };
-
-  return { calculateProgress, growthSections };
+  return { growthSections };
 }

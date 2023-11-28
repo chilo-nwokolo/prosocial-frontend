@@ -1,8 +1,9 @@
 "use client";
 import BackButton from "@/components/General/BackButton";
 import { SUBMIT_USER_INTERESTS } from "@/features/dashboard/home/growth/queries";
+import useAppConfig from "@/hooks/useAppConfig";
 import { useAppQuestions } from "@/store";
-import { appRouteLinks } from "@/utils/constants";
+import { appRouteLinks, configExtras } from "@/utils/constants";
 import { useMutation } from "@apollo/client";
 import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
@@ -16,6 +17,8 @@ export default function InterestedExtendedPage() {
   const [proceed, setProceed] = useState(false);
 
   const ref = useRef(true);
+
+  const { updateConfig } = useAppConfig({});
 
   const [mutate] = useMutation(SUBMIT_USER_INTERESTS, {
     variables: {
@@ -31,6 +34,9 @@ export default function InterestedExtendedPage() {
       });
     },
     onCompleted: () => {
+      updateConfig([
+        { key: configExtras.user_completed_interests_1, value: "true" },
+      ]);
       setProceed(true);
     },
   });

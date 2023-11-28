@@ -8,6 +8,7 @@ import { UserQuestionsType, useAppQuestions, useUserStore } from "@/store";
 import { useMutation } from "@apollo/client";
 import { QUESTION_RESPONSE_MUTATION } from "@/features/intro/gql";
 import { apolloErrorHandler, combineIntoFormattedArray } from "@/utils/helpers";
+import useAppConfig from "@/hooks/useAppConfig";
 
 type Props = {
   quizId: string;
@@ -26,6 +27,8 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
       state.updateUserPersonalityAnswers,
       state.meAnswers,
     ]);
+
+  const { updateConfig } = useAppConfig({});
 
   useEffect(() => {
     const sectionQuestions = questions?.filter(
@@ -71,6 +74,7 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
     initialValues: genInitialValues(),
     enableReinitialize: true,
     onSubmit: async (values) => {
+      console.log({ values });
       const location = decodeURI(quizId);
       const locationIndex = userPersonalityAnswers.findIndex(
         (answer) => answer[location],
@@ -90,6 +94,16 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
       }
 
       const formattedAnswers = combineIntoFormattedArray([values]);
+      if (formattedAnswers.length === 10) {
+        updateConfig([
+          {
+            key: `user_quiz_${decodeURI(quizId)
+              .replace(" ", "-")
+              .toLowerCase()}`,
+            value: "completed",
+          },
+        ]);
+      }
       await submitAnswers({
         variables: {
           input: { answers: formattedAnswers },

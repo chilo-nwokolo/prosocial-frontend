@@ -2,6 +2,14 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ALL_QUESTIONS } from "../home/growth/queries";
 import { useAppQuestions, useUserStore } from "@/store";
 import { ME_QUESTION_RESPONSES } from "../profile/gql/queries";
+import useAppConfig from "@/hooks/useAppConfig";
+import { useCallback } from "react";
+
+const questionConfigMap = {
+  "Personality 1": "user_quiz_personality-1",
+  "Personality 2": "user_quiz_personality-2",
+  "Personality 3": "user_quiz_personality-3",
+};
 
 export default function usePersonalityQuizzesPage() {
   const [questions, updateQuestions] = useUserStore((state) => [
@@ -12,6 +20,8 @@ export default function usePersonalityQuizzesPage() {
     state.userPersonalityAnswers,
     state.updateMeAnswers,
   ]);
+
+  const { config } = useAppConfig({});
 
   const { loading, error } = useQuery(QUERY_ALL_QUESTIONS, {
     onCompleted: (data) => {
@@ -33,14 +43,16 @@ export default function usePersonalityQuizzesPage() {
     },
   });
 
-  const checkIfCompleted = (question: string) => {
-    const findIndex = userPersonalityAnswers.findIndex(
-      (answer) => answer[question],
-    );
-
-    if (findIndex < 0) return false;
-    return userPersonalityAnswers[findIndex][question];
-  };
+  const checkIfCompleted = useCallback(
+    (question: string) => {
+      console.log(config);
+      const result =
+        config?.[questionConfigMap[question as keyof typeof questionConfigMap]];
+      if (result === "completed") return true;
+      return false;
+    },
+    [config],
+  );
 
   return {
     loading,

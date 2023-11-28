@@ -8,9 +8,10 @@ import {
   QUERY_ME_INTERESTS,
   SUBMIT_USER_INTERESTS,
 } from "@/features/dashboard/home/growth/queries";
+import useAppConfig from "@/hooks/useAppConfig";
 import { client } from "@/service";
 import { useAppQuestions } from "@/store";
-import { appRouteLinks } from "@/utils/constants";
+import { appRouteLinks, configExtras } from "@/utils/constants";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
@@ -25,6 +26,8 @@ import { useState } from "react";
 import { GrClose } from "react-icons/gr";
 
 export default function InterestedExtendedPage() {
+  const { updateConfig } = useAppConfig({});
+
   const [flattenedInterests, setFlattenedInterets] = useState<string[] | null>(
     null,
   );
@@ -80,6 +83,9 @@ export default function InterestedExtendedPage() {
       await client.refetchQueries({
         include: ["QUERY_INTERESTS_BY_NONE_TRAITS"],
       });
+      updateConfig([
+        { key: configExtras.user_completed_interests_2, value: "true" },
+      ]);
       router.push(appRouteLinks.growth);
     },
   });

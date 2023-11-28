@@ -4,8 +4,8 @@ export const Button = defineStyleConfig({
   // The styles all button have in common
   baseStyle: {
     fontWeight: "bold",
-    borderRadius: "base", // <-- border radius is same for all variants and sizes
-    fontSize: "16px",
+    borderRadius: "0", // <-- border radius is same for all variants and sizes
+    fontSize: "14px",
   },
   // Two sizes: sm and md
   sizes: {

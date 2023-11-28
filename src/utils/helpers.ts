@@ -47,3 +47,10 @@ export const apolloErrorHandler = (error: ApolloError) => {
     ) as unknown as string) || "Something went wrong"
   );
 };
+
+export const calculateGrowthProgress = (qty: number, total: number) => {
+  if (qty === 0) return `white 100%`;
+  const breakdown = 100 / total;
+
+  return `green ${breakdown * qty}%, #fdf5e9 0%`;
+};

@@ -56,6 +56,8 @@ export const AnswerType = {
 export const configExtras = {
   user_has_seen_personality_score: "user_has_seen_personality_score",
   user_visited_intro_page: "user_visited_intro_page",
+  user_completed_interests_1: "user_completed_interests_1",
+  user_completed_interests_2: "user_completed_interests_2",
 };
 
 export const externalLinks = {

@@ -11,11 +11,13 @@ type FlatConfigType = {
   [key: string]: string;
 };
 
-export default function useAppConfig({
-  initialConfig,
-}: {
+type Props = {
   initialConfig?: ConfigType;
-}) {
+  // eslint-disable-next-line no-unused-vars
+  onSuccess?: (settings: FlatConfigType) => void;
+};
+
+export default function useAppConfig({ initialConfig, onSuccess }: Props) {
   const [config, setConfig] = useState<FlatConfigType | null>(null);
 
   const [mutate] = useMutation(UPDATE_USER_SETTINGS, {
@@ -24,11 +26,11 @@ export default function useAppConfig({
         "config>>> ",
         data.updateUserSettings.settings?.preference_settings,
       );
+      refetch();
     },
-    refetchQueries: ["QUERY_ME_SETTINGS"],
   });
 
-  useQuery(QUERY_ME_SETTINGS, {
+  const { refetch } = useQuery(QUERY_ME_SETTINGS, {
     onCompleted: (data) => {
       const obj: FlatConfigType = {};
       const settings = data.me?.settings?.preference_settings;
@@ -58,6 +60,18 @@ export default function useAppConfig({
             },
           });
         }
+      }
+
+      // The user does not have any settings saved and there is a config to be saved
+      if (!settings && initialConfig?.length) {
+        mutate({
+          variables: {
+            input: { preferenceSettings: initialConfig },
+          },
+        });
+      }
+      if (onSuccess && typeof onSuccess === "function") {
+        onSuccess(obj);
       }
     },
   });
