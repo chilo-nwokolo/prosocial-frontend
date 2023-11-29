@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import SocialScheduleAccordion from "@/components/General/SwitchAccordion";
 import { ScheduleDateType, useUserStore } from "@/store";
+import { useState } from "react";
 
 const options = [
   { id: 1, title: "Morning \n(7am - 12pm)", value: "MORNING" },
@@ -111,6 +112,8 @@ export default function ScheduleDaysBox({
     state.updateSelectedSchedules,
   ]);
 
+  const [allDays] = useState(selectedSchedules.map((schedule) => schedule.day));
+
   const onChecked = (day: string, timeRange: string[]) => {
     const scheduleIndex = selectedSchedules.findIndex(
       (schedule) => schedule.day === day,
@@ -135,6 +138,7 @@ export default function ScheduleDaysBox({
           title={days.day}
           key={days.id}
           onChange={() => toggleAccordion(days.value)}
+          defaultIndex={allDays.includes(days.value) ? [0] : [1]}
         >
           <ScheduleDays
             selectedSchedules={selectedSchedules}

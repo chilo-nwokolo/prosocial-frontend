@@ -9,7 +9,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import ScheduleDaysBox from "@/features/intro/components/ScheduleDaysBox";
-import SocialScheduleAccordion from "@/components/General/SwitchAccordion";
 import useSocialSchedule from "@/features/dashboard/hooks/useSocialSchedule";
 import BackButton from "@/components/General/BackButton";
 import { AiFillInfoCircle } from "react-icons/ai";
@@ -43,18 +42,8 @@ export default function SocialPreferencePage() {
           Weekly Availability
         </Text>
         <Accordion allowMultiple mt="5">
-          <SocialScheduleAccordion title="Weekdays">
-            <ScheduleDaysBox
-              source="weekday"
-              toggleAccordion={toggleAccordion}
-            />
-          </SocialScheduleAccordion>
-          <SocialScheduleAccordion title="Weekend">
-            <ScheduleDaysBox
-              source="weekend"
-              toggleAccordion={toggleAccordion}
-            />
-          </SocialScheduleAccordion>
+          <ScheduleDaysBox source="weekday" toggleAccordion={toggleAccordion} />
+          <ScheduleDaysBox source="weekend" toggleAccordion={toggleAccordion} />
         </Accordion>
         {newUser ? (
           <>

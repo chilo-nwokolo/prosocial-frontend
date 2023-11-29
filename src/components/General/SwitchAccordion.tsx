@@ -14,11 +14,21 @@ type SwitchAccordionProps = {
   children: ReactNode;
   // eslint-disable-next-line no-unused-vars
   onChange?: (info: string) => void;
+  defaultIndex?: number[];
 };
 
-function SwitchAccordion({ title, children, onChange }: SwitchAccordionProps) {
+function SwitchAccordion({
+  title,
+  children,
+  onChange,
+  defaultIndex,
+}: SwitchAccordionProps) {
   return (
-    <Accordion allowMultiple onChange={() => onChange && onChange(title)}>
+    <Accordion
+      allowMultiple
+      defaultIndex={defaultIndex}
+      onChange={() => onChange && onChange(title)}
+    >
       <AccordionItem>
         {({ isExpanded }) => (
           <>
