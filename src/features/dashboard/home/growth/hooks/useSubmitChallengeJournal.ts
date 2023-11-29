@@ -9,23 +9,25 @@ import {
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { useDisclosure, useToast } from "@chakra-ui/react";
-// import useAppConfig from "@/hooks/useAppConfig";
+import useAppConfig from "@/hooks/useAppConfig";
 type Props = {
   id: number;
   initialValue: string;
   source: string;
+  title: string;
 };
 
 export default function useSubmitChallengeJournal({
   id,
   initialValue,
   source,
+  title,
 }: Props) {
   const toast = useToast();
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const { updateConfig, config } = useAppConfig({});
+  const { updateConfig, config } = useAppConfig({});
 
   const [mutate, { loading }] = useMutation(CREATE_JOURNAL_ENTRY, {
     onCompleted: () => {
@@ -34,11 +36,20 @@ export default function useSubmitChallengeJournal({
         title: "Your entry was saved successfully.",
       });
 
-      // if (source === "challenges") {
-      //   updateConfig([{ key: "user_challenges_story", value: "" }]);
-      // } else if (source === "journal") {
-      //   updateConfig([{ key: "user_journal_story", value: "" }]);
-      // }
+      if (source === "challenges") {
+        const res: string = config?.["user_challenges_story"] || "";
+        console.log(res);
+        if (!res.includes(title)) {
+          const updatedRes = res.length ? `${res};${title}` : title;
+          updateConfig([{ key: "user_challenges_story", value: updatedRes }]);
+        }
+      } else if (source === "journal") {
+        const res: string = config?.["user_journal_story"] || "";
+        if (!res.includes(title)) {
+          const updatedRes = res.length ? `${res};${title}` : title;
+          updateConfig([{ key: "user_journal_story", value: updatedRes }]);
+        }
+      }
 
       source === "challenges"
         ? router.push(appRouteLinks.growthChallenges)
@@ -69,6 +80,7 @@ export default function useSubmitChallengeJournal({
     validationSchema: Yup.object({
       input: Yup.string().required(),
     }),
+    enableReinitialize: true,
   });
 
   return { formik, loading, isOpen, onClose, onOpen } as const;

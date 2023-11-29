@@ -87,16 +87,15 @@ export default function InterestsPairPage() {
           <Flex
             flexDir="column"
             border="1px solid"
-            borderRadius="lg"
             height="300px"
             cursor="pointer"
             key={question.id}
             onClick={() => selectInterest(question)}
           >
-            <Box height="250px">
+            <Box height="250px" overflow="hidden">
               <Image
                 src={question?.image_url || ImageLinks.logo}
-                objectFit="contain"
+                objectFit="cover"
                 height={250}
                 alt={`image indicating ${question.title}`}
               />

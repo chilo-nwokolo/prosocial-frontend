@@ -1,5 +1,5 @@
 import useAppConfig from "@/hooks/useAppConfig";
-import { appRouteLinks } from "@/utils/constants";
+import { appRouteLinks, configExtras } from "@/utils/constants";
 
 export default function useGrowthPage() {
   const { config } = useAppConfig({});
@@ -15,6 +15,16 @@ export default function useGrowthPage() {
       }
     }
     return progress;
+  };
+
+  const checkJournalAndChallengesProgress = () => {
+    const journal = config?.[configExtras.user_journal_story];
+    const challenge = config?.[configExtras.user_challenges_story];
+
+    const journalLength = journal?.split(";").length || 0;
+    const challengeLength = challenge?.split(";").length || 0;
+
+    return { journalLength, challengeLength };
   };
 
   const growthSections = [
@@ -42,7 +52,7 @@ export default function useGrowthPage() {
         "Spend time in self-reflection to discover your strengths and growth areas",
       progress: 4,
       destination: appRouteLinks.growthJournal,
-      answers: 0,
+      answers: checkJournalAndChallengesProgress().journalLength,
     },
     {
       id: 4,
@@ -51,7 +61,7 @@ export default function useGrowthPage() {
         "We give you daily goals that provide opportunities for personal growth",
       progress: 3,
       destination: appRouteLinks.growthChallenges,
-      answers: 0,
+      answers: checkJournalAndChallengesProgress().challengeLength,
     },
   ];
 

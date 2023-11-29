@@ -58,6 +58,8 @@ export const configExtras = {
   user_visited_intro_page: "user_visited_intro_page",
   user_completed_interests_1: "user_completed_interests_1",
   user_completed_interests_2: "user_completed_interests_2",
+  user_challenges_story: "user_challenges_story",
+  user_journal_story: "user_journal_story",
 };
 
 export const externalLinks = {

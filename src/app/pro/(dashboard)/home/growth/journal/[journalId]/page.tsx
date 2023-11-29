@@ -48,6 +48,13 @@ export default function ViewJournalPage({
     return found?.input || "";
   };
 
+  const getJournalTitle = () => {
+    const found = data?.journalCategories?.find(
+      (journal) => journal.id === journalId.toString(),
+    );
+    return found?.title || "";
+  };
+
   const {
     onOpen,
     onClose,
@@ -58,14 +65,8 @@ export default function ViewJournalPage({
     id: journalId,
     initialValue: genInitialValues(),
     source: "journal",
+    title: getJournalTitle(),
   });
-
-  const getJournalTitle = () => {
-    const found = data?.journalCategories?.find(
-      (journal) => journal.id === journalId.toString(),
-    );
-    return found?.title;
-  };
 
   return (
     <QueryContainer loading={loading || meLoading} error={error || meError}>

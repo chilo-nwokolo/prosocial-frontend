@@ -46,6 +46,13 @@ export default function ViewChallengePage({
     return found?.input || "";
   };
 
+  const getChallengeTitle = () => {
+    const found = data?.challengeCategories?.find(
+      (challenge) => challenge.id === challengeId.toString(),
+    );
+    return found?.title || "";
+  };
+
   const {
     onOpen,
     onClose,
@@ -56,14 +63,8 @@ export default function ViewChallengePage({
     id: challengeId,
     initialValue: genInitialValues(),
     source: "challenges",
+    title: getChallengeTitle(),
   });
-
-  const getChallengeTitle = () => {
-    const found = data?.challengeCategories?.find(
-      (challenge) => challenge.id === challengeId.toString(),
-    );
-    return found?.title || "";
-  };
 
   return (
     <QueryContainer loading={loading || meLoading} error={error || meError}>
