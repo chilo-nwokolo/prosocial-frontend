@@ -30,7 +30,7 @@ export default function useAppConfig({ initialConfig, onSuccess }: Props) {
     },
   });
 
-  const { refetch } = useQuery(QUERY_ME_SETTINGS, {
+  const { refetch, loading } = useQuery(QUERY_ME_SETTINGS, {
     onCompleted: (data) => {
       const obj: FlatConfigType = {};
       const settings = data.me?.settings?.preference_settings;
@@ -84,5 +84,5 @@ export default function useAppConfig({ initialConfig, onSuccess }: Props) {
     });
   };
 
-  return { config, updateConfig } as const;
+  return { config, updateConfig, loading } as const;
 }

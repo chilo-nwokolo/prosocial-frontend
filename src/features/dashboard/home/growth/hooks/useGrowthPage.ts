@@ -2,7 +2,7 @@ import useAppConfig from "@/hooks/useAppConfig";
 import { appRouteLinks, configExtras } from "@/utils/constants";
 
 export default function useGrowthPage() {
-  const { config } = useAppConfig({});
+  const { config, loading } = useAppConfig({});
 
   const checkPersonalityProgress = () => {
     const progress = { personalityQuiz: 0, interests: 0 };
@@ -65,5 +65,5 @@ export default function useGrowthPage() {
     },
   ];
 
-  return { growthSections };
+  return { growthSections, loading };
 }
