@@ -59,7 +59,7 @@ export default function useGrowthPage() {
       title: "Challenges",
       description:
         "We give you daily goals that provide opportunities for personal growth",
-      progress: 3,
+      progress: 8,
       destination: appRouteLinks.growthChallenges,
       answers: checkJournalAndChallengesProgress().challengeLength,
     },

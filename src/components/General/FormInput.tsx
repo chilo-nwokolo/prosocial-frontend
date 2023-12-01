@@ -78,7 +78,7 @@ export default function FormInput({
                   : ""
               }
               isInvalid={!!error}
-              errorBorderColor="#f95c47"
+              errorBorderColor="critical.100"
             />
             <InputRightElement onClick={setShow.toggle}>
               {show ? (
@@ -109,7 +109,7 @@ export default function FormInput({
         )}
         <FormHelperText>
           {error ? (
-            <Text fontSize="xs" color="#f95c47">
+            <Text fontSize="xs" color="critical.100">
               {error}
             </Text>
           ) : tooltip ? (

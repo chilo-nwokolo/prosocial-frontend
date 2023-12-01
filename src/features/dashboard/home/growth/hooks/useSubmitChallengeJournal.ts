@@ -78,7 +78,7 @@ export default function useSubmitChallengeJournal({
       });
     },
     validationSchema: Yup.object({
-      input: Yup.string().required(),
+      input: Yup.string().required().min(100),
     }),
     enableReinitialize: true,
   });

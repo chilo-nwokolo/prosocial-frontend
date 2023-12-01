@@ -69,6 +69,6 @@ export const externalLinks = {
 export const AccessToken = "accessToken";
 
 export const youtubeLinks = {
-  welcomePageDesktop: "nt4VRSr0JNs",
-  welcomePageMobile: "DmwvnBVP0zw",
+  welcomePageDesktop: "nt4VRSr0JNs?rel=0",
+  welcomePageMobile: "DmwvnBVP0zw?rel=0",
 };

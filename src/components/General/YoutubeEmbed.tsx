@@ -1,9 +1,12 @@
+import { youtubeLinks } from "@/utils/constants";
 import { Box } from "@chakra-ui/react";
 import React from "react";
 
 type Props = { embedId: string };
 
-export default function YoutubeEmbed({ embedId }: Props) {
+export default function YoutubeEmbed({
+  embedId = youtubeLinks.welcomePageMobile,
+}: Props) {
   return (
     <Box border="1px solid" color="primary.200">
       <iframe

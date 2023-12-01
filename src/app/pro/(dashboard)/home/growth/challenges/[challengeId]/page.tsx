@@ -18,6 +18,8 @@ import {
 } from "@/features/dashboard/home/growth/queries";
 import QueryContainer from "@/components/General/QueryContainer";
 import { useQuery } from "@apollo/client";
+import YoutubeEmbed from "@/components/General/YoutubeEmbed";
+import TranscriptComponent from "@/components/General/TranscriptComponent";
 
 const challengeTitles = {
   " Interesting or Funny Story": "Write down an interesting or Funny Story",
@@ -69,7 +71,7 @@ export default function ViewChallengePage({
   return (
     <QueryContainer loading={loading || meLoading} error={error || meError}>
       <Flex flexDir="column">
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex justifyContent="space-between" alignItems="center" mb="4">
           <BackButton destination={appRouteLinks.growthChallenges} />
           <Button
             variant="outline"
@@ -81,28 +83,46 @@ export default function ViewChallengePage({
             Clear Entry
           </Button>
         </Flex>
+        <Text my="2" as="h1" fontSize="lg">
+          {challengeTitles[getChallengeTitle() as keyof typeof challengeTitles]}
+        </Text>
+        <YoutubeEmbed embedId={""} />
+        <TranscriptComponent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
+          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+        </TranscriptComponent>
         <Text fontSize="lg" mt="4" fontWeight="medium">
-          Challenge Entry
+          Your Challenge Entry
         </Text>
         <form onSubmit={formik.handleSubmit}>
-          <Text mt="2">
-            {
-              challengeTitles[
-                getChallengeTitle() as keyof typeof challengeTitles
-              ]
-            }
-          </Text>
           <Textarea
             name="input"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.input}
+            errorBorderColor="critical.100"
+            isInvalid={!!formik.errors.input}
             mt="4"
             size="lg"
-            rows={25}
+            rows={10}
           ></Textarea>
+          <Text fontSize="sm">Minimum of 100 characters required</Text>
           <Box mt="6" w="full">
-            <Button isLoading={submitting} w="full" type="submit">
+            <Button
+              isLoading={submitting}
+              isDisabled={!!formik.errors.input}
+              w="full"
+              type="submit"
+            >
               Save
             </Button>
           </Box>
