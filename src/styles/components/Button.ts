@@ -26,7 +26,6 @@ export const Button = defineStyleConfig({
       bg: "#f95c47",
       color: "white",
       boxShadow: "2px 2px 1px 0px #000",
-      textTransform: "uppercase",
       _hover: {
         bg: "#f95c47",
         color: "white",
@@ -40,7 +39,6 @@ export const Button = defineStyleConfig({
       bg: "#e3d5d6",
       color: "#3a3738",
       boxShadow: "2px 2px 1px 0px #876a6c",
-      textTransform: "uppercase",
       _hover: {
         bg: "#f95c47",
         color: "white",

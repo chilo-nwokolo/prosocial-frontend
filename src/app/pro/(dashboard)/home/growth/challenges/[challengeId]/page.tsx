@@ -20,6 +20,7 @@ import QueryContainer from "@/components/General/QueryContainer";
 import { useQuery } from "@apollo/client";
 import YoutubeEmbed from "@/components/General/YoutubeEmbed";
 import TranscriptComponent from "@/components/General/TranscriptComponent";
+import { useRef } from "react";
 
 const challengeTitles = {
   " Interesting or Funny Story": "Write down an interesting or Funny Story",
@@ -35,6 +36,8 @@ export default function ViewChallengePage({
 }) {
   const { data, loading, error } = useQuery(QUERY_CHALLENGE_CATEGORIES);
 
+  const clearedErrors = useRef(false);
+
   const {
     data: meData,
     loading: meLoading,
@@ -45,7 +48,7 @@ export default function ViewChallengePage({
     const found = meData?.me?.challenges?.find(
       (challenge) => challenge?.category?.id === challengeId.toString(),
     );
-    return found?.input || "";
+    return clearedErrors.current ? "" : found?.input || "";
   };
 
   const getChallengeTitle = () => {
@@ -139,7 +142,8 @@ export default function ViewChallengePage({
               </Button>
               <Button
                 onClick={() => {
-                  formik.handleReset;
+                  formik.resetForm({ values: { input: "" } });
+                  clearedErrors.current = true;
                   onClose();
                 }}
               >

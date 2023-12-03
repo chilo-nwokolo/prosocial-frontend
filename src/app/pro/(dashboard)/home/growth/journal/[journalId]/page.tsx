@@ -18,6 +18,7 @@ import {
   QUERY_ME_JOURNALS,
 } from "@/features/dashboard/home/growth/queries";
 import QueryContainer from "@/components/General/QueryContainer";
+import { useRef } from "react";
 
 const journalTitles = {
   "Happiest ChildhoodMemory": "What is your happiest memory from childhood?",
@@ -35,6 +36,8 @@ export default function ViewJournalPage({
 }) {
   const { data, loading, error } = useQuery(QUERY_JOURNAL_CATEGORIES);
 
+  const clearedErrors = useRef(false);
+
   const {
     data: meData,
     loading: meLoading,
@@ -45,7 +48,7 @@ export default function ViewJournalPage({
     const found = meData?.me?.journals?.find(
       (challenge) => challenge?.category?.id === journalId.toString(),
     );
-    return found?.input || "";
+    return clearedErrors.current ? "" : found?.input || "";
   };
 
   const getJournalTitle = () => {
@@ -99,8 +102,14 @@ export default function ViewJournalPage({
             size="lg"
             rows={25}
           ></Textarea>
+          <Text fontSize="sm">Minimum of 100 characters required</Text>
           <Box mt="6" w="full">
-            <Button isLoading={submitting} w="full" type="submit">
+            <Button
+              isLoading={submitting}
+              isDisabled={!!formik.errors.input}
+              w="full"
+              type="submit"
+            >
               Save
             </Button>
           </Box>
@@ -117,7 +126,8 @@ export default function ViewJournalPage({
               </Button>
               <Button
                 onClick={() => {
-                  formik.handleReset;
+                  formik.resetForm({ values: { input: "" } });
+                  clearedErrors.current = true;
                   onClose();
                 }}
               >

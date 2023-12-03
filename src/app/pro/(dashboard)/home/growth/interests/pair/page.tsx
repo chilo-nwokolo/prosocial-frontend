@@ -112,18 +112,20 @@ export default function InterestsPairPage() {
           </Flex>
         ))}
       </Flex>
-      <Button
-        mt="10"
-        onClick={() =>
-          router.push(
-            `${appRouteLinks.interestsPair}?question=${
-              parseInt(questionId as string) - 1
-            }`,
-          )
-        }
-      >
-        Previous
-      </Button>
+      {questionId && parseInt(questionId) > 1 ? (
+        <Button
+          mt="10"
+          onClick={() =>
+            router.push(
+              `${appRouteLinks.interestsPair}?question=${
+                parseInt(questionId as string) - 1
+              }`,
+            )
+          }
+        >
+          Previous
+        </Button>
+      ) : null}
     </Flex>
   );
 }
