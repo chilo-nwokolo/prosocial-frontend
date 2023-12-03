@@ -35,6 +35,7 @@ export default function useLoginPage() {
           password,
         },
         onCompleted: (data) => {
+          localStorage.removeItem("prosocial_user");
           updateUser(data);
           router.push(appRouteLinks.onbording);
           setCookie("accessToken", data.login.token);
