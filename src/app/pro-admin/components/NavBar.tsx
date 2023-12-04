@@ -1,4 +1,6 @@
+import { appRouteLinks } from "@/utils/constants";
 import { Flex, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function AdminNavBar() {
   return (
@@ -17,10 +19,10 @@ export default function AdminNavBar() {
     >
       <Text>Prosocial</Text>
       <Flex gap="4">
-        <Text>User Data</Text>
-        <Text>Groups</Text>
-        <Text>Demo Locations</Text>
-        <Text>Logout</Text>
+        <Link href={""}>User Data</Link>
+        <Link href={""}>Groups</Link>
+        <Link href={""}>Demo Locations</Link>
+        <Link href={appRouteLinks.login}>Logout</Link>
       </Flex>
     </Flex>
   );

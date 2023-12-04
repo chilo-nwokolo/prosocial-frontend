@@ -4,6 +4,7 @@ import {
   FormLabel,
   Menu,
   MenuButton,
+  MenuGroup,
   MenuItem,
   MenuList,
   Switch,
@@ -59,7 +60,7 @@ const columnsList = [
   },
 ];
 
-export default function ColumnsDropdown() {
+export default function TableColumnsFilterDropdown() {
   return (
     <Menu closeOnSelect={false}>
       <MenuButton width="full" as={Button} rightIcon={<FaChevronDown />}>
@@ -67,21 +68,18 @@ export default function ColumnsDropdown() {
       </MenuButton>
       <MenuList gap="10" maxH="45rem" overflowY="auto">
         {columnsList.map((res) => (
-          <MenuItem key={res.title}>
+          <MenuGroup title={res.title} key={res.title}>
             {res.data.map((result) => (
-              <FormControl
-                key={result.value}
-                display="flex"
-                gap="6"
-                alignItems="center"
-              >
-                <Switch id={result.value} />
-                <FormLabel htmlFor={result.value} mb="0">
-                  {result.value}
-                </FormLabel>
-              </FormControl>
+              <MenuItem key={result.value}>
+                <FormControl display="flex" gap="6" alignItems="center">
+                  <Switch id={result.value} />
+                  <FormLabel htmlFor={result.value} mb="0">
+                    {result.value}
+                  </FormLabel>
+                </FormControl>
+              </MenuItem>
             ))}
-          </MenuItem>
+          </MenuGroup>
         ))}
       </MenuList>
     </Menu>
