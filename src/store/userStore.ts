@@ -27,6 +27,11 @@ export type UserQuestionsType = {
     | undefined;
 };
 
+type UserPersonalityType = {
+  name: string;
+  subTitle: string;
+};
+
 interface UserState {
   user: Login_UserMutation | null;
   // eslint-disable-next-line no-unused-vars
@@ -40,6 +45,9 @@ interface UserState {
   selectedSchedules: ScheduleDateType[];
   // eslint-disable-next-line no-unused-vars
   updateSelectedSchedules: (selectedSchedules: ScheduleDateType[]) => void;
+  personalityType: UserPersonalityType | null;
+  // eslint-disable-next-line no-unused-vars
+  setPersonalityType: (personalityType: UserPersonalityType) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -57,6 +65,9 @@ export const useUserStore = create<UserState>()(
       selectedSchedules: [],
       updateSelectedSchedules: (selectedSchedules) =>
         set({ selectedSchedules }),
+
+      personalityType: null,
+      setPersonalityType: (personalityType) => set({ personalityType }),
     }),
     { name: "prosocial_user" },
   ),

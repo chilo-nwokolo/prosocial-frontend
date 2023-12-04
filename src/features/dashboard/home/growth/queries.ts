@@ -112,6 +112,21 @@ export const QUERY_ME_CHALLENGE_CATEGORIES = gql(`
   }
 `);
 
+export const QUERY_ME_PERSONALITY_TYPE = gql(`
+  query QUERY_ME_PERSONALITY_TYPE {
+    me {
+      personalityScore {
+        id
+        personalityBucketType {
+          id
+          name
+          sub_title
+        }
+      }
+    }
+  }
+`);
+
 /**
  *
  * MUTATIONS

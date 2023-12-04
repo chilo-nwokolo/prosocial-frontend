@@ -23,7 +23,7 @@ export const QUERY_QUESTIONS = gql(`
   }
 `);
 
-export const ME_PERSONALITY_SCORE = gql(`
+export const QUERY_ME_PERSONALITY_SCORE = gql(`
   query MePersonalityScore {
     me {
       personalityScore {

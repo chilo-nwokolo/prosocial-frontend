@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppQuestions } from "@/store";
 import { useMutation, useQuery } from "@apollo/client";
 import {
-  ME_PERSONALITY_SCORE,
+  QUERY_ME_PERSONALITY_SCORE,
   USER_BUCKET_QUESTIONS_RESPONSE_INPUT,
 } from "../gql";
 import { apolloErrorHandler } from "@/utils/helpers";
@@ -11,7 +11,7 @@ import { appRouteLinks, configExtras } from "@/utils/constants";
 import useAppConfig from "@/hooks/useAppConfig";
 
 export default function useResultPage() {
-  const { data, loading } = useQuery(ME_PERSONALITY_SCORE);
+  const { data, loading } = useQuery(QUERY_ME_PERSONALITY_SCORE);
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
 

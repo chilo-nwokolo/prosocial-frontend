@@ -26,6 +26,7 @@ const documents = {
     "\n  query QUERY_CHALLENGE_CATEGORIES {\n    challengeCategories {\n      id\n      title\n      type\n    }\n  }\n": types.Query_Challenge_CategoriesDocument,
     "\n  query QUERY_JOURNAL_CATEGORIES {\n    journalCategories {\n      id\n      title\n      type \n      journals {\n        id\n        input\n      }\n    }\n  }\n": types.Query_Journal_CategoriesDocument,
     "\n  query QUERY_ME_CHALLENGE_CATEGORIES {\n    me {\n      challenges {\n        id\n        input\n        category {\n          id\n          title\n        }\n      }\n    }\n  }\n": types.Query_Me_Challenge_CategoriesDocument,
+    "\n  query QUERY_ME_PERSONALITY_TYPE {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n    }\n  }\n": types.Query_Me_Personality_TypeDocument,
     "\n  mutation SUBMIT_USER_INTERESTS ($input: UserInterestInputs!) {\n    submitUserInterest(input: $input) {\n      status\n      message\n    }\n  }\n": types.Submit_User_InterestsDocument,
     "\n  mutation CREATE_JOURNAL_ENTRY ($input: String!, $journal_category_id: ID!) {\n    mutateJournal(input: $input, journal_category_id: $journal_category_id) {\n      id\n      category {\n        id\n      }\n    }\n  }\n": types.Create_Journal_EntryDocument,
     "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n": types.MeDocument,
@@ -110,6 +111,10 @@ export function gql(source: "\n  query QUERY_JOURNAL_CATEGORIES {\n    journalCa
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query QUERY_ME_CHALLENGE_CATEGORIES {\n    me {\n      challenges {\n        id\n        input\n        category {\n          id\n          title\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query QUERY_ME_CHALLENGE_CATEGORIES {\n    me {\n      challenges {\n        id\n        input\n        category {\n          id\n          title\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query QUERY_ME_PERSONALITY_TYPE {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query QUERY_ME_PERSONALITY_TYPE {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
