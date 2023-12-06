@@ -34,7 +34,7 @@ function RadioCard(props: any) {
   );
 }
 
-const userDataFilters = [
+const filterButtons = [
   "Affinities",
   "Group Distribution",
   "Big 5 Personality",
@@ -45,19 +45,24 @@ const userDataFilters = [
   "Applied",
 ];
 
-export default function UserFilterButtons() {
-  const options = userDataFilters;
+type UserFilterButtonsProps = {
+  // eslint-disable-next-line no-unused-vars
+  onChange: (activeButton: string) => void;
+};
 
+export default function UserFilterButtons({
+  onChange,
+}: UserFilterButtonsProps) {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "framework",
-    onChange: console.log,
+    onChange: onChange,
   });
 
   const group = getRootProps();
 
   return (
     <HStack {...group}>
-      {options.map((value) => {
+      {filterButtons.map((value) => {
         const radio = getRadioProps({ value });
         return (
           <RadioCard key={value} {...radio}>

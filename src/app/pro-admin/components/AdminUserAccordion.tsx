@@ -10,11 +10,28 @@ import {
 import UserFilterButtons from "./UserFilterButtons";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import AffinitiesFilter from "../dashboard/users/components/AffinitiesFilter";
+import GroupDistributionFilter from "../dashboard/users/components/GroupDistributionFilter";
+import Big5Personality from "../dashboard/users/components/Big5Personality";
+import InterestsFilter from "../dashboard/users/components/InterestsFilter";
+import AvailabilityFilter from "../dashboard/users/components/AvailabilityFilter";
+import { useState } from "react";
+import NarcissismFilter from "../dashboard/users/components/NarcissismFilter";
+import FeedbackFilter from "../dashboard/users/components/FeedbackFilter";
+import AppliedFilter from "../dashboard/users/components/AppliedFilter";
 
 export default function AdminUserAccordion() {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onOpen } = useDisclosure();
+  const [activeButton, setActiveButton] = useState("");
+
+  const onActiveButtonChange = (activeButton: string) => {
+    setActiveButton(activeButton);
+    if (activeButton && !isOpen) {
+      onOpen();
+    }
+  };
+
   return (
-    <Flex flexDir="column" px="10">
+    <Flex flexDir="column" px="8" pb="10">
       <Flex justifyContent="space-between" mb="2.5" alignItems="center" mt="5">
         <Flex gap="4">
           <Text fontSize="2xl">Filters</Text>
@@ -22,15 +39,24 @@ export default function AdminUserAccordion() {
             {isOpen ? <FaChevronUp /> : <FaChevronDown />}
           </Button>
         </Flex>
-        <Button>Reset</Button>
+        <Button onClick={() => onActiveButtonChange("")}>Reset</Button>
       </Flex>
       <Flex mb="5" mt="2.5">
-        <UserFilterButtons />
+        <UserFilterButtons onChange={onActiveButtonChange} />
       </Flex>
       {isOpen ? (
         <Box>
           <Divider borderColor="primary.100" my="4" />
-          <AffinitiesFilter />
+          {activeButton === "Affinities" && <AffinitiesFilter />}
+          {activeButton === "Group Distribution" && <GroupDistributionFilter />}
+          {activeButton === "Big 5 Personality" && <Big5Personality />}
+          {activeButton === "Narcissism - Social beliefs - Behavioral" && (
+            <NarcissismFilter />
+          )}
+          {activeButton === "Interests" && <InterestsFilter />}
+          {activeButton === "Availability" && <AvailabilityFilter />}
+          {activeButton === "Feedback" && <FeedbackFilter />}
+          {activeButton === "Applied" && <AppliedFilter />}
         </Box>
       ) : null}
     </Flex>
