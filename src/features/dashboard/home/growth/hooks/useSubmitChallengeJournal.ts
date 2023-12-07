@@ -1,4 +1,4 @@
-import { appRouteLinks } from "@/utils/constants";
+import { appRouteLinks, configExtras } from "@/utils/constants";
 import * as Yup from "yup";
 import { useMutation } from "@apollo/client";
 import {
@@ -37,16 +37,20 @@ export default function useSubmitChallengeJournal({
       });
 
       if (source === "challenges") {
-        const res: string = config?.["user_challenges_story"] || "";
+        const res: string = config?.[configExtras.user_challenges_story] || "";
         if (!res.includes(title)) {
           const updatedRes = res.length ? `${res};${title}` : title;
-          updateConfig([{ key: "user_challenges_story", value: updatedRes }]);
+          updateConfig([
+            { key: configExtras.user_challenges_story, value: updatedRes },
+          ]);
         }
       } else if (source === "journal") {
-        const res: string = config?.["user_journal_story"] || "";
+        const res: string = config?.[configExtras.user_journal_story] || "";
         if (!res.includes(title)) {
           const updatedRes = res.length ? `${res};${title}` : title;
-          updateConfig([{ key: "user_journal_story", value: updatedRes }]);
+          updateConfig([
+            { key: configExtras.user_journal_story, value: updatedRes },
+          ]);
         }
       }
 

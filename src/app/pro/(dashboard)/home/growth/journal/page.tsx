@@ -1,8 +1,10 @@
+"use client";
 import GrowthLayoutWrapper from "@/features/dashboard/home/growth/components/GrowthLayoutWrapper";
-import { appRouteLinks } from "@/utils/constants";
+import useAppConfig from "@/hooks/useAppConfig";
+import { appRouteLinks, configExtras } from "@/utils/constants";
 import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa";
+import { FaCheckCircle, FaChevronRight } from "react-icons/fa";
 
 const journalTitles = [
   "Happiest Childhood Memory",
@@ -12,6 +14,7 @@ const journalTitles = [
 ];
 
 export default function JournalPage() {
+  const { config } = useAppConfig({});
   return (
     <GrowthLayoutWrapper
       title="Journal prompts"
@@ -30,15 +33,23 @@ export default function JournalPage() {
               px="5"
               py="8"
               borderColor="black"
-              justifyContent="space-between"
-              alignItems="center"
+              flexDir="column"
+              gap="3"
             >
-              <Text fontSize="xl" w="56" fontWeight="medium">
-                {i + 1}: {journal}
-              </Text>
-              <Text>
-                <FaChevronRight />
-              </Text>
+              <Flex w="full" alignItems="center" justifyContent="space-between">
+                <Text fontSize="xl" w="56" fontWeight="medium">
+                  {i + 1}: {journal}
+                </Text>
+                <Text>
+                  <FaChevronRight />
+                </Text>
+              </Flex>
+              {config?.[configExtras.user_journal_story].includes(journal) ? (
+                <Flex color="green.500" gap="2" alignItems="center">
+                  <FaCheckCircle />
+                  <Text fontWeight="semibold">Completed</Text>
+                </Flex>
+              ) : null}
             </Flex>
           </Link>
         ))}
