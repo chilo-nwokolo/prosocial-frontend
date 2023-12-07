@@ -11,7 +11,7 @@ import {
 import { ReactNode } from "react";
 
 type Props = {
-  description: string;
+  description: string | ReactNode;
   title: string;
   isOpen: boolean;
   onClose: () => void;
@@ -38,7 +38,11 @@ export default function AppModal({
             </Text>
             <ModalCloseButton />
           </Flex>
-          <Text textAlign="center">{description}</Text>
+          {typeof description === "string" ? (
+            <Text>{description}</Text>
+          ) : (
+            description
+          )}
           <Flex mt="5" justifyContent="center" gap="5">
             {actionButtons}
           </Flex>

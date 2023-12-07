@@ -74,7 +74,6 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
     initialValues: genInitialValues(),
     enableReinitialize: true,
     onSubmit: async (values) => {
-      console.log({ values });
       const location = decodeURI(quizId);
       const locationIndex = userPersonalityAnswers.findIndex(
         (answer) => answer[location],

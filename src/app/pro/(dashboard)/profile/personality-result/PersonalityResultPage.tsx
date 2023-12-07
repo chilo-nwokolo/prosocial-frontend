@@ -2,9 +2,18 @@
 import QueryContainer from "@/components/General/QueryContainer";
 import { QUERY_ME_PERSONALITY_SCORE } from "@/features/intro/gql";
 import { useUserStore } from "@/store";
-import { ImageLinks } from "@/utils/constants";
+import { ImageLinks, appRouteLinks } from "@/utils/constants";
 import { useQuery } from "@apollo/client";
-import { Card, CardBody, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  Heading,
+  Image,
+  Text,
+} from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function PersonalityResultPage() {
   // eslint-disable-next-line no-unused-vars
@@ -14,27 +23,16 @@ export default function PersonalityResultPage() {
   ]);
 
   const { data, loading, error } = useQuery(QUERY_ME_PERSONALITY_SCORE, {
-    onCompleted: (data) => {
-      console.log(data);
-      // setPersonalityType({
-      //   name: data.me?.personalityScore?.personalityBucketType?.name || "",
-      //   subTitle:
-      //     data.me?.personalityScore?.personalityBucketType?.sub_title || "",
-      // });
-    },
     fetchPolicy: "network-only",
   });
 
   const result = data?.me?.personalityScore?.personalityBucketType;
 
-  console.log(result);
-
   return (
     <QueryContainer loading={loading} error={error}>
       <Flex mt="5" flexDir="column">
         <Text fontWeight="500" fontSize="xl">
-          Based on your answers to these additional questions, you seem to fit a
-          different social category:{" "}
+          Based on your answers to these additional questions, you seem to be:{" "}
         </Text>
         <Flex flexDir="column" alignItems="center" my="8">
           <Image
@@ -50,7 +48,7 @@ export default function PersonalityResultPage() {
           <Text>{result?.sub_title}</Text>
           <Text mt="4">{result?.description}</Text>
         </Flex>
-        <Flex flexDir="column" gap="5">
+        <Flex flexDir="column" gap="5" mb="6">
           {result?.bucketQuestions?.map((question) => (
             <Card key={question.id} bg="bg">
               <CardBody>
@@ -62,6 +60,9 @@ export default function PersonalityResultPage() {
             </Card>
           ))}
         </Flex>
+        <Link href={appRouteLinks.growth}>
+          <Button width="full">Done</Button>
+        </Link>
       </Flex>
     </QueryContainer>
   );

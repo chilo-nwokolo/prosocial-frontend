@@ -90,8 +90,6 @@ export default function useSocialSchedule() {
       }
     });
 
-    console.log(result);
-
     submit({
       variables: { input: { schedules: result } },
     });

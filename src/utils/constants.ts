@@ -32,6 +32,7 @@ export const appRouteLinks = {
   growthInterests: "/pro/home/growth/interests",
   growthJournal: "/pro/home/growth/journal",
   profile: "/pro/profile",
+  profilePersonalityResult: "/pro/profile/personality-result",
   socialPreference: "/pro/profile/social-preference",
   socialScheduleSuccess: "/pro/profile/social-preference/success",
   interestsPair: "/pro/home/growth/interests/pair",

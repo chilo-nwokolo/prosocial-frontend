@@ -22,8 +22,8 @@ export default function useAppConfig({ initialConfig, onSuccess }: Props) {
 
   const [mutate] = useMutation(UPDATE_USER_SETTINGS, {
     onCompleted: (data) => {
-      console.log(
-        "config>>> ",
+      console.info(
+        "config ::: ",
         data.updateUserSettings.settings?.preference_settings,
       );
       refetch();

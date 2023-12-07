@@ -45,7 +45,6 @@ export default function usePersonalityQuizzesPage() {
 
   const checkIfCompleted = useCallback(
     (question: string) => {
-      console.log(config);
       const result =
         config?.[questionConfigMap[question as keyof typeof questionConfigMap]];
       if (result === "completed") return true;

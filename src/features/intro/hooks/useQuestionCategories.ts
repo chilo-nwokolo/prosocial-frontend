@@ -24,6 +24,7 @@ export default function useQuestionCategories() {
       onClose();
     },
   });
+
   const [submitSurvey] = useMutation(QUESTION_RESPONSE_MUTATION, {
     onError: (error) => {
       onClose();
@@ -41,7 +42,7 @@ export default function useQuestionCategories() {
   const getQuestionsAnswersCount = () => {
     const answersObject = Object?.values(onboardAnswers || {}).flat();
 
-    const questionsLength = onboardQuestions.reduce(
+    const questionsLength = onboardQuestions?.reduce(
       (acc: number, curr: any) => {
         return acc + curr.questions.length;
       },

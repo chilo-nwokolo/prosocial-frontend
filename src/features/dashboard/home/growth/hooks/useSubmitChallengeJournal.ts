@@ -38,7 +38,6 @@ export default function useSubmitChallengeJournal({
 
       if (source === "challenges") {
         const res: string = config?.["user_challenges_story"] || "";
-        console.log(res);
         if (!res.includes(title)) {
           const updatedRes = res.length ? `${res};${title}` : title;
           updateConfig([{ key: "user_challenges_story", value: updatedRes }]);

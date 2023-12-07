@@ -23,14 +23,15 @@ export default function OnboardingPage() {
     },
   });
 
-  const [updateOnboardQuestions] = useAppQuestions((state) => [
-    state.updateOnboardQuestions,
-  ]);
+  const [updateOnboardQuestions, updateOnboardAnswers] = useAppQuestions(
+    (state) => [state.updateOnboardQuestions, state.updateOnboardAnswers],
+  );
 
   const toast = useToast();
 
   const [getQuestions, { loading }] = useLazyQuery(QUERY_QUESTIONS, {
     onCompleted: (data) => {
+      updateOnboardAnswers(null);
       const result = transformQuestions(data);
       updateOnboardQuestions(result);
       setTimeout(() => {
