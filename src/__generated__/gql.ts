@@ -23,7 +23,7 @@ const documents = {
     "\n  query QUERY_INTERESTS_BY_NONE_TRAITS {\n    interestsByNoneTrait {\n      id\n      title\n      image_url\n      interests {\n        id\n        title\n        image_url\n      }\n    }\n  }\n": types.Query_Interests_By_None_TraitsDocument,
     "\n  query QUERY_ME_JOURNALS {\n    me {\n      journals {\n        id\n        input\n        category {\n          id\n        }\n      }\n    }\n  }\n": types.Query_Me_JournalsDocument,
     "\n  query QUERY_ME_INTERESTS {\n    me {\n      id\n      interests {\n        id\n        title\n      }\n    }\n  }\n": types.Query_Me_InterestsDocument,
-    "\n  query QUERY_CHALLENGE_CATEGORIES {\n    challengeCategories {\n      id\n      title\n      type\n    }\n  }\n": types.Query_Challenge_CategoriesDocument,
+    "\n  query QUERY_CHALLENGE_CATEGORIES {\n    challengeCategories {\n      id\n      title\n      type\n      video_url\n      transcript\n    }\n  }\n": types.Query_Challenge_CategoriesDocument,
     "\n  query QUERY_JOURNAL_CATEGORIES {\n    journalCategories {\n      id\n      title\n      type \n      journals {\n        id\n        input\n      }\n    }\n  }\n": types.Query_Journal_CategoriesDocument,
     "\n  query QUERY_ME_CHALLENGE_CATEGORIES {\n    me {\n      challenges {\n        id\n        input\n        category {\n          id\n          title\n        }\n      }\n    }\n  }\n": types.Query_Me_Challenge_CategoriesDocument,
     "\n  query QUERY_ME_PERSONALITY_TYPE {\n    me {\n      personalityScore {\n        id\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n    }\n  }\n": types.Query_Me_Personality_TypeDocument,
@@ -102,7 +102,7 @@ export function gql(source: "\n  query QUERY_ME_INTERESTS {\n    me {\n      id\
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query QUERY_CHALLENGE_CATEGORIES {\n    challengeCategories {\n      id\n      title\n      type\n    }\n  }\n"): (typeof documents)["\n  query QUERY_CHALLENGE_CATEGORIES {\n    challengeCategories {\n      id\n      title\n      type\n    }\n  }\n"];
+export function gql(source: "\n  query QUERY_CHALLENGE_CATEGORIES {\n    challengeCategories {\n      id\n      title\n      type\n      video_url\n      transcript\n    }\n  }\n"): (typeof documents)["\n  query QUERY_CHALLENGE_CATEGORIES {\n    challengeCategories {\n      id\n      title\n      type\n      video_url\n      transcript\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

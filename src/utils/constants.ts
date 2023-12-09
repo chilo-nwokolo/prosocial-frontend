@@ -41,6 +41,14 @@ export const appRouteLinks = {
   logout: "/pro/logout",
 };
 
+export const adminRoutes = {
+  login: "/pro-admin/login",
+  dashboard: "/pro-admin/dashboard",
+  users: "/pro-admin/dashboard/users",
+  groups: "/pro-admin/dashboard/groups",
+  demoLocations: "/pro-admin/dashboard/demo-locations",
+};
+
 export const formFeedback = {
   required: "This field is required",
   invalidEmail: "Please enter a valid email",

@@ -79,6 +79,8 @@ export const QUERY_CHALLENGE_CATEGORIES = gql(`
       id
       title
       type
+      video_url
+      transcript
     }
   }
 `);

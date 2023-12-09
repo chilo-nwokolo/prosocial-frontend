@@ -20,7 +20,7 @@ import QueryContainer from "@/components/General/QueryContainer";
 import { useQuery } from "@apollo/client";
 import YoutubeEmbed from "@/components/General/YoutubeEmbed";
 import TranscriptComponent from "@/components/General/TranscriptComponent";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const challengeTitles = {
   " Interesting or Funny Story": "Write down an interesting or Funny Story",
@@ -29,12 +29,35 @@ const challengeTitles = {
   Curiosity: "What are you curious about",
 };
 
+type ChallengeCategoriesQueryType = {
+  __typename?: "JournalCategory" | undefined;
+  id: string;
+  title: string;
+  type: string;
+  video_url?: string | null | undefined;
+  transcript?: string | null | undefined;
+};
+
 export default function ViewChallengePage({
   params: { challengeId },
 }: {
   params: { challengeId: number };
 }) {
-  const { data, loading, error } = useQuery(QUERY_CHALLENGE_CATEGORIES);
+  const [activeChallenge, setActiveChallenge] =
+    useState<ChallengeCategoriesQueryType | null>(null);
+
+  const { loading, error } = useQuery(QUERY_CHALLENGE_CATEGORIES, {
+    onCompleted: (data) => {
+      const found = data?.challengeCategories?.find(
+        (challenge) => challenge.id === challengeId.toString(),
+      );
+      if (found?.id) {
+        setActiveChallenge(found);
+        return;
+      }
+      setActiveChallenge(null);
+    },
+  });
 
   const clearedErrors = useRef(false);
 
@@ -51,13 +74,6 @@ export default function ViewChallengePage({
     return clearedErrors.current ? "" : found?.input || "";
   };
 
-  const getChallengeTitle = () => {
-    const found = data?.challengeCategories?.find(
-      (challenge) => challenge.id === challengeId.toString(),
-    );
-    return found?.title || "";
-  };
-
   const {
     onOpen,
     onClose,
@@ -68,7 +84,7 @@ export default function ViewChallengePage({
     id: challengeId,
     initialValue: genInitialValues(),
     source: "challenges",
-    title: getChallengeTitle(),
+    title: activeChallenge?.title || "",
   });
 
   return (
@@ -87,21 +103,17 @@ export default function ViewChallengePage({
           </Button>
         </Flex>
         <Text my="2" as="h1" fontSize="lg">
-          {challengeTitles[getChallengeTitle() as keyof typeof challengeTitles]}
+          {
+            challengeTitles[
+              activeChallenge?.title as keyof typeof challengeTitles
+            ]
+          }
         </Text>
-        <YoutubeEmbed embedId={""} />
+        <YoutubeEmbed
+          embedId={activeChallenge?.video_url?.split("/")?.[3] || ""}
+        />
         <TranscriptComponent>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
+          {activeChallenge?.transcript || ""}
         </TranscriptComponent>
         <Text fontSize="lg" mt="4" fontWeight="medium">
           Your Challenge Entry

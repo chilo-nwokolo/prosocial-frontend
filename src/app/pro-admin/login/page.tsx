@@ -1,4 +1,4 @@
-import { ImageLinks } from "@/utils/constants";
+import { ImageLinks, adminRoutes } from "@/utils/constants";
 import {
   Box,
   Button,
@@ -10,6 +10,7 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function AdminLoginPage() {
   return (
@@ -51,7 +52,9 @@ export default function AdminLoginPage() {
               </FormControl>
             </Stack>
             <Stack spacing="6">
-              <Button>Sign in</Button>
+              <Link href={adminRoutes.users}>
+                <Button w="full">Sign in</Button>
+              </Link>
             </Stack>
           </Stack>
         </Box>
