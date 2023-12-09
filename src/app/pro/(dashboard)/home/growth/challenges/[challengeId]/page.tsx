@@ -110,7 +110,11 @@ export default function ViewChallengePage({
           }
         </Text>
         <YoutubeEmbed
-          embedId={activeChallenge?.video_url?.split("/")?.[3] || ""}
+          embedId={
+            activeChallenge?.video_url?.split("/")?.[
+              activeChallenge?.video_url?.split("/").length - 1
+            ] || ""
+          }
         />
         <TranscriptComponent>
           {activeChallenge?.transcript || ""}
