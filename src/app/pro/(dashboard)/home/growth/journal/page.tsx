@@ -44,7 +44,7 @@ export default function JournalPage() {
                   <FaChevronRight />
                 </Text>
               </Flex>
-              {config?.[configExtras.user_journal_story].includes(journal) ? (
+              {config?.[configExtras.user_journal_story]?.includes(journal) ? (
                 <Flex color="green.500" gap="2" alignItems="center">
                   <FaCheckCircle />
                   <Text fontWeight="semibold">Completed</Text>

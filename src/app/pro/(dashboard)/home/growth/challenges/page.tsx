@@ -50,7 +50,7 @@ export default function ChallengesPage() {
                     <FaChevronRight />
                   </Text>
                 </Flex>
-                {config?.[configExtras.user_challenges_story].includes(
+                {config?.[configExtras.user_challenges_story]?.includes(
                   challenge?.title?.trim(),
                 ) ? (
                   <Flex color="green.500" gap="2" alignItems="center">

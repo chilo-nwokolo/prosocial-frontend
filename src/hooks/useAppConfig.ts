@@ -47,7 +47,7 @@ export default function useAppConfig({ initialConfig, onSuccess }: Props) {
         const configToUpdate: ConfigType = [];
 
         initialConfig?.forEach((config) => {
-          if (!settingsArray.includes(config.key)) {
+          if (!settingsArray?.includes(config.key)) {
             configToUpdate.push({ key: config.key, value: config.value });
           }
         });
