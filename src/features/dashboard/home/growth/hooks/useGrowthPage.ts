@@ -7,10 +7,10 @@ export default function useGrowthPage() {
   const checkPersonalityProgress = () => {
     const progress = { personalityQuiz: 0, interests: 0 };
     for (let key in config) {
-      if (key.includes("user_quiz_personality-")) {
+      if (key?.includes("user_quiz_personality-")) {
         progress.personalityQuiz += 1;
       }
-      if (key.includes("user_completed_interests_2")) {
+      if (key?.includes("user_completed_interests_2")) {
         progress.interests += 1;
       }
     }
