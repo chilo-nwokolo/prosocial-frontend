@@ -16,6 +16,9 @@ import { ChangeEvent, LegacyRef, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
 import imageCompression from "browser-image-compression";
+import useAppConfig from "@/hooks/useAppConfig";
+import { configExtras } from "@/utils/constants";
+import { useConfig } from "@/store";
 
 type Props = {
   currentImage?: File | string | null;
@@ -30,11 +33,17 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
     File | string | null | undefined
   >(currentImage);
   const [compressingImage, setCompressingImage] = useState(false);
+  const { updateConfig } = useAppConfig({});
+  const [updateStoreConfig] = useConfig((state) => [state.updateConfig]);
 
   const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
     onCompleted: async () => {
       setKey(key + 1);
       setProfileImage(uploadedImage.current);
+      updateConfig([
+        { key: configExtras.user_has_uploaded_profile_picture, value: "true" },
+      ]);
+      updateStoreConfig({ user_has_uploaded_profile_picture: "true" });
       await client.refetchQueries({
         include: ["ME"],
         updateCache(cache) {

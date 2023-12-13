@@ -14,7 +14,7 @@ export default function OnboardingPage() {
   const router = useRouter();
 
   useAppConfig({
-    onSuccess: (settings) => {
+    onQuerySuccess: (settings) => {
       if (settings?.[configExtras.user_has_seen_personality_score]) {
         router.push(appRouteLinks.home);
       } else {
@@ -34,6 +34,7 @@ export default function OnboardingPage() {
       updateOnboardAnswers(null);
       const result = transformQuestions(data);
       updateOnboardQuestions(result);
+      localStorage.clear();
       setTimeout(() => {
         router.push(appRouteLinks.intro);
       }, 1000);

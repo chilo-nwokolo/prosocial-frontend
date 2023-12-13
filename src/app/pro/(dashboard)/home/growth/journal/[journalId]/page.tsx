@@ -21,7 +21,7 @@ import QueryContainer from "@/components/General/QueryContainer";
 import { useRef } from "react";
 
 const journalTitles = {
-  "Happiest ChildhoodMemory": "What is your happiest memory from childhood?",
+  "Happiest Childhood Memory": "What is your happiest memory from childhood?",
   "Greatest Personal Achievement":
     "What is your greatest personal achievement?",
   "Hardest Learned Life Lesson":

@@ -27,10 +27,20 @@ export default function useSubmitChallengeJournal({
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { updateConfig, config } = useAppConfig({});
+  const goToPrevPage = () => {
+    source === "challenges"
+      ? router.push(appRouteLinks.growthChallenges)
+      : router.push(appRouteLinks.growthJournal);
+  };
+
+  const { updateConfig, config } = useAppConfig({
+    onUpdateSuccess: () => {
+      goToPrevPage();
+    },
+  });
 
   const [mutate, { loading }] = useMutation(CREATE_JOURNAL_ENTRY, {
-    onCompleted: () => {
+    onCompleted: async () => {
       toast({
         status: "success",
         title: "Your entry was saved successfully.",
@@ -43,7 +53,9 @@ export default function useSubmitChallengeJournal({
           updateConfig([
             { key: configExtras.user_challenges_story, value: updatedRes },
           ]);
+          return;
         }
+        goToPrevPage();
       } else if (source === "journal") {
         const res: string = config?.[configExtras.user_journal_story] || "";
         if (!res.includes(title)) {
@@ -51,12 +63,10 @@ export default function useSubmitChallengeJournal({
           updateConfig([
             { key: configExtras.user_journal_story, value: updatedRes },
           ]);
+          return;
         }
+        goToPrevPage();
       }
-
-      source === "challenges"
-        ? router.push(appRouteLinks.growthChallenges)
-        : router.push(appRouteLinks.growthJournal);
     },
     refetchQueries: [
       {

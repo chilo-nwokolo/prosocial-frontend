@@ -46,6 +46,7 @@ export default function useSocialSchedule() {
     onCompleted: () => {
       toast({
         title: "Updated Successfully",
+        status: "success",
       });
       router.push(appRouteLinks.socialScheduleSuccess);
     },

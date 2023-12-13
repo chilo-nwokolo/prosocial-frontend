@@ -14,23 +14,52 @@ type FlatConfigType = {
 type Props = {
   initialConfig?: ConfigType;
   // eslint-disable-next-line no-unused-vars
-  onSuccess?: (settings: FlatConfigType) => void;
+  onQuerySuccess?: (settings: FlatConfigType) => void;
+  onUpdateSuccess?: () => void;
 };
 
-export default function useAppConfig({ initialConfig, onSuccess }: Props) {
+type PreferenceSettingsType = {
+  key: string;
+  value: string;
+}[];
+
+export default function useAppConfig({
+  initialConfig,
+  onQuerySuccess,
+  onUpdateSuccess,
+}: Props) {
+  const transformElement = (settings: PreferenceSettingsType) => {
+    const obj: FlatConfigType = {};
+    const settingsArray: string[] = [];
+    settings?.forEach((element) => {
+      obj[element.key] = element.value;
+      settingsArray.push(element.key);
+    });
+    return obj;
+  };
+
   const [config, setConfig] = useState<FlatConfigType | null>(null);
 
   const [mutate] = useMutation(UPDATE_USER_SETTINGS, {
-    onCompleted: (data) => {
+    onCompleted: async (data) => {
+      if (onUpdateSuccess && typeof onUpdateSuccess === "function") {
+        onUpdateSuccess();
+      }
+      const preferenceSettings =
+        data.updateUserSettings.settings?.preference_settings!;
+
+      const res = transformElement(preferenceSettings);
+
+      setConfig(res);
+
       console.info(
         "config ::: ",
         data.updateUserSettings.settings?.preference_settings,
       );
-      refetch();
     },
   });
 
-  const { refetch, loading } = useQuery(QUERY_ME_SETTINGS, {
+  const { loading } = useQuery(QUERY_ME_SETTINGS, {
     onCompleted: (data) => {
       const obj: FlatConfigType = {};
       const settings = data.me?.settings?.preference_settings;
@@ -70,10 +99,11 @@ export default function useAppConfig({ initialConfig, onSuccess }: Props) {
           },
         });
       }
-      if (onSuccess && typeof onSuccess === "function") {
-        onSuccess(obj);
+      if (onQuerySuccess && typeof onQuerySuccess === "function") {
+        onQuerySuccess(obj);
       }
     },
+    fetchPolicy: "cache-and-network",
   });
 
   const updateConfig = (values: ConfigType) => {
