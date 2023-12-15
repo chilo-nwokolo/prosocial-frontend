@@ -70,6 +70,10 @@ export const configExtras = {
   user_challenges_story: "user_challenges_story",
   user_journal_story: "user_journal_story",
   user_has_uploaded_profile_picture: "user_has_uploaded_profile_picture",
+  user_quiz_personality_1: "user_quiz_personality-1",
+  user_quiz_personality_2: "user_quiz_personality-2",
+  user_quiz_personality_3: "user_quiz_personality-3",
+  user_has_seen_retyped_result_1: "user_has_seen_retyped_result_1",
 };
 
 export const externalLinks = {

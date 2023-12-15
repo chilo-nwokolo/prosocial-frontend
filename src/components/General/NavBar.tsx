@@ -1,6 +1,7 @@
 "use client";
 import ProfilePicture from "@/components/General/ProfilePicture";
 import { appRouteLinks } from "@/utils/constants";
+import { featureFlag } from "@/utils/helpers";
 import {
   Box,
   Drawer,
@@ -55,8 +56,10 @@ export default function NavBar() {
   return (
     <>
       <Flex
-        border="1px solid"
-        borderColor="gray.300"
+        borderBottom={featureFlag("production") ? "none" : "1px solid"}
+        border={featureFlag("production") ? "none" : "1px solid"}
+        borderColor={featureFlag("production") ? "none" : "gray.300"}
+        shadow="sm"
         justifyContent="space-between"
         py="2"
         px="6"

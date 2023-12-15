@@ -1,16 +1,29 @@
 "use client";
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import QueryContainer from "@/components/General/QueryContainer";
 import usePersonalityQuizzesPage from "@/features/dashboard/hooks/usePersonalityQuizzesPage";
 import { FaCheckCircle, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
 import { appRouteLinks } from "@/utils/constants";
 import GrowthLayoutWrapper from "@/features/dashboard/home/growth/components/GrowthLayoutWrapper";
+import LoadingModal from "@/components/General/LoadingModal";
+import AppModal from "@/components/AppModal";
+import { useRouter } from "next/navigation";
 
 const questionCategories = ["Personality 1", "Personality 2", "Personality 3"];
 
 export default function PersonalityQuizzesPage() {
-  const { error, loading, checkIfCompleted } = usePersonalityQuizzesPage();
+  const router = useRouter();
+  const {
+    error,
+    loading,
+    checkIfCompleted,
+    changedPersonality,
+    closePersonalityModal,
+    isPersonalityModalOpen,
+    loadingPersonalityScore,
+    personalityScore,
+  } = usePersonalityQuizzesPage();
 
   return (
     <QueryContainer loading={loading} error={error}>
@@ -58,6 +71,45 @@ export default function PersonalityQuizzesPage() {
           ))}
         </Flex>
       </GrowthLayoutWrapper>
+      <LoadingModal isOpen={loadingPersonalityScore} onClose={() => {}} />
+      <AppModal
+        title="Your personality type"
+        description={
+          <Text textAlign="center">
+            Based on your answers to these additional questions, your ProSocial
+            personality type is{" "}
+            {changedPersonality ? (
+              personalityScore?.me?.personalityScore?.personalityBucketType
+                ?.name
+            ) : (
+              <Box as="span" gap="1">
+                still{" "}
+                <Text
+                  textDecor="underline"
+                  color="blue"
+                  onClick={() =>
+                    router.push(appRouteLinks.profilePersonalityResult)
+                  }
+                  cursor="pointer"
+                >
+                  the{" "}
+                  {
+                    personalityScore?.me?.personalityScore
+                      ?.personalityBucketType?.name
+                  }
+                </Text>
+              </Box>
+            )}
+          </Text>
+        }
+        isOpen={isPersonalityModalOpen}
+        onClose={closePersonalityModal}
+        actionButtons={
+          <Button onClick={() => router.push(appRouteLinks.growth)}>
+            Done
+          </Button>
+        }
+      />
     </QueryContainer>
   );
 }

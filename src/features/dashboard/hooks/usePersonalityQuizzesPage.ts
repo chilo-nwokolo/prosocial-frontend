@@ -1,27 +1,71 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { QUERY_ALL_QUESTIONS } from "../home/growth/queries";
 import { useAppQuestions, useUserStore } from "@/store";
 import { ME_QUESTION_RESPONSES } from "../profile/gql/queries";
 import useAppConfig from "@/hooks/useAppConfig";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { QUERY_ME_PERSONALITY_SCORE } from "@/features/intro/gql";
+import { useDisclosure } from "@chakra-ui/react";
+import { configExtras } from "@/utils/constants";
 
 const questionConfigMap = {
-  "Personality 1": "user_quiz_personality-1",
-  "Personality 2": "user_quiz_personality-2",
-  "Personality 3": "user_quiz_personality-3",
+  "Personality 1": configExtras.user_quiz_personality_1,
+  "Personality 2": configExtras.user_quiz_personality_2,
+  "Personality 3": configExtras.user_quiz_personality_3,
 };
 
 export default function usePersonalityQuizzesPage() {
-  const [questions, updateQuestions] = useUserStore((state) => [
-    state.questions,
+  const [updateQuestions, personalityType] = useUserStore((state) => [
     state.updateQuestions,
+    state.personalityType,
   ]);
+
+  const [changedPersonality, setChangedPersonality] = useState(false);
+
+  const { config, updateConfig } = useAppConfig({});
+
+  const {
+    onOpen: openPersonalityModal,
+    onClose: closePersonalityModal,
+    isOpen: isPersonalityModalOpen,
+  } = useDisclosure();
+
   const [userPersonalityAnswers, updateMeAnswers] = useAppQuestions((state) => [
     state.userPersonalityAnswers,
     state.updateMeAnswers,
   ]);
 
-  const { config } = useAppConfig({});
+  const [
+    queryPersonalityScore,
+    { data: personalityScore, loading: loadingPersonalityScore },
+  ] = useLazyQuery(QUERY_ME_PERSONALITY_SCORE, {
+    onCompleted: (data) => {
+      if (
+        personalityType?.name ===
+        data.me?.personalityScore?.personalityBucketType?.name
+      ) {
+        setChangedPersonality(false);
+      } else {
+        setChangedPersonality(true);
+      }
+      openPersonalityModal();
+      updateConfig([
+        { key: configExtras.user_has_seen_retyped_result_1, value: "true" },
+      ]);
+    },
+  });
+
+  useEffect(() => {
+    if (
+      config?.[configExtras.user_quiz_personality_1] === "completed" &&
+      config?.[configExtras.user_quiz_personality_2] === "completed" &&
+      config?.[configExtras.user_quiz_personality_3] === "completed" &&
+      !config?.[configExtras.user_has_seen_retyped_result_1]
+    ) {
+      queryPersonalityScore();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config]);
 
   const { loading, error } = useQuery(QUERY_ALL_QUESTIONS, {
     onCompleted: (data) => {
@@ -56,8 +100,12 @@ export default function usePersonalityQuizzesPage() {
   return {
     loading,
     error,
-    questions,
     userPersonalityAnswers,
     checkIfCompleted,
+    changedPersonality,
+    personalityScore,
+    loadingPersonalityScore,
+    closePersonalityModal,
+    isPersonalityModalOpen,
   };
 }

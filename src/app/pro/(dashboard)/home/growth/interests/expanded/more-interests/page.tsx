@@ -1,7 +1,5 @@
 "use client";
-import AppModal from "@/components/AppModal";
 import BackButton from "@/components/General/BackButton";
-import LoadingModal from "@/components/General/LoadingModal";
 import QueryContainer from "@/components/General/QueryContainer";
 import InterestsAccordion from "@/features/dashboard/home/growth/components/InterestsAccordion";
 import InterestsSwitch from "@/features/dashboard/home/growth/components/InterestsSwitch";
@@ -10,55 +8,24 @@ import {
   QUERY_ME_INTERESTS,
   SUBMIT_USER_INTERESTS,
 } from "@/features/dashboard/home/growth/queries";
-import { QUERY_ME_PERSONALITY_SCORE } from "@/features/intro/gql";
 import useAppConfig from "@/hooks/useAppConfig";
 import { client } from "@/service";
-import { useAppQuestions, useUserStore } from "@/store";
+import { useAppQuestions } from "@/store";
 import { appRouteLinks, configExtras } from "@/utils/constants";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
-  Box,
   Button,
   Flex,
   RadioGroup,
   Stack,
   Text,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { GrClose } from "react-icons/gr";
 
 export default function InterestedExtendedPage() {
   const { updateConfig } = useAppConfig({});
-
-  const [personalityType] = useUserStore((state) => [state.personalityType]);
-
-  const [changedPersonality, setChangedPersonality] = useState(false);
-
-  const {
-    onOpen: openPersonalityModal,
-    onClose: closePersonalityModal,
-    isOpen: isPersonalityModalOpen,
-  } = useDisclosure();
-
-  const [
-    queryPersonalityScore,
-    { data: personalityScore, loading: loadingPersonalityScore },
-  ] = useLazyQuery(QUERY_ME_PERSONALITY_SCORE, {
-    onCompleted: (data) => {
-      if (
-        personalityType?.name ===
-        data.me?.personalityScore?.personalityBucketType?.name
-      ) {
-        setChangedPersonality(false);
-      } else {
-        setChangedPersonality(true);
-      }
-      openPersonalityModal();
-    },
-  });
 
   const [flattenedInterests, setFlattenedInterets] = useState<string[] | null>(
     null,
@@ -93,7 +60,6 @@ export default function InterestedExtendedPage() {
   });
 
   const toast = useToast();
-  const router = useRouter();
 
   const [mutate, { loading }] = useMutation(SUBMIT_USER_INTERESTS, {
     variables: {
@@ -118,7 +84,6 @@ export default function InterestedExtendedPage() {
       updateConfig([
         { key: configExtras.user_completed_interests_2, value: "true" },
       ]);
-      queryPersonalityScore();
     },
   });
 
@@ -200,45 +165,6 @@ export default function InterestedExtendedPage() {
           Done
         </Button>
       </Flex>
-      <LoadingModal isOpen={loadingPersonalityScore} onClose={() => {}} />
-      <AppModal
-        title="Your personality type"
-        description={
-          <Text textAlign="center">
-            Based on your answers to these additional questions, your ProSocial
-            personality type is{" "}
-            {changedPersonality ? (
-              personalityScore?.me?.personalityScore?.personalityBucketType
-                ?.name
-            ) : (
-              <Box as="span" gap="1">
-                still{" "}
-                <Text
-                  textDecor="underline"
-                  color="blue"
-                  onClick={() =>
-                    router.push(appRouteLinks.profilePersonalityResult)
-                  }
-                  cursor="pointer"
-                >
-                  the{" "}
-                  {
-                    personalityScore?.me?.personalityScore
-                      ?.personalityBucketType?.name
-                  }
-                </Text>
-              </Box>
-            )}
-          </Text>
-        }
-        isOpen={isPersonalityModalOpen}
-        onClose={closePersonalityModal}
-        actionButtons={
-          <Button onClick={() => router.push(appRouteLinks.growth)}>
-            Done
-          </Button>
-        }
-      />
     </QueryContainer>
   );
 }
