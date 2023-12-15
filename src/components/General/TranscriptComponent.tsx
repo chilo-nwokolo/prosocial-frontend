@@ -6,9 +6,10 @@ import {
   AccordionPanel,
   Box,
 } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 type Props = {
-  children: string;
+  children: ReactNode;
 };
 
 export default function TranscriptComponent({ children }: Props) {

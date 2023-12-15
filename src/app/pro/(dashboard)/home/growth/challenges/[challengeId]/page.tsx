@@ -117,7 +117,7 @@ export default function ViewChallengePage({
           }
         />
         <TranscriptComponent>
-          {activeChallenge?.transcript || ""}
+          <Text>{activeChallenge?.transcript || ""}</Text>
         </TranscriptComponent>
         <Text fontSize="lg" mt="4" fontWeight="medium">
           Your Challenge Entry
