@@ -133,6 +133,7 @@ export default function RegistrationPage() {
               type="submit"
               isLoading={loading}
               loadingText="Creating your account"
+              spinnerPlacement="end"
             >
               Sign Up
             </Button>

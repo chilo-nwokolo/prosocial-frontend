@@ -73,7 +73,6 @@ function ScheduleDays({
   onChecked: (day: string, timeRange: string[]) => void;
   selectedSchedules: ScheduleDateType[];
 }) {
-  // console.log(selectedSchedules);
   const { getCheckboxProps } = useCheckboxGroup({
     defaultValue: selectedSchedules.find((sch) => sch.day === day)
       ?.timeRange as string[],

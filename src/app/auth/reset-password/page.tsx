@@ -130,6 +130,7 @@ export default function ResetPasswordPage() {
                 type="submit"
                 isLoading={loading}
                 loadingText="Resetting"
+                spinnerPlacement="end"
               >
                 Reset
               </Button>

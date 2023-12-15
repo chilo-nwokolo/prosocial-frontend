@@ -97,6 +97,7 @@ export default function InterestsPairPage() {
                 src={question?.image_url || ImageLinks.logo}
                 objectFit="cover"
                 height={250}
+                fetchPriority="high"
                 alt={`image indicating ${question.title}`}
               />
             </Box>

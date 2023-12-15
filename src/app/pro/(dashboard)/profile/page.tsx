@@ -49,7 +49,12 @@ export default function ProfilePage() {
               value={formik.values.password}
               reset={formik.resetForm}
             />
-            <Button type="submit" loadingText="Saving" isLoading={updating}>
+            <Button
+              type="submit"
+              loadingText="Saving"
+              isLoading={updating}
+              spinnerPlacement="end"
+            >
               Save
             </Button>
             <Button onClick={() => router.push(appRouteLinks.home)}>

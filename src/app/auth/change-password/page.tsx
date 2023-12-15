@@ -87,6 +87,7 @@ export default function ChangePasswordPage() {
                 type="submit"
                 isLoading={loading}
                 loadingText="Submitting..."
+                spinnerPlacement="end"
               >
                 Reset Password
               </Button>

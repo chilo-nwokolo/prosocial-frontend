@@ -21,6 +21,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { GrClose } from "react-icons/gr";
 
@@ -30,6 +31,8 @@ export default function InterestedExtendedPage() {
   const [flattenedInterests, setFlattenedInterets] = useState<string[] | null>(
     null,
   );
+
+  const router = useRouter();
 
   const [key, setKey] = useState(1);
 
@@ -84,6 +87,7 @@ export default function InterestedExtendedPage() {
       updateConfig([
         { key: configExtras.user_completed_interests_2, value: "true" },
       ]);
+      router.push(appRouteLinks.growth);
     },
   });
 

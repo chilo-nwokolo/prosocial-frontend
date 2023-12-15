@@ -68,6 +68,7 @@ export default function LoginPage() {
               type="submit"
               isLoading={loading}
               loadingText="Logging you in"
+              spinnerPlacement="end"
             >
               Login
             </Button>

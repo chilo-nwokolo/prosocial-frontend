@@ -53,7 +53,7 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
     },
     onCompleted: () => {
       toast({
-        title: "Saved successfully",
+        title: "Saved successfully.",
         status: "success",
       });
       router.push(appRouteLinks.growthPersonality);

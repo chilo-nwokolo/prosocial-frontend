@@ -61,6 +61,7 @@ export default function PersonalityQuestionsPage({
           onClick={() => {
             formik.handleSubmit();
           }}
+          spinnerPlacement="end"
         >
           Save
         </Button>
