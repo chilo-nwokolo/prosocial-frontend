@@ -54,3 +54,18 @@ export const calculateGrowthProgress = (qty: number, total: number) => {
 
   return `green ${breakdown * qty}%, #fdf5e9 0%`;
 };
+
+export const featureFlag = (source: "production" | "development") => {
+  let result = false;
+  switch (source) {
+    case "production":
+      result = process.env.NODE_ENV === "production";
+      break;
+    case "development":
+      result = process.env.NODE_ENV === "development";
+      break;
+    default:
+      result = process.env.NODE_ENV === "development";
+  }
+  return result;
+};

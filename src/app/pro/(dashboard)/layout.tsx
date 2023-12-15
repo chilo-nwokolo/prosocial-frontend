@@ -1,6 +1,7 @@
 "use client";
 import NavBar from "@/components/General/NavBar";
 import useScrollToTop from "@/hooks/useScrollToTop";
+import { featureFlag } from "@/utils/helpers";
 import { Box } from "@chakra-ui/react";
 
 export default function ProLayout({ children }: { children: React.ReactNode }) {
@@ -10,8 +11,8 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
       <NavBar />
       <Box
         as="section"
-        border="1px solid"
-        borderColor="gray.300"
+        border={featureFlag("production") ? "none" : "1px solid"}
+        borderColor={featureFlag("production") ? "none" : "gray.300"}
         overflowY="auto"
         px="6"
         pt="10"
