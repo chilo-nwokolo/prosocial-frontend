@@ -19,6 +19,13 @@ export type Scalars = {
   Upload: { input: any; output: any; }
 };
 
+export type AffinityInput = {
+  age_range_max?: InputMaybe<Scalars['Int']['input']>;
+  age_range_min?: InputMaybe<Scalars['Int']['input']>;
+  education?: InputMaybe<Scalars['String']['input']>;
+  political_orientation?: InputMaybe<Scalars['String']['input']>;
+};
+
 export enum AnswerTypeEnum {
   RatingScale = 'RATING_SCALE',
   SingleChoice = 'SINGLE_CHOICE'
@@ -35,6 +42,22 @@ export type BasicResponse = {
   __typename?: 'BasicResponse';
   message?: Maybe<Scalars['String']['output']>;
   status: Scalars['String']['output'];
+};
+
+export type BigFivePersonalityInput = {
+  agreeableness_score_max?: InputMaybe<Scalars['Int']['input']>;
+  agreeableness_score_min?: InputMaybe<Scalars['Int']['input']>;
+  butterfly_type?: InputMaybe<Scalars['String']['input']>;
+  conscientiousness_score_max?: InputMaybe<Scalars['Int']['input']>;
+  conscientiousness_score_min?: InputMaybe<Scalars['Int']['input']>;
+  extroversion_score_max?: InputMaybe<Scalars['Int']['input']>;
+  extroversion_score_min?: InputMaybe<Scalars['Int']['input']>;
+  neuroticism_score_max?: InputMaybe<Scalars['Int']['input']>;
+  neuroticism_score_min?: InputMaybe<Scalars['Int']['input']>;
+  openness_score_max?: InputMaybe<Scalars['Int']['input']>;
+  openness_score_min?: InputMaybe<Scalars['Int']['input']>;
+  questions_answered_max?: InputMaybe<Scalars['Int']['input']>;
+  questions_answered_min?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type BucketQuestion = {
@@ -63,6 +86,13 @@ export enum GenderEnum {
   Prefernotoanswer = 'PREFERNOTOANSWER',
   Transgender = 'TRANSGENDER'
 }
+
+export type GroupDistributionInput = {
+  gender?: InputMaybe<Scalars['String']['input']>;
+  health?: InputMaybe<Scalars['String']['input']>;
+  race?: InputMaybe<Scalars['String']['input']>;
+  relationship_status?: InputMaybe<Scalars['String']['input']>;
+};
 
 export type Interest = {
   __typename?: 'Interest';
@@ -98,6 +128,7 @@ export type JournalCategory = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAdmin: User;
   login: AuthResponse;
   logout?: Maybe<BasicResponse>;
   mutateJournal?: Maybe<Journal>;
@@ -111,6 +142,11 @@ export type Mutation = {
   updateUserSchedules?: Maybe<Array<Schedule>>;
   updateUserSettings: User;
   verifyUser: BasicResponse;
+};
+
+
+export type MutationCreateAdminArgs = {
+  input: RegisterUserInput;
 };
 
 
@@ -174,6 +210,15 @@ export type MutationUpdateUserSettingsArgs = {
 
 export type MutationVerifyUserArgs = {
   access_token: Scalars['String']['input'];
+};
+
+export type NarcissismSocialBehavioralInput = {
+  behavioral_health_max?: InputMaybe<Scalars['Int']['input']>;
+  behavioral_health_min?: InputMaybe<Scalars['Int']['input']>;
+  narcissism_max?: InputMaybe<Scalars['Int']['input']>;
+  narcissism_min?: InputMaybe<Scalars['Int']['input']>;
+  social_beliefs_max?: InputMaybe<Scalars['Int']['input']>;
+  social_beliefs_min?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** Allows ordering a list of records. */
@@ -281,6 +326,7 @@ export type ProfileInput = {
 
 export type Query = {
   __typename?: 'Query';
+  adminQueryUsers?: Maybe<Array<User>>;
   answerResponses?: Maybe<Array<QuestionResponse>>;
   challengeCategories?: Maybe<Array<JournalCategory>>;
   interests?: Maybe<Array<Interest>>;
@@ -295,6 +341,11 @@ export type Query = {
   user?: Maybe<User>;
   /** List multiple users. */
   users: UserPaginator;
+};
+
+
+export type QueryAdminQueryUsersArgs = {
+  input?: InputMaybe<AdminQueryUsersInput>;
 };
 
 
@@ -467,6 +518,11 @@ export type User = {
   user_type?: Maybe<Scalars['String']['output']>;
 };
 
+export type UserAvailabilitySearchInput = {
+  day_name: DayName;
+  time_range?: InputMaybe<Array<TimeRange>>;
+};
+
 export type UserBucketQuestionResponse = {
   __typename?: 'UserBucketQuestionResponse';
   bucket?: Maybe<PersonalityBucketType>;
@@ -509,6 +565,18 @@ export type UserProfile = {
   zip_code?: Maybe<Scalars['String']['output']>;
 };
 
+export type UserSearchFeedbackInput = {
+  level?: InputMaybe<Scalars['Boolean']['input']>;
+  outing_date?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UserSearchInterestInput = {
+  interestIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  interest_overlap_max?: InputMaybe<Scalars['Int']['input']>;
+  interest_overlap_min?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type UserSetting = {
   __typename?: 'UserSetting';
   preference_settings?: Maybe<Array<PreferenceSetting>>;
@@ -521,6 +589,16 @@ export type UserSettingInput = {
 
 export type VerifyUserInput = {
   access_token: Scalars['String']['input'];
+};
+
+export type AdminQueryUsersInput = {
+  affinities?: InputMaybe<AffinityInput>;
+  availability?: InputMaybe<Array<UserAvailabilitySearchInput>>;
+  big_five_personality?: InputMaybe<BigFivePersonalityInput>;
+  feedback?: InputMaybe<UserSearchFeedbackInput>;
+  group_distribution?: InputMaybe<GroupDistributionInput>;
+  interest?: InputMaybe<UserSearchInterestInput>;
+  narcissism_social_behavioral?: InputMaybe<NarcissismSocialBehavioralInput>;
 };
 
 export type RegisterMutationVariables = Exact<{
@@ -543,7 +621,7 @@ export type Login_UserMutationVariables = Exact<{
 }>;
 
 
-export type Login_UserMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, phone?: string | null, email: string } } };
+export type Login_UserMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, phone?: string | null, email: string, user_type?: string | null } } };
 
 export type ResetPasswordLinkMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -707,7 +785,7 @@ export type Query_UsersQuery = { __typename?: 'Query', users: { __typename?: 'Us
 
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
 export const VerifyUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VerifyUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verifyUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"access_token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<VerifyUserMutation, VerifyUserMutationVariables>;
-export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<Login_UserMutation, Login_UserMutationVariables>;
+export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"user_type"}}]}}]}}]}}]} as unknown as DocumentNode<Login_UserMutation, Login_UserMutationVariables>;
 export const ResetPasswordLinkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ResetPasswordLink"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"requestResetPasswordLink"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<ResetPasswordLinkMutation, ResetPasswordLinkMutationVariables>;
 export const ResetPasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ResetPassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"new_password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"requestResetPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"Argument","name":{"kind":"Name","value":"new_password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"new_password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<ResetPasswordMutation, ResetPasswordMutationVariables>;
 export const Query_All_QuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_ALL_QUESTIONS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questionCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"questions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"sub_category"}},{"kind":"Field","name":{"kind":"Name","value":"options"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Query_All_QuestionsQuery, Query_All_QuestionsQueryVariables>;

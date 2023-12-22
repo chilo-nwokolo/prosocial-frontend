@@ -1,18 +1,20 @@
-import { ImageLinks, adminRoutes } from "@/utils/constants";
+"use client";
+import { ImageLinks } from "@/utils/constants";
 import {
   Box,
   Button,
   Container,
-  FormControl,
-  FormLabel,
+  Flex,
   Heading,
   Image,
-  Input,
   Stack,
 } from "@chakra-ui/react";
-import Link from "next/link";
+import useAdminLoginPage from "./useAdminLoginPage";
+import FormInput from "@/components/General/FormInput";
 
 export default function AdminLoginPage() {
+  const { formik, loading } = useAdminLoginPage();
+
   return (
     <Container
       maxW="lg"
@@ -33,31 +35,48 @@ export default function AdminLoginPage() {
             </Heading>
           </Stack>
         </Stack>
-        <Box
-          py={{ base: "0", sm: "8" }}
-          px={{ base: "4", sm: "10" }}
-          bg={{ base: "transparent", sm: "bg.surface" }}
-          boxShadow={{ base: "none", sm: "md" }}
-          borderRadius={{ base: "none", sm: "xl" }}
-        >
-          <Stack spacing="6">
-            <Stack spacing="5">
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <Input id="email" type="email" />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="email">Password</FormLabel>
-                <Input id="password" type="password" />
-              </FormControl>
-            </Stack>
-            <Stack spacing="6">
-              <Link href={adminRoutes.users}>
-                <Button w="full">Sign in</Button>
-              </Link>
-            </Stack>
-          </Stack>
-        </Box>
+        <form onSubmit={formik.handleSubmit}>
+          <Box
+            py={{ base: "0", sm: "8" }}
+            px={{ base: "4", sm: "10" }}
+            bg={{ base: "transparent", sm: "bg.surface" }}
+            boxShadow={{ base: "none", sm: "md" }}
+            borderRadius={{ base: "none", sm: "xl" }}
+          >
+            {/* Email */}
+            <FormInput
+              inputType="email"
+              labelTitle="Email Address"
+              name="email"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              error={formik.errors.email}
+            />
+            {/* Password */}
+            <Flex flexDir="column" mb="2">
+              <FormInput
+                inputType="password"
+                labelTitle="Password"
+                name="password"
+                autoComplete="current-password"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                error={formik.errors.password}
+              />
+            </Flex>
+            <Button
+              w="full"
+              type="submit"
+              isLoading={loading}
+              loadingText="Logging you in"
+              spinnerPlacement="end"
+            >
+              Login
+            </Button>
+          </Box>
+        </form>
       </Stack>
     </Container>
   );

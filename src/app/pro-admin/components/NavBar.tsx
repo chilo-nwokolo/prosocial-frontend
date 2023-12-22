@@ -1,8 +1,20 @@
-import { adminRoutes } from "@/utils/constants";
+"use client";
+import { deleteCookie } from "@/libs/cookies";
+import { client } from "@/service";
+import { AccessToken, adminRoutes } from "@/utils/constants";
 import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AdminNavBar() {
+  const router = useRouter();
+
+  const logout = () => {
+    deleteCookie(AccessToken);
+    deleteCookie("userType");
+    router.push(adminRoutes.login);
+    client.clearStore();
+  };
   return (
     <Flex
       as="nav"
@@ -22,7 +34,9 @@ export default function AdminNavBar() {
         <Link href={adminRoutes.users}>User Data</Link>
         <Link href={adminRoutes.groups}>Groups</Link>
         <Link href={adminRoutes.demoLocations}>Demo Locations</Link>
-        <Link href={adminRoutes.login}>Logout</Link>
+        <Text cursor="pointer" onClick={logout}>
+          Logout
+        </Text>
       </Flex>
     </Flex>
   );

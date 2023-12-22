@@ -27,6 +27,7 @@ export const LOGIN_USER = gql(`
         name
         phone
         email
+        user_type
       }
     }
   }
