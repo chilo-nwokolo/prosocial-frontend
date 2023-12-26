@@ -4,14 +4,16 @@ import {
   FormLabel,
   Menu,
   MenuButton,
-  MenuGroup,
+  // MenuGroup,
   MenuItem,
   MenuList,
   Switch,
 } from "@chakra-ui/react";
 import { FaChevronDown } from "react-icons/fa";
+import { Person } from "./UserTableColumns";
+import { Table as TanstackTable } from "@tanstack/react-table";
 
-const columnsList = [
+export const columnsList = [
   {
     title: "Affinities",
     data: [
@@ -60,14 +62,18 @@ const columnsList = [
   },
 ];
 
-export default function TableColumnsFilterDropdown() {
+export default function TableColumnsFilterDropdown({
+  table,
+}: {
+  table: TanstackTable<Person>;
+}) {
   return (
     <Menu closeOnSelect={false}>
       <MenuButton width="full" as={Button} rightIcon={<FaChevronDown />}>
         Columns
       </MenuButton>
       <MenuList gap="10" maxH="45rem" overflowY="auto">
-        {columnsList.map((res) => (
+        {/* {columnsList.map((res) => (
           <MenuGroup title={res.title} key={res.title}>
             {res.data.map((result) => (
               <MenuItem key={result.value}>
@@ -80,7 +86,22 @@ export default function TableColumnsFilterDropdown() {
               </MenuItem>
             ))}
           </MenuGroup>
-        ))}
+        ))} */}
+        {table.getAllLeafColumns().map((column) => {
+          return (
+            <MenuItem key={column.id} className="px-1">
+              <FormControl display="flex" gap="6" alignItems="center">
+                <Switch
+                  isChecked={column.getIsVisible()}
+                  onChange={column.getToggleVisibilityHandler()}
+                />
+                <FormLabel htmlFor={column.id} mb="0">
+                  {column.id}
+                </FormLabel>
+              </FormControl>
+            </MenuItem>
+          );
+        })}
       </MenuList>
     </Menu>
   );
