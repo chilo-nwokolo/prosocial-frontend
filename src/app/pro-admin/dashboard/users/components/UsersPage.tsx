@@ -1,28 +1,59 @@
 "use client";
 import AdminUserAccordion from "@/app/pro-admin/components/AdminUserAccordion";
-import { Box, Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Skeleton,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import TableColumnsFilterDropdown from "./TableColumnsFilterDropdown";
 import AdminTable from "./AdminTable";
-import { defaultData, columns as newColumns } from "./UserTableColumns";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import React, { useState } from "react";
+import { columns as newColumns } from "./UserTableColumns";
+import {
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { QUERY_ADMIN_USERS } from "../queries";
+import AdminModal from "@/app/pro-admin/components/AdminModal";
+import CreateGroupModal from "./CreateGroupModal";
+import PaginationData from "./PaginationData";
 
 export default function UsersPage() {
-  const [data] = useState(() => [...defaultData]);
   const [columnVisibility, setColumnVisibility] = useState({});
 
+  const { loading, data } = useQuery(QUERY_ADMIN_USERS);
+
+  const [rowSelection, setRowSelection] = useState({});
+
   const table = useReactTable({
-    data,
-    columns: newColumns,
+    // @ts-ignore
+    data: data?.adminQueryUsers || [],
+    // @ts-ignore
+    columns: useMemo(() => newColumns, []),
     state: {
       columnVisibility,
+      rowSelection,
     },
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    enableRowSelection: true,
     debugTable: process.env.NODE_ENV === "development",
-    debugHeaders: process.env.NODE_ENV === "development",
-    debugColumns: process.env.NODE_ENV === "development",
+    getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const {
+    isOpen: isCreateGroupModal,
+    onOpen: openCreateGroupModal,
+    onClose: closeCreateGroupModal,
+  } = useDisclosure();
 
   return (
     <Box mt="4">
@@ -36,19 +67,35 @@ export default function UsersPage() {
       </Grid>
       <Flex alignItems="center" justifyContent="space-between" my="9">
         <Box>
-          <Text>13 Records</Text>
+          <Text>{data?.adminQueryUsers?.length} Records</Text>
         </Box>
         <Flex gap="4">
-          <Button>Add to group</Button>
-          <Button>Download as CSV</Button>
+          <Button onClick={openCreateGroupModal}>Add to group</Button>
+          <Button>Download data as CSV</Button>
         </Flex>
         <Box>
           <Button>Delete</Button>
         </Box>
       </Flex>
       <Box minH="1000px" mt="10px">
-        <AdminTable table={table} />
+        {loading ? (
+          <Box h="500px">
+            <Skeleton h="full" w="full" />
+          </Box>
+        ) : (
+          <>
+            <AdminTable table={table} />
+            <PaginationData table={table} />
+          </>
+        )}
       </Box>
+      <AdminModal
+        title="Create Group"
+        isOpen={isCreateGroupModal}
+        onClose={closeCreateGroupModal}
+        body={<CreateGroupModal table={table} />}
+        size="2xl"
+      />
     </Box>
   );
 }

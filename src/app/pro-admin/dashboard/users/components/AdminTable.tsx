@@ -1,5 +1,6 @@
 "use client";
 import {
+  Box,
   Table,
   TableContainer,
   Tbody,
@@ -9,12 +10,12 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { Table as TanstackTable, flexRender } from "@tanstack/react-table";
-import { Person } from "./UserTableColumns";
+import { Query_Admin_UsersQuery } from "@/__generated__/graphql";
 
 export default function AdminTable({
   table,
 }: {
-  table: TanstackTable<Person>;
+  table: TanstackTable<Query_Admin_UsersQuery["adminQueryUsers"]>;
 }) {
   return (
     <div className="p-2">
@@ -22,10 +23,14 @@ export default function AdminTable({
       <TableContainer>
         <Table colorScheme="blackAlpha">
           <Thead>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table.getHeaderGroups()?.map((headerGroup) => (
               <Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <Th key={header.id} colSpan={header.colSpan}>
+                  <Th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    border="1px solid"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -41,7 +46,7 @@ export default function AdminTable({
             {table.getRowModel().rows.map((row) => (
               <Tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <Td key={cell.id}>
+                  <Td key={cell.id} border="1px solid">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Td>
                 ))}
@@ -50,8 +55,7 @@ export default function AdminTable({
           </Tbody>
         </Table>
       </TableContainer>
-      <div className="h-4" />
-      <pre>{JSON.stringify(table.getState().columnVisibility, null, 2)}</pre>
+      <Box my="6" />
     </div>
   );
 }

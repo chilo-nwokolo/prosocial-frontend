@@ -8,6 +8,9 @@ export const QUERY_ADMIN_USERS = gql(`
       unique_id
       email
       dob
+      question_responses {
+        id
+      }
       personalityScore {
         id
         extroversion

@@ -10,8 +10,8 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import { FaChevronDown } from "react-icons/fa";
-import { Person } from "./UserTableColumns";
 import { Table as TanstackTable } from "@tanstack/react-table";
+import { Query_Admin_UsersQuery } from "@/__generated__/graphql";
 
 export const columnsList = [
   {
@@ -62,10 +62,32 @@ export const columnsList = [
   },
 ];
 
+const columnNameMap = {
+  id: "ID",
+  name: "Name",
+  unique_id: "UUID",
+  dob: "Age",
+  email: "Email",
+  profile_level_of_education: "Education",
+  profile_political_orientation: "Political Orientation",
+  profile_gender: "Gender",
+  profile_race: "Race",
+  profile_relationship_status: "Relationship Status",
+  profile_health_rating: "Health",
+  "personalityScore_personalityBucketType.name": "Big 5 Type",
+  personalityScore_extroversion: "Extroversion Score",
+  personalityScore_agreeableness: "Agreeableness score",
+  personalityScore_conscientiousness: "Conscientiousness score",
+  personalityScore_neuroticism: "Neuroticism Score",
+  personalityScore_openness: "Openness score",
+  personalityScore_narcissism: "Narcissism score",
+  select: "ID",
+};
+
 export default function TableColumnsFilterDropdown({
   table,
 }: {
-  table: TanstackTable<Person>;
+  table: TanstackTable<Query_Admin_UsersQuery["adminQueryUsers"]>;
 }) {
   return (
     <Menu closeOnSelect={false}>
@@ -96,7 +118,7 @@ export default function TableColumnsFilterDropdown({
                   onChange={column.getToggleVisibilityHandler()}
                 />
                 <FormLabel htmlFor={column.id} mb="0">
-                  {column.id}
+                  {columnNameMap[column.id as keyof typeof columnNameMap]}
                 </FormLabel>
               </FormControl>
             </MenuItem>

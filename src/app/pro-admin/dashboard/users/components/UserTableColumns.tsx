@@ -1,54 +1,17 @@
-import { Checkbox } from "@chakra-ui/react";
+import { Query_Admin_UsersQuery } from "@/__generated__/graphql";
+import { Box, Checkbox } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 
-export type Person = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  age: number;
-  visits: number;
-  status: string;
-  progress: number;
-};
-
-export const defaultData: Person[] = [
-  {
-    id: "1",
-    firstName: "tanner",
-    lastName: "linsley",
-    age: 24,
-    visits: 100,
-    status: "In Relationship",
-    progress: 50,
-  },
-  {
-    id: "2",
-    firstName: "tandy",
-    lastName: "miller",
-    age: 40,
-    visits: 40,
-    status: "Single",
-    progress: 80,
-  },
-  {
-    id: "3",
-    firstName: "joe",
-    lastName: "dirte",
-    age: 45,
-    visits: 20,
-    status: "Complicated",
-    progress: 10,
-  },
-];
-
-const columnHelper = createColumnHelper<Person>();
+const columnHelper =
+  createColumnHelper<Query_Admin_UsersQuery["adminQueryUsers"]>();
 
 export const columns = [
   columnHelper.accessor("id", {
+    id: "select",
     header: ({ table }) => (
       <Checkbox
         {...{
-          checked: table.getIsAllRowsSelected(),
+          isChecked: table.getIsAllRowsSelected(),
           indeterminate: table.getIsSomeRowsSelected(),
           onChange: table.getToggleAllRowsSelectedHandler(),
         }}
@@ -57,7 +20,7 @@ export const columns = [
     cell: ({ row }) => (
       <Checkbox
         {...{
-          checked: row.getIsSelected(),
+          isChecked: row.getIsSelected(),
           disabled: !row.getCanSelect(),
           indeterminate: row.getIsSomeSelected(),
           onChange: row.getToggleSelectedHandler(),
@@ -65,24 +28,70 @@ export const columns = [
       />
     ),
   }),
-  columnHelper.accessor("firstName", {
-    header: () => <span>First Name</span>,
+  columnHelper.accessor("name", {
+    header: () => <span>Full Name</span>,
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("lastName", {
-    cell: (info) => <i>{info.getValue()}</i>,
+  columnHelper.accessor("unique_id", {
+    header: () => <span>UUID</span>,
+    cell: (info) => <i>{info.renderValue() as string}</i>,
   }),
-  columnHelper.accessor("age", {
+  columnHelper.accessor("dob", {
     header: () => <span>Age</span>,
-    cell: (info) => info.renderValue(),
+    cell: (info) => (
+      <Box>
+        {/* @ts-ignore */}
+        {new Date().getFullYear() - new Date(info.getValue()).getFullYear()}
+      </Box>
+    ),
   }),
-  columnHelper.accessor("visits", {
-    header: () => <span>Visits</span>,
+  columnHelper.accessor("email", {
+    header: () => <span>Email Address</span>,
   }),
-  columnHelper.accessor("status", {
-    header: () => <span>Status</span>,
+  columnHelper.accessor("profile.level_of_education", {
+    header: () => <span>Education</span>,
   }),
-  columnHelper.accessor("progress", {
-    header: () => <span>Profile Progress</span>,
+  columnHelper.accessor("profile.political_orientation", {
+    header: () => <span>Political Orientation</span>,
+  }),
+  columnHelper.accessor("profile.gender", {
+    header: () => <span>Gender</span>,
+  }),
+  columnHelper.accessor("profile.race", {
+    header: () => <span>Race</span>,
+  }),
+  columnHelper.accessor("profile.relationship_status", {
+    header: () => <span>Relationship Status</span>,
+  }),
+  columnHelper.accessor("profile.health_rating", {
+    header: () => <span>Health Rating</span>,
+  }),
+  columnHelper.accessor("personalityScore.personalityBucketType.name", {
+    header: () => <span>Big 5 Type</span>,
+  }),
+  columnHelper.accessor("question_responses.id", {
+    header: () => <span>Questions Answered</span>,
+    cell: (info) => {
+      const questionResponses = info.row.original as any;
+      return questionResponses?.question_responses?.length as string;
+    },
+  }),
+  columnHelper.accessor("personalityScore.extroversion", {
+    header: () => <span>Extroversion Score</span>,
+  }),
+  columnHelper.accessor("personalityScore.agreeableness", {
+    header: () => <span>Agreeableness Score</span>,
+  }),
+  columnHelper.accessor("personalityScore.conscientiousness", {
+    header: () => <span>Conscientiousness Score</span>,
+  }),
+  columnHelper.accessor("personalityScore.neuroticism", {
+    header: () => <span>Neuroticism Score</span>,
+  }),
+  columnHelper.accessor("personalityScore.openness", {
+    header: () => <span>Openness Score</span>,
+  }),
+  columnHelper.accessor("personalityScore.narcissism", {
+    header: () => <span>Narcissism Score</span>,
   }),
 ];
