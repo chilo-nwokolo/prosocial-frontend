@@ -8,52 +8,23 @@ import {
   GridItem,
   Skeleton,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
 import TableColumnsFilterDropdown from "./TableColumnsFilterDropdown";
 import AdminTable from "./AdminTable";
-import { columns as newColumns } from "./UserTableColumns";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
-import { QUERY_ADMIN_USERS } from "../queries";
 import AdminModal from "@/app/pro-admin/components/AdminModal";
 import CreateGroupModal from "./CreateGroupModal";
 import PaginationData from "./PaginationData";
+import useUsersAdminPage from "../hooks/useUsersAdminPage";
 
 export default function UsersPage() {
-  const [columnVisibility, setColumnVisibility] = useState({});
-
-  const { loading, data } = useQuery(QUERY_ADMIN_USERS);
-
-  const [rowSelection, setRowSelection] = useState({});
-
-  const table = useReactTable({
-    // @ts-ignore
-    data: data?.adminQueryUsers || [],
-    // @ts-ignore
-    columns: useMemo(() => newColumns, []),
-    state: {
-      columnVisibility,
-      rowSelection,
-    },
-    onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
-    enableRowSelection: true,
-    debugTable: process.env.NODE_ENV === "development",
-    getPaginationRowModel: getPaginationRowModel(),
-  });
-
   const {
-    isOpen: isCreateGroupModal,
-    onOpen: openCreateGroupModal,
-    onClose: closeCreateGroupModal,
-  } = useDisclosure();
+    table,
+    data,
+    loading,
+    isCreateGroupModal,
+    openCreateGroupModal,
+    closeCreateGroupModal,
+  } = useUsersAdminPage();
 
   return (
     <Box mt="4">
