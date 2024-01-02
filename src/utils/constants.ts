@@ -39,6 +39,10 @@ export const appRouteLinks = {
   interestsExpaned: "/pro/home/growth/interests/expanded",
   interestsExpanedMore: "/pro/home/growth/interests/expanded/more-interests",
   logout: "/pro/logout",
+  // outing feedback routes
+  outingFeedback: "/outing-feedback",
+  outingFeedbackQuestions: "/outing-feedback/feedback-questions",
+  outingFeedbackSuccess: "/outing-feedback/feedback-questions/success",
 };
 
 export const adminRoutes = {
