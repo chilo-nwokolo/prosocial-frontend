@@ -9,23 +9,23 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ADMIN_USERS } from "../queries";
 import { useDisclosure } from "@chakra-ui/react";
 import { useFilterContext } from "./useFilterContext";
+import { DynamicQueryObject, adminQueryBuilder } from "@/utils/admin.utils";
 
 export default function useUsersAdminPage() {
   const [columnVisibility, setColumnVisibility] = useState({});
   const { filterProp, activeFilters } = useFilterContext();
+  const [query, setQuery] = useState<DynamicQueryObject>();
 
   useEffect(() => {
     console.info({ filterProp });
     console.info({ activeFilters });
+    setQuery(adminQueryBuilder(filterProp, activeFilters));
   }, [activeFilters, filterProp]);
 
   const { loading, data } = useQuery(QUERY_ADMIN_USERS, {
     variables: {
       input: {
-        // affinities: {
-        //   age_range_max: 0,
-        //   age_range_min: 0,
-        // },
+        ...query,
       },
     },
   });

@@ -1,16 +1,16 @@
 import { OnBoardCategoriesWithQuestionsQuery } from "@/__generated__/graphql";
-import { sampleData } from "@/features/intro/questions";
+import { personalQuestionsData } from "@/features/intro/questions";
 
 export const transformQuestions = (
   questions: OnBoardCategoriesWithQuestionsQuery,
 ) => {
   const personalQuestions = {
-    id: sampleData[0].id,
-    category: sampleData[0].section,
-    meta: sampleData[0]?.meta,
-    description: sampleData[0]?.description,
-    totalQuestions: sampleData[0].questions?.length,
-    questions: sampleData[0].questions,
+    id: personalQuestionsData[0].id,
+    category: personalQuestionsData[0].section,
+    meta: personalQuestionsData[0]?.meta,
+    description: personalQuestionsData[0]?.description,
+    totalQuestions: personalQuestionsData[0].questions?.length,
+    questions: personalQuestionsData[0].questions,
   };
 
   const otherQuestions = questions.onBoardCategoriesWithQuestions?.map(
@@ -23,8 +23,9 @@ export const transformQuestions = (
       return {
         id: category.id,
         category: category.name.replace("&", "and"),
-        meta: sampleData[parseInt(category.id) - 1]?.meta,
-        description: sampleData[parseInt(category.id) - 1]?.description,
+        meta: personalQuestionsData[parseInt(category.id) - 1]?.meta,
+        description:
+          personalQuestionsData[parseInt(category.id) - 1]?.description,
         totalQuestions: category.questions?.length,
         questions,
       };

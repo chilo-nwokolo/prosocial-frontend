@@ -13,13 +13,27 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useFilterContext } from "../hooks/useFilterContext";
-import { FILTER_VALUES, activeFilterHandler } from "@/utils/admin.utils";
+import {
+  FILTER_VALUES,
+  activeFilterHandler,
+  findFilterProp,
+  updateFilterPropHandler,
+} from "@/utils/admin.utils";
+import {
+  educationOptions,
+  politicalOrientationOptions,
+} from "@/features/intro/questions";
 
 export default function AffinitiesFilter() {
-  const [sliderValueMin, setSliderValueMin] = useState(0);
-  const [sliderValueMax, setSliderValueMax] = useState(100);
-  const { updateFilterProp, updateActiveFilters, activeFilters } =
+  const { filterProp, updateFilterProp, updateActiveFilters, activeFilters } =
     useFilterContext();
+
+  const [sliderValueMin, setSliderValueMin] = useState(
+    (findFilterProp("age_range_min", filterProp) as number) || 0,
+  );
+  const [sliderValueMax, setSliderValueMax] = useState(
+    (findFilterProp("age_range_max", filterProp) as number) || 100,
+  );
 
   return (
     <SimpleGrid w="full" columns={3} spacing="5">
@@ -46,11 +60,17 @@ export default function AffinitiesFilter() {
               defaultValue={sliderValueMin}
               onChange={(val) => {
                 setSliderValueMin(val);
-                updateFilterProp({
-                  parentName: "affinities",
-                  filterProp: "age_range_min",
-                  value: val,
-                });
+                updateFilterProp(
+                  updateFilterPropHandler(
+                    {
+                      parentName: "affinities",
+                      category: "age",
+                      filterProp: "age_range_min",
+                      value: val,
+                    },
+                    filterProp,
+                  ),
+                );
               }}
             >
               <SliderMark
@@ -76,11 +96,17 @@ export default function AffinitiesFilter() {
               defaultValue={sliderValueMax}
               onChange={(val) => {
                 setSliderValueMax(val);
-                updateFilterProp({
-                  parentName: "affinities",
-                  filterProp: "age_range_max",
-                  value: val,
-                });
+                updateFilterProp(
+                  updateFilterPropHandler(
+                    {
+                      parentName: "affinities",
+                      category: "age",
+                      filterProp: "age_range_max",
+                      value: val,
+                    },
+                    filterProp,
+                  ),
+                );
               }}
             >
               <SliderMark
@@ -116,15 +142,29 @@ export default function AffinitiesFilter() {
             Education
           </FormLabel>
         </FormControl>
-        <Select mt="5">
-          <option value="elementary">Elementary or Middle School</option>
-          <option value="highSchool">
-            High school graduate/GED equivalent
-          </option>
-          <option value="someCollege">Some college</option>
-          <option value="associate">Associate degree</option>
-          <option value="bachelors">Bachelor&apos;s degree</option>
-          <option value="graduate">Graduate or professional degree</option>
+        <Select
+          mt="5"
+          onChange={(e) => {
+            updateFilterProp(
+              updateFilterPropHandler(
+                {
+                  parentName: "affinities",
+                  category: "education",
+                  filterProp: "education",
+                  value: e.target.value,
+                },
+                filterProp,
+              ),
+            );
+          }}
+          defaultValue={findFilterProp("education", filterProp)}
+        >
+          <option value="">None</option>
+          {educationOptions.map((option) => (
+            <option value={option.value} key={option.id}>
+              {option.title}
+            </option>
+          ))}
         </Select>
       </Flex>
       <Flex flexDir="column">
@@ -147,12 +187,29 @@ export default function AffinitiesFilter() {
             Political Orientation
           </FormLabel>
         </FormControl>
-        <Select mt="5">
-          <option value="stronglyLiberal">Strongly Liberal</option>
-          <option value="slightlyLiberal">Slightly Liberal</option>
-          <option value="moderate">Moderate</option>
-          <option value="slightlyConservative">Slightly conservative</option>
-          <option value="stronglyConservative">Strongly Conservative</option>
+        <Select
+          mt="5"
+          onChange={(e) => {
+            updateFilterProp(
+              updateFilterPropHandler(
+                {
+                  parentName: "affinities",
+                  category: "politicalOrientation",
+                  filterProp: "political_orientation",
+                  value: e.target.value,
+                },
+                filterProp,
+              ),
+            );
+          }}
+          defaultValue={findFilterProp("politicalOrientation", filterProp)}
+        >
+          <option value="">None</option>
+          {politicalOrientationOptions.map((option) => (
+            <option value={option.value} key={option.id}>
+              {option.title}
+            </option>
+          ))}
         </Select>
       </Flex>
     </SimpleGrid>

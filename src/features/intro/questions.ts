@@ -1,6 +1,98 @@
 import { AnswerType } from "@/utils/constants";
 
-export const sampleData = [
+export const genderOptions = [
+  { id: 1, title: "Female", value: "FEMALE" },
+  { id: 2, title: "Male", value: "MALE" },
+  {
+    id: 3,
+    title: "Gender variant/Non-conforming",
+    value: "NONCONFORMING",
+  },
+  { id: 4, title: "Transgender", value: "TRANSGENDER" },
+  { id: 5, title: "Prefer not to answer", value: "OTHER" },
+];
+
+export const raceOptions = [
+  { id: 1, title: "White", value: "White" },
+  { id: 2, title: "Black or African", value: "Black or African" },
+  { id: 3, title: "American", value: "American" },
+  { id: 4, title: "Hispanic/Latino", value: "Hispanic/Latino" },
+  { id: 5, title: "Asian", value: "Asian" },
+  {
+    id: 6,
+    title: "Native Hawaiian/Other Pacific Islander",
+    value: "Native Hawaiian/Other Pacific Islander",
+  },
+  {
+    id: 7,
+    title: "American Indian/Alaskan Native",
+    value: "American Indian/Alaskan Native",
+  },
+  { id: 8, title: "Multiracial", value: "Multiracial" },
+  { id: 9, title: "Other", value: "Other" },
+  {
+    id: 10,
+    title: "Don’t know/Not sure",
+    value: "Don’t know/Not sure",
+  },
+];
+
+export const educationOptions = [
+  {
+    id: 1,
+    title: "Elementary or Middle school",
+    value: "Elementary or Middle school",
+  },
+  {
+    id: 2,
+    title: "High school graduate/GED equivalent",
+    value: "High school graduate/GED equivalent",
+  },
+  { id: 3, title: "Some college", value: "Some college" },
+  { id: 4, title: "Associates degree", value: "Associates degree" },
+  { id: 5, title: "Bachelor’s degree", value: "Bachelor’s degree" },
+  {
+    id: 6,
+    title: "Graduate or professional degree",
+    value: "Graduate or professional degree",
+  },
+];
+
+export const relationshipStatusOptions = [
+  { id: 1, title: "Single", value: "Single" },
+  { id: 2, title: "Dating", value: "Dating" },
+  {
+    id: 3,
+    title: "In a committed relationship",
+    value: "In a committed relationship",
+  },
+];
+
+export const politicalOrientationOptions = [
+  { id: 1, title: "Strongly liberal", value: "Strongly liberal" },
+  { id: 2, title: "Slightly liberal", value: "Slightly liberal" },
+  { id: 3, title: "Moderate", value: "Moderate" },
+  {
+    id: 4,
+    title: "Slightly conservative",
+    value: "Slightly conservative",
+  },
+  {
+    id: 5,
+    title: "Strongly conservative",
+    value: "Strongly conservative",
+  },
+];
+
+export const healthRatingOptions = [
+  { id: 1, title: "Poor", value: "Poor" },
+  { id: 2, title: "Moderate", value: "Moderate" },
+  { id: 3, title: "Good", value: "Good" },
+  { id: 4, title: "Very good", value: "Very good" },
+  { id: 5, title: "Excellent", value: "Excellent" },
+];
+
+export const personalQuestionsData = [
   {
     id: 1,
     section: "The basics",
@@ -12,85 +104,25 @@ export const sampleData = [
       {
         id: "gender",
         question: "What gender do you identify with?",
-        options: [
-          { id: 1, title: "Female", value: "FEMALE" },
-          { id: 2, title: "Male", value: "MALE" },
-          {
-            id: 3,
-            title: "Gender variant/Non-conforming",
-            value: "NONCONFORMING",
-          },
-          { id: 4, title: "Transgender", value: "TRANSGENDER" },
-          { id: 5, title: "Prefer not to answer", value: "OTHER" },
-        ],
+        options: genderOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
         id: "race",
         question: "What is your race/ethnicity?",
-        options: [
-          { id: 1, title: "White", value: "White" },
-          { id: 2, title: "Black or African", value: "Black or African" },
-          { id: 3, title: "American", value: "American" },
-          { id: 4, title: "Hispanic/Latino", value: "Hispanic/Latino" },
-          { id: 5, title: "Asian", value: "Asian" },
-          {
-            id: 6,
-            title: "Native Hawaiian/Other Pacific Islander",
-            value: "Native Hawaiian/Other Pacific Islander",
-          },
-          {
-            id: 7,
-            title: "American Indian/Alaskan Native",
-            value: "American Indian/Alaskan Native",
-          },
-          { id: 8, title: "Multiracial", value: "Multiracial" },
-          { id: 9, title: "Other", value: "Other" },
-          {
-            id: 10,
-            title: "Don’t know/Not sure",
-            value: "Don’t know/Not sure",
-          },
-        ],
+        options: raceOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
         id: "relationship_status",
         question: "What is your relationship status?",
-        options: [
-          { id: 1, title: "Single", value: "Single" },
-          { id: 2, title: "Dating", value: "Dating" },
-          {
-            id: 3,
-            title: "In a committed relationship",
-            value: "In a committed relationship",
-          },
-        ],
+        options: relationshipStatusOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
         id: "level_of_education",
         question: "What is your level of education?",
-        options: [
-          {
-            id: 1,
-            title: "Elementary or Middle school",
-            value: "Elementary or Middle school",
-          },
-          {
-            id: 2,
-            title: "High school graduate/GED equivalent",
-            value: "High school graduate/GED equivalent",
-          },
-          { id: 3, title: "Some college", value: "Some college" },
-          { id: 4, title: "Associates degree", value: "Associates degree" },
-          { id: 5, title: "Bachelor’s degree", value: "Bachelor’s degree" },
-          {
-            id: 6,
-            title: "Graduate or professional degree",
-            value: "Graduate or professional degree",
-          },
-        ],
+        options: educationOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
@@ -101,21 +133,7 @@ export const sampleData = [
       {
         id: "political_orientation",
         question: "What is your political orientation?",
-        options: [
-          { id: 1, title: "Strongly liberal", value: "Strongly liberal" },
-          { id: 2, title: "Slightly liberal", value: "Slightly liberal" },
-          { id: 3, title: "Moderate", value: "Moderate" },
-          {
-            id: 4,
-            title: "Slightly conservative",
-            value: "Slightly conservative",
-          },
-          {
-            id: 5,
-            title: "Strongly conservative",
-            value: "Strongly conservative",
-          },
-        ],
+        options: politicalOrientationOptions,
         type: AnswerType.RATING_SCALE,
       },
       {
@@ -145,13 +163,7 @@ export const sampleData = [
       {
         id: "health_rating",
         question: "How would you rate your health, generally speaking?",
-        options: [
-          { id: 1, title: "Poor", value: "Poor" },
-          { id: 2, title: "Moderate", value: "Moderate" },
-          { id: 3, title: "Good", value: "Good" },
-          { id: 4, title: "Very good", value: "Very good" },
-          { id: 5, title: "Excellent", value: "Excellent" },
-        ],
+        options: healthRatingOptions,
         type: AnswerType.RATING_SCALE,
       },
     ],
