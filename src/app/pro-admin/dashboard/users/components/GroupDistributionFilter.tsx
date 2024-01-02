@@ -1,4 +1,10 @@
 import {
+  genderOptions,
+  healthRatingOptions,
+  raceOptions,
+  relationshipStatusOptions,
+} from "@/features/intro/questions";
+import {
   Flex,
   FormControl,
   FormLabel,
@@ -6,73 +12,185 @@ import {
   SimpleGrid,
   Switch,
 } from "@chakra-ui/react";
+import { useFilterContext } from "../hooks/useFilterContext";
+import {
+  FILTER_VALUES,
+  activeFilterHandler,
+  findFilterProp,
+  updateFilterPropHandler,
+} from "@/utils/admin.utils";
 
 export default function GroupDistributionFilter() {
+  const { filterProp, updateFilterProp, updateActiveFilters, activeFilters } =
+    useFilterContext();
+
   return (
     <SimpleGrid w="full" columns={4} spacing="5">
+      {/* GENDER */}
       <Flex flexDir="column">
         <FormControl display="flex" gap="3" alignItems="center">
-          <Switch id="gender" />
+          <Switch
+            id="gender"
+            isChecked={activeFilters.includes(FILTER_VALUES.gender)}
+            onChange={() =>
+              updateActiveFilters(
+                activeFilterHandler(FILTER_VALUES.gender, activeFilters),
+              )
+            }
+          />
           <FormLabel htmlFor="gender" mb="0">
             Gender
           </FormLabel>
         </FormControl>
-        <Select mt="5">
-          <option value="all">All</option>
-          <option value="female">Female</option>
-          <option value="male">Male</option>
-          <option value="nonConforming">Gender variant / non conforming</option>
-          <option value="trangender">Transgender</option>
-          <option value="preferNotToAnswer">Prefer not to answer</option>
+        <Select
+          mt="5"
+          onChange={(e) => {
+            updateFilterProp(
+              updateFilterPropHandler(
+                {
+                  parentName: "group_distribution",
+                  category: "gender",
+                  filterProp: "gender",
+                  value: e.target.value,
+                },
+                filterProp,
+              ),
+            );
+          }}
+          defaultValue={findFilterProp("gender", filterProp)}
+        >
+          <option value="">All</option>
+          {genderOptions.map((option) => (
+            <option value={option.value} key={option.id}>
+              {option.title}
+            </option>
+          ))}
         </Select>
       </Flex>
+      {/* RACE */}
       <Flex flexDir="column">
         <FormControl gap="4" display="flex" alignItems="center">
-          <Switch id="race" />
+          <Switch
+            id="race"
+            isChecked={activeFilters.includes(FILTER_VALUES.race)}
+            onChange={() =>
+              updateActiveFilters(
+                activeFilterHandler(FILTER_VALUES.race, activeFilters),
+              )
+            }
+          />
           <FormLabel htmlFor="race" mb="0">
             Race
           </FormLabel>
         </FormControl>
-        <Select mt="5">
-          <option value="all">All</option>
-          <option value="white">White</option>
-          <option value="africanAmerican">Black or African American</option>
-          <option value="Hispanic/Latino">Hispanic/Latino</option>
-          <option value="Asian">Asian</option>
-          <option value="nativeHawaiian">
-            Native Hawaiian / Other pacific islander
-          </option>
-          <option value="multiracial">Multiracial</option>
-          <option value="other">Other</option>
-          <option value="dontKnow">Don&apos;t know/ not sure</option>
+        <Select
+          mt="5"
+          onChange={(e) => {
+            updateFilterProp(
+              updateFilterPropHandler(
+                {
+                  parentName: "group_distribution",
+                  category: "race",
+                  filterProp: "race",
+                  value: e.target.value,
+                },
+                filterProp,
+              ),
+            );
+          }}
+          defaultValue={findFilterProp("race", filterProp)}
+        >
+          <option value="">All</option>
+          {raceOptions.map((option) => (
+            <option value={option.value} key={option.id}>
+              {option.title}
+            </option>
+          ))}
         </Select>
       </Flex>
+      {/* RELATIONSHIP STATUS */}
       <Flex flexDir="column">
         <FormControl gap="4" display="flex" alignItems="center">
-          <Switch id="relationshipStatus" />
+          <Switch
+            id="relationshipStatus"
+            isChecked={activeFilters.includes(FILTER_VALUES.relationshipStatus)}
+            onChange={() =>
+              updateActiveFilters(
+                activeFilterHandler(
+                  FILTER_VALUES.relationshipStatus,
+                  activeFilters,
+                ),
+              )
+            }
+          />
           <FormLabel htmlFor="relationshipStatus" mb="0">
             Relationship Status
           </FormLabel>
         </FormControl>
-        <Select mt="5">
-          <option value="single">Single</option>
-          <option value="dating">Dating</option>
-          <option value="inARelationship">In a committed relationship</option>
+        <Select
+          mt="5"
+          onChange={(e) => {
+            updateFilterProp(
+              updateFilterPropHandler(
+                {
+                  parentName: "group_distribution",
+                  category: "relationshipStatus",
+                  filterProp: "relationship_status",
+                  value: e.target.value,
+                },
+                filterProp,
+              ),
+            );
+          }}
+          defaultValue={findFilterProp("relationship_status", filterProp)}
+        >
+          <option value="">All</option>
+          {relationshipStatusOptions.map((option) => (
+            <option value={option.value} key={option.id}>
+              {option.title}
+            </option>
+          ))}
         </Select>
       </Flex>
+      {/* HEALTH STATUS */}
       <Flex flexDir="column">
         <FormControl gap="4" display="flex" alignItems="center">
-          <Switch id="health" />
-          <FormLabel htmlFor="health" mb="0">
+          <Switch
+            id="healthStatus"
+            isChecked={activeFilters.includes(FILTER_VALUES.healthStatus)}
+            onChange={() =>
+              updateActiveFilters(
+                activeFilterHandler(FILTER_VALUES.healthStatus, activeFilters),
+              )
+            }
+          />
+          <FormLabel htmlFor="healthStatus" mb="0">
             Health
           </FormLabel>
         </FormControl>
-        <Select mt="5">
-          <option value="poor">Poor</option>
-          <option value="moderate">Moderate</option>
-          <option value="good">Good</option>
-          <option value="veryGood">Very Good</option>
-          <option value="excelleng">Excellent</option>
+        <Select
+          mt="5"
+          onChange={(e) => {
+            updateFilterProp(
+              updateFilterPropHandler(
+                {
+                  parentName: "group_distribution",
+                  category: FILTER_VALUES.healthStatus,
+                  filterProp: "health",
+                  value: e.target.value,
+                },
+                filterProp,
+              ),
+            );
+          }}
+          defaultValue={findFilterProp(FILTER_VALUES.healthStatus, filterProp)}
+        >
+          <option value="">All</option>
+          {healthRatingOptions.map((option) => (
+            <option value={option.value} key={option.id}>
+              {option.title}
+            </option>
+          ))}
         </Select>
       </Flex>
     </SimpleGrid>

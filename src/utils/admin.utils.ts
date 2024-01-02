@@ -8,6 +8,10 @@ export const FILTER_VALUES = {
   age: "age",
   education: "education",
   politicalOrientation: "politicalOrientation",
+  gender: "gender",
+  race: "race",
+  relationshipStatus: "relationshipStatus",
+  healthStatus: "health",
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -51,7 +55,7 @@ export const findFilterProp = (
   name: string,
   filterProp: FilterProperties[],
 ) => {
-  const found = filterProp.find((prop) => prop.filterProp === name);
+  const found = filterProp.find((prop) => prop.category === name);
   return found?.value;
 };
 

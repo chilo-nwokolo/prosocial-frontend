@@ -54,7 +54,7 @@ export default function UserFilterButtons({
   onChange,
 }: UserFilterButtonsProps) {
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "framework",
+    name: "filterButtons",
     onChange: onChange,
   });
 

@@ -18,16 +18,24 @@ import { useState } from "react";
 import NarcissismFilter from "../dashboard/users/components/NarcissismFilter";
 import FeedbackFilter from "../dashboard/users/components/FeedbackFilter";
 import AppliedFilter from "../dashboard/users/components/AppliedFilter";
+import { useFilterContext } from "../dashboard/users/hooks/useFilterContext";
 
 export default function AdminUserAccordion() {
   const { isOpen, onToggle, onOpen } = useDisclosure();
   const [activeButton, setActiveButton] = useState("");
+  const { updateFilterProp, updateActiveFilters } = useFilterContext();
 
   const onActiveButtonChange = (activeButton: string) => {
     setActiveButton(activeButton);
     if (activeButton && !isOpen) {
       onOpen();
     }
+  };
+
+  const reset = () => {
+    setActiveButton("");
+    updateFilterProp([]);
+    updateActiveFilters([]);
   };
 
   return (
@@ -39,7 +47,7 @@ export default function AdminUserAccordion() {
             {isOpen ? <FaChevronUp /> : <FaChevronDown />}
           </Button>
         </Flex>
-        <Button onClick={() => onActiveButtonChange("")}>Reset</Button>
+        <Button onClick={reset}>Reset</Button>
       </Flex>
       <Flex mb="5" mt="2.5">
         <UserFilterButtons onChange={onActiveButtonChange} />

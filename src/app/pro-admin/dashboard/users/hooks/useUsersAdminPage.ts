@@ -16,6 +16,8 @@ export default function useUsersAdminPage() {
   const { filterProp, activeFilters } = useFilterContext();
   const [query, setQuery] = useState<DynamicQueryObject>();
 
+  // console.log({ query });
+
   useEffect(() => {
     console.info({ filterProp });
     console.info({ activeFilters });

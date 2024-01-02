@@ -149,7 +149,7 @@ export default function AffinitiesFilter() {
               updateFilterPropHandler(
                 {
                   parentName: "affinities",
-                  category: "education",
+                  category: FILTER_VALUES.education,
                   filterProp: "education",
                   value: e.target.value,
                 },
@@ -157,9 +157,9 @@ export default function AffinitiesFilter() {
               ),
             );
           }}
-          defaultValue={findFilterProp("education", filterProp)}
+          defaultValue={findFilterProp(FILTER_VALUES.education, filterProp)}
         >
-          <option value="">None</option>
+          <option value="">All</option>
           {educationOptions.map((option) => (
             <option value={option.value} key={option.id}>
               {option.title}
@@ -194,7 +194,7 @@ export default function AffinitiesFilter() {
               updateFilterPropHandler(
                 {
                   parentName: "affinities",
-                  category: "politicalOrientation",
+                  category: FILTER_VALUES.politicalOrientation,
                   filterProp: "political_orientation",
                   value: e.target.value,
                 },
@@ -202,9 +202,12 @@ export default function AffinitiesFilter() {
               ),
             );
           }}
-          defaultValue={findFilterProp("politicalOrientation", filterProp)}
+          defaultValue={findFilterProp(
+            FILTER_VALUES.politicalOrientation,
+            filterProp,
+          )}
         >
-          <option value="">None</option>
+          <option value="">All</option>
           {politicalOrientationOptions.map((option) => (
             <option value={option.value} key={option.id}>
               {option.title}
