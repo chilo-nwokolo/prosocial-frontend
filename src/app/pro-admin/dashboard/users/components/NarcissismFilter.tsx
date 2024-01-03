@@ -1,53 +1,44 @@
 import {
-  Flex,
-  FormControl,
-  FormLabel,
-  SimpleGrid,
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-  Switch,
-} from "@chakra-ui/react";
+  FILTER_CATEGORY_KEYS,
+  FILTER_PARENT_NAMES,
+  FILTER_QUERY_KEYS,
+} from "@/utils/admin.utils";
+import { SimpleGrid } from "@chakra-ui/react";
+import DoubleRangeFilterComponent from "./DoubleRangeFilterComponent";
 
-const narcTraits = [
-  "Narcissism range",
-  "Social beliefs range",
-  "Behavioral health range",
+const narcissismTraits = [
+  {
+    title: "Narcissism range",
+    category: FILTER_CATEGORY_KEYS.narcissismScore,
+    minValue: FILTER_QUERY_KEYS.narcissismScoreMin,
+    maxValue: FILTER_QUERY_KEYS.narcissismScoreMax,
+  },
+  {
+    title: "Social beliefs range",
+    category: FILTER_CATEGORY_KEYS.socialBeliefsScore,
+    minValue: FILTER_QUERY_KEYS.socialBeliefsScoreMin,
+    maxValue: FILTER_QUERY_KEYS.socialBeliefsScoreMax,
+  },
+  {
+    title: "Behavioral health range",
+    category: FILTER_CATEGORY_KEYS.behavioralHealthScore,
+    minValue: FILTER_QUERY_KEYS.behavioralHealthMin,
+    maxValue: FILTER_QUERY_KEYS.behavioralHealthMax,
+  },
 ];
 
 export default function NarcissismFilter() {
   return (
     <SimpleGrid columns={3} spacing="8">
-      {narcTraits.map((trait) => (
-        <Flex flexDir="column" key={trait}>
-          <FormControl gap="4" display="flex" alignItems="center">
-            <Switch id={trait} />
-            <FormLabel htmlFor={trait} mb="0">
-              {trait}
-            </FormLabel>
-          </FormControl>
-          <Flex flexDir="column" mt="5" gap="4">
-            <FormControl>
-              <FormLabel htmlFor="minimum-slider">Minimum</FormLabel>
-              <Slider aria-label="minimum-slider" defaultValue={30}>
-                <SliderTrack>
-                  <SliderFilledTrack />
-                </SliderTrack>
-                <SliderThumb />
-              </Slider>
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="maximum-slider">Maximum</FormLabel>
-              <Slider aria-label="maximum-slider" defaultValue={30}>
-                <SliderTrack>
-                  <SliderFilledTrack />
-                </SliderTrack>
-                <SliderThumb />
-              </Slider>
-            </FormControl>
-          </Flex>
-        </Flex>
+      {narcissismTraits.map((traits) => (
+        <DoubleRangeFilterComponent
+          key={traits.title}
+          trait={traits.title}
+          parentName={FILTER_PARENT_NAMES.narcissismSocialBehavioral}
+          individualTraitCategory={traits.category}
+          individualTraitValueMax={traits.maxValue}
+          individualTraitValueMin={traits.minValue}
+        />
       ))}
     </SimpleGrid>
   );

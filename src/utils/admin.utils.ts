@@ -20,6 +20,9 @@ export const FILTER_CATEGORY_KEYS = {
   conscientiousnessScore: "conscientiousnessScore",
   neuroticismScore: "neuroticismScore",
   opennessScore: "opennessScore",
+  narcissismScore: "narcissismScore",
+  socialBeliefsScore: "socialBeliefsScore",
+  behavioralHealthScore: "behavioralHealthScore",
 };
 
 export const FILTER_QUERY_KEYS = {
@@ -43,12 +46,19 @@ export const FILTER_QUERY_KEYS = {
   neuroticismScoreMax: "neuroticism_score_max",
   opennessScoreMin: "openness_score_min",
   opennessScoreMax: "openness_score_max",
+  narcissismScoreMin: "narcissism_min",
+  narcissismScoreMax: "narcissism_max",
+  socialBeliefsScoreMin: "social_beliefs_min",
+  socialBeliefsScoreMax: "social_beliefs_max",
+  behavioralHealthMin: "behavioral_health_min",
+  behavioralHealthMax: "behavioral_health_max",
 };
 
 export const FILTER_PARENT_NAMES = {
   affinities: "affinities",
   groupDistribution: "group_distribution",
   bigFivePersonality: "big_five_personality",
+  narcissismSocialBehavioral: "narcissism_social_behavioral",
 };
 
 export const activeFilterHandler = (name: string, activeFilters: string[]) => {

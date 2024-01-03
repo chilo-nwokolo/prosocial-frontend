@@ -2,23 +2,24 @@ import { Flex, FormControl, FormLabel, Switch } from "@chakra-ui/react";
 import FilterSlider from "./FilterSlider";
 import { useFilterContext } from "../hooks/useFilterContext";
 import {
-  FILTER_PARENT_NAMES,
   activeFilterHandler,
   findFilterProp,
   updateFilterPropHandler,
 } from "@/utils/admin.utils";
 import { useState } from "react";
 
-export default function IndividualTraitsComponent({
+export default function DoubleRangeFilterComponent({
   trait,
   individualTraitCategory,
   individualTraitValueMin,
   individualTraitValueMax,
+  parentName,
 }: {
   trait: string;
   individualTraitCategory: string;
   individualTraitValueMin: string;
   individualTraitValueMax: string;
+  parentName: string;
 }) {
   const { filterProp, updateFilterProp, updateActiveFilters, activeFilters } =
     useFilterContext();
@@ -55,7 +56,7 @@ export default function IndividualTraitsComponent({
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: FILTER_PARENT_NAMES.bigFivePersonality,
+                  parentName,
                   category: individualTraitCategory,
                   filterProp: individualTraitValueMin,
                   value: val,
@@ -73,7 +74,7 @@ export default function IndividualTraitsComponent({
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: FILTER_PARENT_NAMES.bigFivePersonality,
+                  parentName,
                   category: individualTraitCategory,
                   filterProp: individualTraitValueMax,
                   value: val,

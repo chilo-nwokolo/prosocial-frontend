@@ -18,7 +18,7 @@ import {
   updateFilterPropHandler,
 } from "@/utils/admin.utils";
 import FilterSlider from "./FilterSlider";
-import IndividualTraitsComponent from "./IndividualTraitsComponent";
+import DoubleRangeFilterComponent from "./DoubleRangeFilterComponent";
 
 const individualTraits = [
   {
@@ -196,9 +196,10 @@ export default function Big5Personality() {
         </Text>
         <Flex gap="5" mt="10">
           {individualTraits.map((traits) => (
-            <IndividualTraitsComponent
+            <DoubleRangeFilterComponent
               key={traits.title}
               trait={traits.title}
+              parentName={FILTER_PARENT_NAMES.bigFivePersonality}
               individualTraitCategory={traits.category}
               individualTraitValueMax={traits.maxValue}
               individualTraitValueMin={traits.minValue}
