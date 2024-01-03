@@ -4,7 +4,7 @@ export interface DynamicQueryObject {
   [key: string]: Record<string, any>;
 }
 
-export const FILTER_VALUES = {
+export const FILTER_CATEGORY_KEYS = {
   age: "age",
   education: "education",
   politicalOrientation: "politicalOrientation",
@@ -12,12 +12,43 @@ export const FILTER_VALUES = {
   race: "race",
   relationshipStatus: "relationshipStatus",
   healthStatus: "health",
+  bigFiveType: "bigFiveType",
+  questionsAnswered: "questionsAnswered",
+  individualTraits: "individualTraits",
+  extroversionScore: "extroversionScore",
+  agreeablenessScore: "agreeablenessScore",
+  conscientiousnessScore: "conscientiousnessScore",
+  neuroticismScore: "neuroticismScore",
+  opennessScore: "opennessScore",
 };
 
-// eslint-disable-next-line no-unused-vars
-const filterParentChildRelationship = {
-  affinities: ["age", "education", "politicalOrientation"],
-  groupDistribution: [],
+export const FILTER_QUERY_KEYS = {
+  age: "age",
+  education: "education",
+  politicalOrientation: "political_orientation",
+  gender: "gender",
+  race: "race",
+  butterflyType: "butterfly_type",
+  questionsAnsweredMin: "questions_answered_min",
+  questionsAnsweredMax: "questions_answered_max",
+  ageRangeMin: "age_range_min",
+  ageRangeMax: "age_range_max",
+  extroversionScoreMin: "extroversion_score_min",
+  extroversionScoreMax: "extroversion_score_max",
+  agreeablenessScoreMin: "agreeableness_score_min",
+  agreeablenessScoreMax: "agreeableness_score_max",
+  conscientiousnessScoreMin: "conscientiousness_score_min",
+  conscientiousnessScoreMax: "conscientiousness_score_max",
+  neuroticismScoreMin: "neuroticism_score_min",
+  neuroticismScoreMax: "neuroticism_score_max",
+  opennessScoreMin: "openness_score_min",
+  opennessScoreMax: "openness_score_max",
+};
+
+export const FILTER_PARENT_NAMES = {
+  affinities: "affinities",
+  groupDistribution: "group_distribution",
+  bigFivePersonality: "big_five_personality",
 };
 
 export const activeFilterHandler = (name: string, activeFilters: string[]) => {
@@ -55,7 +86,7 @@ export const findFilterProp = (
   name: string,
   filterProp: FilterProperties[],
 ) => {
-  const found = filterProp.find((prop) => prop.category === name);
+  const found = filterProp.find((prop) => prop.filterProp === name);
   return found?.value;
 };
 

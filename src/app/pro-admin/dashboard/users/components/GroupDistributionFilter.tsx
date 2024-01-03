@@ -14,7 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { useFilterContext } from "../hooks/useFilterContext";
 import {
-  FILTER_VALUES,
+  FILTER_CATEGORY_KEYS,
+  FILTER_PARENT_NAMES,
+  FILTER_QUERY_KEYS,
   activeFilterHandler,
   findFilterProp,
   updateFilterPropHandler,
@@ -31,10 +33,10 @@ export default function GroupDistributionFilter() {
         <FormControl display="flex" gap="3" alignItems="center">
           <Switch
             id="gender"
-            isChecked={activeFilters.includes(FILTER_VALUES.gender)}
+            isChecked={activeFilters.includes(FILTER_CATEGORY_KEYS.gender)}
             onChange={() =>
               updateActiveFilters(
-                activeFilterHandler(FILTER_VALUES.gender, activeFilters),
+                activeFilterHandler(FILTER_CATEGORY_KEYS.gender, activeFilters),
               )
             }
           />
@@ -48,16 +50,16 @@ export default function GroupDistributionFilter() {
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: "group_distribution",
-                  category: "gender",
-                  filterProp: "gender",
+                  parentName: FILTER_PARENT_NAMES.groupDistribution,
+                  category: FILTER_CATEGORY_KEYS.gender,
+                  filterProp: FILTER_QUERY_KEYS.gender,
                   value: e.target.value,
                 },
                 filterProp,
               ),
             );
           }}
-          defaultValue={findFilterProp("gender", filterProp)}
+          defaultValue={findFilterProp(FILTER_QUERY_KEYS.gender, filterProp)}
         >
           <option value="">All</option>
           {genderOptions.map((option) => (
@@ -72,10 +74,10 @@ export default function GroupDistributionFilter() {
         <FormControl gap="4" display="flex" alignItems="center">
           <Switch
             id="race"
-            isChecked={activeFilters.includes(FILTER_VALUES.race)}
+            isChecked={activeFilters.includes(FILTER_CATEGORY_KEYS.race)}
             onChange={() =>
               updateActiveFilters(
-                activeFilterHandler(FILTER_VALUES.race, activeFilters),
+                activeFilterHandler(FILTER_CATEGORY_KEYS.race, activeFilters),
               )
             }
           />
@@ -89,7 +91,7 @@ export default function GroupDistributionFilter() {
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: "group_distribution",
+                  parentName: FILTER_PARENT_NAMES.groupDistribution,
                   category: "race",
                   filterProp: "race",
                   value: e.target.value,
@@ -113,11 +115,13 @@ export default function GroupDistributionFilter() {
         <FormControl gap="4" display="flex" alignItems="center">
           <Switch
             id="relationshipStatus"
-            isChecked={activeFilters.includes(FILTER_VALUES.relationshipStatus)}
+            isChecked={activeFilters.includes(
+              FILTER_CATEGORY_KEYS.relationshipStatus,
+            )}
             onChange={() =>
               updateActiveFilters(
                 activeFilterHandler(
-                  FILTER_VALUES.relationshipStatus,
+                  FILTER_CATEGORY_KEYS.relationshipStatus,
                   activeFilters,
                 ),
               )
@@ -133,7 +137,7 @@ export default function GroupDistributionFilter() {
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: "group_distribution",
+                  parentName: FILTER_PARENT_NAMES.groupDistribution,
                   category: "relationshipStatus",
                   filterProp: "relationship_status",
                   value: e.target.value,
@@ -157,10 +161,15 @@ export default function GroupDistributionFilter() {
         <FormControl gap="4" display="flex" alignItems="center">
           <Switch
             id="healthStatus"
-            isChecked={activeFilters.includes(FILTER_VALUES.healthStatus)}
+            isChecked={activeFilters.includes(
+              FILTER_CATEGORY_KEYS.healthStatus,
+            )}
             onChange={() =>
               updateActiveFilters(
-                activeFilterHandler(FILTER_VALUES.healthStatus, activeFilters),
+                activeFilterHandler(
+                  FILTER_CATEGORY_KEYS.healthStatus,
+                  activeFilters,
+                ),
               )
             }
           />
@@ -174,8 +183,8 @@ export default function GroupDistributionFilter() {
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: "group_distribution",
-                  category: FILTER_VALUES.healthStatus,
+                  parentName: FILTER_PARENT_NAMES.groupDistribution,
+                  category: FILTER_CATEGORY_KEYS.healthStatus,
                   filterProp: "health",
                   value: e.target.value,
                 },
@@ -183,7 +192,10 @@ export default function GroupDistributionFilter() {
               ),
             );
           }}
-          defaultValue={findFilterProp(FILTER_VALUES.healthStatus, filterProp)}
+          defaultValue={findFilterProp(
+            FILTER_CATEGORY_KEYS.healthStatus,
+            filterProp,
+          )}
         >
           <option value="">All</option>
           {healthRatingOptions.map((option) => (

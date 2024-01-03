@@ -4,139 +4,106 @@ import {
   FormLabel,
   Select,
   SimpleGrid,
-  Slider,
-  SliderFilledTrack,
-  SliderMark,
-  SliderThumb,
-  SliderTrack,
   Switch,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { useFilterContext } from "../hooks/useFilterContext";
 import {
-  FILTER_VALUES,
+  FILTER_QUERY_KEYS,
+  FILTER_CATEGORY_KEYS,
   activeFilterHandler,
   findFilterProp,
   updateFilterPropHandler,
+  FILTER_PARENT_NAMES,
 } from "@/utils/admin.utils";
 import {
   educationOptions,
   politicalOrientationOptions,
 } from "@/features/intro/questions";
+import FilterSlider from "./FilterSlider";
 
 export default function AffinitiesFilter() {
   const { filterProp, updateFilterProp, updateActiveFilters, activeFilters } =
     useFilterContext();
 
-  const [sliderValueMin, setSliderValueMin] = useState(
-    (findFilterProp("age_range_min", filterProp) as number) || 0,
-  );
-  const [sliderValueMax, setSliderValueMax] = useState(
-    (findFilterProp("age_range_max", filterProp) as number) || 100,
-  );
-
   return (
     <SimpleGrid w="full" columns={3} spacing="5">
+      {/* AGE RANGE */}
       <Flex flexDir="column">
         <FormControl display="flex" gap="3" alignItems="center">
           <Switch
             id="age-range"
             onChange={() =>
               updateActiveFilters(
-                activeFilterHandler(FILTER_VALUES.age, activeFilters),
+                activeFilterHandler(FILTER_CATEGORY_KEYS.age, activeFilters),
               )
             }
-            isChecked={activeFilters.includes(FILTER_VALUES.age)}
+            isChecked={activeFilters.includes(FILTER_CATEGORY_KEYS.age)}
           />
           <FormLabel htmlFor="age-range" mb="0">
             Age Range
           </FormLabel>
         </FormControl>
         <Flex flexDir="column" mt="5" gap="8">
-          <FormControl>
-            <FormLabel htmlFor="minimum-slider">Minimum</FormLabel>
-            <Slider
-              aria-label="minimum-slider"
-              defaultValue={sliderValueMin}
-              onChange={(val) => {
-                setSliderValueMin(val);
-                updateFilterProp(
-                  updateFilterPropHandler(
-                    {
-                      parentName: "affinities",
-                      category: "age",
-                      filterProp: "age_range_min",
-                      value: val,
-                    },
-                    filterProp,
-                  ),
-                );
-              }}
-            >
-              <SliderMark
-                value={sliderValueMin}
-                textAlign="center"
-                color="#000"
-                mt="4"
-                ml="-5"
-                w="12"
-              >
-                {sliderValueMin}
-              </SliderMark>
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb />
-            </Slider>
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="maximum-slider">Maximum</FormLabel>
-            <Slider
-              aria-label="maximum-slider"
-              defaultValue={sliderValueMax}
-              onChange={(val) => {
-                setSliderValueMax(val);
-                updateFilterProp(
-                  updateFilterPropHandler(
-                    {
-                      parentName: "affinities",
-                      category: "age",
-                      filterProp: "age_range_max",
-                      value: val,
-                    },
-                    filterProp,
-                  ),
-                );
-              }}
-            >
-              <SliderMark
-                value={sliderValueMax}
-                textAlign="center"
-                color="#000"
-                mt="4"
-                ml="-5"
-                w="12"
-              >
-                {sliderValueMax}
-              </SliderMark>
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb />
-            </Slider>
-          </FormControl>
+          <FilterSlider
+            title="Minimum"
+            sliderValue={
+              (findFilterProp(
+                FILTER_QUERY_KEYS.ageRangeMin,
+                filterProp,
+              ) as number) || 0
+            }
+            onChange={(val) => {
+              updateFilterProp(
+                updateFilterPropHandler(
+                  {
+                    parentName: FILTER_PARENT_NAMES.affinities,
+                    category: FILTER_CATEGORY_KEYS.age,
+                    filterProp: FILTER_QUERY_KEYS.ageRangeMin,
+                    value: val,
+                  },
+                  filterProp,
+                ),
+              );
+            }}
+          />
+          <FilterSlider
+            title="Maximum"
+            sliderValue={
+              (findFilterProp(
+                FILTER_QUERY_KEYS.ageRangeMax,
+                filterProp,
+              ) as number) || 100
+            }
+            onChange={(val) => {
+              updateFilterProp(
+                updateFilterPropHandler(
+                  {
+                    parentName: FILTER_PARENT_NAMES.affinities,
+                    category: FILTER_CATEGORY_KEYS.age,
+                    filterProp: FILTER_QUERY_KEYS.ageRangeMax,
+                    value: val,
+                  },
+                  filterProp,
+                ),
+              );
+            }}
+          />
         </Flex>
       </Flex>
+      {/* EDUCATION */}
       <Flex flexDir="column">
         <FormControl gap="4" display="flex" alignItems="center">
           <Switch
             id="education"
             onChange={() =>
               updateActiveFilters(
-                activeFilterHandler(FILTER_VALUES.education, activeFilters),
+                activeFilterHandler(
+                  FILTER_CATEGORY_KEYS.education,
+                  activeFilters,
+                ),
               )
             }
-            isChecked={activeFilters.includes(FILTER_VALUES.education)}
+            isChecked={activeFilters.includes(FILTER_CATEGORY_KEYS.education)}
           />
           <FormLabel htmlFor="education" mb="0">
             Education
@@ -148,16 +115,16 @@ export default function AffinitiesFilter() {
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: "affinities",
-                  category: FILTER_VALUES.education,
-                  filterProp: "education",
+                  parentName: FILTER_PARENT_NAMES.affinities,
+                  category: FILTER_CATEGORY_KEYS.education,
+                  filterProp: FILTER_QUERY_KEYS.education,
                   value: e.target.value,
                 },
                 filterProp,
               ),
             );
           }}
-          defaultValue={findFilterProp(FILTER_VALUES.education, filterProp)}
+          defaultValue={findFilterProp(FILTER_QUERY_KEYS.education, filterProp)}
         >
           <option value="">All</option>
           {educationOptions.map((option) => (
@@ -167,6 +134,7 @@ export default function AffinitiesFilter() {
           ))}
         </Select>
       </Flex>
+      {/* POLITICAL ORIENTATION */}
       <Flex flexDir="column">
         <FormControl gap="4" display="flex" alignItems="center">
           <Switch
@@ -174,13 +142,13 @@ export default function AffinitiesFilter() {
             onChange={() =>
               updateActiveFilters(
                 activeFilterHandler(
-                  FILTER_VALUES.politicalOrientation,
+                  FILTER_CATEGORY_KEYS.politicalOrientation,
                   activeFilters,
                 ),
               )
             }
             isChecked={activeFilters.includes(
-              FILTER_VALUES.politicalOrientation,
+              FILTER_CATEGORY_KEYS.politicalOrientation,
             )}
           />
           <FormLabel htmlFor="political-orientation" mb="0">
@@ -193,9 +161,9 @@ export default function AffinitiesFilter() {
             updateFilterProp(
               updateFilterPropHandler(
                 {
-                  parentName: "affinities",
-                  category: FILTER_VALUES.politicalOrientation,
-                  filterProp: "political_orientation",
+                  parentName: FILTER_PARENT_NAMES.affinities,
+                  category: FILTER_CATEGORY_KEYS.politicalOrientation,
+                  filterProp: FILTER_QUERY_KEYS.politicalOrientation,
                   value: e.target.value,
                 },
                 filterProp,
@@ -203,7 +171,7 @@ export default function AffinitiesFilter() {
             );
           }}
           defaultValue={findFilterProp(
-            FILTER_VALUES.politicalOrientation,
+            FILTER_QUERY_KEYS.politicalOrientation,
             filterProp,
           )}
         >
