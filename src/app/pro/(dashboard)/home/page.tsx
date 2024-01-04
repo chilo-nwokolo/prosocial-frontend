@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { GrGrow } from "react-icons/gr";
-import { FaPeopleArrows } from "react-icons/fa";
+// import { FaPeopleArrows } from "react-icons/fa";
 import { BiSolidChevronRight } from "react-icons/bi";
 import { appRouteLinks } from "@/utils/constants";
 import Link from "next/link";
@@ -14,14 +14,14 @@ const homeSections = [
     subText: "Tell us about your talents and interests",
     destination: appRouteLinks.growth,
   },
-  {
-    id: 2,
-    title: "Social",
-    icon: <FaPeopleArrows style={{ fontSize: "30px" }} />,
-    desc: "",
-    subText: "Update your weekly availability",
-    destination: appRouteLinks.socialPreference,
-  },
+  // {
+  //   id: 2,
+  //   title: "Social",
+  //   icon: <FaPeopleArrows style={{ fontSize: "30px" }} />,
+  //   desc: "",
+  //   subText: "Update your weekly availability",
+  //   destination: appRouteLinks.socialPreference,
+  // },
 ];
 
 export default function HomePage() {

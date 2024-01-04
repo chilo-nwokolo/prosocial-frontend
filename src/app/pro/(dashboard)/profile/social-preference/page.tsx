@@ -1,6 +1,5 @@
 "use client";
 import {
-  Accordion,
   Box,
   Button,
   Flex,
@@ -9,7 +8,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import ScheduleDaysBox from "@/features/intro/components/ScheduleDaysBox";
+// import ScheduleDaysBox from "@/features/intro/components/ScheduleDaysBox";
 import useSocialSchedule from "@/features/dashboard/hooks/useSocialSchedule";
 import BackButton from "@/components/General/BackButton";
 import { AiFillInfoCircle } from "react-icons/ai";
@@ -24,7 +23,7 @@ export default function SocialPreferencePage() {
   const {
     loading,
     submitSocialSchedule,
-    toggleAccordion,
+    // toggleAccordion,
     loadingSchedules,
     error,
   } = useSocialSchedule();
@@ -56,13 +55,13 @@ export default function SocialPreferencePage() {
     <QueryContainer loading={loadingSchedules} error={error}>
       <Box>
         <BackButton />
-        <Text fontSize="2xl" fontWeight="bold" mt="3">
+        {/* <Text fontSize="2xl" fontWeight="bold" mt="3">
           Weekly Availability
         </Text>
         <Accordion allowMultiple mt="5">
           <ScheduleDaysBox source="weekday" toggleAccordion={toggleAccordion} />
           <ScheduleDaysBox source="weekend" toggleAccordion={toggleAccordion} />
-        </Accordion>
+        </Accordion> */}
         {newUser ? (
           <>
             {/* Profile Photo */}

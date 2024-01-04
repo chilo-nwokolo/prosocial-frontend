@@ -18,6 +18,7 @@ export type NewScheduleDateType = {
 };
 
 export default function useSocialSchedule() {
+  // eslint-disable-next-line no-unused-vars
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [selectedSchedules, updateSelectedSchedules] = useUserStore((state) => [
     state.selectedSchedules,
@@ -56,28 +57,28 @@ export default function useSocialSchedule() {
     refetchQueries: [ME_SCHEDULES],
   });
 
-  const toggleAccordion = (day: string) => {
-    const index = selectedDays.indexOf(day);
+  // const toggleAccordion = (day: string) => {
+  //   const index = selectedDays.indexOf(day);
 
-    if (index < 0) {
-      setSelectedDays([...selectedDays, day]);
-    }
+  //   if (index < 0) {
+  //     setSelectedDays([...selectedDays, day]);
+  //   }
 
-    if (index >= 0) {
-      const newSelectedDays = [...selectedDays];
-      newSelectedDays.splice(index, 1);
-      setSelectedDays(newSelectedDays);
-    }
-  };
+  //   if (index >= 0) {
+  //     const newSelectedDays = [...selectedDays];
+  //     newSelectedDays.splice(index, 1);
+  //     setSelectedDays(newSelectedDays);
+  //   }
+  // };
 
   const submitSocialSchedule = () => {
-    if (!selectedDays.length) {
-      toast({
-        status: "error",
-        title: "You have not selected a valid time for your outings",
-      });
-      return;
-    }
+    // if (!selectedDays.length) {
+    //   toast({
+    //     status: "error",
+    //     title: "You have not selected a valid time for your outings",
+    //   });
+    //   return;
+    // }
 
     const result: NewScheduleDateType[] = [];
 
@@ -98,7 +99,7 @@ export default function useSocialSchedule() {
   return {
     loading,
     submitSocialSchedule,
-    toggleAccordion,
+    // toggleAccordion,
     loadingSchedules,
     error,
   } as const;
