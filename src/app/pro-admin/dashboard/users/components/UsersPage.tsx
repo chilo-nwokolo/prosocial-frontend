@@ -41,8 +41,15 @@ export default function UsersPage() {
           <Text>{data?.adminQueryUsers?.length} Records</Text>
         </Box>
         <Flex gap="4">
-          <Button onClick={openCreateGroupModal}>Add to group</Button>
-          <Button>Download data as CSV</Button>
+          <Button
+            onClick={openCreateGroupModal}
+            isDisabled={!table.getSelectedRowModel().flatRows.length}
+          >
+            Add to group
+          </Button>
+          <Button isDisabled={!table.getSelectedRowModel().flatRows.length}>
+            Download data as CSV
+          </Button>
         </Flex>
         <Box>
           <Button>Delete</Button>

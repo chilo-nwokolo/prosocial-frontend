@@ -62,6 +62,8 @@ export const columnsList = [
   },
 ];
 
+const toggleExcludedColumns = ["name"];
+
 const columnNameMap = {
   id: "ID",
   name: "Name",
@@ -110,6 +112,7 @@ export default function TableColumnsFilterDropdown({
           </MenuGroup>
         ))} */}
         {table.getAllLeafColumns().map((column) => {
+          if (toggleExcludedColumns.includes(column.id)) return null;
           return (
             <MenuItem key={column.id} className="px-1">
               <FormControl display="flex" gap="6" alignItems="center">

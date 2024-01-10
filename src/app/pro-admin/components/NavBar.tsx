@@ -6,6 +6,11 @@ import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+const navItems = [
+  { id: 1, title: "User Data", link: adminRoutes.users },
+  { id: 2, title: "Groups", link: adminRoutes.groups },
+];
+
 export default function AdminNavBar() {
   const router = useRouter();
 
@@ -31,9 +36,11 @@ export default function AdminNavBar() {
     >
       <Text>Prosocial</Text>
       <Flex gap="4">
-        <Link href={adminRoutes.users}>User Data</Link>
-        <Link href={adminRoutes.groups}>Groups</Link>
-        <Link href={adminRoutes.demoLocations}>Demo Locations</Link>
+        {navItems.map((item) => (
+          <Link href={item.link} key={item.title}>
+            {item.title}
+          </Link>
+        ))}
         <Text cursor="pointer" onClick={logout}>
           Logout
         </Text>
