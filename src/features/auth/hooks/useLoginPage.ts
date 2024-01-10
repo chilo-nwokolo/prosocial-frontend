@@ -3,10 +3,10 @@ import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import { LOGIN_USER } from "../gql";
-import { appRouteLinks, formFeedback } from "@/utils/constants";
+import { AccessToken, appRouteLinks, formFeedback } from "@/utils/constants";
 import { useToast } from "@chakra-ui/react";
 import { useUserStore } from "@/store";
-import { setCookie } from "@/libs/cookies";
+import { deleteCookie, getCookie, setCookie } from "@/libs/cookies";
 import { apolloErrorHandler } from "@/utils/helpers";
 
 export default function useLoginPage() {
@@ -29,6 +29,9 @@ export default function useLoginPage() {
       password: "",
     },
     onSubmit: ({ email, password }) => {
+      if (getCookie(AccessToken)) {
+        deleteCookie(AccessToken);
+      }
       login({
         variables: {
           email,
@@ -41,6 +44,7 @@ export default function useLoginPage() {
           setCookie("accessToken", data.login.token);
         },
         onError: (error) => {
+          console.log(error);
           toast({
             status: "error",
             title: apolloErrorHandler(error),

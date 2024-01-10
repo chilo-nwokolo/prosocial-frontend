@@ -2,9 +2,14 @@ import * as yup from "yup";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import { adminRoutes, formFeedback } from "@/utils/constants";
+import {
+  AccessToken,
+  adminRoutes,
+  formFeedback,
+  userType,
+} from "@/utils/constants";
 import { useToast } from "@chakra-ui/react";
-import { setCookie } from "@/libs/cookies";
+import { deleteCookie, getCookie, setCookie } from "@/libs/cookies";
 import { apolloErrorHandler } from "@/utils/helpers";
 import { LOGIN_USER } from "@/features/auth/gql";
 
@@ -27,6 +32,9 @@ export default function useAdminLoginPage() {
       password: "",
     },
     onSubmit: ({ email, password }) => {
+      if (getCookie(AccessToken)) {
+        deleteCookie(AccessToken);
+      }
       login({
         variables: {
           email,
@@ -35,8 +43,8 @@ export default function useAdminLoginPage() {
         onCompleted: (data) => {
           if (data.login.user?.user_type === "admin") {
             router.push(adminRoutes.users);
-            setCookie("accessToken", data.login.token);
-            setCookie("userType", data.login.user?.user_type || "");
+            setCookie(AccessToken, data.login.token);
+            setCookie(userType, data.login.user?.user_type || "");
             return;
           } else {
             toast({

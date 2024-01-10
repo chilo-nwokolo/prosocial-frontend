@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { deleteCookie } from "@/libs/cookies";
-import { AccessToken, appRouteLinks } from "@/utils/constants";
+import { AccessToken, appRouteLinks, userType } from "@/utils/constants";
 import { Center, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { client } from "@/service";
@@ -10,6 +10,7 @@ export default function LogoutPage() {
   const router = useRouter();
   useEffect(() => {
     deleteCookie(AccessToken);
+    deleteCookie(userType);
     router.push(appRouteLinks.login);
     client.clearStore();
     // eslint-disable-next-line react-hooks/exhaustive-deps

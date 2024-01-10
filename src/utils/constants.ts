@@ -85,6 +85,7 @@ export const externalLinks = {
 };
 
 export const AccessToken = "accessToken";
+export const userType = "userType";
 
 export const youtubeLinks = {
   welcomePageDesktop: "nt4VRSr0JNs?rel=0",

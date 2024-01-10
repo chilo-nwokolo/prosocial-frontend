@@ -1,13 +1,18 @@
 "use client";
 import { Center, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { AccessToken, appRouteLinks, configExtras } from "@/utils/constants";
+import {
+  AccessToken,
+  appRouteLinks,
+  configExtras,
+  userType,
+} from "@/utils/constants";
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_QUESTIONS } from "@/features/intro/gql";
 import { useAppQuestions } from "@/store";
 import { transformQuestions } from "@/features/intro/helpers";
 import { apolloErrorHandler } from "@/utils/helpers";
-import { deleteCookie } from "@/libs/cookies";
+import { deleteCookie, getCookie } from "@/libs/cookies";
 import useAppConfig from "@/hooks/useAppConfig";
 
 export default function OnboardingPage() {
@@ -18,7 +23,12 @@ export default function OnboardingPage() {
       if (settings?.[configExtras.user_has_seen_personality_score]) {
         router.push(appRouteLinks.home);
       } else {
-        getQuestions();
+        const userRole = getCookie(userType);
+        if (userRole === "admin") {
+          router.push(appRouteLinks.logout);
+        } else {
+          getQuestions();
+        }
       }
     },
   });
