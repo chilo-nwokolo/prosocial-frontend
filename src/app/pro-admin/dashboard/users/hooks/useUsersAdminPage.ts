@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { QUERY_ADMIN_USERS } from "../queries";
+import { QUERY_ADMIN_USERS } from "../gql/queries";
 import { useDisclosure } from "@chakra-ui/react";
 import { useFilterContext } from "./useFilterContext";
 import { DynamicQueryObject, adminQueryBuilder } from "@/utils/admin.utils";
@@ -15,8 +15,6 @@ export default function useUsersAdminPage() {
   const [columnVisibility, setColumnVisibility] = useState({});
   const { filterProp, activeFilters } = useFilterContext();
   const [query, setQuery] = useState<DynamicQueryObject>();
-
-  // console.log({ query });
 
   useEffect(() => {
     console.info({ filterProp });

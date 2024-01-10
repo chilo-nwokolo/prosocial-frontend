@@ -36,3 +36,12 @@ export const QUERY_ADMIN_USERS = gql(`
     }
   }
 `);
+
+// MUTATIONS
+export const CREATE_GROUP_MUTATION = gql(`
+  mutation CREATE_GROUP_MUTATION($input: UserGroupInput!) {
+    createGroup(input:$input) {
+      id
+    }
+  }
+`);

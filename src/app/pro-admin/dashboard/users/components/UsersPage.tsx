@@ -71,7 +71,9 @@ export default function UsersPage() {
         title="Create Group"
         isOpen={isCreateGroupModal}
         onClose={closeCreateGroupModal}
-        body={<CreateGroupModal table={table} />}
+        body={
+          <CreateGroupModal table={table} onClose={closeCreateGroupModal} />
+        }
         size="2xl"
       />
     </Box>

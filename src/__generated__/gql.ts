@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query QUERY_ADMIN_USERS($input: adminQueryUsersInput) {\n    adminQueryUsers(input: $input) {\n      id\n      name\n      unique_id\n      email\n      dob\n      question_responses {\n        id\n      }\n      personalityScore {\n        id\n        extroversion\n        agreeableness\n        conscientiousness\n        neuroticism\n        openness\n        narcissism\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n      profile {\n        political_orientation\n        level_of_education\n        gender\n        race\n        relationship_status\n        health_rating\n      }\n    }\n  }\n": types.Query_Admin_UsersDocument,
+    "\n  mutation CREATE_GROUP_MUTATION($input: UserGroupInput!) {\n    createGroup(input:$input) {\n      id\n    }\n  }\n": types.Create_Group_MutationDocument,
     "\n  mutation Register($input: RegisterUserInput!) {\n    register(input: $input) {\n      id\n      name\n    }\n  }\n": types.RegisterDocument,
     "\n  mutation VerifyUser($access_token: String!) {\n    verifyUser(access_token: $access_token) {\n      status\n      message\n    }\n  }\n": types.VerifyUserDocument,
     "\n  mutation LOGIN_USER($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      token\n      user {\n        id\n        name\n        phone\n        email\n        user_type\n      }\n    }\n  }\n": types.Login_UserDocument,
@@ -64,6 +65,10 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query QUERY_ADMIN_USERS($input: adminQueryUsersInput) {\n    adminQueryUsers(input: $input) {\n      id\n      name\n      unique_id\n      email\n      dob\n      question_responses {\n        id\n      }\n      personalityScore {\n        id\n        extroversion\n        agreeableness\n        conscientiousness\n        neuroticism\n        openness\n        narcissism\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n      profile {\n        political_orientation\n        level_of_education\n        gender\n        race\n        relationship_status\n        health_rating\n      }\n    }\n  }\n"): (typeof documents)["\n  query QUERY_ADMIN_USERS($input: adminQueryUsersInput) {\n    adminQueryUsers(input: $input) {\n      id\n      name\n      unique_id\n      email\n      dob\n      question_responses {\n        id\n      }\n      personalityScore {\n        id\n        extroversion\n        agreeableness\n        conscientiousness\n        neuroticism\n        openness\n        narcissism\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n      profile {\n        political_orientation\n        level_of_education\n        gender\n        race\n        relationship_status\n        health_rating\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CREATE_GROUP_MUTATION($input: UserGroupInput!) {\n    createGroup(input:$input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CREATE_GROUP_MUTATION($input: UserGroupInput!) {\n    createGroup(input:$input) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
