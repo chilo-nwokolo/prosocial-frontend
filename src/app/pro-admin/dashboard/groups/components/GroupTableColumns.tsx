@@ -1,75 +1,66 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 
-type Group = {
+type GroupsColumnsType = {
+  id: string;
   name: string;
-  members: string[];
-  emails: string[];
-  dateCreated: string;
-  notes: string;
-  feedback: string;
-  groupInviteEmail: boolean;
+  outing_date?: any | null;
+  note?: string | null | undefined;
+  users?:
+    | {
+        __typename?: "User" | undefined;
+        id: string;
+        name: string;
+        email: string;
+      }[]
+    | null
+    | undefined;
 };
 
-export const defaultGroupData: Group[] = [
-  {
-    name: "tanner",
-    members: ["Linsley John", "Kingsley Michael"],
-    emails: ["linsley@mail.com", "kingsley@gmail.com"],
-    dateCreated: "Jan 2020",
-    notes:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue sem",
-    feedback: "no feedback sha",
-    groupInviteEmail: false,
-  },
-  {
-    name: "Jemma",
-    members: ["Jensley Rose", "Michael Scofield"],
-    emails: ["jensley@mail.com", "michael@gmail.com"],
-    dateCreated: "Jan 2020",
-    notes:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue sem",
-    feedback: "no feedback sha",
-    groupInviteEmail: true,
-  },
-];
-
-const columnHelper = createColumnHelper<Group>();
+const columnHelper = createColumnHelper<GroupsColumnsType>();
 
 export const groupColumns = [
   columnHelper.accessor("name", {
+    header: "Name",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("members", {
+  columnHelper.accessor("users", {
     header: () => "Members",
     cell: (info) => {
-      return info.row.original.members.map((member, i) => (
+      const users = info.row.original?.users || [];
+      return users.map((member, i) => (
         <Text
-          key={member}
+          key={member?.id}
           bg={i % 2 === 0 ? "#ebdcdc" : "none"}
           pl="2"
           py="1.5"
         >
-          {member}
+          {member?.name}
         </Text>
       ));
     },
   }),
-  columnHelper.accessor("emails", {
+  columnHelper.accessor("users.email", {
     header: () => "Emails",
     cell: (info) => {
-      return info.row.original.emails.map((email, i) => (
-        <Text bg={i % 2 === 0 ? "#ebdcdc" : "none"} pl="2" py="1.5" key={email}>
-          {email}
+      const users = info.row.original?.users || [];
+      return users.map((user, i) => (
+        <Text
+          bg={i % 2 === 0 ? "#ebdcdc" : "none"}
+          pl="2"
+          py="1.5"
+          key={user.email}
+        >
+          {user.email}
         </Text>
       ));
     },
   }),
-  columnHelper.accessor("dateCreated", {
+  columnHelper.accessor("outing_date", {
     header: () => "Date Created",
-    cell: (info) => info.renderValue(),
+    cell: (info) => info.renderValue() || "Jan 2024",
   }),
-  columnHelper.accessor("notes", {
+  columnHelper.accessor("note", {
     header: () => "Notes",
     cell: (info) => (
       <Flex w="200px">
@@ -77,18 +68,18 @@ export const groupColumns = [
       </Flex>
     ),
   }),
-  columnHelper.accessor("feedback", {
-    header: () => "Feedback",
-    cell: (info) => info.renderValue(),
-  }),
-  columnHelper.accessor("groupInviteEmail", {
-    header: () => "Group Invite Email",
-    cell: (info) => {
-      const value = info.getValue();
-      if (value) {
-        return "Email sent";
-      }
-      return <Button>Send Email</Button>;
-    },
-  }),
+  // columnHelper.accessor("feedback", {
+  //   header: () => "Feedback",
+  //   cell: (info) => info.renderValue(),
+  // }),
+  // columnHelper.accessor("groupInviteEmail", {
+  //   header: () => "Group Invite Email",
+  //   cell: (info) => {
+  //     const value = info.getValue();
+  //     if (value) {
+  //       return "Email sent";
+  //     }
+  //     return <Button>Send Email</Button>;
+  //   },
+  // }),
 ];

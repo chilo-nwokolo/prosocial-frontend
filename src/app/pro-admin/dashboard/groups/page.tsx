@@ -1,15 +1,5 @@
-import { Box, Text } from "@chakra-ui/react";
-import GroupTable from "./components/GroupTable";
+import GroupsContainer from "./components/GroupsContainer";
 
 export default function AdminGroupPage() {
-  return (
-    <Box>
-      <Text fontSize="xl" fontWeight="semibold">
-        Groups for Test Outings
-      </Text>
-      <Box>
-        <GroupTable />
-      </Box>
-    </Box>
-  );
+  return <GroupsContainer />;
 }

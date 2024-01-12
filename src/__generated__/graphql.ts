@@ -130,6 +130,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createAdmin: User;
   createGroup: UserGroup;
+  deleteGroup: BasicResponse;
   login: AuthResponse;
   logout?: Maybe<BasicResponse>;
   mutateJournal?: Maybe<Journal>;
@@ -139,6 +140,7 @@ export type Mutation = {
   requestResetPasswordLink: BasicResponse;
   submitPersonalityBucketQuestion: BasicResponse;
   submitUserInterest?: Maybe<BasicResponse>;
+  updateGroup: UserGroup;
   updateUser: User;
   updateUserSchedules?: Maybe<Array<Schedule>>;
   updateUserSettings: User;
@@ -153,6 +155,11 @@ export type MutationCreateAdminArgs = {
 
 export type MutationCreateGroupArgs = {
   input: UserGroupInput;
+};
+
+
+export type MutationDeleteGroupArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -196,6 +203,11 @@ export type MutationSubmitPersonalityBucketQuestionArgs = {
 
 export type MutationSubmitUserInterestArgs = {
   input: UserInterestInputs;
+};
+
+
+export type MutationUpdateGroupArgs = {
+  input: UpdateUserGroupInput;
 };
 
 
@@ -335,6 +347,7 @@ export type Query = {
   adminQueryUsers?: Maybe<Array<User>>;
   answerResponses?: Maybe<Array<QuestionResponse>>;
   challengeCategories?: Maybe<Array<JournalCategory>>;
+  groups?: Maybe<Array<UserGroup>>;
   interests?: Maybe<Array<Interest>>;
   interestsByNoneTrait?: Maybe<Array<Interest>>;
   interestsByTrait?: Maybe<Array<Interest>>;
@@ -508,6 +521,14 @@ export type University = {
   users?: Maybe<Array<User>>;
 };
 
+export type UpdateUserGroupInput = {
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  note?: InputMaybe<Scalars['String']['input']>;
+  outing_date?: InputMaybe<Scalars['String']['input']>;
+  users?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
 export type UpdateUserInput = {
   dob?: InputMaybe<Scalars['DateTime']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -639,6 +660,11 @@ export type AdminQueryUsersInput = {
   interest?: InputMaybe<UserSearchInterestInput>;
   narcissism_social_behavioral?: InputMaybe<NarcissismSocialBehavioralInput>;
 };
+
+export type Query_GroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Query_GroupsQuery = { __typename?: 'Query', groups?: Array<{ __typename?: 'UserGroup', id: string, name: string, outing_date?: any | null, note?: string | null, users?: Array<{ __typename?: 'User', id: string, name: string, email: string }> | null }> | null };
 
 export type Query_Admin_UsersQueryVariables = Exact<{
   input?: InputMaybe<AdminQueryUsersInput>;
@@ -836,6 +862,7 @@ export type Query_UsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type Query_UsersQuery = { __typename?: 'Query', users: { __typename?: 'UserPaginator', data: Array<{ __typename?: 'User', id: string, name: string }> } };
 
 
+export const Query_GroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_GROUPS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"groups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"outing_date"}},{"kind":"Field","name":{"kind":"Name","value":"note"}},{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<Query_GroupsQuery, Query_GroupsQueryVariables>;
 export const Query_Admin_UsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_ADMIN_USERS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"adminQueryUsersInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"adminQueryUsers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"unique_id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"dob"}},{"kind":"Field","name":{"kind":"Name","value":"question_responses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"personalityScore"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"extroversion"}},{"kind":"Field","name":{"kind":"Name","value":"agreeableness"}},{"kind":"Field","name":{"kind":"Name","value":"conscientiousness"}},{"kind":"Field","name":{"kind":"Name","value":"neuroticism"}},{"kind":"Field","name":{"kind":"Name","value":"openness"}},{"kind":"Field","name":{"kind":"Name","value":"narcissism"}},{"kind":"Field","name":{"kind":"Name","value":"personalityBucketType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sub_title"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"political_orientation"}},{"kind":"Field","name":{"kind":"Name","value":"level_of_education"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"race"}},{"kind":"Field","name":{"kind":"Name","value":"relationship_status"}},{"kind":"Field","name":{"kind":"Name","value":"health_rating"}}]}}]}}]}}]} as unknown as DocumentNode<Query_Admin_UsersQuery, Query_Admin_UsersQueryVariables>;
 export const Create_Group_MutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CREATE_GROUP_MUTATION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserGroupInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<Create_Group_MutationMutation, Create_Group_MutationMutationVariables>;
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;

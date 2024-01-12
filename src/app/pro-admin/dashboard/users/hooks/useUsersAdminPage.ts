@@ -32,7 +32,7 @@ export default function useUsersAdminPage() {
 
   const [rowSelection, setRowSelection] = useState({});
 
-  const table = useReactTable({
+  const table: any = useReactTable({
     // @ts-ignore
     data: data?.adminQueryUsers || [],
     // @ts-ignore

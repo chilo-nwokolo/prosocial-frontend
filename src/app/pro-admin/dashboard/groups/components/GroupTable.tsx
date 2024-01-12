@@ -8,23 +8,9 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
-import { defaultGroupData, groupColumns } from "./GroupTableColumns";
+import { Table as TanstackTable, flexRender } from "@tanstack/react-table";
 
-export default function GroupTable() {
-  const [data] = useState(() => [...defaultGroupData]);
-
-  const table = useReactTable({
-    data,
-    columns: groupColumns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
+export default function GroupTable({ table }: { table: TanstackTable<any> }) {
   return (
     <TableContainer mt="4">
       <Table>
