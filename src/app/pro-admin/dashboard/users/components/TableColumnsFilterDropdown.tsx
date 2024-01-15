@@ -17,6 +17,18 @@ import { Query_Admin_UsersQuery } from "@/__generated__/graphql";
 
 export const columnsList = [
   {
+    title: "User",
+    data: [
+      { id: 1, value: "User ID", key: "unique_id" },
+      { id: 2, value: "Email", key: "email" },
+      {
+        id: 3,
+        value: "Phone Number",
+        key: "phone",
+      },
+    ],
+  },
+  {
     title: "Affinities",
     data: [
       { id: 1, value: "Age", key: "dob" },
@@ -49,7 +61,7 @@ export const columnsList = [
         value: "Big 5 Type",
         key: "personalityScore_personalityBucketType.name",
       },
-      // { id: 2, value: "# of Questions Answered", key: "questions_answered" },
+      { id: 2, value: "# of Questions Answered", key: "question_responses" },
       {
         id: 3,
         value: "Extroversion Score",

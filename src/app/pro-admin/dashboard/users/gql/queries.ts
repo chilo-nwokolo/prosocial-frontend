@@ -7,6 +7,7 @@ export const QUERY_ADMIN_USERS = gql(`
       name
       unique_id
       email
+      phone
       dob
       question_responses {
         id
