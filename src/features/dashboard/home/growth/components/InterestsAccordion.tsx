@@ -16,6 +16,7 @@ type SwitchAccordionProps = {
   children: ReactNode;
   id: string;
   defaultIndex?: number[];
+  imageUrl: string;
   // eslint-disable-next-line no-unused-vars
   onChange?: (info: string, id: string) => void;
 };
@@ -26,6 +27,7 @@ function InterestsAccordion({
   onChange,
   id,
   defaultIndex,
+  imageUrl,
 }: SwitchAccordionProps) {
   return (
     <Accordion
@@ -51,11 +53,12 @@ function InterestsAccordion({
                   {title}
                 </Box>
                 <Image
-                  src={ImageLinks.logo}
+                  src={imageUrl}
                   width={75}
                   height={75}
                   alt="image"
                   objectFit="contain"
+                  fallbackSrc={ImageLinks.logo}
                 />
               </AccordionButton>
             </h2>

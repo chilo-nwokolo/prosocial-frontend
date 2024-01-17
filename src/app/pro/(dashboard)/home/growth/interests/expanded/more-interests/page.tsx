@@ -131,6 +131,7 @@ export default function InterestedExtendedPage() {
                 defaultIndex={
                   flattenedInterests?.includes("" + trait.title) ? [0] : []
                 }
+                imageUrl={trait.image_url || ""}
               >
                 <Flex flexDir="column">
                   <RadioGroup>
