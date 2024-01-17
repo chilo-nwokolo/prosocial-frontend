@@ -131,6 +131,7 @@ export default function RegistrationPage() {
                 }
               />
             ))}
+            {/* GROUP SELECT */}
             <FormControl>
               <FormLabel color="primary.200">Select a group</FormLabel>
               <Select
@@ -144,7 +145,7 @@ export default function RegistrationPage() {
                 onBlur={formik.handleBlur}
                 _focus={{ border: "1.5px solid #7bb4ce" }}
               >
-                <option value="">Select group</option>
+                <option value="">Choose one</option>
                 {groups?.universities?.map((group) => (
                   <option value={group.id} key={group.id}>
                     {group.name}
