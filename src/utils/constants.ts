@@ -41,6 +41,7 @@ export const appRouteLinks = {
   logout: "/pro/logout",
   // outing feedback routes
   outingFeedback: "/outing-feedback",
+  outingFeedbackCards: "/outing-feedback/feedback-cards",
   outingFeedbackQuestions: "/outing-feedback/feedback-questions",
   outingFeedbackSuccess: "/outing-feedback/feedback-questions/success",
 };
@@ -59,6 +60,7 @@ export const formFeedback = {
   minPassword: "Password must exceed 8 characters",
   passwordRequirement:
     "Password must contain at least 8 characters and a combination of uppercase letters, lowercase letters, numbers, and symbols.",
+  chooseValidOutingDate: "Please, choose a valid outing date",
 };
 
 export const AnswerType = {

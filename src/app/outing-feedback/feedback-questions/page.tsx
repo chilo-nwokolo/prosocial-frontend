@@ -23,7 +23,8 @@ export default function FeedbackQuestionsPage() {
       </Box>
       <Box mt="3">
         <Text my="3">
-          You said you did feel a connection with Name 1. Could you tell us why?
+          You said you did feel a connection with Dolly Parton. Could you tell
+          us why?
         </Text>
         <Textarea
           rows={10}

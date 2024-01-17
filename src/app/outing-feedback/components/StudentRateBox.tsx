@@ -45,7 +45,7 @@ export function RadioCard(props: any) {
   );
 }
 
-export default function StudentRateBox() {
+export default function StudentRateBox({ name }: { name: string }) {
   const options = ["Yes", "No", "Didn't interact"];
 
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -65,7 +65,7 @@ export default function StudentRateBox() {
           height="150px"
         />
         <Text textAlign="center" fontSize="lg" fontWeight="semibold" mt="9">
-          Name 1
+          {name}
         </Text>
       </Box>
       <Box w="full" borderTop="1px solid" borderColor="black">
