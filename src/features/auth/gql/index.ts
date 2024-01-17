@@ -1,5 +1,14 @@
 import { gql } from "@/__generated__";
 
+export const QUERY_UNIVERSITY_GROUPS = gql(`
+  query QUERY_UNIVERSITY_GROUPS{
+    universities {
+      id
+      name
+    }
+  }
+`);
+
 export const REGISTER_USER = gql(`
   mutation Register($input: RegisterUserInput!) {
     register(input: $input) {

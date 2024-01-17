@@ -1,11 +1,11 @@
 "use client";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { appRouteLinks, configExtras, formFeedback } from "@/utils/constants";
-import { REGISTER_USER } from "../gql";
+import { QUERY_UNIVERSITY_GROUPS, REGISTER_USER } from "../gql";
 import { useRouter } from "next/navigation";
 import { apolloErrorHandler } from "@/utils/helpers";
 import { setCookie } from "@/libs/cookies";
@@ -19,6 +19,18 @@ export default function UseRegistrationPage() {
     setCookie(configExtras.user_visited_intro_page, "true");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const { data: groups, loading: loadingGroups } = useQuery(
+    QUERY_UNIVERSITY_GROUPS,
+    {
+      onError: (error) => {
+        toast({
+          title: apolloErrorHandler(error),
+          status: "error",
+        });
+      },
+    },
+  );
 
   const [register, { loading }] = useMutation(REGISTER_USER);
 
@@ -37,6 +49,7 @@ export default function UseRegistrationPage() {
       ),
     firstName: yup.string().required(formFeedback.required),
     lastName: yup.string().required(formFeedback.required),
+    universityId: yup.string().required(formFeedback.required),
   });
 
   const formik = useFormik({
@@ -46,9 +59,11 @@ export default function UseRegistrationPage() {
       password: "",
       firstName: "",
       lastName: "",
+      universityId: "",
     },
     onSubmit: (values) => {
-      const { dob, email, password, firstName, lastName } = values;
+      const { dob, email, password, firstName, lastName, universityId } =
+        values;
       if (!phone) {
         toast({
           description: "Invalid phone number",
@@ -64,6 +79,7 @@ export default function UseRegistrationPage() {
             email,
             name: `${firstName} ${lastName}`,
             password,
+            university_id: universityId,
           },
         },
         onCompleted: () => {
@@ -80,5 +96,5 @@ export default function UseRegistrationPage() {
     validationSchema,
   });
 
-  return { formik, setPhone, phone, loading } as const;
+  return { formik, setPhone, phone, loading, loadingGroups, groups } as const;
 }

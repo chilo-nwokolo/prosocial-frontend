@@ -7,6 +7,7 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  Select,
   Text,
   Tooltip,
   useDisclosure,
@@ -63,7 +64,8 @@ const registrationOptions2 = [
 ];
 
 export default function RegistrationPage() {
-  const { formik, setPhone, phone, loading } = UseRegistrationPage();
+  const { formik, setPhone, phone, loading, loadingGroups, groups } =
+    UseRegistrationPage();
 
   const {
     isOpen: isPhoneInfo,
@@ -125,10 +127,36 @@ export default function RegistrationPage() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.errors[options.name as keyof typeof formik.values]
+                  formik.errors?.[options.name as keyof typeof formik.values]
                 }
               />
             ))}
+            <FormControl>
+              <FormLabel color="primary.200">Select a group</FormLabel>
+              <Select
+                borderRadius="0"
+                border="0.75px solid #876a6c"
+                disabled={loadingGroups}
+                bg="white"
+                onChange={formik.handleChange}
+                name="universityId"
+                value={formik.values.universityId}
+                onBlur={formik.handleBlur}
+                _focus={{ border: "1.5px solid #7bb4ce" }}
+              >
+                <option value="">Select group</option>
+                {groups?.universities?.map((group) => (
+                  <option value={group.id} key={group.id}>
+                    {group.name}
+                  </option>
+                ))}
+              </Select>
+              {formik.errors?.universityId ? (
+                <FormHelperText fontSize="xs" color="critical.100">
+                  {formik.errors?.universityId}
+                </FormHelperText>
+              ) : null}
+            </FormControl>
             {registrationOptions2.map((options) => (
               <FormInput
                 key={options.labelTitle}
@@ -143,7 +171,7 @@ export default function RegistrationPage() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.errors[options.name as keyof typeof formik.values]
+                  formik.errors?.[options.name as keyof typeof formik.values]
                 }
               />
             ))}

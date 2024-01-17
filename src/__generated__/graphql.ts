@@ -78,6 +78,12 @@ export enum DayName {
   Wednesday = 'WEDNESDAY'
 }
 
+export enum FeedbackConnection {
+  No = 'NO',
+  Nointeraction = 'NOINTERACTION',
+  Yes = 'YES'
+}
+
 export enum GenderEnum {
   Female = 'FEMALE',
   Male = 'MALE',
@@ -138,6 +144,7 @@ export type Mutation = {
   register: User;
   requestResetPassword: BasicResponse;
   requestResetPasswordLink: BasicResponse;
+  sendGroupInviteToParticipants: BasicResponse;
   submitPersonalityBucketQuestion: BasicResponse;
   submitUserInterest?: Maybe<BasicResponse>;
   updateGroup: UserGroup;
@@ -193,6 +200,11 @@ export type MutationRequestResetPasswordArgs = {
 
 export type MutationRequestResetPasswordLinkArgs = {
   email: Scalars['String']['input'];
+};
+
+
+export type MutationSendGroupInviteToParticipantsArgs = {
+  group_id: Scalars['ID']['input'];
 };
 
 
@@ -266,6 +278,27 @@ export enum OrderByRelationWithColumnAggregateFunction {
   /** Sum. */
   Sum = 'SUM'
 }
+
+export type OutingFeedback = {
+  __typename?: 'OutingFeedback';
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  feedback_responses?: Maybe<Array<OutingFeedbackResponse>>;
+  group?: Maybe<UserGroup>;
+  id: Scalars['ID']['output'];
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+};
+
+export type OutingFeedbackResponse = {
+  __typename?: 'OutingFeedbackResponse';
+  connection?: Maybe<FeedbackConnection>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['ID']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  outing_feedback?: Maybe<OutingFeedback>;
+  receiving_user?: Maybe<User>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
 
 /** Information about pagination using a fully featured paginator. */
 export type PaginatorInfo = {
@@ -354,6 +387,7 @@ export type Query = {
   journalCategories?: Maybe<Array<JournalCategory>>;
   me?: Maybe<User>;
   onBoardCategoriesWithQuestions?: Maybe<Array<QuestionCategory>>;
+  pullUserGroupParticipants?: Maybe<UserGroup>;
   questionCategories?: Maybe<Array<QuestionCategory>>;
   questions?: Maybe<Array<Question>>;
   universities?: Maybe<Array<University>>;
@@ -372,6 +406,12 @@ export type QueryAdminQueryUsersArgs = {
 
 export type QueryAnswerResponsesArgs = {
   categoryId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryPullUserGroupParticipantsArgs = {
+  group_id: Scalars['ID']['input'];
+  user_unique_id: Scalars['String']['input'];
 };
 
 
@@ -582,10 +622,15 @@ export type UserBucketQuestionResponseInput = {
 
 export type UserGroup = {
   __typename?: 'UserGroup';
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  feedback_received?: Maybe<Scalars['Boolean']['output']>;
+  group_invite_status?: Maybe<Scalars['Boolean']['output']>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   note?: Maybe<Scalars['String']['output']>;
   outing_date?: Maybe<Scalars['DateTime']['output']>;
+  outing_feedbacks?: Maybe<Array<OutingFeedback>>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
   users?: Maybe<Array<User>>;
 };
 
@@ -679,6 +724,11 @@ export type Create_Group_MutationMutationVariables = Exact<{
 
 
 export type Create_Group_MutationMutation = { __typename?: 'Mutation', createGroup: { __typename?: 'UserGroup', id: string } };
+
+export type Query_University_GroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Query_University_GroupsQuery = { __typename?: 'Query', universities?: Array<{ __typename?: 'University', id: string, name: string }> | null };
 
 export type RegisterMutationVariables = Exact<{
   input: RegisterUserInput;
@@ -865,6 +915,7 @@ export type Query_UsersQuery = { __typename?: 'Query', users: { __typename?: 'Us
 export const Query_GroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_GROUPS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"groups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"outing_date"}},{"kind":"Field","name":{"kind":"Name","value":"note"}},{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<Query_GroupsQuery, Query_GroupsQueryVariables>;
 export const Query_Admin_UsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_ADMIN_USERS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"adminQueryUsersInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"adminQueryUsers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"unique_id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"dob"}},{"kind":"Field","name":{"kind":"Name","value":"question_responses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"personalityScore"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"extroversion"}},{"kind":"Field","name":{"kind":"Name","value":"agreeableness"}},{"kind":"Field","name":{"kind":"Name","value":"conscientiousness"}},{"kind":"Field","name":{"kind":"Name","value":"neuroticism"}},{"kind":"Field","name":{"kind":"Name","value":"openness"}},{"kind":"Field","name":{"kind":"Name","value":"narcissism"}},{"kind":"Field","name":{"kind":"Name","value":"personalityBucketType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sub_title"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"political_orientation"}},{"kind":"Field","name":{"kind":"Name","value":"level_of_education"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"race"}},{"kind":"Field","name":{"kind":"Name","value":"relationship_status"}},{"kind":"Field","name":{"kind":"Name","value":"health_rating"}}]}}]}}]}}]} as unknown as DocumentNode<Query_Admin_UsersQuery, Query_Admin_UsersQueryVariables>;
 export const Create_Group_MutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CREATE_GROUP_MUTATION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserGroupInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<Create_Group_MutationMutation, Create_Group_MutationMutationVariables>;
+export const Query_University_GroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_UNIVERSITY_GROUPS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"universities"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<Query_University_GroupsQuery, Query_University_GroupsQueryVariables>;
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
 export const VerifyUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VerifyUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verifyUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"access_token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<VerifyUserMutation, VerifyUserMutationVariables>;
 export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"user_type"}}]}}]}}]}}]} as unknown as DocumentNode<Login_UserMutation, Login_UserMutationVariables>;
