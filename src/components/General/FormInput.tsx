@@ -64,6 +64,7 @@ export default function FormInput({
               value={value}
               onChange={onChange}
               onBlur={onBlur}
+              bg="#fff"
               _focus={{ border: "1.5px solid #7bb4ce" }}
               autoComplete={autoComplete}
               outline={
