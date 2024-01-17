@@ -19,6 +19,49 @@ import AppModal from "@/components/AppModal";
 import Link from "next/link";
 import { appRouteLinks } from "@/utils/constants";
 
+const registrationOptions = [
+  {
+    labelTitle: "Date of birth",
+    tooltip:
+      "ProSocial requires your date of birth to verify you are 18 years or older. We also group our members with people at similar life stages, which often is reflected by age",
+    inputType: "date",
+    name: "dob",
+    infoText: "Why do you ask for my Date of birth?",
+  },
+  {
+    labelTitle: "First Name",
+    tooltip: "",
+    name: "firstName",
+    inputType: "text",
+    infoText: "",
+  },
+  {
+    labelTitle: "Last Name",
+    tooltip: "",
+    name: "lastName",
+    inputType: "text",
+    infoText: "",
+  },
+];
+
+const registrationOptions2 = [
+  {
+    labelTitle: "Email Address",
+    tooltip: "",
+    name: "email",
+    inputType: "email",
+    infoText: "We'll never share your email.",
+  },
+  {
+    labelTitle: "Password",
+    tooltip: "",
+    inputType: "password",
+    name: "password",
+    infoText:
+      "Password must contain at least 8 characters and a combination of uppercase letters, lowercase letters, numbers, and symbols.",
+  },
+];
+
 export default function RegistrationPage() {
   const { formik, setPhone, phone, loading } = UseRegistrationPage();
 
@@ -68,65 +111,42 @@ export default function RegistrationPage() {
                 </Tooltip>
               </FormHelperText>
             </FormControl>
-            {/* Date of Birth */}
-            <FormInput
-              labelTitle="Date of birth"
-              tooltip="ProSocial requires your date of birth to verify you are 18 years or older. We also group our members with people at similar life stages, which often is reflected by age"
-              inputType="date"
-              name="dob"
-              infoText="Why do you ask for my Date of birth?"
-              value={formik.values.dob}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.errors.dob}
-            />
-            {/* First Name */}
-            <FormInput
-              labelTitle="First Name"
-              tooltip=""
-              name="firstName"
-              inputType="text"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.errors.firstName}
-            />
-            {/* Last Name */}
-            <FormInput
-              labelTitle="Last Name"
-              tooltip=""
-              name="lastName"
-              inputType="text"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.errors.lastName}
-            />
-            {/* Email */}
-            <FormInput
-              labelTitle="Email Address"
-              tooltip=""
-              name="email"
-              inputType="email"
-              infoText="We'll never share your email."
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.errors.email}
-            />
-            {/* Password */}
-            <FormInput
-              labelTitle="Password"
-              tooltip=""
-              inputType="password"
-              name="password"
-              infoText="Password must contain at least 8 characters and a combination of uppercase
-							letters, lowercase letters, numbers, and symbols."
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.errors.password}
-            />
+            {registrationOptions.map((options) => (
+              <FormInput
+                key={options.labelTitle}
+                labelTitle={options.labelTitle}
+                tooltip={options.tooltip}
+                inputType={options.inputType}
+                name={options.name}
+                infoText={options.infoText}
+                value={
+                  formik.values[options.name as keyof typeof formik.values]
+                }
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.errors[options.name as keyof typeof formik.values]
+                }
+              />
+            ))}
+            {registrationOptions2.map((options) => (
+              <FormInput
+                key={options.labelTitle}
+                labelTitle={options.labelTitle}
+                tooltip={options.tooltip}
+                inputType={options.inputType}
+                name={options.name}
+                infoText={options.infoText}
+                value={
+                  formik.values[options.name as keyof typeof formik.values]
+                }
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.errors[options.name as keyof typeof formik.values]
+                }
+              />
+            ))}
             <Button
               mt="5"
               w="full"

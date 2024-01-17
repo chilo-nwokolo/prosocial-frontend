@@ -51,7 +51,7 @@ export default function UseRegistrationPage() {
       const { dob, email, password, firstName, lastName } = values;
       if (!phone) {
         toast({
-          description: "Phone number invalid",
+          description: "Invalid phone number",
           status: "error",
         });
         return;
