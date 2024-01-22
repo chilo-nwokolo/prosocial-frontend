@@ -62,9 +62,7 @@ export default function UsersTable({
             Download data as CSV
           </Button>
         </Flex>
-        <Box>
-          <Button>Delete</Button>
-        </Box>
+        <Box>{/* <Button>Delete</Button> */}</Box>
       </Flex>
       <Box minH="1000px" mt="10px">
         {loading ? (
