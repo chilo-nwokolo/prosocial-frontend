@@ -12,11 +12,11 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import AffinitiesFilter from "../dashboard/users/components/AffinitiesFilter";
 import GroupDistributionFilter from "../dashboard/users/components/GroupDistributionFilter";
 import Big5Personality from "../dashboard/users/components/Big5Personality";
-import InterestsFilter from "../dashboard/users/components/InterestsFilter";
+// import InterestsFilter from "../dashboard/users/components/InterestsFilter";
 import AvailabilityFilter from "../dashboard/users/components/AvailabilityFilter";
 import { useState } from "react";
 import NarcissismFilter from "../dashboard/users/components/NarcissismFilter";
-import FeedbackFilter from "../dashboard/users/components/FeedbackFilter";
+// import FeedbackFilter from "../dashboard/users/components/FeedbackFilter";
 import AppliedFilter from "../dashboard/users/components/AppliedFilter";
 import { useFilterContext } from "../dashboard/users/hooks/useFilterContext";
 
@@ -61,9 +61,9 @@ export default function AdminUserAccordion() {
           {activeButton === "Narcissism - Social beliefs - Behavioral" && (
             <NarcissismFilter />
           )}
-          {activeButton === "Interests" && <InterestsFilter />}
+          {/* {activeButton === "Interests" && <InterestsFilter />} */}
           {activeButton === "Availability" && <AvailabilityFilter />}
-          {activeButton === "Feedback" && <FeedbackFilter />}
+          {/* {activeButton === "Feedback" && <FeedbackFilter />} */}
           {activeButton === "Applied" && <AppliedFilter />}
         </Box>
       ) : null}

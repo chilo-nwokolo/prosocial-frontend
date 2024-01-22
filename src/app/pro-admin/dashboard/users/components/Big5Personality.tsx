@@ -26,30 +26,40 @@ const individualTraits = [
     category: FILTER_CATEGORY_KEYS.extroversionScore,
     minValue: FILTER_QUERY_KEYS.extroversionScoreMin,
     maxValue: FILTER_QUERY_KEYS.extroversionScoreMax,
+    defaultSliderMax: 16,
+    defaultSliderMin: -16,
   },
   {
     title: "Agreeableness score range",
     category: FILTER_CATEGORY_KEYS.agreeablenessScore,
     minValue: FILTER_QUERY_KEYS.agreeablenessScoreMin,
     maxValue: FILTER_QUERY_KEYS.agreeablenessScoreMax,
+    defaultSliderMax: 16,
+    defaultSliderMin: -16,
   },
   {
     title: "Conscientiousness score range",
     category: FILTER_CATEGORY_KEYS.conscientiousnessScore,
     minValue: FILTER_QUERY_KEYS.conscientiousnessScoreMin,
     maxValue: FILTER_QUERY_KEYS.conscientiousnessScoreMax,
+    defaultSliderMax: 16,
+    defaultSliderMin: -16,
   },
   {
     title: "Neuroticism score range",
     category: FILTER_CATEGORY_KEYS.neuroticismScore,
     minValue: FILTER_QUERY_KEYS.neuroticismScoreMin,
     maxValue: FILTER_QUERY_KEYS.neuroticismScoreMax,
+    defaultSliderMax: 22,
+    defaultSliderMin: -22,
   },
   {
     title: "Openness score range",
     category: FILTER_CATEGORY_KEYS.opennessScore,
     minValue: FILTER_QUERY_KEYS.opennessScoreMin,
     maxValue: FILTER_QUERY_KEYS.opennessScoreMax,
+    defaultSliderMax: 16,
+    defaultSliderMin: -16,
   },
 ];
 
@@ -203,6 +213,8 @@ export default function Big5Personality() {
               individualTraitCategory={traits.category}
               individualTraitValueMax={traits.maxValue}
               individualTraitValueMin={traits.minValue}
+              defaultSliderMax={traits.defaultSliderMax}
+              defaultSliderMin={traits.defaultSliderMin}
             />
           ))}
         </Flex>

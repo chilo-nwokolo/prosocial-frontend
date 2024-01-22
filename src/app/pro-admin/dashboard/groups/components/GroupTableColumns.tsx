@@ -1,11 +1,15 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
+import EmailInviteButton from "./EmailInviteButton";
 
 type GroupsColumnsType = {
   id: string;
   name: string;
   outing_date?: any | null;
   note?: string | null | undefined;
+  feedback_received?: boolean;
+  group_invite_status?: boolean;
+  created_at?: Date;
   users?:
     | {
         __typename?: "User" | undefined;
@@ -56,9 +60,14 @@ export const groupColumns = [
       ));
     },
   }),
-  columnHelper.accessor("outing_date", {
+  columnHelper.accessor("created_at", {
     header: () => "Date Created",
-    cell: (info) => info.renderValue() || "Jan 2024",
+    cell: (info) => {
+      const createdDate = new Date(
+        info.row.original.created_at || "2024/01/01",
+      );
+      return <Text>{createdDate.toDateString()}</Text>;
+    },
   }),
   columnHelper.accessor("note", {
     header: () => "Notes",
@@ -68,18 +77,24 @@ export const groupColumns = [
       </Flex>
     ),
   }),
-  // columnHelper.accessor("feedback", {
-  //   header: () => "Feedback",
-  //   cell: (info) => info.renderValue(),
-  // }),
-  // columnHelper.accessor("groupInviteEmail", {
-  //   header: () => "Group Invite Email",
-  //   cell: (info) => {
-  //     const value = info.getValue();
-  //     if (value) {
-  //       return "Email sent";
-  //     }
-  //     return <Button>Send Email</Button>;
-  //   },
-  // }),
+  columnHelper.accessor("feedback_received", {
+    header: () => "Feedback",
+    cell: (info) => {
+      const value = info.getValue();
+      if (value) {
+        return "Received";
+      }
+      return "None received";
+    },
+  }),
+  columnHelper.accessor("group_invite_status", {
+    header: () => "Group Invite Email",
+    cell: (info) => {
+      const value = info.getValue();
+      if (value) {
+        return "Email sent";
+      }
+      return <EmailInviteButton id={info.row.original.id} />;
+    },
+  }),
 ];

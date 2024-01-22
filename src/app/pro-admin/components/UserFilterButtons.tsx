@@ -39,9 +39,9 @@ const filterButtons = [
   "Group Distribution",
   "Big 5 Personality",
   "Narcissism - Social beliefs - Behavioral",
-  "Interests",
+  // "Interests",
   // "Availability",
-  "Feedback",
+  // "Feedback",
   "Applied",
 ];
 
