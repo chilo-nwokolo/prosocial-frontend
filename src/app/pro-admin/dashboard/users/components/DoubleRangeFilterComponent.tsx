@@ -14,22 +14,28 @@ export default function DoubleRangeFilterComponent({
   individualTraitValueMin,
   individualTraitValueMax,
   parentName,
+  defaultSliderMax = 100,
+  defaultSliderMin = 0,
 }: {
   trait: string;
   individualTraitCategory: string;
   individualTraitValueMin: string;
   individualTraitValueMax: string;
   parentName: string;
+  defaultSliderMin?: number;
+  defaultSliderMax?: number;
 }) {
   const { filterProp, updateFilterProp, updateActiveFilters, activeFilters } =
     useFilterContext();
 
   const [sliderValueMin, setSliderValueMin] = useState(
-    (findFilterProp(individualTraitValueMin, filterProp) as number) || 0,
+    (findFilterProp(individualTraitValueMin, filterProp) as number) ||
+      defaultSliderMin,
   );
 
   const [sliderValueMax, setSliderValueMax] = useState(
-    (findFilterProp(individualTraitValueMax, filterProp) as number) || 100,
+    (findFilterProp(individualTraitValueMax, filterProp) as number) ||
+      defaultSliderMax,
   );
 
   return (
@@ -65,6 +71,8 @@ export default function DoubleRangeFilterComponent({
               ),
             );
           }}
+          min={sliderValueMin}
+          max={sliderValueMax}
           sliderValue={sliderValueMin}
         />
         <FilterSlider
@@ -83,6 +91,8 @@ export default function DoubleRangeFilterComponent({
               ),
             );
           }}
+          min={sliderValueMin}
+          max={sliderValueMax}
           sliderValue={sliderValueMax}
         />
       </Flex>

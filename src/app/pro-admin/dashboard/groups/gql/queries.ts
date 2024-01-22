@@ -18,3 +18,12 @@ export const QUERY_GROUPS = gql(`
     }
   }
 `);
+
+export const SEND_GROUP_INVITATION = gql(`
+  mutation SendGroupInviteToParticipants($group_id: ID!){
+    sendGroupInviteToParticipants(group_id: $group_id) {
+      status
+      message
+    }  
+  }
+`);

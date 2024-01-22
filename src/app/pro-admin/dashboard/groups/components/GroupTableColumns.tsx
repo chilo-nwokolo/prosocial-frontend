@@ -1,5 +1,6 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
+import EmailInviteButton from "./EmailInviteButton";
 
 type GroupsColumnsType = {
   id: string;
@@ -93,7 +94,7 @@ export const groupColumns = [
       if (value) {
         return "Email sent";
       }
-      return <Button>Send Email</Button>;
+      return <EmailInviteButton id={info.row.original.id} />;
     },
   }),
 ];

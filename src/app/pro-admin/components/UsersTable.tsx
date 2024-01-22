@@ -10,10 +10,15 @@ import {
   Text,
 } from "@chakra-ui/react";
 import TableColumnsFilterDropdown from "@/app/pro-admin/dashboard/users/components/TableColumnsFilterDropdown";
-import AdminTable from "@/app/pro-admin/dashboard/users/components/AdminTable";
 import AdminModal from "@/app/pro-admin/components/AdminModal";
 import CreateGroupModal from "@/app/pro-admin/dashboard/users/components/CreateGroupModal";
 import PaginationData from "@/app/pro-admin/dashboard/users/components/PaginationData";
+import dynamic from "next/dynamic";
+
+const AdminTable = dynamic(
+  () => import("@/app/pro-admin/dashboard/users/components/AdminTable"),
+  { ssr: false },
+);
 
 type Props = {
   table: any;

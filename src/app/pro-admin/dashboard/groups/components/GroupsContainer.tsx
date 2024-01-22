@@ -19,6 +19,10 @@ export default function GroupsContainer() {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const handleSelectedRow = (row: any) => {
+    console.log("selected>>", row);
+  };
+
   return (
     <QueryContainer loading={loading} error={error}>
       <Box>
@@ -26,7 +30,7 @@ export default function GroupsContainer() {
           Groups for Test Outings
         </Text>
         <Box>
-          <GroupTable table={table} />
+          <GroupTable table={table} handleSelectedRow={handleSelectedRow} />
         </Box>
       </Box>
     </QueryContainer>

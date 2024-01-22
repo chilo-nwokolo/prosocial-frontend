@@ -13,12 +13,16 @@ interface FilterSliderInterface {
   title: string;
   sliderValue: number;
   onChange: UseSliderProps["onChange"];
+  min?: number;
+  max?: number;
 }
 
 export default function FilterSlider({
   title,
   sliderValue,
   onChange,
+  min = 0,
+  max = 100,
 }: FilterSliderInterface) {
   return (
     <FormControl>
@@ -27,6 +31,8 @@ export default function FilterSlider({
         aria-label={`${title}-slider`}
         defaultValue={sliderValue}
         onChange={onChange}
+        min={min}
+        max={max}
       >
         <SliderMark
           value={sliderValue}
