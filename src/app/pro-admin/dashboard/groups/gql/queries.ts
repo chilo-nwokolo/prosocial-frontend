@@ -7,6 +7,9 @@ export const QUERY_GROUPS = gql(`
       name
       outing_date
       note
+      feedback_received
+      group_invite_status
+      created_at
       users {
         id
         name

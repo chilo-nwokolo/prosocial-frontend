@@ -13,8 +13,8 @@ export default function FeedbackQuestionsPage() {
       </Text>
       <Box>
         <Text my="3">
-          Did you feel a connection with anyone in your group? This will
-          determine if we match you with them again.
+          You said you did not feel a connection with John Lennon. Can you tell
+          us why?
         </Text>
         <Textarea
           rows={10}

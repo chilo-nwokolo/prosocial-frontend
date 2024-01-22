@@ -19,8 +19,6 @@ export default function GroupsContainer() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  console.log(data);
-
   return (
     <QueryContainer loading={loading} error={error}>
       <Box>

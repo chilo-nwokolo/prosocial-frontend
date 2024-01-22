@@ -18,7 +18,7 @@ export default function GroupTable({ table }: { table: TanstackTable<any> }) {
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <Th key={header.id}>
+                <Th key={header.id} border="1px solid">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -34,7 +34,7 @@ export default function GroupTable({ table }: { table: TanstackTable<any> }) {
           {table.getRowModel().rows.map((row) => (
             <Tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <Td key={cell.id}>
+                <Td key={cell.id} border="1px solid">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Td>
               ))}
