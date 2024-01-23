@@ -54,11 +54,6 @@ export const columns = [
   columnHelper.accessor("profile.level_of_education", {
     header: () => <span>Education</span>,
   }),
-  columnHelper.accessor("question_responses", {
-    header: () => <span>Questions Answered</span>,
-    // @ts-ignore
-    cell: (info) => info.row.original?.question_responses?.length,
-  }),
   columnHelper.accessor("profile.political_orientation", {
     header: () => <span>Political Orientation</span>,
   }),
