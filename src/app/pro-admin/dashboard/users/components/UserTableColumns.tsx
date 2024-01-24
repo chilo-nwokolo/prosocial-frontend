@@ -72,7 +72,7 @@ export const columns = [
   columnHelper.accessor("personalityScore.personalityBucketType.name", {
     header: () => <span>Big 5 Type</span>,
   }),
-  columnHelper.accessor("question_responses.id", {
+  columnHelper.accessor("question_responses", {
     header: () => <span>Questions Answered</span>,
     cell: (info) => {
       const questionResponses = info.row.original as any;
