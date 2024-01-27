@@ -1,13 +1,18 @@
 "use client";
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Text, useToast } from "@chakra-ui/react";
 import { appRouteLinks, formFeedback } from "@/utils/constants";
 import FormInput from "@/components/General/FormInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useGlobalStore } from "@/store";
+import { useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { PULL_USER_GROUP } from "./graphql/gql";
+import { apolloErrorHandler } from "@/utils/helpers";
 
 const field = {
-  labelTitle: "Date of birth",
+  labelTitle: "Pick a date",
   tooltip: "",
   inputType: "date",
   name: "date",
@@ -16,6 +21,38 @@ const field = {
 
 export default function OutingFeedbackPage() {
   const router = useRouter();
+  const toast = useToast();
+  const [setOutingDate, setUserData, userData, updateGroupData] =
+    useGlobalStore((state) => [
+      state.setOutingDate,
+      state.setUserData,
+      state.userData,
+      state.updateGroupData,
+    ]);
+
+  const [getUserGroup, { loading }] = useLazyQuery(PULL_USER_GROUP, {
+    onCompleted: (data) => {
+      updateGroupData(data.pullUserGroupParticipants);
+      router.push(appRouteLinks.outingFeedbackCards);
+    },
+    onError: (error) => {
+      toast({
+        title: apolloErrorHandler(error),
+        status: "error",
+      });
+    },
+  });
+
+  const params = useSearchParams();
+
+  useEffect(() => {
+    const userId = params.get("userId");
+    const groupId = params.get("groupId");
+    if (userId && groupId) {
+      setUserData({ userId, groupId });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params]);
 
   const validationSchema = yup.object({
     date: yup.date().required(formFeedback.chooseValidOutingDate),
@@ -26,8 +63,20 @@ export default function OutingFeedbackPage() {
       date: "",
     },
     onSubmit: (data) => {
-      console.log(data);
-      router.push(appRouteLinks.outingFeedbackCards);
+      setOutingDate(data.date);
+      if (userData?.groupId && userData?.userId) {
+        getUserGroup({
+          variables: {
+            user_unique_id: userData.userId,
+            group_id: userData.groupId,
+          },
+        });
+      } else {
+        toast({
+          title: "Sorry, this link is invalid",
+          status: "error",
+        });
+      }
     },
     validationSchema,
   });
@@ -39,7 +88,7 @@ export default function OutingFeedbackPage() {
           <Text fontSize="2xl" fontWeight="medium" mb="5">
             Outing Feedback
           </Text>
-          <Text>When did you meet for your outing?</Text>
+          <Text mb="3">When did you meet for your outing?</Text>
           <FormInput
             labelTitle={field.labelTitle}
             tooltip={field.tooltip}
@@ -52,7 +101,7 @@ export default function OutingFeedbackPage() {
             error={formik.errors[field.name as keyof typeof formik.values]}
           />
           <Flex flexDir="column" gap="4" mt="10">
-            <Button type="submit" w="full">
+            <Button type="submit" w="full" isLoading={loading}>
               Save
             </Button>
           </Flex>

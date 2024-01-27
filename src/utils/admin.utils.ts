@@ -1,4 +1,5 @@
 import { FilterProperties } from "@/app/pro-admin/dashboard/users/hooks/useFilterContext";
+import { InteractionFeedbackType } from "@/store";
 
 export interface DynamicQueryObject {
   [key: string]: Record<string, any>;
@@ -119,4 +120,23 @@ export const adminQueryBuilder = (
     }
   }
   return finalQuery;
+};
+
+export const updateInteractionArray = (
+  singleFeedback: InteractionFeedbackType,
+  feedback: InteractionFeedbackType[],
+) => {
+  const foundId = feedback.findIndex(
+    (feed) => feed.userId === singleFeedback.userId,
+  );
+
+  const newFeedback = [...feedback];
+
+  if (foundId > -1) {
+    newFeedback.splice(foundId, 1);
+    newFeedback.push(singleFeedback);
+    return newFeedback;
+  }
+  newFeedback.push(singleFeedback);
+  return newFeedback;
 };

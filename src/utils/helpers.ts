@@ -41,11 +41,15 @@ export function decodeUrl(params: string, separator?: string) {
 }
 
 export const apolloErrorHandler = (error: ApolloError) => {
-  return (
-    (error.graphQLErrors.map(
-      (e) => e.extensions.reason,
-    ) as unknown as string) || "Something went wrong"
-  );
+  console.log(error.graphQLErrors);
+  return error.graphQLErrors.map((e) => {
+    if (e.extensions.reason) {
+      return e.extensions.reason as unknown as string;
+    }
+    if (e.message) {
+      return e.message;
+    }
+  });
 };
 
 export const calculateGrowthProgress = (qty: number, total: number) => {
