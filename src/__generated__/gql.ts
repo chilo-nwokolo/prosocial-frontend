@@ -13,6 +13,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n": types.Pull_User_GroupDocument,
+    "\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n": types.Mutation_Submit_FeedbackDocument,
     "\n  query QUERY_GROUPS {\n    groups {\n      id\n      name\n      outing_date\n      note\n      feedback_received\n      group_invite_status\n      created_at\n      users {\n        id\n        name\n        email\n      }\n    }\n  }\n": types.Query_GroupsDocument,
     "\n  mutation SendGroupInviteToParticipants($group_id: ID!){\n    sendGroupInviteToParticipants(group_id: $group_id) {\n      status\n      message\n    }  \n  }\n": types.SendGroupInviteToParticipantsDocument,
     "\n  query QUERY_ADMIN_USERS($input: adminQueryUsersInput) {\n    adminQueryUsers(input: $input) {\n      id\n      name\n      unique_id\n      email\n      phone\n      dob\n      question_responses {\n        id\n      }\n      personalityScore {\n        id\n        extroversion\n        agreeableness\n        conscientiousness\n        neuroticism\n        openness\n        narcissism\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n      profile {\n        political_orientation\n        level_of_education\n        gender\n        race\n        relationship_status\n        health_rating\n      }\n    }\n  }\n": types.Query_Admin_UsersDocument,
@@ -64,6 +66,14 @@ const documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

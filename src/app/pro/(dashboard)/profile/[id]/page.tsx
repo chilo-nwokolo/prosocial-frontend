@@ -41,7 +41,6 @@ export default function ProfilePageId() {
       if (values.password !== password) {
         formData.password = values.password;
       }
-      console.log(formData);
     },
   });
 

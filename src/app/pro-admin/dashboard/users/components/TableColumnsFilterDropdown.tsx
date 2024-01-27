@@ -159,7 +159,7 @@ export default function TableColumnsFilterDropdown({
                         isChecked={columnKey?.getIsVisible()}
                         onChange={columnKey?.getToggleVisibilityHandler()}
                       />
-                      <FormLabel htmlFor={result.value} mb="0">
+                      <FormLabel htmlFor={result.value} mb="0" cursor="pointer">
                         {result.value}
                       </FormLabel>
                     </FormControl>

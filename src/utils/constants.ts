@@ -40,10 +40,10 @@ export const appRouteLinks = {
   interestsExpanedMore: "/pro/home/growth/interests/expanded/more-interests",
   logout: "/pro/logout",
   // outing feedback routes
-  outingFeedback: "/outing-feedback",
-  outingFeedbackCards: "/outing-feedback/feedback-cards",
-  outingFeedbackQuestions: "/outing-feedback/feedback-questions",
-  outingFeedbackSuccess: "/outing-feedback/feedback-questions/success",
+  outingFeedback: "/group-feedback",
+  outingFeedbackCards: "/group-feedback/feedback-cards",
+  outingFeedbackQuestions: "/group-feedback/feedback-questions",
+  outingFeedbackSuccess: "/group-feedback/feedback-questions/success",
 };
 
 export const adminRoutes = {
