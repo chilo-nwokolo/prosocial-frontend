@@ -42,7 +42,7 @@ const filterButtons = [
   // "Interests",
   // "Availability",
   // "Feedback",
-  "Applied",
+  // "Applied",
 ];
 
 type UserFilterButtonsProps = {

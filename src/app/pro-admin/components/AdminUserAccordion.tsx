@@ -17,7 +17,7 @@ import AvailabilityFilter from "../dashboard/users/components/AvailabilityFilter
 import { useState } from "react";
 import NarcissismFilter from "../dashboard/users/components/NarcissismFilter";
 // import FeedbackFilter from "../dashboard/users/components/FeedbackFilter";
-import AppliedFilter from "../dashboard/users/components/AppliedFilter";
+// import AppliedFilter from "../dashboard/users/components/AppliedFilter";
 import { useFilterContext } from "../dashboard/users/hooks/useFilterContext";
 
 export default function AdminUserAccordion() {
@@ -64,7 +64,7 @@ export default function AdminUserAccordion() {
           {/* {activeButton === "Interests" && <InterestsFilter />} */}
           {activeButton === "Availability" && <AvailabilityFilter />}
           {/* {activeButton === "Feedback" && <FeedbackFilter />} */}
-          {activeButton === "Applied" && <AppliedFilter />}
+          {/* {activeButton === "Applied" && <AppliedFilter />} */}
         </Box>
       ) : null}
     </Flex>
