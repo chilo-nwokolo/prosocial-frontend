@@ -44,7 +44,6 @@ export default function useLoginPage() {
           setCookie("accessToken", data.login.token);
         },
         onError: (error) => {
-          console.log(error);
           toast({
             status: "error",
             title: apolloErrorHandler(error),

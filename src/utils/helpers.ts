@@ -41,7 +41,6 @@ export function decodeUrl(params: string, separator?: string) {
 }
 
 export const apolloErrorHandler = (error: ApolloError) => {
-  console.log(error.graphQLErrors);
   return error.graphQLErrors.map((e) => {
     if (e.extensions.reason) {
       return e.extensions.reason as unknown as string;
