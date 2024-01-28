@@ -24,6 +24,7 @@ export const FILTER_CATEGORY_KEYS = {
   narcissismScore: "narcissismScore",
   socialBeliefsScore: "socialBeliefsScore",
   behavioralHealthScore: "behavioralHealthScore",
+  groupId: "groupId",
 };
 
 export const FILTER_QUERY_KEYS = {
@@ -53,13 +54,18 @@ export const FILTER_QUERY_KEYS = {
   socialBeliefsScoreMax: "social_beliefs_max",
   behavioralHealthMin: "behavioral_health_min",
   behavioralHealthMax: "behavioral_health_max",
+  groupId: "group_id",
 };
+
+// Filters without children
+const loneFilters = [FILTER_QUERY_KEYS.groupId];
 
 export const FILTER_PARENT_NAMES = {
   affinities: "affinities",
   groupDistribution: "group_distribution",
   bigFivePersonality: "big_five_personality",
   narcissismSocialBehavioral: "narcissism_social_behavioral",
+  groupId: "group_id",
 };
 
 export const activeFilterHandler = (name: string, activeFilters: string[]) => {
@@ -106,13 +112,17 @@ export const adminQueryBuilder = (
   activeFilters: string[],
 ) => {
   if (!activeFilters) return {};
-  const finalQuery: DynamicQueryObject = {};
+  const finalQuery: DynamicQueryObject | Record<string, any> = {};
 
   for (const filter of filterProperties) {
     const { parentName, category, filterProp, value } = filter;
     if (!activeFilters.includes(category)) continue;
     if (!finalQuery[parentName]) {
-      finalQuery[parentName] = { [filterProp]: value };
+      if (loneFilters.includes(parentName)) {
+        finalQuery[parentName] = value;
+      } else {
+        finalQuery[parentName] = { [filterProp]: value };
+      }
     } else {
       const initialData = finalQuery[parentName];
       const finished = { ...initialData, [filterProp]: value };

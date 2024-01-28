@@ -20,6 +20,7 @@ export default function AdminNavBar() {
     router.push(adminRoutes.login);
     client.clearStore();
   };
+
   return (
     <Flex
       as="nav"

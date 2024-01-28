@@ -61,8 +61,8 @@ export default function AdminUserAccordion() {
           {activeButton === "Narcissism - Social beliefs - Behavioral" && (
             <NarcissismFilter />
           )}
-          {/* {activeButton === "Interests" && <InterestsFilter />} */}
           {activeButton === "Availability" && <AvailabilityFilter />}
+          {/* {activeButton === "Interests" && <InterestsFilter />} */}
           {/* {activeButton === "Feedback" && <FeedbackFilter />} */}
           {/* {activeButton === "Applied" && <AppliedFilter />} */}
         </Box>

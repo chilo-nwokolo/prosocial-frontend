@@ -14,6 +14,9 @@ type FilterContextType = {
   activeFilters: string[];
   // eslint-disable-next-line no-unused-vars
   updateActiveFilters: (activeFilters: string[]) => void;
+  groupView: boolean;
+  // eslint-disable-next-line no-unused-vars
+  updateGroupView: (groupView: boolean) => void;
 };
 
 const FilterDataContext = createContext<FilterContextType>({
@@ -21,6 +24,8 @@ const FilterDataContext = createContext<FilterContextType>({
   updateFilterProp: () => null,
   activeFilters: [],
   updateActiveFilters: () => null,
+  groupView: false,
+  updateGroupView: () => null,
 });
 
 export default function FilterContextProvider({
@@ -30,6 +35,7 @@ export default function FilterContextProvider({
 }) {
   const [filterProp, setFilterProp] = useState<FilterProperties[]>([]);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [groupView, setGroupView] = useState(false);
 
   return (
     <>
@@ -39,6 +45,8 @@ export default function FilterContextProvider({
           updateFilterProp: setFilterProp,
           activeFilters,
           updateActiveFilters: setActiveFilters,
+          groupView,
+          updateGroupView: setGroupView,
         }}
       >
         {children}
@@ -48,7 +56,20 @@ export default function FilterContextProvider({
 }
 
 export const useFilterContext = () => {
-  const { filterProp, updateFilterProp, activeFilters, updateActiveFilters } =
-    useContext(FilterDataContext);
-  return { filterProp, updateFilterProp, activeFilters, updateActiveFilters };
+  const {
+    filterProp,
+    updateFilterProp,
+    activeFilters,
+    updateActiveFilters,
+    groupView,
+    updateGroupView,
+  } = useContext(FilterDataContext);
+  return {
+    filterProp,
+    updateFilterProp,
+    activeFilters,
+    updateActiveFilters,
+    groupView,
+    updateGroupView,
+  };
 };
