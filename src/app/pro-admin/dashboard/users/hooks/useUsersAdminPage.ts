@@ -27,6 +27,7 @@ export default function useUsersAdminPage() {
     updateActiveFilters,
     updateFilterProp,
     updateGroupView,
+    groupView,
   } = useFilterContext();
   const [query, setQuery] = useState<DynamicQueryObject>();
   const searchParams = useSearchParams();
@@ -47,6 +48,10 @@ export default function useUsersAdminPage() {
 
   useEffect(() => {
     const groupId = searchParams.get("groupId");
+    if (groupView && !groupId) {
+      // refresh page if group view is on but no group ID on the browser
+      window.location.reload();
+    }
     if (groupId) {
       updateActiveFilters(
         activeFilterHandler(FILTER_CATEGORY_KEYS.groupId, activeFilters),
