@@ -6,11 +6,15 @@ import QueryContainer from "@/components/General/QueryContainer";
 import { QUERY_GROUPS } from "../gql/queries";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { groupColumns } from "./GroupTableColumns";
+import { useRouter } from "next/navigation";
+import { adminRoutes } from "@/utils/constants";
 
 export default function GroupsContainer() {
   const { data, loading, error } = useQuery(QUERY_GROUPS, {
     fetchPolicy: "cache-and-network",
   });
+
+  const router = useRouter();
 
   const table = useReactTable({
     // @ts-ignore
@@ -20,7 +24,7 @@ export default function GroupsContainer() {
   });
 
   const handleSelectedRow = (row: any) => {
-    console.log("selected>>", row);
+    router.push(`${adminRoutes.users}?groupId=${row.id}`);
   };
 
   return (
