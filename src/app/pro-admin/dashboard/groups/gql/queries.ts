@@ -27,3 +27,29 @@ export const SEND_GROUP_INVITATION = gql(`
     }  
   }
 `);
+
+export const QUERY_GROUP = gql(`
+  query QUERY_GROUP($id: ID!) {
+    fetchGroup(id: $id) {
+      id
+      name
+      outing_date
+      note
+      feedback_received
+      group_invite_status
+      created_at
+      outing_feedbacks {
+        id
+        feedback_responses {
+          id
+          note
+          connection
+          receiving_user {
+            id
+            name 
+          }
+        }
+      }
+    }
+  }
+`);

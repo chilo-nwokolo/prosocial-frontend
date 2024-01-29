@@ -14,7 +14,7 @@ export default function OutingFeedbackSuccessPage() {
           feedback, please email Dr. Chopik.
         </Text>
         <Flex flexDir="column" gap="4" mt="10">
-          <Link href={appRouteLinks.logout}>
+          <Link href={appRouteLinks.login}>
             <Button w="full">Finish</Button>
           </Link>
         </Flex>
