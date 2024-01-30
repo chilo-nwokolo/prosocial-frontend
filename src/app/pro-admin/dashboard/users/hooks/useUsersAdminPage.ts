@@ -67,7 +67,7 @@ export default function useUsersAdminPage() {
           filterProp,
         ),
       );
-      updateGroupView(true);
+      updateGroupView(groupId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);

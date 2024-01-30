@@ -13,6 +13,8 @@ import TableColumnsFilterDropdown from "../dashboard/users/components/TableColum
 import dynamic from "next/dynamic";
 import PaginationData from "../dashboard/users/components/PaginationData";
 import { useFilterContext } from "../dashboard/users/hooks/useFilterContext";
+import { useRouter } from "next/navigation";
+import { adminRoutes } from "@/utils/constants";
 
 const AdminTable = dynamic(
   () => import("@/app/pro-admin/dashboard/users/components/AdminTable"),
@@ -33,6 +35,7 @@ export default function FilterTable({
   openCreateGroupModal,
 }: Props) {
   const { groupView } = useFilterContext();
+  const router = useRouter();
   return (
     <>
       <Grid templateColumns="repeat(4, 1fr)" gap={4} mb="5">
@@ -48,7 +51,13 @@ export default function FilterTable({
           <Text>{data?.adminQueryUsers?.length} Records</Text>
         </Box>
         <Flex gap="4">
-          {!groupView ? (
+          {groupView.length ? (
+            <Button
+              onClick={() => router.push(`${adminRoutes.groups}/${groupView}`)}
+            >
+              View Feedback Info
+            </Button>
+          ) : (
             <>
               <Button
                 onClick={openCreateGroupModal}
@@ -62,7 +71,7 @@ export default function FilterTable({
                 Download data as CSV
               </Button>
             </>
-          ) : null}
+          )}
         </Flex>
         <Box>{/* <Button>Delete</Button> */}</Box>
       </Flex>

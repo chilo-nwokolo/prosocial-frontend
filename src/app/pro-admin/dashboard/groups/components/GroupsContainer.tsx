@@ -24,7 +24,7 @@ export default function GroupsContainer() {
   });
 
   const handleSelectedRow = (row: any) => {
-    router.push(`${adminRoutes.users}?groupId=${row.id}`);
+    router.push(`${adminRoutes.users}?groupId=${row.original.id}`);
   };
 
   return (
@@ -33,7 +33,7 @@ export default function GroupsContainer() {
         <Text fontSize="xl" fontWeight="semibold">
           Groups for Test Outings
         </Text>
-        <Box>
+        <Box mb="10">
           <GroupTable table={table} handleSelectedRow={handleSelectedRow} />
         </Box>
       </Box>
