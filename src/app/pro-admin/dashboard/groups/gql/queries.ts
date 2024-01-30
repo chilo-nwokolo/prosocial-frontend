@@ -38,8 +38,14 @@ export const QUERY_GROUP = gql(`
       feedback_received
       group_invite_status
       created_at
+      feedback_received
       outing_feedbacks {
         id
+        user {
+          id
+          name
+          unique_id
+        }
         feedback_responses {
           id
           note
@@ -47,6 +53,7 @@ export const QUERY_GROUP = gql(`
           receiving_user {
             id
             name 
+            unique_id
           }
         }
       }

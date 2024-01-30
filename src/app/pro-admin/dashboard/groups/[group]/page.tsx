@@ -1,19 +1,22 @@
 "use client";
-import { useQuery } from "@apollo/client";
 import QueryContainer from "@/components/General/QueryContainer";
-import { Box } from "@chakra-ui/react";
-import { QUERY_GROUP } from "../gql/queries";
+import useGroupView from "../hooks/useGroupView";
+import GroupTable from "../components/GroupTable";
 
-export default function SingleGroupView() {
-  const { loading, data, error } = useQuery(QUERY_GROUP, {
-    variables: {
-      id: "13",
-    },
-  });
-  console.log(data);
+export default function SingleGroupView({
+  params,
+}: {
+  params: { group: string };
+}) {
+  const { loading, error, table } = useGroupView({ group: params.group });
+
+  const handleSelectedRow = (event: any) => {
+    console.log(event);
+  };
+
   return (
     <QueryContainer error={error} loading={loading}>
-      <Box>aosdfas</Box>
+      <GroupTable table={table} handleSelectedRow={handleSelectedRow} />
     </QueryContainer>
   );
 }
