@@ -25,8 +25,8 @@ export default function TermsAndConditionsPage() {
   const [canAccept, setCanAccept] = useState(false);
 
   return (
-    <>
-      <Box maxH="85svh" overflow="auto">
+    <Box position="relative">
+      <Box>
         <Text fontWeight="500" fontSize="lg">
           ProSocial Networks LLC Terms of Use Agreement
         </Text>
@@ -1627,7 +1627,7 @@ export default function TermsAndConditionsPage() {
           request a refund as described above in Section 8.
         </Text>
       </Box>
-      <Box>
+      <Box position="fixed" bottom="0" left="0" bg="#fdf5e9" p="4">
         <Flex>
           <Checkbox onChange={(state) => setCanAccept(state.target.checked)}>
             I have read and accept the Terms and Conditions
@@ -1649,6 +1649,6 @@ export default function TermsAndConditionsPage() {
         isOpen={isDeclineModal}
         actionButtons={<Button onClick={closeDeclineModal}>Close App</Button>}
       />
-    </>
+    </Box>
   );
 }
