@@ -17,6 +17,7 @@ export default function useGrowthPage() {
     return progress;
   };
 
+  // eslint-disable-next-line no-unused-vars
   const checkJournalAndChallengesProgress = () => {
     const journal = config?.[configExtras.user_journal_story];
     const challenge = config?.[configExtras.user_challenges_story];
@@ -45,24 +46,24 @@ export default function useGrowthPage() {
       destination: appRouteLinks.growthInterests,
       answers: checkPersonalityProgress().interests,
     },
-    {
-      id: 3,
-      title: "Journaling",
-      description:
-        "Spend time in self-reflection to discover your strengths and growth areas",
-      progress: 4,
-      destination: appRouteLinks.growthJournal,
-      answers: checkJournalAndChallengesProgress().journalLength,
-    },
-    {
-      id: 4,
-      title: "Challenges",
-      description:
-        "We give you daily goals that provide opportunities for personal growth",
-      progress: 8,
-      destination: appRouteLinks.growthChallenges,
-      answers: checkJournalAndChallengesProgress().challengeLength,
-    },
+    // {
+    //   id: 3,
+    //   title: "Journaling",
+    //   description:
+    //     "Spend time in self-reflection to discover your strengths and growth areas",
+    //   progress: 4,
+    //   destination: appRouteLinks.growthJournal,
+    //   answers: checkJournalAndChallengesProgress().journalLength,
+    // },
+    // {
+    //   id: 4,
+    //   title: "Challenges",
+    //   description:
+    //     "We give you daily goals that provide opportunities for personal growth",
+    //   progress: 8,
+    //   destination: appRouteLinks.growthChallenges,
+    //   answers: checkJournalAndChallengesProgress().challengeLength,
+    // },
   ];
 
   return { growthSections, loading };

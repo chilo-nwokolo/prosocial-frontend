@@ -43,7 +43,7 @@ export default function InterestsPage() {
           <Button
             mt="auto"
             onClick={() => {
-              router.push(`${appRouteLinks.interestsPair}?question=1`);
+              router.push(`${appRouteLinks.interestsExpanedMore}`);
             }}
           >
             Begin
