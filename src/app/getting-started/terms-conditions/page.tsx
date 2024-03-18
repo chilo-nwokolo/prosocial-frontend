@@ -5,6 +5,7 @@ import { appRouteLinks } from "@/utils/constants";
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   ListItem,
   OrderedList,
@@ -12,6 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function TermsAndConditionsPage() {
   const {
@@ -20,8 +22,10 @@ export default function TermsAndConditionsPage() {
     onOpen: openDeclineModal,
   } = useDisclosure();
 
+  const [canAccept, setCanAccept] = useState(false);
+
   return (
-    <>
+    <Box position="relative">
       <Box>
         <Text fontWeight="500" fontSize="lg">
           ProSocial Networks LLC Terms of Use Agreement
@@ -522,7 +526,7 @@ export default function TermsAndConditionsPage() {
           limited to, on services operated by our affiliates). We encourage you
           to report any inappropriate Member Content or misconduct by other
           users. You may email ProSocial Customer Service by emailing
-          prosocialapplication@gmail.com.
+          support@prosocialnetworks.com.
         </Text>
         &nbsp;
         <Text>
@@ -845,7 +849,7 @@ export default function TermsAndConditionsPage() {
           canceling this Agreement, or words of similar effect. Please also
           include the email address or telephone number associated with your
           account along with your order number. This notice shall be sent to:
-          ProSocial (prosocialapplication@gmail.com).
+          ProSocial (support@prosocialnetworks.com).
         </Text>
         &nbsp;
         <Text fontWeight="500">9. ACCOUNT TERMINATION</Text>
@@ -1013,7 +1017,7 @@ export default function TermsAndConditionsPage() {
           Any DMCA Takedown Notices should be sent to copyright@ProSocial.com,
           by email to the following address:
           <a href="mailto:prosocialapplications@gmail.com">
-            <span className="Hyperlink">prosocialapplication@gmail.com</span>
+            <span className="Hyperlink">support@prosocialnetworks.com</span>
           </a>
           . ProSocial will terminate the accounts of repeat infringers.
         </Text>
@@ -1507,7 +1511,7 @@ export default function TermsAndConditionsPage() {
             href="mailto:prosocialapplications@gmail.com"
             style={{ textDecoration: "none" }}
           >
-            <span className="Hyperlink">prosocialapplication@gmail.com</span>
+            <span className="Hyperlink">support@prosocialnetworks.com</span>
           </a>
           . You must include information sufficient to identify your account(s),
           such as the email address or phone number associated with your
@@ -1623,13 +1627,18 @@ export default function TermsAndConditionsPage() {
           request a refund as described above in Section 8.
         </Text>
       </Box>
-      <Box>
+      <Box position="fixed" bottom="0" left="0" bg="#fdf5e9" p="4">
+        <Flex>
+          <Checkbox onChange={(state) => setCanAccept(state.target.checked)}>
+            I have read and accept the Terms and Conditions
+          </Checkbox>
+        </Flex>
         <Flex justifyContent="center" gap="4" mt="8">
           <Button variant="secondary" onClick={openDeclineModal}>
             Decline
           </Button>
           <Link href={appRouteLinks.register}>
-            <Button>Accept</Button>
+            <Button isDisabled={!canAccept}>Accept</Button>
           </Link>
         </Flex>
       </Box>
@@ -1640,6 +1649,6 @@ export default function TermsAndConditionsPage() {
         isOpen={isDeclineModal}
         actionButtons={<Button onClick={closeDeclineModal}>Close App</Button>}
       />
-    </>
+    </Box>
   );
 }
