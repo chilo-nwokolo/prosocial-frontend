@@ -1,7 +1,7 @@
 "use client";
 
 import AppModal from "@/components/AppModal";
-import { appRouteLinks } from "@/utils/constants";
+import { appRouteLinks, externalLinks } from "@/utils/constants";
 import {
   Box,
   Button,
@@ -21,6 +21,11 @@ export default function TermsAndConditionsPage() {
     onClose: closeDeclineModal,
     onOpen: openDeclineModal,
   } = useDisclosure();
+
+  const onClose = () => {
+    closeDeclineModal();
+    window.location.href = externalLinks.website;
+  };
 
   const [canAccept, setCanAccept] = useState(false);
 
@@ -1627,7 +1632,7 @@ export default function TermsAndConditionsPage() {
           request a refund as described above in Section 8.
         </Text>
       </Box>
-      <Box position="fixed" bottom="0" left="0" bg="#fdf5e9" p="4">
+      <Box position="fixed" bottom="0" bg="#fdf5e9" p="4" ml="-6" w="lg">
         <Flex>
           <Checkbox onChange={(state) => setCanAccept(state.target.checked)}>
             I have read and accept the Terms and Conditions
@@ -1647,7 +1652,7 @@ export default function TermsAndConditionsPage() {
         description="We won't be able to match you with other ProSocial users if you do not accept our terms and conditions"
         onClose={closeDeclineModal}
         isOpen={isDeclineModal}
-        actionButtons={<Button onClick={closeDeclineModal}>Close App</Button>}
+        actionButtons={<Button onClick={onClose}>Exit to home</Button>}
       />
     </Box>
   );
