@@ -23,7 +23,6 @@ export default function PersonalityQuestionsPage({
     <Flex flexDir="column" gap="8" mb="5">
       <Flex mt="5">
         <Button
-          variant="link"
           color="black"
           onClick={() => router.push(appRouteLinks.growthPersonality)}
         >

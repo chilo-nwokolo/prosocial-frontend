@@ -84,6 +84,7 @@ export const configExtras = {
 
 export const externalLinks = {
   email: "prosocialapplication@gmail.com",
+  website: "https://www.prosocialnetworks.com/",
 };
 
 export const AccessToken = "accessToken";
