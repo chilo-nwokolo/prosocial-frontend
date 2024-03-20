@@ -53,11 +53,7 @@ export default function IntroQuestionsPage({
   return (
     <Flex flexDir="column" gap="8" mb="5">
       <Flex mt="5">
-        <Button
-          variant="link"
-          color="black"
-          onClick={() => router.push(appRouteLinks.intro)}
-        >
+        <Button color="black" onClick={() => router.push(appRouteLinks.intro)}>
           <FaChevronLeft />
         </Button>
       </Flex>
