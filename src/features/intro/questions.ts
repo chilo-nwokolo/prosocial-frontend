@@ -137,6 +137,58 @@ export const personalQuestionsData = [
         type: AnswerType.RATING_SCALE,
       },
       {
+        id: "type_of_city_grown",
+        question:
+          "What kind of area did you grow up in from ages 0-18? Select all that apply:",
+        options: [
+          { id: 1, title: "City", value: "City" },
+          { id: 2, title: "Town", value: "Town" },
+          { id: 3, title: "Suburban", value: "Suburban" },
+          { id: 4, title: "Rural", value: "Rural" },
+        ],
+        type: AnswerType.MULTIPLE_CHOICE,
+      },
+      {
+        id: "family_size_in_numbers",
+        question:
+          "How big is your family of origin (the people that you lived with)?",
+        options: [
+          { id: 1, title: "1-2 people", value: "1-2 people" },
+          { id: 2, title: "3-4 people", value: "3-4 people" },
+          { id: 3, title: "5-7 people", value: "5-7 people" },
+          { id: 4, title: "7+ people", value: "7+ people" },
+        ],
+        type: AnswerType.MULTIPLE_CHOICE,
+      },
+      {
+        id: "occupation",
+        question: "What is your occupation?",
+        type: AnswerType.TEXT,
+      },
+      {
+        id: "has_children",
+        question: "Do you have children??",
+        options: [
+          { id: 1, title: "Yes", value: "true" },
+          { id: 2, title: "No", value: "false" },
+        ],
+        type: AnswerType.RATING_SCALE,
+      },
+      {
+        id: "religiosity_range",
+        question: " Do you consider yourself religious or spiritual?",
+        options: [
+          { id: 1, title: "1", value: "1" },
+          { id: 2, title: "2", value: "2" },
+          { id: 3, title: "3", value: "3" },
+          { id: 4, title: "4", value: "4" },
+          { id: 5, title: "5", value: "5" },
+          { id: 6, title: "6", value: "6" },
+          { id: 7, title: "7", value: "7" },
+        ],
+        type: AnswerType.RATING_SCALE,
+      },
+      {
         id: "socialization",
         question: "How often do you go out to socialize?",
         options: [

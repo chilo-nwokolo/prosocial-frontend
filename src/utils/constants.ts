@@ -66,6 +66,8 @@ export const formFeedback = {
 export const AnswerType = {
   RATING_SCALE: "RATING_SCALE",
   SINGLE_CHOICE: "SINGLE_CHOICE",
+  MULTIPLE_CHOICE: "MULTIPLE_CHOICE",
+  TEXT: "TEXT",
 };
 
 export const configExtras = {

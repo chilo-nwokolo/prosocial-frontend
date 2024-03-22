@@ -53,7 +53,11 @@ export default function IntroQuestionsPage({
   return (
     <Flex flexDir="column" gap="8" mb="5">
       <Flex mt="5">
-        <Button color="black" onClick={() => router.push(appRouteLinks.intro)}>
+        <Button
+          color="black"
+          variant="secondary"
+          onClick={() => router.push(appRouteLinks.intro)}
+        >
           <FaChevronLeft />
         </Button>
       </Flex>
@@ -80,7 +84,7 @@ export default function IntroQuestionsPage({
                 source={decodeUrl(params.slug)}
               />
             );
-          } else if (question.type === "text") {
+          } else if (question.type === AnswerType.TEXT) {
             return (
               <InputQuestions
                 onChange={formik.handleChange}
@@ -90,7 +94,19 @@ export default function IntroQuestionsPage({
                 title={question.question}
               />
             );
-          } else {
+          } else if (question.type === AnswerType.MULTIPLE_CHOICE) {
+            return (
+              <SingleChoiceQuestion
+                key={`quest-${question.id}`}
+                title={question.question ?? question.text}
+                options={question?.options}
+                value={formik.values[question.id]}
+                name={question.id}
+                onChange={formik.handleChange}
+                source={decodeUrl(params.slug)}
+              />
+            );
+          } else if (question.type === AnswerType.RATING_SCALE) {
             return (
               <RatingScaleQuestion
                 key={`quest-${question.id}`}
@@ -100,6 +116,16 @@ export default function IntroQuestionsPage({
                 name={question.id}
                 value={formik.values[question.id]}
                 onChange={formik.handleChange}
+              />
+            );
+          } else {
+            return (
+              <InputQuestions
+                onChange={formik.handleChange}
+                value={formik.values[question.id]}
+                key={`quest-${question.id}`}
+                name={question.id}
+                title={question.question}
               />
             );
           }
