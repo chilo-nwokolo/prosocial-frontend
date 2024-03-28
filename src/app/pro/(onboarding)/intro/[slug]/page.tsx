@@ -10,6 +10,7 @@ import InputQuestions from "@/features/intro/components/InputQuestions";
 import { useAppQuestions } from "@/store";
 import { useFormik } from "formik";
 import { decodeUrl, generateQuestions } from "@/utils/helpers";
+import { componentConfig } from "./componentConfig";
 
 export default function IntroQuestionsPage({
   params,
@@ -62,12 +63,12 @@ export default function IntroQuestionsPage({
         </Button>
       </Flex>
       <Flex flexDir="column" gap="5">
-        <Text fontSize="3xl" fontWeight="semibold">
+        <Text as="h1" fontSize="3xl" fontWeight="semibold">
           {decodeURI(params.slug)}
         </Text>
         <Text>{section?.description}</Text>
       </Flex>
-      <Text fontSize="xl" mb="-3">
+      <Text as="h2" fontSize="xl" mb="-3">
         {section?.meta}
       </Text>
       <Flex flexDir="column" gap="10">
@@ -81,7 +82,10 @@ export default function IntroQuestionsPage({
                 value={formik.values[question.id]}
                 name={question.id}
                 onChange={formik.handleChange}
-                source={decodeUrl(params.slug)}
+                config={
+                  componentConfig[params.slug as keyof typeof componentConfig]
+                    ?.singleChoiceQuestion
+                }
               />
             );
           } else if (question.type === AnswerType.TEXT) {
@@ -103,7 +107,10 @@ export default function IntroQuestionsPage({
                 value={formik.values[question.id]}
                 name={question.id}
                 onChange={formik.handleChange}
-                source={decodeUrl(params.slug)}
+                config={
+                  componentConfig[params.slug as keyof typeof componentConfig]
+                    ?.singleChoiceQuestion
+                }
               />
             );
           } else if (question.type === AnswerType.RATING_SCALE) {
@@ -112,7 +119,10 @@ export default function IntroQuestionsPage({
                 key={`quest-${question.id}`}
                 title={question.question ?? question.text}
                 options={question?.options}
-                source={decodeURI(params.slug)}
+                config={
+                  componentConfig[params.slug as keyof typeof componentConfig]
+                    ?.ratingScaleQuestion
+                }
                 name={question.id}
                 value={formik.values[question.id]}
                 onChange={formik.handleChange}

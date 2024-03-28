@@ -13,12 +13,13 @@ export default function IntroPage() {
   useAppConfig({
     initialConfig: [
       { key: configExtras.user_visited_intro_page, value: "true" },
+      { key: configExtras.user_accepted_terms_and_conditions, value: "true" },
     ],
   });
 
   return (
     <Flex mt="5" flexDir="column">
-      <Text mb="4" fontSize="2xl" fontWeight="medium">
+      <Text mb="4" fontSize="2xl" fontWeight="medium" as="h1">
         About You
       </Text>
       <Text>

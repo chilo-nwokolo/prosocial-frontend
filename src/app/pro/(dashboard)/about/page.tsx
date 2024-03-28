@@ -1,13 +1,7 @@
 "use client";
+import IFrameModal from "@/components/General/IFrameModal";
 import { ImageLinks } from "@/utils/constants";
-import {
-  Flex,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -76,12 +70,7 @@ export default function AboutPage() {
             Safety Tips
           </Text>
         </Flex>
-        <Modal onClose={onClose} isOpen={isOpen} isCentered>
-          <ModalOverlay />
-          <ModalContent h="100vh">
-            <iframe src={inView} height="100%" width="100%" />
-          </ModalContent>
-        </Modal>
+        <IFrameModal onClose={onClose} isOpen={isOpen} inView={inView} />
       </Flex>
     </Flex>
   );

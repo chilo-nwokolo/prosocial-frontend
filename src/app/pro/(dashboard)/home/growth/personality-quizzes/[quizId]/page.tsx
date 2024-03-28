@@ -4,6 +4,7 @@ import { appRouteLinks } from "@/utils/constants";
 import { FaChevronLeft } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import usePersonalityQuestionsPage from "@/features/dashboard/home/growth/hooks/usePersonalityQuestionsPage";
+import { componentConfig } from "@/app/pro/(onboarding)/intro/[slug]/componentConfig";
 
 const RatingScaleQuestion = dynamic(
   () => import("@/features/intro/components/RatingScaleQuestion"),
@@ -48,7 +49,10 @@ export default function PersonalityQuestionsPage({
             key={`quest-${sect.id}`}
             title={sect.text.toLowerCase()}
             options={sect.options}
-            source={decodeURI(params.quizId)}
+            config={
+              componentConfig[params.quizId as keyof typeof componentConfig]
+                ?.singleChoiceQuestion
+            }
             name={sect.id}
             value={formik.values[sect.id]}
             onChange={formik.handleChange}

@@ -64,6 +64,7 @@ export const formFeedback = {
 };
 
 export const AnswerType = {
+  RATING_SCALE_LABEL: "RATING_SCALE_LABEL",
   RATING_SCALE: "RATING_SCALE",
   SINGLE_CHOICE: "SINGLE_CHOICE",
   MULTIPLE_CHOICE: "MULTIPLE_CHOICE",
@@ -82,6 +83,7 @@ export const configExtras = {
   user_quiz_personality_2: "user_quiz_personality-2",
   user_quiz_personality_3: "user_quiz_personality-3",
   user_has_seen_retyped_result_1: "user_has_seen_retyped_result_1",
+  user_accepted_terms_and_conditions: "user_accepted_terms_and_conditions",
 };
 
 export const externalLinks = {

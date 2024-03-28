@@ -3,6 +3,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   FormControl,
   FormHelperText,
@@ -19,6 +20,7 @@ import UseRegistrationPage from "@/features/auth/hooks/useRegistrationPage";
 import AppModal from "@/components/AppModal";
 import Link from "next/link";
 import { appRouteLinks } from "@/utils/constants";
+import IFrameModal from "@/components/General/IFrameModal";
 
 const registrationOptions = [
   {
@@ -45,6 +47,8 @@ const registrationOptions = [
   },
 ];
 
+const termsPage = "/files/terms_and_conditions.pdf";
+
 const registrationOptions2 = [
   {
     labelTitle: "Email Address",
@@ -64,13 +68,26 @@ const registrationOptions2 = [
 ];
 
 export default function RegistrationPage() {
-  const { formik, setPhone, phone, loading, loadingGroups, groups } =
-    UseRegistrationPage();
+  const {
+    formik,
+    setPhone,
+    phone,
+    loading,
+    loadingGroups,
+    groups,
+    setAcceptTc,
+  } = UseRegistrationPage();
 
   const {
     isOpen: isPhoneInfo,
     onClose: onPhoneInfoClose,
     onOpen: onPhoneInfoOpen,
+  } = useDisclosure();
+
+  const {
+    isOpen: isTermsOpen,
+    onClose: onCloseTerms,
+    onOpen: onOpenTerms,
   } = useDisclosure();
 
   return (
@@ -176,6 +193,22 @@ export default function RegistrationPage() {
                 }
               />
             ))}
+            <Flex>
+              <Checkbox
+                onChange={(state) => setAcceptTc(state.target.checked)}
+                fontWeight="500"
+              >
+                I have read and accept the{" "}
+                <Button
+                  onClick={onOpenTerms}
+                  color="blue"
+                  fontWeight="500"
+                  variant="link"
+                >
+                  Terms and Conditions
+                </Button>
+              </Checkbox>
+            </Flex>
             <Button
               mt="5"
               w="full"
@@ -203,6 +236,11 @@ export default function RegistrationPage() {
           </Link>
         </Flex>
       </Box>
+      <IFrameModal
+        onClose={onCloseTerms}
+        isOpen={isTermsOpen}
+        inView={termsPage}
+      />
       <AppModal
         title=""
         description="We need your phone number for push notifications and account recovery purposes."
