@@ -16,6 +16,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
   Flex,
+  FormControl,
+  FormLabel,
+  Input,
   RadioGroup,
   Stack,
   Text,
@@ -162,6 +165,13 @@ export default function InterestedExtendedPage() {
               <BackButton text="Go Back" />
             </Flex>
           )}
+          <FormControl mt="3">
+            <FormLabel as="h2">
+              Don&apos;t see your interests, list them here. (separate them with
+              a comma)
+            </FormLabel>
+            <Input type="text" />
+          </FormControl>
         </Flex>
         <Button isLoading={loading} onClick={() => mutate()} mt="10">
           Done
