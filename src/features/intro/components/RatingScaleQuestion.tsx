@@ -22,7 +22,7 @@ type Props = {
       }[]
     | null
     | undefined;
-  config: ComponentConfigType;
+  config?: ComponentConfigType;
   name: string;
   error?: string;
   // eslint-disable-next-line no-unused-vars
@@ -43,6 +43,7 @@ export function RadioCard(props: any) {
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
+        borderColor="gray.500"
         _checked={{
           bg: "teal.600",
           color: "white",
@@ -85,7 +86,7 @@ export default function RatingScaleQuestion({
         as="legend"
         border="1px solid"
         mb="0"
-        borderColor="gray.200"
+        borderColor="gray.500"
         p="5"
         w="full"
       >
@@ -110,10 +111,10 @@ export default function RatingScaleQuestion({
             : null}
         </HStack>
       </RadioGroup>
-      {!config?.hasLabel ? (
+      {config?.hasLabel ? (
         <Flex
           border="1px solid"
-          borderColor="gray.200"
+          borderColor="gray.500"
           borderTop="none"
           justifyContent="space-between"
           px="2"
@@ -129,7 +130,11 @@ export default function RatingScaleQuestion({
           </Text>
         </Flex>
       ) : null}
-      {error ? <FormHelperText>{error}</FormHelperText> : null}
+      {error ? (
+        <FormHelperText color="critical.100" fontSize="xs">
+          {error}
+        </FormHelperText>
+      ) : null}
     </FormControl>
   );
 }

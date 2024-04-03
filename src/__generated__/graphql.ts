@@ -106,6 +106,10 @@ export type GroupDistributionInput = {
   relationship_status?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type HandleSocialPreferenceSubmitInput = {
+  input: Array<UserSocialPreferenceSubmitInput>;
+};
+
 export type Interest = {
   __typename?: 'Interest';
   created_at?: Maybe<Scalars['DateTime']['output']>;
@@ -138,11 +142,23 @@ export type JournalCategory = {
   video_url?: Maybe<Scalars['String']['output']>;
 };
 
+export type MetaKeyValue = {
+  __typename?: 'MetaKeyValue';
+  key?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+export type MetaKeyValueInput = {
+  key: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAdmin: User;
   createGroup: UserGroup;
   deleteGroup: BasicResponse;
+  handleSocialPreferenceSubmit: BasicResponse;
   login: AuthResponse;
   logout?: Maybe<BasicResponse>;
   mutateJournal?: Maybe<Journal>;
@@ -174,6 +190,11 @@ export type MutationCreateGroupArgs = {
 
 export type MutationDeleteGroupArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationHandleSocialPreferenceSubmitArgs = {
+  input: HandleSocialPreferenceSubmitInput;
 };
 
 
@@ -382,14 +403,19 @@ export type PreferenceSettingInput = {
 
 export type ProfileInput = {
   avatar?: InputMaybe<Scalars['Upload']['input']>;
+  family_size_in_numbers?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<GenderEnum>;
+  has_children?: InputMaybe<Scalars['Boolean']['input']>;
   health_rating?: InputMaybe<Scalars['String']['input']>;
   level_of_education?: InputMaybe<Scalars['String']['input']>;
+  occupation?: InputMaybe<Scalars['String']['input']>;
   political_orientation?: InputMaybe<Scalars['String']['input']>;
   race?: InputMaybe<Scalars['String']['input']>;
   relationship_status?: InputMaybe<Scalars['String']['input']>;
+  religiosity_range?: InputMaybe<Scalars['String']['input']>;
   socialization?: InputMaybe<Scalars['String']['input']>;
   to_socialization?: InputMaybe<Scalars['String']['input']>;
+  type_of_city_grown?: InputMaybe<Scalars['String']['input']>;
   zip_code?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -409,6 +435,7 @@ export type Query = {
   pullUserGroupParticipants?: Maybe<UserGroup>;
   questionCategories?: Maybe<Array<QuestionCategory>>;
   questions?: Maybe<Array<Question>>;
+  socialPreferences?: Maybe<Array<SocialPreference>>;
   universities?: Maybe<Array<University>>;
   university?: Maybe<University>;
   /** Find a single user by an identifying attribute. */
@@ -549,6 +576,38 @@ export type SchedulesInput = {
   schedules?: InputMaybe<Array<ScheduleInput>>;
 };
 
+export type SocialPreference = {
+  __typename?: 'SocialPreference';
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  option_type?: Maybe<Scalars['String']['output']>;
+  social_preference_options?: Maybe<Array<SocialPreferenceOption>>;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+export type SocialPreferenceAnswer = {
+  __typename?: 'SocialPreferenceAnswer';
+  answer?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  meta?: Maybe<Array<MetaKeyValue>>;
+  note?: Maybe<Scalars['String']['output']>;
+  social_preference?: Maybe<SocialPreference>;
+  social_preference_option?: Maybe<SocialPreferenceOption>;
+  user?: Maybe<User>;
+};
+
+export type SocialPreferenceOption = {
+  __typename?: 'SocialPreferenceOption';
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  option_type?: Maybe<Scalars['String']['output']>;
+  social_preference?: Maybe<SocialPreference>;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
 /** Directions for ordering a list of records. */
 export enum SortOrder {
   /** Sort records in ascending order. */
@@ -621,6 +680,7 @@ export type User = {
   question_responses?: Maybe<Array<QuestionResponse>>;
   schedules?: Maybe<Array<Schedule>>;
   settings?: Maybe<UserSetting>;
+  social_preference_answers?: Maybe<Array<SocialPreferenceAnswer>>;
   unique_id: Scalars['String']['output'];
   university?: Maybe<University>;
   updated_at: Scalars['DateTime']['output'];
@@ -644,6 +704,18 @@ export type UserBucketQuestionResponseInput = {
   bucket_id: Scalars['ID']['input'];
   response: Scalars['String']['input'];
 };
+
+export enum UserFeedbackLevel {
+  Allwithconnectionfeedback = 'ALLWITHCONNECTIONFEEDBACK',
+  Onlywithtextfeedback = 'ONLYWITHTEXTFEEDBACK'
+}
+
+export enum UserFeedbackType {
+  All = 'ALL',
+  No = 'NO',
+  Nointeraction = 'NOINTERACTION',
+  Yes = 'YES'
+}
 
 export type UserGroup = {
   __typename?: 'UserGroup';
@@ -682,23 +754,28 @@ export type UserPaginator = {
 export type UserProfile = {
   __typename?: 'UserProfile';
   avatar?: Maybe<Scalars['String']['output']>;
+  family_size_in_numbers?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<GenderEnum>;
+  has_children?: Maybe<Scalars['Boolean']['output']>;
   health_rating?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   level_of_education?: Maybe<Scalars['String']['output']>;
+  occupation?: Maybe<Scalars['String']['output']>;
   political_orientation?: Maybe<Scalars['String']['output']>;
   race?: Maybe<Scalars['String']['output']>;
   relationship_status?: Maybe<Scalars['String']['output']>;
+  religiosity_range?: Maybe<Scalars['String']['output']>;
   socialization?: Maybe<Scalars['String']['output']>;
   to_socialization?: Maybe<Scalars['String']['output']>;
+  type_of_city_grown?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
   zip_code?: Maybe<Scalars['String']['output']>;
 };
 
 export type UserSearchFeedbackInput = {
-  level?: InputMaybe<Scalars['Boolean']['input']>;
+  level?: InputMaybe<UserFeedbackLevel>;
   outing_date?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<UserFeedbackType>;
 };
 
 export type UserSearchInterestInput = {
@@ -715,6 +792,13 @@ export type UserSetting = {
 
 export type UserSettingInput = {
   preferenceSettings?: InputMaybe<Array<PreferenceSettingInput>>;
+};
+
+export type UserSocialPreferenceSubmitInput = {
+  answer: Scalars['String']['input'];
+  meta?: InputMaybe<Array<MetaKeyValueInput>>;
+  social_preference_id?: InputMaybe<Scalars['ID']['input']>;
+  social_preference_option_id: Scalars['ID']['input'];
 };
 
 export type VerifyUserInput = {
@@ -779,6 +863,13 @@ export type Create_Group_MutationMutationVariables = Exact<{
 
 
 export type Create_Group_MutationMutation = { __typename?: 'Mutation', createGroup: { __typename?: 'UserGroup', id: string } };
+
+export type Submit_Social_PreferencesMutationVariables = Exact<{
+  input: HandleSocialPreferenceSubmitInput;
+}>;
+
+
+export type Submit_Social_PreferencesMutation = { __typename?: 'Mutation', handleSocialPreferenceSubmit: { __typename?: 'BasicResponse', status: string, message?: string | null } };
 
 export type Query_University_GroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -974,6 +1065,7 @@ export const SendGroupInviteToParticipantsDocument = {"kind":"Document","definit
 export const Query_GroupDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_GROUP"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fetchGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"outing_date"}},{"kind":"Field","name":{"kind":"Name","value":"note"}},{"kind":"Field","name":{"kind":"Name","value":"feedback_received"}},{"kind":"Field","name":{"kind":"Name","value":"group_invite_status"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"feedback_received"}},{"kind":"Field","name":{"kind":"Name","value":"outing_feedbacks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"unique_id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"feedback_responses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"note"}},{"kind":"Field","name":{"kind":"Name","value":"connection"}},{"kind":"Field","name":{"kind":"Name","value":"receiving_user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"unique_id"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<Query_GroupQuery, Query_GroupQueryVariables>;
 export const Query_Admin_UsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_ADMIN_USERS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"adminQueryUsersInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"adminQueryUsers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"unique_id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"dob"}},{"kind":"Field","name":{"kind":"Name","value":"question_responses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"personalityScore"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"extroversion"}},{"kind":"Field","name":{"kind":"Name","value":"agreeableness"}},{"kind":"Field","name":{"kind":"Name","value":"conscientiousness"}},{"kind":"Field","name":{"kind":"Name","value":"neuroticism"}},{"kind":"Field","name":{"kind":"Name","value":"openness"}},{"kind":"Field","name":{"kind":"Name","value":"narcissism"}},{"kind":"Field","name":{"kind":"Name","value":"personalityBucketType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sub_title"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"political_orientation"}},{"kind":"Field","name":{"kind":"Name","value":"level_of_education"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"race"}},{"kind":"Field","name":{"kind":"Name","value":"relationship_status"}},{"kind":"Field","name":{"kind":"Name","value":"health_rating"}}]}}]}}]}}]} as unknown as DocumentNode<Query_Admin_UsersQuery, Query_Admin_UsersQueryVariables>;
 export const Create_Group_MutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CREATE_GROUP_MUTATION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserGroupInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<Create_Group_MutationMutation, Create_Group_MutationMutationVariables>;
+export const Submit_Social_PreferencesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SUBMIT_SOCIAL_PREFERENCES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HandleSocialPreferenceSubmitInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"handleSocialPreferenceSubmit"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<Submit_Social_PreferencesMutation, Submit_Social_PreferencesMutationVariables>;
 export const Query_University_GroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QUERY_UNIVERSITY_GROUPS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"universities"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<Query_University_GroupsQuery, Query_University_GroupsQueryVariables>;
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
 export const VerifyUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VerifyUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verifyUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"access_token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"access_token"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<VerifyUserMutation, VerifyUserMutationVariables>;

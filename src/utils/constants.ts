@@ -21,6 +21,7 @@ export const appRouteLinks = {
   // authenticated routes
   intro: "/pro/intro",
   result: "/pro/intro/result",
+  introInterests: "/interests",
   resultSuccess: "/pro/intro/result/success",
   // dashboard routes
   home: "/pro/home",
@@ -36,8 +37,8 @@ export const appRouteLinks = {
   socialPreference: "/pro/profile/social-preference",
   socialScheduleSuccess: "/pro/profile/social-preference/success",
   interestsPair: "/pro/home/growth/interests/pair",
-  interestsExpaned: "/pro/home/growth/interests/expanded",
-  interestsExpanedMore: "/pro/home/growth/interests/expanded/more-interests",
+  interestsExpanded: "/pro/home/growth/interests/expanded",
+  interestsExpandedMore: "/pro/home/growth/interests/expanded/more-interests",
   logout: "/pro/logout",
   // outing feedback routes
   outingFeedback: "/group-feedback",

@@ -70,7 +70,7 @@ export default function InterestedExtendedPage() {
         <Button
           isDisabled={!proceed}
           onClick={() => {
-            router.push(appRouteLinks.interestsExpanedMore);
+            router.push(appRouteLinks.interestsExpandedMore);
           }}
         >
           Begin

@@ -10,12 +10,15 @@ import {
 
 type Props = {
   title: string;
-  options: [{ id: string; title: string; value: string }] | undefined;
+  options:
+    | [{ id: string; title: string; value: string }]
+    | { id: string; title: string; value: string }[]
+    | undefined;
   value: string;
   // eslint-disable-next-line no-unused-vars
   onChange: (e: any) => void;
   name: string;
-  config: ComponentConfigType;
+  config?: ComponentConfigType;
   error?: string;
 };
 
@@ -46,7 +49,11 @@ export default function SingleChoiceQuestion({
           ))}
         </VStack>
       </RadioGroup>
-      {error ? <FormHelperText>{error}</FormHelperText> : null}
+      {error ? (
+        <FormHelperText color="critical.100" fontSize="xs">
+          {error}
+        </FormHelperText>
+      ) : null}
     </FormControl>
   );
 }

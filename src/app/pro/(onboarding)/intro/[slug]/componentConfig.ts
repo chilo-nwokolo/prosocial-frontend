@@ -21,7 +21,7 @@ export const componentConfig = {
       midLabel: `Neither \nagree nor \n disagree`,
       lowerCaseTitle: true,
       returnTitle: true,
-      hasLabel: true,
+      hasLabel: false,
     },
   },
   "Your%20personality": {
@@ -66,7 +66,7 @@ export const componentConfig = {
       midLabel: `Neither \nagree nor \n disagree`,
       lowerCaseTitle: false,
       returnTitle: false,
-      hasLabel: false,
+      hasLabel: true,
     },
   },
 };

@@ -7,6 +7,17 @@ import { appRouteLinks } from "@/utils/constants";
 import LoadingModal from "@/components/General/LoadingModal";
 import useQuestionCategories from "../hooks/useQuestionCategories";
 
+const socialPrefererences = {
+  category: "Social preferences",
+  totalQuestions: 7,
+  destination: "social-preferences",
+};
+const interests = {
+  category: "Interests",
+  totalQuestions: null,
+  destination: appRouteLinks.introInterests,
+};
+
 export default function QuestionCategories() {
   const {
     isOpen,
@@ -22,40 +33,22 @@ export default function QuestionCategories() {
       <Flex flexDir="column">
         <Flex flexDir="column" gap="8" mt="10">
           {onboardQuestions?.map((question: any) => (
-            <Link
+            <QuestionCategoryLinkBox
+              question={question}
+              onboardAnswers={onboardAnswers}
               key={question.id}
-              href={`${appRouteLinks.intro}/${question.category}`}
-            >
-              <Flex
-                border="1px solid"
-                alignItems="center"
-                borderColor="gray.400"
-                py="16"
-                px="5"
-                borderRadius="lg"
-                cursor="pointer"
-              >
-                <Flex flexDir="column" gap="2">
-                  <Text fontWeight="semibold" fontSize="lg">
-                    {question.category}
-                  </Text>
-                  <Text>
-                    {
-                      Object.values(
-                        onboardAnswers?.[
-                          question.category.replaceAll(" ", "-")
-                        ] || "",
-                      )?.length
-                    }
-                    /{question.totalQuestions}
-                  </Text>
-                </Flex>
-                <Text ml="auto">
-                  <FaChevronRight />
-                </Text>
-              </Flex>
-            </Link>
+            />
           ))}
+          {/* SOCIAL PREFERENCES */}
+          <QuestionCategoryLinkBox
+            question={socialPrefererences}
+            onboardAnswers={onboardAnswers}
+          />
+          {/* INTERESTS */}
+          <QuestionCategoryLinkBox
+            question={interests}
+            onboardAnswers={onboardAnswers}
+          />
         </Flex>
         <Button
           mt="10"
@@ -73,3 +66,45 @@ export default function QuestionCategories() {
     </>
   );
 }
+
+const QuestionCategoryLinkBox = ({
+  question,
+  onboardAnswers,
+}: {
+  question: any;
+  onboardAnswers: any;
+}) => {
+  return (
+    <Link href={`${appRouteLinks.intro}/${question.destination}`}>
+      <Flex
+        border="1px solid"
+        alignItems="center"
+        borderColor="gray.400"
+        py="16"
+        px="5"
+        borderRadius="lg"
+        cursor="pointer"
+      >
+        <Flex flexDir="column" gap="2">
+          <Text fontWeight="semibold" fontSize="lg">
+            {question.category}
+          </Text>
+          {question.totalQuestions ? (
+            <Text>
+              {
+                Object.values(
+                  onboardAnswers?.[question.category.replaceAll(" ", "-")] ||
+                    "",
+                )?.length
+              }
+              /{question.totalQuestions}
+            </Text>
+          ) : null}
+        </Flex>
+        <Text ml="auto">
+          <FaChevronRight />
+        </Text>
+      </Flex>
+    </Link>
+  );
+};

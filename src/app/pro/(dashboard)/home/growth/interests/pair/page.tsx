@@ -60,7 +60,7 @@ export default function InterestsPairPage() {
     }
 
     if (queryResult.length === parseInt(questionId as string)) {
-      router.push(appRouteLinks.interestsExpaned);
+      router.push(appRouteLinks.interestsExpanded);
       return;
     }
     router.push(

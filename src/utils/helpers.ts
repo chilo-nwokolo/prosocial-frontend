@@ -72,3 +72,21 @@ export const featureFlag = (source: "production" | "development") => {
   }
   return result;
 };
+
+export function convertObjectToArray(
+  objArray: Record<number, string>,
+  keyName: string,
+  valueName: string,
+) {
+  let result = [];
+  for (let obj in objArray) {
+    const value = objArray[obj];
+
+    if (!value) continue;
+    result.push({
+      [keyName]: obj,
+      [valueName]: value,
+    });
+  }
+  return result;
+}

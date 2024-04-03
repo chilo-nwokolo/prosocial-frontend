@@ -87,7 +87,7 @@ export default function InterestedExtendedPage() {
       updateConfig([
         { key: configExtras.user_completed_interests_2, value: "true" },
       ]);
-      router.push(appRouteLinks.growth);
+      router.push(appRouteLinks.intro);
     },
   });
 
@@ -112,10 +112,7 @@ export default function InterestedExtendedPage() {
     <QueryContainer loading={isLoading || loadingInterests} error={error}>
       <Flex flexDir="column">
         <Flex justifyContent="flex-end">
-          <BackButton
-            icon={<GrClose />}
-            destination={appRouteLinks.interestsExpanded}
-          />
+          <BackButton icon={<GrClose />} destination={appRouteLinks.intro} />
         </Flex>
         <Text fontWeight="lg" fontSize="2xl">
           What are your interests

@@ -109,7 +109,7 @@ export default function IntroQuestionsPage({
                 onChange={formik.handleChange}
                 config={
                   componentConfig[params.slug as keyof typeof componentConfig]
-                    ?.singleChoiceQuestion
+                    ?.ratingScaleQuestion
                 }
               />
             );
