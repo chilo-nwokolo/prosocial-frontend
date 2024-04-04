@@ -45,12 +45,12 @@ export const friendTypeOptions = [
     title: "Intelligent Friend",
     description: "Someone with whom you can have interesting conversations.",
   },
-  {
-    id: 7,
-    title: "Parent Friend",
-    description:
-      "A parent with children of a similar age who is interested in spending time together (with children or without) to commiserate about the joys and difficulties of parenthood.",
-  },
+  // {
+  //   id: 7,
+  //   title: "Parent Friend",
+  //   description:
+  //     "A parent with children of a similar age who is interested in spending time together (with children or without) to commiserate about the joys and difficulties of parenthood.",
+  // },
 ];
 
 export default function SocialPreferencesAccordion() {

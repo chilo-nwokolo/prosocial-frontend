@@ -17,7 +17,13 @@ export default function InputQuestions({
   return (
     <FormControl>
       <FormLabel>{title}</FormLabel>
-      <Input type="text" name={name} value={value} onChange={onChange} />
+      <Input
+        type="text"
+        name={name}
+        value={value}
+        onChange={onChange}
+        borderColor="gray.500"
+      />
     </FormControl>
   );
 }

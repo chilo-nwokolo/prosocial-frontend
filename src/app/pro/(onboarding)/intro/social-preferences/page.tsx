@@ -172,9 +172,7 @@ export default function SocialPreferences() {
       if (metaName) {
         const meta = referralNames.map((name, i) => {
           return {
-            // eslint-disable-next-line prettier/prettier
             key: metaName === "referrer" ? "referrer" : `${metaName} ${i + 1}`,
-            // eslint-disable-next-line prettier/prettier
             value: name,
           };
         });
@@ -285,6 +283,7 @@ export default function SocialPreferences() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 name="11"
+                borderColor="gray.500"
               />
             </FormControl>
           </Flex>
@@ -330,6 +329,7 @@ export default function SocialPreferences() {
                 value={formik.values[15]}
                 onChange={formik.handleChange}
                 name="15"
+                borderColor="gray.500"
               />
             </FormControl>
           </Flex>
@@ -433,11 +433,17 @@ export default function SocialPreferences() {
                 value={referrals}
                 onChange={handleChange}
               />
+              <Text mt="4">
+                To make sure you receive your free month of membership, visit
+                Fitness 19 in Arlington Heights to sign-up.
+              </Text>
             </Flex>
           )}
 
           <Box cursor="pointer" onClick={onCopy}>
-            https://www.prosocialnetworks.com/fitness19
+            <Button variant="link" color="blue.600" fontWeight="medium">
+              https://www.prosocialnetworks.com/fitness19
+            </Button>
           </Box>
           <Button type="submit" isLoading={loading} loadingText="Saving">
             Save
@@ -472,6 +478,7 @@ function FriendsName({
           name={`ref-firstName-${name}`}
           value={value[`ref-firstName-${name}`]}
           onChange={onChange}
+          borderColor="gray.500"
         />
       </FormControl>
       <FormControl>
@@ -481,6 +488,7 @@ function FriendsName({
           name={`ref-lastName-${name}`}
           value={value[`ref-lastName-${name}`]}
           onChange={onChange}
+          borderColor="gray.500"
         />
       </FormControl>
     </Flex>

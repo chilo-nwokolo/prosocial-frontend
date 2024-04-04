@@ -29,7 +29,13 @@ export default function FriendTypeSelect({
   return (
     <FormControl>
       <FormLabel>{title}</FormLabel>
-      <Select value={value} onChange={onChange} onBlur={onBlur} name={name}>
+      <Select
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        name={name}
+        borderColor="gray.500"
+      >
         <option value="">Select One</option>
         {friendTypeOptions.map((option) => (
           <option key={option.id} value={option.title}>

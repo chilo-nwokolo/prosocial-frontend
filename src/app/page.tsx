@@ -14,7 +14,7 @@ export default function Home() {
       //   router.push(appRouteLinks.login);
       //   return;
       // }
-      router.push(appRouteLinks.login);
+      router.push(appRouteLinks.welcome);
     }, 1000);
 
     return () => {
