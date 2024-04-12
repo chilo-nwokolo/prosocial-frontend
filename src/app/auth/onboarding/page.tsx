@@ -44,7 +44,7 @@ export default function OnboardingPage() {
       updateOnboardAnswers(null);
       const result = transformQuestions(data);
       updateOnboardQuestions(result);
-      localStorage.clear();
+      // localStorage.clear();
       setTimeout(() => {
         router.push(appRouteLinks.intro);
       }, 1000);

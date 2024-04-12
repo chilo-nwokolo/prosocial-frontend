@@ -55,7 +55,8 @@ const registrationOptions2 = [
     tooltip: "",
     name: "email",
     inputType: "email",
-    infoText: "We'll never share your email.",
+    infoText:
+      "We will never share your email, except with other ProSocial users when you're matched for an outing.",
   },
   {
     labelTitle: "Password",

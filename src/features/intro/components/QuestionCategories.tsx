@@ -10,12 +10,12 @@ import useQuestionCategories from "../hooks/useQuestionCategories";
 const socialPrefererences = {
   category: "Social preferences",
   totalQuestions: 7,
-  destination: "social-preferences",
+  destination: "/social-preferences",
 };
 const interests = {
   category: "Interests",
   totalQuestions: null,
-  destination: appRouteLinks.introInterests,
+  destination: "/interests",
 };
 
 export default function QuestionCategories() {

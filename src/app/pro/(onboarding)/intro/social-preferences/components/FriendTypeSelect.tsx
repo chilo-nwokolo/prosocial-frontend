@@ -16,6 +16,7 @@ type Props = {
   onChange: (e: ChangeEvent<any>) => void;
   // eslint-disable-next-line no-unused-vars
   onBlur: (e: ChangeEvent<any>) => void;
+  hideFriend?: string[];
 };
 
 export default function FriendTypeSelect({
@@ -25,6 +26,7 @@ export default function FriendTypeSelect({
   onBlur,
   name,
   error,
+  hideFriend = [],
 }: Props) {
   return (
     <FormControl>
@@ -37,11 +39,15 @@ export default function FriendTypeSelect({
         borderColor="gray.500"
       >
         <option value="">Select One</option>
-        {friendTypeOptions.map((option) => (
-          <option key={option.id} value={option.title}>
-            {option.title}
-          </option>
-        ))}
+        {friendTypeOptions.map((option) => {
+          if (!hideFriend.includes(option.title)) {
+            return (
+              <option key={option.id} value={option.title}>
+                {option.title}
+              </option>
+            );
+          }
+        })}
       </Select>
       {error ? (
         <FormHelperText fontSize="xs" color="critical.100">

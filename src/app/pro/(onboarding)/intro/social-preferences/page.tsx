@@ -13,7 +13,7 @@ import {
   useClipboard,
   useToast,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa";
 import { ChangeEvent, useEffect, useState } from "react";
 import SocialPreferencesAccordion from "./components/SocialPreferencesAccordion";
@@ -22,45 +22,35 @@ import { useFormik } from "formik";
 import SingleChoiceQuestion from "@/features/intro/components/SingleChoiceQuestion";
 import * as yup from "yup";
 import FriendTypeSelect from "./components/FriendTypeSelect";
-import { useMutation } from "@apollo/client";
-import { SUBMIT_SOCIAL_PREFERENCES } from "./graphql/gql";
-import { convertObjectToArray } from "@/utils/helpers";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  QUERY_USER_SOCIAL_PREFERENCE,
+  SUBMIT_SOCIAL_PREFERENCES,
+} from "./graphql/gql";
+import {
+  convertSocialPreferenceObjectToArray,
+  convertSocialPrefResponseToInitialValues,
+} from "./helpers";
 import { UserSocialPreferenceSubmitInput } from "@/__generated__/graphql";
-import { useAppQuestions } from "@/store";
-
-const socializationOptions = [
-  { id: "1", title: "Almost never", value: "Almost never" },
-  { id: "2", title: "1/x a week", value: "1/x a week" },
-  { id: "3", title: "2/x a week", value: "2/x a week" },
-  { id: "4", title: "Most days", value: "Most days" },
-  { id: "5", title: "Every day", value: "Every day" },
-];
-
-const outingDynamics = [
-  { id: "1", title: "A mix of men and women", value: "A mix of men and women" },
-  {
-    id: "2",
-    title: "A group of only my gender (All male, All female)",
-    value: "A group of only my gender (All male, All female)",
-  },
-  { id: "3", title: "No preference", value: "No preference" },
-];
-
-const fitness19Member = [
-  { id: "1", title: "Fitness 19 Member", value: "Fitness 19 Member" },
-  { id: "2", title: "Friend", value: "Friend" },
-];
-
-const yesNo = [
-  { id: "1", title: "Yes", value: "Yes" },
-  { id: "2", title: "No", value: "No" },
-];
+import { useAppQuestions, useUserStore } from "@/store";
+import {
+  fitness19Member,
+  outingDynamics,
+  socializationOptions,
+  toSocializeOptions,
+  yesNo,
+} from "./helpers";
+import QueryContainer from "@/components/General/QueryContainer";
+import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
 
 export default function SocialPreferences() {
   const router = useRouter();
   const [numOfRefs, setNumOfRefs] = useState(1);
   const [referrals, setReferrals] = useState<Record<string, string>>({});
+  const searchParams = useSearchParams();
+  const [userData] = useUserStore((state) => [state.user]);
 
+  // eslint-disable-next-line no-unused-vars
   const [socialPreferenceAnswers, updateSocialPreferenceAnswers] =
     useAppQuestions((state) => [
       state.socialPreferenceAnswers,
@@ -71,7 +61,29 @@ export default function SocialPreferences() {
     "https://www.prosocialnetworks.com/fitness19",
   );
 
-  console.log(socialPreferenceAnswers);
+  const { loading: loadingUser, error } = useQuery(
+    QUERY_USER_SOCIAL_PREFERENCE,
+    {
+      variables: {
+        id: userData?.login.user.id,
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+      onCompleted: (response) => {
+        const { result, referrals } = convertSocialPrefResponseToInitialValues(response);
+        updateSocialPreferenceAnswers(result);
+
+        const refLength = Object.values(referrals).length;
+
+        if (refLength) {
+          setNumOfRefs(refLength / 2);
+          setReferrals(referrals);
+        }
+      },
+    },
+  );
+
+  // console.log(socialPreferenceAnswers, userData);
 
   const validationSchema = yup.object({
     4: yup.string().required(formFeedback.required),
@@ -103,32 +115,34 @@ export default function SocialPreferences() {
 
   const formik = useFormik({
     initialValues: {
-      4: "",
-      5: "",
-      6: "",
-      7: "",
-      8: "",
-      9: "",
-      10: "",
-      11: "",
-      12: "",
-      13: "",
-      14: "",
-      15: "",
-      18: "", // placeholder
+      4: socialPreferenceAnswers[4] || "",
+      5: socialPreferenceAnswers[5] || "",
+      6: socialPreferenceAnswers[6] || "",
+      7: socialPreferenceAnswers[7] || "",
+      8: socialPreferenceAnswers[8] || "",
+      9: socialPreferenceAnswers[9] || "",
+      10: socialPreferenceAnswers[10] || "",
+      11: socialPreferenceAnswers[11] || "",
+      12: socialPreferenceAnswers[12] || "",
+      13: socialPreferenceAnswers[13] || "",
+      14: socialPreferenceAnswers[14] || "",
+      15: socialPreferenceAnswers[15] || "",
+      18: socialPreferenceAnswers[18] || "",
     },
+    validateOnBlur: false,
+    validateOnChange: false,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: (data) => {
-      const result = convertObjectToArray(
-        data,
-        "social_preference_option_id",
-        "answer",
-      );
+      updateSocialPreferenceAnswers(data);
+
+      const result = convertSocialPreferenceObjectToArray(data);
 
       let metaName = "";
       const referralNames = [];
 
-      if (data[7] === "Fitness 19 Member" && data[9] === "Yes") {
+      if (data[7] === "29" && data[18] === "31") {
+        // Fitness 19 member
         const refereesLength = Object.keys(referrals).length;
 
         if (!refereesLength || refereesLength % 2 > 0) {
@@ -143,13 +157,14 @@ export default function SocialPreferences() {
 
         for (let i = 1; i <= refereesLength / 2; i++) {
           const fullName = `${referrals[`ref-firstName-friend-${i}`]} ${
-            referrals[`ref-firstName-friend-${i}`]
+            referrals[`ref-lastName-friend-${i}`]
           }`;
           referralNames.push(fullName);
         }
       }
 
-      if (data[7] === "Friend") {
+      if (data[7] === "30") {
+        // Friend
         const refereesLength = Object.keys(referrals).length;
         if (!refereesLength || refereesLength % 2 > 0) {
           toast({
@@ -161,9 +176,9 @@ export default function SocialPreferences() {
         }
         metaName = "referrer";
         const name =
-          referrals["ref-firstName-friend"] +
+          referrals["ref-firstName-friend-1"] +
           " " +
-          referrals["ref-lastName-friend"];
+          referrals["ref-lastName-friend-1"];
         referralNames.push(name);
       }
 
@@ -186,8 +201,6 @@ export default function SocialPreferences() {
           },
         ];
       }
-
-      updateSocialPreferenceAnswers(formData);
 
       mutate({
         variables: {
@@ -223,234 +236,289 @@ export default function SocialPreferences() {
   }, [hasCopied, toast]);
 
   return (
-    <Flex flexDir="column" gap="8" mb="5">
-      <Flex mt="5">
-        <Button
-          color="black"
-          variant="secondary"
-          onClick={() => router.push(appRouteLinks.intro)}
-        >
-          <FaChevronLeft />
-        </Button>
-      </Flex>
-      <form onSubmit={formik.handleSubmit}>
-        <Flex flexDir="column" gap="8">
-          <Text as="h1" fontSize="3xl" fontWeight="semibold">
-            Social Preferences
-          </Text>
-          <Text>All fields required</Text>
-          <SocialPreferencesAccordion />
-
-          {/* Q1 */}
-          <Flex flexDir="column" gap="3">
-            <Text>1. What types of friends are you looking for?</Text>
-            <Text fontWeight="normal" fontSize="small">
-              Select your top 3
-            </Text>
-            <FriendTypeSelect
-              value={formik.values[8]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              name="8"
-              title="First choice"
-              error={formik.errors[8]}
-            />
-            <FriendTypeSelect
-              value={formik.values[9]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              name="9"
-              title="Second choice"
-              error={formik.errors[9]}
-            />
-            <FriendTypeSelect
-              value={formik.values[10]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              name="10"
-              title="Third choice"
-              error={formik.errors[10]}
-            />
-
-            {/* Q1b */}
-            <FormControl mt="3">
-              <FormLabel>
-                Optional: Do you want to provide any other detail about the type
-                of friend(s) you&apos;re looking for?
-              </FormLabel>
-              <Textarea
-                value={formik.values[11]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="11"
-                borderColor="gray.500"
-              />
-            </FormControl>
-          </Flex>
-
-          {/* Q2 */}
-          <Flex flexDir="column" gap="3">
-            <Text>2. What type of friend do you think you are?</Text>
-            <Text fontWeight="normal" fontSize="small">
-              Select your top 3
-            </Text>
-            <FriendTypeSelect
-              value={formik.values[12]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              name="12"
-              title="First choice"
-              error={formik.errors[12]}
-            />
-            <FriendTypeSelect
-              value={formik.values[13]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              name="13"
-              title="Second choice"
-              error={formik.errors[13]}
-            />
-            <FriendTypeSelect
-              value={formik.values[14]}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              name="14"
-              title="Third choice"
-              error={formik.errors[14]}
-            />
-
-            {/* Q2b */}
-            <FormControl mt="3">
-              <FormLabel>
-                Optional: Do you want to provide any other detail about the type
-                of friend(s) you think you are?
-              </FormLabel>
-              <Textarea
-                value={formik.values[15]}
-                onChange={formik.handleChange}
-                name="15"
-                borderColor="gray.500"
-              />
-            </FormControl>
-          </Flex>
-
-          {/* Q3 */}
-          <RatingScaleQuestion
-            title="3. How often do you go out to socialize?"
-            name="4"
-            onChange={formik.handleChange}
-            options={socializationOptions}
-            value={formik.values[4]}
-            config={{ returnTitle: true }}
-          />
-
-          {/* Q4 */}
-          <RatingScaleQuestion
-            title="4. How often would you like to go out to 
-            socialize?"
-            name="5"
-            onChange={formik.handleChange}
-            options={socializationOptions}
-            value={formik.values[5]}
-            config={{ returnTitle: true }}
-          />
-
-          {/* Q5 */}
-          <SingleChoiceQuestion
-            title="5. When you do your outing with Fitness19 members, would you like:"
-            value={formik.values[6]}
-            name="6"
-            onChange={formik.handleChange}
-            options={outingDynamics}
-            error={formik.errors[6]}
-          />
-
-          {/* Q6 */}
-          <RatingScaleQuestion
-            title="6. Are you already a member of Fitness19 or a friend of a member?"
-            value={formik.values[7]}
-            name="7"
-            onChange={formik.handleChange}
-            options={fitness19Member}
-            config={{ returnTitle: true }}
-            error={formik.errors[7]}
-          />
-
-          {formik.values[7] === "Fitness 19 Member" ? (
-            <Flex flexDir="column" gap="5">
-              {/* Q7 */}
-              <RatingScaleQuestion
-                title="7. Will you be referring a friend to 
-                  Fitness 19 who is currently not a 
-                  member to be part of the ProSocial 
-                  partnership?"
-                value={formik.values[9]}
-                name="9"
-                onChange={formik.handleChange}
-                options={yesNo}
-                config={{ returnTitle: true }}
-                error={formik.errors[9]}
-              />
-
-              {formik.values[9] === "Yes" ? (
-                <>
-                  {/* Q8 */}
-                  <FormControl mt="4">
-                    <FormLabel>8. How many friends?</FormLabel>
-                    <Select onChange={(e) => setNumOfRefs(+e.target.value)}>
-                      {Array(5)
-                        .fill(1)
-                        .map((_val, i) => (
-                          <option key={i} value={i + 1}>
-                            {i + 1}
-                          </option>
-                        ))}
-                    </Select>
-                  </FormControl>
-                  {Array(numOfRefs)
-                    .fill(1)
-                    .map((_val, i) => (
-                      <FriendsName
-                        title={`Friend ${i + 1}`}
-                        name={`friend-${i + 1}`}
-                        key={i}
-                        value={referrals}
-                        onChange={handleChange}
-                      />
-                    ))}
-                  <Text mt="4">
-                    To get your friend(s) set up to receive a free month of
-                    membership at Fitness19, please share this link with them:
-                  </Text>
-                </>
-              ) : null}
-            </Flex>
-          ) : (
-            <Flex flexDir="column">
-              <FriendsName
-                title={"Who referred you?"}
-                name="friend-1"
-                value={referrals}
-                onChange={handleChange}
-              />
-              <Text mt="4">
-                To make sure you receive your free month of membership, visit
-                Fitness 19 in Arlington Heights to sign-up.
-              </Text>
-            </Flex>
-          )}
-
-          <Box cursor="pointer" onClick={onCopy}>
-            <Button variant="link" color="blue.600" fontWeight="medium">
-              https://www.prosocialnetworks.com/fitness19
-            </Button>
-          </Box>
-          <Button type="submit" isLoading={loading} loadingText="Saving">
-            Save
+    <QueryContainer loading={loadingUser} error={error}>
+      <Flex flexDir="column" gap="8" mb="5">
+        <Flex mt="5">
+          <Button
+            color="black"
+            variant="secondary"
+            onClick={() =>
+              router.push(
+                searchParams.has("social-preferences-form")
+                  ? appRouteLinks.introSocialPreferences
+                  : appRouteLinks.intro,
+              )
+            }
+          >
+            <FaChevronLeft />
           </Button>
         </Flex>
-      </form>
-    </Flex>
+        {searchParams.has("social-preferences-form") ? (
+          <form onSubmit={formik.handleSubmit}>
+            <Flex flexDir="column" gap="8">
+              <Text as="h1" fontSize="3xl" fontWeight="semibold">
+                Social Preferences
+              </Text>
+              <Text>All fields required</Text>
+
+              {/* Q1 */}
+              <Flex flexDir="column" gap="3">
+                <Text>1. What types of friends are you looking for?</Text>
+                <Text fontWeight="normal" fontSize="small">
+                  Select your top 3
+                </Text>
+                <FriendTypeSelect
+                  value={formik.values[8]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="8"
+                  title="First choice"
+                  error={formik.errors[8]}
+                  hideFriend={["Parent Friend"]}
+                />
+                <FriendTypeSelect
+                  value={formik.values[9]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="9"
+                  title="Second choice"
+                  error={formik.errors[9]}
+                  hideFriend={["Parent Friend"]}
+                />
+                <FriendTypeSelect
+                  value={formik.values[10]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="10"
+                  title="Third choice"
+                  error={formik.errors[10]}
+                  hideFriend={["Parent Friend"]}
+                />
+
+                {/* Q1b */}
+                <FormControl mt="3">
+                  <FormLabel>
+                    Optional: Do you want to provide any other detail about the
+                    type of friend(s) you&apos;re looking for?
+                  </FormLabel>
+                  <Textarea
+                    value={formik.values[11]}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="11"
+                    borderColor="gray.500"
+                  />
+                </FormControl>
+              </Flex>
+
+              {/* Q2 */}
+              <Flex flexDir="column" gap="3">
+                <Text>2. What type of friend do you think you are?</Text>
+                <Text fontWeight="normal" fontSize="small">
+                  Select your top 3
+                </Text>
+                <FriendTypeSelect
+                  value={formik.values[12]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="12"
+                  title="First choice"
+                  error={formik.errors[12]}
+                />
+                <FriendTypeSelect
+                  value={formik.values[13]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="13"
+                  title="Second choice"
+                  error={formik.errors[13]}
+                />
+                <FriendTypeSelect
+                  value={formik.values[14]}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  name="14"
+                  title="Third choice"
+                  error={formik.errors[14]}
+                />
+
+                {/* Q2b */}
+                <FormControl mt="3">
+                  <FormLabel>
+                    Optional: Do you want to provide any other detail about the
+                    type of friend(s) you think you are?
+                  </FormLabel>
+                  <Textarea
+                    value={formik.values[15]}
+                    onChange={formik.handleChange}
+                    name="15"
+                    borderColor="gray.500"
+                  />
+                </FormControl>
+              </Flex>
+
+              {/* Q3 */}
+              <RatingScaleQuestion
+                title="3. How often do you go out to socialize?"
+                name="4"
+                onChange={formik.handleChange}
+                options={socializationOptions}
+                value={formik.values[4]}
+                config={{ returnTitle: true, useIdAsValue: true }}
+                error={formik.errors[4]}
+              />
+
+              {/* Q4 */}
+              <RatingScaleQuestion
+                title="4. How often would you like to go out to 
+              socialize?"
+                name="5"
+                onChange={formik.handleChange}
+                options={toSocializeOptions}
+                value={formik.values[5]}
+                config={{ returnTitle: true, useIdAsValue: true }}
+                error={formik.errors[5]}
+              />
+
+              {/* Q5 */}
+              <SingleChoiceQuestion
+                title="5. When you do your outing with Fitness19 members, would you like:"
+                infoText="We will do our best to place you in a group of your preference."
+                value={formik.values[6]}
+                name="6"
+                onChange={formik.handleChange}
+                options={outingDynamics}
+                config={{ useIdAsValue: true }}
+                error={formik.errors[6]}
+              />
+
+              <Flex flexDir="column">
+                <Text as="h2" fontWeight="bold">
+                  Add a profile photo
+                </Text>
+                <Text>
+                  Please add a clear photo of your face without sunglasses. Your
+                  profile photo is not public but will be seen by potential
+                  friends once an outing has been completed.
+                </Text>
+                <ProfilePictureUploader />
+              </Flex>
+
+              {/* Q6 */}
+              <RatingScaleQuestion
+                title="6. Are you already a member of Fitness19 or a friend of a member?"
+                value={formik.values[7]}
+                name="7"
+                onChange={formik.handleChange}
+                options={fitness19Member}
+                config={{ returnTitle: true, useIdAsValue: true }}
+                error={formik.errors[7]}
+              />
+
+              {formik.values[7] === "29" ? (
+                <Flex flexDir="column" gap="5">
+                  {/* Q7 */}
+                  <RatingScaleQuestion
+                    title="7. Will you be referring a friend to 
+                    Fitness 19 who is currently not a 
+                    member to be part of the ProSocial 
+                    partnership?"
+                    value={formik.values[18]}
+                    name="18"
+                    onChange={formik.handleChange}
+                    options={yesNo}
+                    config={{ returnTitle: true, useIdAsValue: true }}
+                    error={formik.errors[18]}
+                  />
+
+                  {formik.values[18] === "31" ? (
+                    <>
+                      {/* Q8 */}
+                      <FormControl mt="4">
+                        <FormLabel>8. How many friends?</FormLabel>
+                        <Select onChange={(e) => setNumOfRefs(+e.target.value)}>
+                          {Array(5)
+                            .fill(1)
+                            .map((_val, i) => (
+                              <option key={i} value={i + 1}>
+                                {i + 1}
+                              </option>
+                            ))}
+                        </Select>
+                      </FormControl>
+                      {Array(numOfRefs)
+                        .fill(1)
+                        .map((_val, i) => (
+                          <FriendsName
+                            title={`Friend ${i + 1}`}
+                            name={`friend-${i + 1}`}
+                            key={i}
+                            value={referrals}
+                            onChange={handleChange}
+                          />
+                        ))}
+                      <Text mt="4">
+                        To get your friend(s) set up to receive a free month of
+                        membership at Fitness19, please share this link with
+                        them:
+                      </Text>
+
+                      <Box cursor="pointer" onClick={onCopy}>
+                        <Button
+                          variant="link"
+                          color="blue.600"
+                          fontWeight="medium"
+                        >
+                          https://www.prosocialnetworks.com/fitness19
+                        </Button>
+                      </Box>
+                    </>
+                  ) : null}
+                </Flex>
+              ) : formik.values[7] === "30" ? (
+                <Flex flexDir="column">
+                  <FriendsName
+                    title={"Who referred you?"}
+                    name="friend-1"
+                    value={referrals}
+                    onChange={handleChange}
+                  />
+                  <Text mt="4">
+                    To make sure you receive your free month of membership,
+                    visit Fitness 19 in Arlington Heights to sign-up.
+                  </Text>
+                </Flex>
+              ) : null}
+              <Button type="submit" isLoading={loading} loadingText="Saving">
+                Save
+              </Button>
+            </Flex>
+          </form>
+        ) : (
+          <>
+            <Text>
+              Take a moment to read these friend types; in the next screen we’ll
+              ask you to choose the type of friend you’re looking for and the
+              type of friend that you are.
+            </Text>
+            <SocialPreferencesAccordion />
+            <Box mt="5" w="full">
+              <Button
+                onClick={() =>
+                  router.push(
+                    appRouteLinks.introSocialPreferences +
+                      "?social-preferences-form=true",
+                  )
+                }
+                w="full"
+              >
+                Next
+              </Button>
+            </Box>
+          </>
+        )}
+      </Flex>
+    </QueryContainer>
   );
 }
 

@@ -66,6 +66,7 @@ export const relationshipStatusOptions = [
     title: "In a committed relationship",
     value: "In a committed relationship",
   },
+  { id: 4, title: "Married", value: "Married" },
 ];
 
 export const politicalOrientationOptions = [

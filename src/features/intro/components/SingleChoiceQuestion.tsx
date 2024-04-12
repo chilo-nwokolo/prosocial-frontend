@@ -1,10 +1,12 @@
 import { ComponentConfigType } from "@/app/pro/(onboarding)/intro/[slug]/componentConfig";
 import {
+  Flex,
   FormControl,
   FormHelperText,
   FormLabel,
   Radio,
   RadioGroup,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 
@@ -18,6 +20,7 @@ type Props = {
   // eslint-disable-next-line no-unused-vars
   onChange: (e: any) => void;
   name: string;
+  infoText?: string;
   config?: ComponentConfigType;
   error?: string;
 };
@@ -30,10 +33,20 @@ export default function SingleChoiceQuestion({
   onChange,
   value,
   config,
+  infoText,
 }: Props) {
   return (
     <FormControl as="fieldset">
-      <FormLabel as="legend">{title}</FormLabel>
+      <FormLabel as="legend">
+        <Flex flexDir="column">
+          <Text>{title}</Text>
+          {infoText ? (
+            <Text fontSize="sm" color="gray.600">
+              &#9432; {infoText}
+            </Text>
+          ) : null}
+        </Flex>
+      </FormLabel>
       <RadioGroup defaultValue={value} mt="3">
         <VStack alignItems="start" spacing="15px">
           {options?.map((option) => (

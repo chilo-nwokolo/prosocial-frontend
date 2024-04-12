@@ -21,7 +21,8 @@ export const appRouteLinks = {
   // authenticated routes
   intro: "/pro/intro",
   result: "/pro/intro/result",
-  introInterests: "/interests",
+  introInterests: "/pro/intro/interests",
+  introSocialPreferences: "/pro/intro/social-preferences",
   resultSuccess: "/pro/intro/result/success",
   // dashboard routes
   home: "/pro/home",
