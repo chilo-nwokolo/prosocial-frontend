@@ -26,6 +26,7 @@ export default function QuestionCategories() {
     onClose,
     onboardAnswers,
     getQuestionsAnswersCount,
+    calculateSocialPreferenceAnswers,
   } = useQuestionCategories();
 
   return (
@@ -40,14 +41,14 @@ export default function QuestionCategories() {
             />
           ))}
           {/* SOCIAL PREFERENCES */}
-          <QuestionCategoryLinkBox
+          <OtherQuestionCategoryLinkBox
             question={socialPrefererences}
-            onboardAnswers={onboardAnswers}
+            calculateRemainder={calculateSocialPreferenceAnswers()}
           />
           {/* INTERESTS */}
-          <QuestionCategoryLinkBox
+          <OtherQuestionCategoryLinkBox
             question={interests}
-            onboardAnswers={onboardAnswers}
+            calculateRemainder={onboardAnswers}
           />
         </Flex>
         <Button
@@ -100,6 +101,38 @@ const QuestionCategoryLinkBox = ({
               /{question.totalQuestions}
             </Text>
           ) : null}
+        </Flex>
+        <Text ml="auto">
+          <FaChevronRight />
+        </Text>
+      </Flex>
+    </Link>
+  );
+};
+
+const OtherQuestionCategoryLinkBox = ({
+  question,
+  calculateRemainder,
+}: {
+  question: any;
+  calculateRemainder: any;
+}) => {
+  return (
+    <Link href={`${appRouteLinks.intro}/${question.destination}`}>
+      <Flex
+        border="1px solid"
+        alignItems="center"
+        borderColor="gray.400"
+        py="16"
+        px="5"
+        borderRadius="lg"
+        cursor="pointer"
+      >
+        <Flex flexDir="column" gap="2">
+          <Text fontWeight="semibold" fontSize="lg">
+            {question.category}
+          </Text>
+          {calculateRemainder}
         </Flex>
         <Text ml="auto">
           <FaChevronRight />

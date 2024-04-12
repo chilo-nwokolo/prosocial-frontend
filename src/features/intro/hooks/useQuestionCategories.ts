@@ -7,10 +7,12 @@ import { appRouteLinks } from "@/utils/constants";
 import { apolloErrorHandler, combineIntoFormattedArray } from "@/utils/helpers";
 
 export default function useQuestionCategories() {
-  const [onboardQuestions, onboardAnswers] = useAppQuestions((state) => [
-    state.onboardQuestions,
-    state.onboardAnswers,
-  ]);
+  const [onboardQuestions, onboardAnswers, socialPreferenceAnswers] =
+    useAppQuestions((state) => [
+      state.onboardQuestions,
+      state.onboardAnswers,
+      state.socialPreferenceAnswers,
+    ]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const toast = useToast();
@@ -81,6 +83,42 @@ export default function useQuestionCategories() {
     });
   };
 
+  const calculateSocialPreferenceAnswers = () => {
+    const singleKeys = ["4", "5", "6", "7", "18"];
+    let counted1 = false;
+    let counted2 = false;
+
+    let count = 0;
+
+    for (let key in socialPreferenceAnswers) {
+      if (singleKeys.includes(key)) {
+        if (socialPreferenceAnswers[key].length) {
+          count += 1;
+        }
+      }
+      if (
+        !counted1 &&
+        socialPreferenceAnswers["8"].length &&
+        socialPreferenceAnswers["9"].length &&
+        socialPreferenceAnswers["10"].length
+      ) {
+        counted1 = true;
+        count += 1;
+      }
+      if (
+        !counted2 &&
+        socialPreferenceAnswers["12"].length &&
+        socialPreferenceAnswers["13"].length &&
+        socialPreferenceAnswers["14"].length
+      ) {
+        counted2 = true;
+        count += 1;
+      }
+    }
+
+    return `${count} / 7`;
+  };
+
   return {
     isOpen,
     onboardQuestions,
@@ -88,5 +126,6 @@ export default function useQuestionCategories() {
     onClose,
     onboardAnswers,
     getQuestionsAnswersCount,
+    calculateSocialPreferenceAnswers,
   } as const;
 }

@@ -132,7 +132,7 @@ export function convertSocialPrefResponseToInitialValues(
 ) {
   let result: Record<string | number, string> = {};
 
-  let referrals = {};
+  let referrals: Record<string, string> = {};
 
   console.log(response);
 
@@ -160,8 +160,12 @@ export function convertSocialPrefResponseToInitialValues(
             ) {
               answer.meta?.forEach((option) => {
                 const [firstname, lastname] = option.value!.split(" ");
-                referrals[`ref-firstName-friend-${option.key?.charAt(option.key.length - 1)}`] = firstname;
-                referrals[`ref-lastName-friend-${option.key?.charAt(option.key.length - 1)}`] = lastname;
+                referrals[
+                  `ref-firstName-friend-${option.key?.charAt(option.key.length - 1)}`
+                ] = firstname;
+                referrals[
+                  `ref-lastName-friend-${option.key?.charAt(option.key.length - 1)}`
+                ] = lastname;
               });
             }
           } else {

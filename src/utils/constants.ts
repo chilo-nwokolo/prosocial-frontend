@@ -100,3 +100,10 @@ export const youtubeLinks = {
   welcomePageDesktop: "nt4VRSr0JNs?rel=0",
   welcomePageMobile: "DmwvnBVP0zw?rel=0",
 };
+
+export const storeKeys = {
+  QUESTIONS_STORE: "prosocial_questions",
+  GLOBAL_STORE: "prosocial_global",
+  CONFIG_STORE: "prosocial_config",
+  USER_STORE: "prosocial_user",
+};

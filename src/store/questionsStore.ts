@@ -1,4 +1,5 @@
 import { SubmitUserInterestInput } from "@/__generated__/graphql";
+import { storeKeys } from "@/utils/constants";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -32,6 +33,11 @@ interface QuestionsState {
     // eslint-disable-next-line no-unused-vars
     socialPreferenceAnswers: { [id: number]: string },
   ) => void;
+  socialPreferenceReferrees: Record<string, string>;
+  updateSocialPreferenceReferrees: (
+    // eslint-disable-next-line no-unused-vars
+    socialPreferenceReferrees: Record<string, string>,
+  ) => void;
 }
 
 export const useAppQuestions = create<QuestionsState>()(
@@ -55,8 +61,11 @@ export const useAppQuestions = create<QuestionsState>()(
         socialPreferenceAnswers: [],
         updateSocialPreferenceAnswers: (socialPreferenceAnswers) =>
           set({ socialPreferenceAnswers }),
+        socialPreferenceReferrees: {},
+        updateSocialPreferenceReferrees: (socialPreferenceReferrees) =>
+          set({ socialPreferenceReferrees }),
       }),
-      { name: "prosocial_questions" },
+      { name: storeKeys.QUESTIONS_STORE },
     ),
   ),
 );

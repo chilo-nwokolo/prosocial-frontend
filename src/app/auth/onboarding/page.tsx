@@ -9,11 +9,13 @@ import {
 } from "@/utils/constants";
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_QUESTIONS } from "@/features/intro/gql";
-import { useAppQuestions } from "@/store";
+import { useAppQuestions, useUserStore } from "@/store";
 import { transformQuestions } from "@/features/intro/helpers";
 import { apolloErrorHandler } from "@/utils/helpers";
 import { deleteCookie, getCookie } from "@/libs/cookies";
 import useAppConfig from "@/hooks/useAppConfig";
+import { QUERY_USER_SOCIAL_PREFERENCE } from "@/app/pro/(onboarding)/intro/social-preferences/graphql/gql";
+import { convertSocialPrefResponseToInitialValues } from "@/app/pro/(onboarding)/intro/social-preferences/helpers";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -28,16 +30,41 @@ export default function OnboardingPage() {
           router.push(appRouteLinks.logout);
         } else {
           getQuestions();
+          getSocialPreferences();
         }
       }
     },
   });
 
-  const [updateOnboardQuestions, updateOnboardAnswers] = useAppQuestions(
-    (state) => [state.updateOnboardQuestions, state.updateOnboardAnswers],
-  );
+  const [
+    updateOnboardQuestions,
+    updateOnboardAnswers,
+    updateSocialPreferenceAnswers,
+    updateSocialPreferenceReferrees,
+  ] = useAppQuestions((state) => [
+    state.updateOnboardQuestions,
+    state.updateOnboardAnswers,
+    state.updateSocialPreferenceAnswers,
+    state.updateSocialPreferenceReferrees,
+  ]);
+  const [userData] = useUserStore((state) => [state.user]);
 
   const toast = useToast();
+
+  const [getSocialPreferences, { loading: loadingUser }] = useLazyQuery(
+    QUERY_USER_SOCIAL_PREFERENCE,
+    {
+      variables: {
+        id: userData?.login.user.id,
+      },
+      onCompleted: (response) => {
+        const { result, referrals } =
+          convertSocialPrefResponseToInitialValues(response);
+        updateSocialPreferenceAnswers(result);
+        updateSocialPreferenceReferrees(referrals);
+      },
+    },
+  );
 
   const [getQuestions, { loading }] = useLazyQuery(QUERY_QUESTIONS, {
     onCompleted: (data) => {
@@ -63,7 +90,7 @@ export default function OnboardingPage() {
       <Flex flexDir="column" alignItems="center" gap="5">
         <Spinner size="xl" />
         <Text fontSize="xl" fontWeight="medium" textAlign="center">
-          {loading ? "Logging in..." : "fetching data..."}
+          {loading || loadingUser ? "Logging in..." : "fetching data..."}
         </Text>
       </Flex>
     </Center>

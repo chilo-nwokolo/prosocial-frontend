@@ -1,7 +1,6 @@
 import {
   Accordion,
   AccordionButton,
-  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Box,
@@ -55,20 +54,24 @@ export const friendTypeOptions = [
 
 export default function SocialPreferencesAccordion() {
   return (
-    <Accordion defaultIndex={[0]} allowToggle>
+    <Accordion defaultIndex={[0]}>
       <AccordionItem border="1px solid">
         <h2>
           <AccordionButton>
             <Box as="span" flex="1" textAlign="left" fontSize="xl">
               ProSocial friend types
             </Box>
-            <AccordionIcon />
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
           <Flex flexDir="column" gap="4">
             {friendTypeOptions.map((option) => (
-              <Box key={option.id}>
+              <Box
+                key={option.id}
+                borderBottom="1px solid"
+                pb="5"
+                borderColor="gray.600"
+              >
                 <Text fontWeight="semibold" fontSize="16px">
                   {option.title}
                 </Text>
