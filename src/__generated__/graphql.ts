@@ -68,6 +68,12 @@ export type BucketQuestion = {
   title?: Maybe<Scalars['String']['output']>;
 };
 
+export type CreateInterestInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+};
+
 export enum DayName {
   Friday = 'FRIDAY',
   Monday = 'MONDAY',
@@ -119,6 +125,7 @@ export type Interest = {
   interestCategory?: Maybe<Interest>;
   interests?: Maybe<Array<Interest>>;
   is_organized_by_trait?: Maybe<Scalars['Boolean']['output']>;
+  is_top_interest?: Maybe<TopInterestEnum>;
   title?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   users?: Maybe<Array<User>>;
@@ -157,6 +164,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createAdmin: User;
   createGroup: UserGroup;
+  createInterest?: Maybe<Interest>;
   deleteGroup: BasicResponse;
   handleSocialPreferenceSubmit: BasicResponse;
   login: AuthResponse;
@@ -185,6 +193,11 @@ export type MutationCreateAdminArgs = {
 
 export type MutationCreateGroupArgs = {
   input: UserGroupInput;
+};
+
+
+export type MutationCreateInterestArgs = {
+  input?: InputMaybe<CreateInterestInput>;
 };
 
 
@@ -618,6 +631,7 @@ export enum SortOrder {
 
 export type SubmitUserInterestInput = {
   interest_id: Scalars['ID']['input'];
+  is_top_interest?: InputMaybe<TopInterestEnum>;
   response: Scalars['String']['input'];
 };
 
@@ -625,6 +639,11 @@ export enum TimeRange {
   Afternoon = 'AFTERNOON',
   Evening = 'EVENING',
   Morning = 'MORNING'
+}
+
+export enum TopInterestEnum {
+  No = 'NO',
+  Yes = 'YES'
 }
 
 /** Specify if you want to include or exclude trashed results from a query. */

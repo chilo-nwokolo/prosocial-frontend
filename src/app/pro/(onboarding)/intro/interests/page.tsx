@@ -1,4 +1,9 @@
 "use client";
+import {
+  InputMaybe,
+  SubmitUserInterestInput,
+  TopInterestEnum,
+} from "@/__generated__/graphql";
 import BackButton from "@/components/General/BackButton";
 import QueryContainer from "@/components/General/QueryContainer";
 import InterestsAccordion from "@/features/dashboard/home/growth/components/InterestsAccordion";
@@ -15,11 +20,13 @@ import { appRouteLinks, configExtras } from "@/utils/constants";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
+  Divider,
   Flex,
   FormControl,
   FormLabel,
   Input,
   RadioGroup,
+  Select,
   Stack,
   Text,
   useToast,
@@ -28,12 +35,29 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { GrClose } from "react-icons/gr";
 
+type Interest = {
+  __typename?: "Interest" | undefined;
+  id?: string | null | undefined;
+  image_url?: string | null | undefined;
+  title?: string | null | undefined;
+};
+
 export default function InterestedExtendedPage() {
   const { updateConfig } = useAppConfig({});
 
   const [flattenedInterests, setFlattenedInterets] = useState<string[] | null>(
     null,
   );
+
+  const [topSelectedInterest, setTopSelectedInterest] = useState<{
+    id: string;
+    title: string;
+    interests: Array<Interest>;
+  }>({ id: "", interests: [], title: "" });
+  const [topChildInterest, setTopChildInterest] = useState({
+    title: "",
+    id: "",
+  });
 
   const router = useRouter();
 
@@ -68,11 +92,6 @@ export default function InterestedExtendedPage() {
   const toast = useToast();
 
   const [mutate, { loading }] = useMutation(SUBMIT_USER_INTERESTS, {
-    variables: {
-      input: {
-        inputs: interestsAnswer,
-      },
-    },
     onError: () => {
       toast({
         status: "error",
@@ -109,6 +128,94 @@ export default function InterestedExtendedPage() {
       result.splice(foundIndex, 1);
       updateInterestsAnswer(result);
     }
+  };
+
+  const selectTopInterest = (interestId: any) => {
+    if (!interestId) {
+      toast({
+        status: "error",
+        title: "Invalid selection",
+      });
+      return;
+    }
+    const res = result?.interestsByNoneTrait?.find(
+      (interest) => interest.id === interestId,
+    );
+
+    setTopChildInterest({
+      title: "",
+      id: "",
+    });
+
+    setTopSelectedInterest({
+      id: res?.id || "",
+      title: res?.title || "",
+      interests: res?.interests || [],
+    });
+  };
+
+  const handleInterestsSubmit = () => {
+    if (!topSelectedInterest.id || !topChildInterest.id) {
+      toast({
+        status: "error",
+        title: "Please select your top interests",
+      });
+      return;
+    }
+
+    const topInterestsIds = [topChildInterest.id, topSelectedInterest.id];
+    const allInterestIds = interestsAnswer.map(
+      (interest) => interest.interest_id,
+    );
+
+    let interests: SubmitUserInterestInput[] = [];
+
+    if (allInterestIds.includes(topSelectedInterest.id)) {
+      interests = interestsAnswer.map((interest) => {
+        if (topInterestsIds.includes(interest.interest_id)) {
+          return {
+            ...interest,
+            is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
+          };
+        }
+        return interest;
+      });
+    } else {
+      interests = [
+        ...interestsAnswer,
+        {
+          response: topSelectedInterest.title,
+          interest_id: topSelectedInterest.id,
+          is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
+        },
+        {
+          response: topChildInterest.title,
+          interest_id: topChildInterest.id,
+          is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
+        },
+      ];
+    }
+
+    updateInterestsAnswer(interests);
+
+    mutate({
+      variables: {
+        input: {
+          inputs: interests,
+        },
+      },
+    });
+  };
+
+  const handleSelectTopChildrenInterest = (value: string) => {
+    const selectedChild = topSelectedInterest.interests.find(
+      (interest) => interest.id === value,
+    );
+
+    setTopChildInterest({
+      title: selectedChild?.title || "",
+      id: value,
+    });
   };
 
   return (
@@ -165,15 +272,66 @@ export default function InterestedExtendedPage() {
               <BackButton text="Go Back" />
             </Flex>
           )}
+
+          <Divider mt="7" borderColor="gray.500" />
+
+          <Flex flexDir="column" mt="5" gap="5">
+            <FormControl>
+              <FormLabel>
+                Out of all these options, what is your top interest?
+              </FormLabel>
+              <Select
+                border="1px solid"
+                borderColor="gray.500"
+                onChange={(e) => selectTopInterest(e.target.value)}
+                key="interestParent"
+              >
+                <option selected disabled>
+                  Choose one option
+                </option>
+                {result?.interestsByNoneTrait?.map((interest) => (
+                  <option key={interest.id} value={interest.id || ""}>
+                    {interest.title}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl isDisabled={!topSelectedInterest.interests.length}>
+              <FormLabel>
+                Within that category, what is your top interest?
+              </FormLabel>
+              <Select
+                key="interestChild"
+                border="1px solid"
+                borderColor="gray.500"
+                onChange={(e) =>
+                  handleSelectTopChildrenInterest(e.target.value)
+                }
+              >
+                <option key="interestChild-1" selected value="">
+                  Choose one option
+                </option>
+                {topSelectedInterest.interests.map((interest) => (
+                  <option key={interest.id} value={interest.id || ""}>
+                    {interest.title}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Flex>
           <FormControl mt="3">
             <FormLabel as="h2">
-              Don&apos;t see your interests, list them here. (separate them with
-              a comma)
+              <Flex flexDir="column">
+                <Text>Don&apos;t see your interest(s), list it here.</Text>
+                <Text fontSize="small" color="gray.500">
+                  Optional
+                </Text>
+              </Flex>
             </FormLabel>
-            <Input type="text" />
+            <Input border="1px solid" borderColor="gray.400" type="text" />
           </FormControl>
         </Flex>
-        <Button isLoading={loading} onClick={() => mutate()} mt="10">
+        <Button isLoading={loading} onClick={handleInterestsSubmit} mt="10">
           Done
         </Button>
       </Flex>
