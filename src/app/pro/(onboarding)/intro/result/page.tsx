@@ -10,6 +10,7 @@ import {
   Flex,
   Image,
   Text,
+  Textarea,
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -84,20 +85,22 @@ export default function ResultPage() {
         <Box>
           {checkIfAllAnswered() ? (
             <>
-              <Box fontWeight="medium" px="10" mb="3" textAlign="center">
+              <Box fontWeight="medium" mb="3" textAlign="center">
                 {personalityBucketQuestions.length <= 1 ? (
-                  <Text>
-                    It looks like we didn&apos;t get this right. We&apos;ll have
-                    more questions for you after completing your Social
-                    Preferences.
-                  </Text>
+                  <Flex flexDir="column" alignItems="flex-start">
+                    <Text textAlign="left">
+                      It looks like we didn&apos;t get this right. Please type
+                      in the descriptors of your personality (optional)
+                    </Text>
+                    <Textarea />
+                  </Flex>
                 ) : personalityBucketQuestions.length === 2 ? (
-                  <Text>
+                  <Text px="10">
                     It looks like your assessment mostly matches how you feel.
                     Ready to move on?
                   </Text>
                 ) : (
-                  <Text>
+                  <Text px="10">
                     It looks like your assessment matches how you feel. Ready to
                     move on?
                   </Text>
