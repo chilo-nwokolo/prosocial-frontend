@@ -60,8 +60,8 @@ export default function PersonalityResultPage() {
             </Card>
           ))}
         </Flex>
-        <Link href={appRouteLinks.growth}>
-          <Button width="full">Done</Button>
+        <Link href={appRouteLinks.home}>
+          <Button width="full">Go back</Button>
         </Link>
       </Flex>
     </QueryContainer>
