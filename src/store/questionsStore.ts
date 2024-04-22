@@ -38,6 +38,15 @@ interface QuestionsState {
     // eslint-disable-next-line no-unused-vars
     socialPreferenceReferrees: Record<string, string>,
   ) => void;
+  submittedQuestions: boolean;
+  // eslint-disable-next-line no-unused-vars
+  updateSubmittedQuestions: (submittedQuestions: boolean) => void;
+  submittedPreferences: boolean;
+  // eslint-disable-next-line no-unused-vars
+  updateSubmittedPreferences: (submittedPreferences: boolean) => void;
+  submittedInterests: boolean;
+  // eslint-disable-next-line no-unused-vars
+  updateSubmittedInterests: (submittedInterests: boolean) => void;
 }
 
 export const useAppQuestions = create<QuestionsState>()(
@@ -64,6 +73,15 @@ export const useAppQuestions = create<QuestionsState>()(
         socialPreferenceReferrees: {},
         updateSocialPreferenceReferrees: (socialPreferenceReferrees) =>
           set({ socialPreferenceReferrees }),
+        submittedQuestions: false,
+        updateSubmittedQuestions: (submittedQuestions) =>
+          set({ submittedQuestions }),
+        submittedPreferences: false,
+        updateSubmittedPreferences: (submittedPreferences) =>
+          set({ submittedPreferences }),
+        submittedInterests: false,
+        updateSubmittedInterests: (submittedInterests) =>
+          set({ submittedInterests }),
       }),
       { name: storeKeys.QUESTIONS_STORE },
     ),

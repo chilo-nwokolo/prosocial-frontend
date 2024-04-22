@@ -9,6 +9,7 @@ import QueryContainer from "@/components/General/QueryContainer";
 import InterestsAccordion from "@/features/dashboard/home/growth/components/InterestsAccordion";
 import InterestsSwitch from "@/features/dashboard/home/growth/components/InterestsSwitch";
 import {
+  CREATE_USER_INTEREST,
   QUERY_INTERESTS_BY_NONE_TRAITS,
   QUERY_ME_INTERESTS,
   SUBMIT_USER_INTERESTS,
@@ -42,6 +43,27 @@ type Interest = {
   title?: string | null | undefined;
 };
 
+type MeInterestResponse = {
+  __typename?: "Interest" | undefined;
+  id?: string | null | undefined;
+  title?: string | null | undefined;
+  is_top_interest?: TopInterestEnum | null | undefined;
+};
+
+// eslint-disable-next-line no-unused-vars
+const topInterestIds = [
+  "19",
+  "27",
+  "38",
+  "44",
+  "62",
+  "70",
+  "74",
+  "88",
+  "95",
+  "109",
+];
+
 export default function InterestedExtendedPage() {
   const { updateConfig } = useAppConfig({});
 
@@ -54,10 +76,13 @@ export default function InterestedExtendedPage() {
     title: string;
     interests: Array<Interest>;
   }>({ id: "", interests: [], title: "" });
+
   const [topChildInterest, setTopChildInterest] = useState({
     title: "",
     id: "",
   });
+
+  const [newInterest, setNewInterest] = useState("");
 
   const router = useRouter();
 
@@ -74,11 +99,54 @@ export default function InterestedExtendedPage() {
     error,
   } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
 
+  const getTopInterests = (interests: Array<MeInterestResponse>) => {
+    const found = interests.map((interest) => {
+      // @ts-ignore
+      if (interest?.pivot?.is_top_interest === "YES") {
+        return interest.title;
+      }
+      return null;
+    });
+
+    let topInterest = {
+      id: "",
+      title: "",
+      interests: [],
+    };
+    let topChildInterest = {
+      id: "",
+      title: "",
+    };
+
+    result?.interestsByNoneTrait?.forEach((interest) => {
+      if (found.includes(interest.title)) {
+        topInterest = {
+          id: interest.id || "",
+          title: interest.title || "",
+          interests: interest.interests as any,
+        };
+        interest.interests?.forEach((childInterest) => {
+          if (found.includes(childInterest.title)) {
+            topChildInterest = {
+              title: childInterest.title || "",
+              id: childInterest.id || "",
+            };
+          }
+        });
+      }
+    });
+
+    setTopSelectedInterest(topInterest);
+    setTopChildInterest(topChildInterest);
+  };
+
   const { loading: loadingInterests } = useQuery(QUERY_ME_INTERESTS, {
     onCompleted: (data) => {
       const interests: string[] = [];
-      if (data.me?.interests?.length) {
-        data.me?.interests?.forEach((interest) => {
+      const interestsResponse = data?.me?.interests;
+      if (interestsResponse?.length) {
+        getTopInterests(interestsResponse);
+        interestsResponse?.forEach((interest) => {
           interests.push("" + interest.title);
         });
         setFlattenedInterets(interests);
@@ -112,6 +180,18 @@ export default function InterestedExtendedPage() {
       router.push(appRouteLinks.intro);
     },
   });
+
+  const [createInterest, { loading: creatingInterest }] = useMutation(
+    CREATE_USER_INTEREST,
+    {
+      onError: () => {
+        toast({
+          status: "error",
+          title: "Unable to create your interests. Please try again.",
+        });
+      },
+    },
+  );
 
   const onChange = (value: string, id: string) => {
     const foundIndex = interestsAnswer.findIndex(
@@ -154,7 +234,7 @@ export default function InterestedExtendedPage() {
     });
   };
 
-  const handleInterestsSubmit = () => {
+  const handleInterestsSubmit = async () => {
     if (!topSelectedInterest.id || !topChildInterest.id) {
       toast({
         status: "error",
@@ -194,6 +274,29 @@ export default function InterestedExtendedPage() {
           is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
         },
       ];
+    }
+
+    if (newInterest) {
+      await createInterest({
+        variables: {
+          input: {
+            title: newInterest,
+            description: newInterest,
+            image_url: "",
+          },
+        },
+        onCompleted: (data) => {
+          const interest = data.createInterest;
+          interests = [
+            ...interests,
+            {
+              response: interest?.title || "",
+              interest_id: interest?.id || "",
+              is_top_interest: "NO" as InputMaybe<TopInterestEnum>,
+            },
+          ];
+        },
+      });
     }
 
     updateInterestsAnswer(interests);
@@ -283,10 +386,11 @@ export default function InterestedExtendedPage() {
               <Select
                 border="1px solid"
                 borderColor="gray.500"
+                value={topSelectedInterest.id}
                 onChange={(e) => selectTopInterest(e.target.value)}
                 key="interestParent"
               >
-                <option selected disabled>
+                <option value="" key="interestParent-1">
                   Choose one option
                 </option>
                 {result?.interestsByNoneTrait?.map((interest) => (
@@ -307,8 +411,9 @@ export default function InterestedExtendedPage() {
                 onChange={(e) =>
                   handleSelectTopChildrenInterest(e.target.value)
                 }
+                value={topChildInterest.id}
               >
-                <option key="interestChild-1" selected value="">
+                <option key="interestChild-1" value="">
                   Choose one option
                 </option>
                 {topSelectedInterest.interests.map((interest) => (
@@ -328,10 +433,20 @@ export default function InterestedExtendedPage() {
                 </Text>
               </Flex>
             </FormLabel>
-            <Input border="1px solid" borderColor="gray.400" type="text" />
+            <Input
+              border="1px solid"
+              borderColor="gray.400"
+              type="text"
+              value={newInterest}
+              onChange={(e) => setNewInterest(e.target.value)}
+            />
           </FormControl>
         </Flex>
-        <Button isLoading={loading} onClick={handleInterestsSubmit} mt="10">
+        <Button
+          isLoading={loading || creatingInterest}
+          onClick={handleInterestsSubmit}
+          mt="10"
+        >
           Done
         </Button>
       </Flex>

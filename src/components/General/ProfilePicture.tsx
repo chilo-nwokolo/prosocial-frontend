@@ -1,12 +1,21 @@
 "use client";
 
 import { ME_QUERY } from "@/features/dashboard/profile/gql/queries";
+import { useConfig } from "@/store";
 import { ImageLinks } from "@/utils/constants";
 import { useQuery } from "@apollo/client";
 import { Box, Image, SkeletonCircle } from "@chakra-ui/react";
 
 export default function ProfilePicture() {
-  const { loading, data } = useQuery(ME_QUERY);
+  const [updateConfig] = useConfig((state) => [state.updateConfig]);
+
+  const { loading, data } = useQuery(ME_QUERY, {
+    onCompleted: (data) => {
+      if (data?.me?.profile?.avatar) {
+        updateConfig({ user_has_uploaded_profile_picture: true });
+      }
+    },
+  });
 
   return (
     <Box

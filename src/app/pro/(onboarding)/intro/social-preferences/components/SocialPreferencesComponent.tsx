@@ -36,19 +36,29 @@ import {
 import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
 import { SUBMIT_SOCIAL_PREFERENCES } from "../graphql/gql";
 
+type ReferralList = { name: string; value: string }[];
+
 export default function SocialPreferencesComponent() {
   const router = useRouter();
-  const [referrals, setReferrals] = useState<Record<string, string>>({
-    "friend-1": "",
-  });
+  const [referrals, setReferrals] = useState<ReferralList>([]);
+
+  const [referralInput, setReferralInput] = useState<Record<string, string>>(
+    {},
+  );
+
   const searchParams = useSearchParams();
 
-  // eslint-disable-next-line no-unused-vars
-  const [socialPreferenceAnswers, updateSocialPreferenceAnswers] =
-    useAppQuestions((state) => [
-      state.socialPreferenceAnswers,
-      state.updateSocialPreferenceAnswers,
-    ]);
+  const [
+    socialPreferenceAnswers,
+    socialPreferenceReferrees,
+    updateSocialPreferenceAnswers,
+    updateSocialPreferenceReferrees,
+  ] = useAppQuestions((state) => [
+    state.socialPreferenceAnswers,
+    state.socialPreferenceReferrees,
+    state.updateSocialPreferenceAnswers,
+    state.updateSocialPreferenceReferrees,
+  ]);
 
   const { onCopy, hasCopied } = useClipboard(
     "https://www.prosocialnetworks.com/fitness19",
@@ -83,18 +93,14 @@ export default function SocialPreferencesComponent() {
   });
 
   const handleReferralsList = (number: number) => {
-    let result: Record<string, string> = {};
-    const length = number / 2;
+    const result: ReferralList = [];
 
-    for (let i = 0; i <= length; i++) {
-      result[`friend-${i + 1}`] = "";
-      result[`friend-${i + 1}`] = "";
+    for (let i = 1; i <= number; i++) {
+      result.push({ name: `friend-${i}`, value: "" });
     }
 
     setReferrals(result);
   };
-
-  console.log(referrals);
 
   const formik = useFormik({
     initialValues: {
@@ -118,6 +124,7 @@ export default function SocialPreferencesComponent() {
     enableReinitialize: true,
     onSubmit: (data) => {
       updateSocialPreferenceAnswers(data);
+      updateSocialPreferenceReferrees(referralInput);
 
       const result = convertSocialPreferenceObjectToArray(data);
 
@@ -126,7 +133,7 @@ export default function SocialPreferencesComponent() {
 
       if (data[7] === "29" && data[18] === "31") {
         // Fitness 19 member
-        const refereesLength = Object.keys(referrals).length;
+        const refereesLength = referrals.length;
 
         if (!refereesLength || refereesLength % 2 > 0) {
           toast({
@@ -138,9 +145,9 @@ export default function SocialPreferencesComponent() {
         }
         metaName = "referees";
 
-        for (let i = 1; i <= refereesLength / 2; i++) {
-          const fullName = `${referrals[`ref-firstName-friend-${i}`]} ${
-            referrals[`ref-lastName-friend-${i}`]
+        for (let i = 1; i <= refereesLength; i++) {
+          const fullName = `${referralInput[`ref-firstName-friend-${i}`]} ${
+            referralInput[`ref-lastName-friend-${i}`]
           }`;
           referralNames.push(fullName);
         }
@@ -159,9 +166,9 @@ export default function SocialPreferencesComponent() {
         }
         metaName = "referrer";
         const name =
-          referrals["ref-firstName-friend-1"] +
+          referralInput["ref-firstName-friend-1"] +
           " " +
-          referrals["ref-lastName-friend-1"];
+          referralInput["ref-lastName-friend-1"];
         referralNames.push(name);
       }
 
@@ -195,8 +202,8 @@ export default function SocialPreferencesComponent() {
     },
   });
 
-  const handleChange = (e: ChangeEvent<any>) => {
-    setReferrals((ref) => {
+  const handleReferralInputChange = (e: ChangeEvent<any>) => {
+    setReferralInput((ref) => {
       return {
         ...ref,
         [e.target.name]: e.target.value,
@@ -205,7 +212,7 @@ export default function SocialPreferencesComponent() {
   };
 
   useEffect(() => {
-    setReferrals({});
+    setReferrals([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values[7]]);
 
@@ -217,6 +224,26 @@ export default function SocialPreferencesComponent() {
       });
     }
   }, [hasCopied, toast]);
+
+  useEffect(() => {
+    let result: Record<string, string> = {};
+    const set = new Set<string>();
+
+    const referreesLength = Object.keys(socialPreferenceReferrees).length;
+
+    if (referreesLength) {
+      for (let key in socialPreferenceReferrees) {
+        result[key] = socialPreferenceReferrees[key];
+        const str = key.split("-");
+        set.add(`${str[2]}-${str[3]}`);
+      }
+      setReferralInput(result);
+      const map = Array.from(set).map((item) => {
+        return { name: item, value: "" };
+      });
+      setReferrals(map);
+    }
+  }, [socialPreferenceReferrees]);
 
   return (
     <Flex flexDir="column" gap="8" mb="5">
@@ -256,7 +283,6 @@ export default function SocialPreferencesComponent() {
                 name="8"
                 title="First choice"
                 error={formik.errors[8]}
-                hideFriend={["Parent Friend"]}
               />
               <FriendTypeSelect
                 value={formik.values[9]}
@@ -265,7 +291,6 @@ export default function SocialPreferencesComponent() {
                 name="9"
                 title="Second choice"
                 error={formik.errors[9]}
-                hideFriend={["Parent Friend"]}
               />
               <FriendTypeSelect
                 value={formik.values[10]}
@@ -274,7 +299,6 @@ export default function SocialPreferencesComponent() {
                 name="10"
                 title="Third choice"
                 error={formik.errors[10]}
-                hideFriend={["Parent Friend"]}
               />
 
               {/* Q1b */}
@@ -306,6 +330,7 @@ export default function SocialPreferencesComponent() {
                 name="12"
                 title="First choice"
                 error={formik.errors[12]}
+                hideFriend={["Parent Friend"]}
               />
               <FriendTypeSelect
                 value={formik.values[13]}
@@ -314,6 +339,7 @@ export default function SocialPreferencesComponent() {
                 name="13"
                 title="Second choice"
                 error={formik.errors[13]}
+                hideFriend={["Parent Friend"]}
               />
               <FriendTypeSelect
                 value={formik.values[14]}
@@ -322,6 +348,7 @@ export default function SocialPreferencesComponent() {
                 name="14"
                 title="Third choice"
                 error={formik.errors[14]}
+                hideFriend={["Parent Friend"]}
               />
 
               {/* Q2b */}
@@ -420,7 +447,11 @@ export default function SocialPreferencesComponent() {
                       <FormLabel>8. How many friends?</FormLabel>
                       <Select
                         onChange={(e) => handleReferralsList(+e.target.value)}
+                        defaultValue={referrals.length || ""}
                       >
+                        <option key="friends-key" value="">
+                          Choose one
+                        </option>
                         {Array(5)
                           .fill(1)
                           .map((_val, i) => (
@@ -430,13 +461,13 @@ export default function SocialPreferencesComponent() {
                           ))}
                       </Select>
                     </FormControl>
-                    {Object.keys(referrals).map((val, i) => (
+                    {referrals.map((val, i) => (
                       <FriendsName
                         title={`Friend ${i + 1}`}
-                        name={val}
+                        name={val.name}
                         key={i}
-                        value={referrals}
-                        onChange={handleChange}
+                        value={referralInput}
+                        onChange={handleReferralInputChange}
                       />
                     ))}
                     <Text mt="4">
@@ -461,8 +492,8 @@ export default function SocialPreferencesComponent() {
                 <FriendsName
                   title={"Who referred you?"}
                   name="friend-1"
-                  value={referrals}
-                  onChange={handleChange}
+                  value={referralInput}
+                  onChange={handleReferralInputChange}
                 />
                 <Text mt="4">
                   To make sure you receive your free month of membership, visit
@@ -542,14 +573,3 @@ function FriendsName({
     </Flex>
   );
 }
-
-// {
-//   "input": {
-//     "input": [{
-//       "social_preference_id": "",
-//       "social_preference_option_id": "8",
-//       "answer": "Yes",
-//       "meta": []
-//     }]
-//   }
-// }

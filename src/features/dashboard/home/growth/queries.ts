@@ -68,6 +68,9 @@ export const QUERY_ME_INTERESTS = gql(`
       interests {
         id
         title
+        pivot {
+      	  is_top_interest        
+        }
       }
     }
   }
@@ -150,6 +153,15 @@ export const CREATE_JOURNAL_ENTRY = gql(`
       category {
         id
       }
+    }
+  }
+`);
+
+export const CREATE_USER_INTEREST = gql(`
+  mutation CREATE_USER_INTEREST($input: CreateInterestInput!) {
+    createInterest(input: $input) {
+      id
+      title
     }
   }
 `);

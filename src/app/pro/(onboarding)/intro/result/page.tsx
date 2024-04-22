@@ -9,7 +9,6 @@ import {
   Button,
   Flex,
   Image,
-  SimpleGrid,
   Text,
   Tooltip,
   useDisclosure,
@@ -85,7 +84,7 @@ export default function ResultPage() {
         <Box>
           {checkIfAllAnswered() ? (
             <>
-              <Box fontWeight="medium" px="10" textAlign="center">
+              <Box fontWeight="medium" px="10" mb="3" textAlign="center">
                 {personalityBucketQuestions.length <= 1 ? (
                   <Text>
                     It looks like we didn&apos;t get this right. We&apos;ll have
@@ -104,21 +103,9 @@ export default function ResultPage() {
                   </Text>
                 )}
               </Box>
-              <SimpleGrid spacing="3" my="5">
-                {personalityBucketQuestions.length <= 1 ? (
-                  <Button onClick={onSubmit} isLoading={submitting}>
-                    Social Preferences
-                  </Button>
-                ) : personalityBucketQuestions.length === 2 ? (
-                  <Button onClick={onSubmit} isLoading={submitting}>
-                    Yes, let&apos;s go
-                  </Button>
-                ) : (
-                  <Button onClick={onSubmit} isLoading={submitting}>
-                    Yes, let&apos;s go
-                  </Button>
-                )}
-              </SimpleGrid>
+              <Button onClick={onSubmit} w="full" isLoading={submitting}>
+                Complete
+              </Button>
             </>
           ) : null}
         </Box>

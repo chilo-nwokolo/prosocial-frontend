@@ -9,7 +9,7 @@ import useQuestionCategories from "../hooks/useQuestionCategories";
 
 const socialPrefererences = {
   category: "Social preferences",
-  totalQuestions: 7,
+  totalQuestions: 8,
   destination: "/social-preferences",
 };
 const interests = {
@@ -43,17 +43,17 @@ export default function QuestionCategories() {
           {/* SOCIAL PREFERENCES */}
           <OtherQuestionCategoryLinkBox
             question={socialPrefererences}
-            calculateRemainder={calculateSocialPreferenceAnswers()}
+            calculateRemainder={calculateSocialPreferenceAnswers}
           />
           {/* INTERESTS */}
           <OtherQuestionCategoryLinkBox
             question={interests}
-            calculateRemainder={onboardAnswers}
+            calculateRemainder={null}
           />
         </Flex>
         <Button
           mt="10"
-          isDisabled={!getQuestionsAnswersCount()}
+          isDisabled={!getQuestionsAnswersCount}
           onClick={onSubmit}
         >
           View Results
