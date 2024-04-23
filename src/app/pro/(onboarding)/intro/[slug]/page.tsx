@@ -45,7 +45,6 @@ export default function IntroQuestionsPage({
       ? onboardAnswers[decodeUrl(params.slug, "-")]
       : generateQuestions(section),
     onSubmit: (values) => {
-      console.log(onboardQuestions);
       const source = decodeUrl(params.slug, "-");
       const updatedAnswers = { ...onboardAnswers, [source]: values };
       updateOnboardAnswers(updatedAnswers);

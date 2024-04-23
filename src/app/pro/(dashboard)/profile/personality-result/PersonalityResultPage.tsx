@@ -34,7 +34,7 @@ export default function PersonalityResultPage() {
           status: "error",
           title: "Please complete your registration first",
         });
-        router.push(appRouteLinks.home);
+        router.push(appRouteLinks.onbording);
       }
     },
   });

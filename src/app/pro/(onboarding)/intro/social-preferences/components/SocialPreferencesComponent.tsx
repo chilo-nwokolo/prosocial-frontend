@@ -155,7 +155,7 @@ export default function SocialPreferencesComponent() {
 
       if (data[7] === "30") {
         // Friend
-        const refereesLength = Object.keys(referrals).length;
+        const refereesLength = Object.keys(referralInput).length;
         if (!refereesLength || refereesLength % 2 > 0) {
           toast({
             status: "error",
