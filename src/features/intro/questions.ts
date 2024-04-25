@@ -237,4 +237,12 @@ export const personalQuestionsData = [
     description:
       "The following questions are designed to help us understand how you currently feel about life. For every question, please choose the answer that best describes how you felt during the past month.",
   },
+  {
+    id: 4,
+    section: "How you approach life",
+    totalQuestions: 30,
+    meta: "I am someone who",
+    description:
+      "Do your best to choose the option that best reflects your behaviors, actions and thoughts",
+  },
 ];

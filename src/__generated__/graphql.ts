@@ -68,6 +68,22 @@ export type BucketQuestion = {
   title?: Maybe<Scalars['String']['output']>;
 };
 
+export type ButterflyInfo = {
+  __typename?: 'ButterflyInfo';
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['ID']['output'];
+  meta?: Maybe<MetaKeyValue>;
+  note?: Maybe<Scalars['String']['output']>;
+  personality_bucket_type?: Maybe<PersonalityBucketType>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  user?: Maybe<User>;
+};
+
+export type ButterflyInfoInput = {
+  meta?: InputMaybe<MetaKeyValueInput>;
+  note?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CreateInterestInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
@@ -162,6 +178,7 @@ export type MetaKeyValueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  confirmUserSubmission: BasicResponse;
   createAdmin: User;
   createGroup: UserGroup;
   createInterest?: Maybe<Interest>;
@@ -376,6 +393,7 @@ export type PaginatorInfo = {
 export type PersonalityBucketType = {
   __typename?: 'PersonalityBucketType';
   bucketQuestions?: Maybe<Array<BucketQuestion>>;
+  butterfly_info?: Maybe<ButterflyInfo>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -418,7 +436,7 @@ export type ProfileInput = {
   avatar?: InputMaybe<Scalars['Upload']['input']>;
   family_size_in_numbers?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<GenderEnum>;
-  has_children?: InputMaybe<Scalars['Boolean']['input']>;
+  has_children?: InputMaybe<Scalars['String']['input']>;
   health_rating?: InputMaybe<Scalars['String']['input']>;
   level_of_education?: InputMaybe<Scalars['String']['input']>;
   occupation?: InputMaybe<Scalars['String']['input']>;
@@ -723,6 +741,7 @@ export type UserBucketQuestionResponse = {
 
 export type UserBucketQuestionResponseInput = {
   bucket_id: Scalars['ID']['input'];
+  butterfly_info?: InputMaybe<ButterflyInfoInput>;
   response: Scalars['String']['input'];
 };
 

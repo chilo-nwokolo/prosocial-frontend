@@ -27,6 +27,8 @@ export default function ResultPage() {
     personalityBucketQuestions,
     onSubmit,
     submitting,
+    resultNote,
+    setResultNote,
   } = useResultPage();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -92,7 +94,12 @@ export default function ResultPage() {
                       It looks like we didn&apos;t get this right. Please type
                       in the descriptors of your personality (optional)
                     </Text>
-                    <Textarea />
+                    <Textarea
+                      value={resultNote}
+                      onChange={(e) => setResultNote(e.target.value)}
+                      border="1.5px solid"
+                      borderColor="gray.500"
+                    />
                   </Flex>
                 ) : personalityBucketQuestions.length === 2 ? (
                   <Text px="10">

@@ -37,6 +37,7 @@ export const componentConfig = {
       lowerCaseTitle: false,
       returnTitle: true,
       hasLabel: false,
+      useIdAsValue: true,
     },
   },
   "How%20you%20approach%20life": {
@@ -52,6 +53,7 @@ export const componentConfig = {
       lowerCaseTitle: false,
       returnTitle: true,
       hasLabel: false,
+      useIdAsValue: true,
     },
   },
   "Behaviors%20and%20beliefs": {
@@ -67,6 +69,7 @@ export const componentConfig = {
       lowerCaseTitle: false,
       returnTitle: false,
       hasLabel: true,
+      useIdAsValue: true,
     },
   },
 };
