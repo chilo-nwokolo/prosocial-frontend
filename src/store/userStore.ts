@@ -3,6 +3,7 @@ import {
   MeQuery,
   TimeRange,
 } from "@/__generated__/graphql";
+import { storeKeys } from "@/utils/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -69,6 +70,6 @@ export const useUserStore = create<UserState>()(
       personalityType: null,
       setPersonalityType: (personalityType) => set({ personalityType }),
     }),
-    { name: "prosocial_user" },
+    { name: storeKeys.USER_STORE },
   ),
 );

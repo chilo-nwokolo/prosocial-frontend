@@ -10,6 +10,7 @@ import InputQuestions from "@/features/intro/components/InputQuestions";
 import { useAppQuestions } from "@/store";
 import { useFormik } from "formik";
 import { decodeUrl, generateQuestions } from "@/utils/helpers";
+import { componentConfig } from "./componentConfig";
 
 export default function IntroQuestionsPage({
   params,
@@ -53,17 +54,21 @@ export default function IntroQuestionsPage({
   return (
     <Flex flexDir="column" gap="8" mb="5">
       <Flex mt="5">
-        <Button color="black" onClick={() => router.push(appRouteLinks.intro)}>
+        <Button
+          color="black"
+          variant="secondary"
+          onClick={() => router.push(appRouteLinks.intro)}
+        >
           <FaChevronLeft />
         </Button>
       </Flex>
       <Flex flexDir="column" gap="5">
-        <Text fontSize="3xl" fontWeight="semibold">
+        <Text as="h1" fontSize="3xl" fontWeight="semibold">
           {decodeURI(params.slug)}
         </Text>
         <Text>{section?.description}</Text>
       </Flex>
-      <Text fontSize="xl" mb="-3">
+      <Text as="h2" fontSize="xl" mb="-3">
         {section?.meta}
       </Text>
       <Flex flexDir="column" gap="10">
@@ -77,10 +82,13 @@ export default function IntroQuestionsPage({
                 value={formik.values[question.id]}
                 name={question.id}
                 onChange={formik.handleChange}
-                source={decodeUrl(params.slug)}
+                config={
+                  componentConfig[params.slug as keyof typeof componentConfig]
+                    ?.singleChoiceQuestion
+                }
               />
             );
-          } else if (question.type === "text") {
+          } else if (question.type === AnswerType.TEXT) {
             return (
               <InputQuestions
                 onChange={formik.handleChange}
@@ -90,16 +98,44 @@ export default function IntroQuestionsPage({
                 title={question.question}
               />
             );
-          } else {
+          } else if (question.type === AnswerType.MULTIPLE_CHOICE) {
+            return (
+              <SingleChoiceQuestion
+                key={`quest-${question.id}`}
+                title={question.question ?? question.text}
+                options={question?.options}
+                value={formik.values[question.id]}
+                name={question.id}
+                onChange={formik.handleChange}
+                config={
+                  componentConfig[params.slug as keyof typeof componentConfig]
+                    ?.ratingScaleQuestion
+                }
+              />
+            );
+          } else if (question.type === AnswerType.RATING_SCALE) {
             return (
               <RatingScaleQuestion
                 key={`quest-${question.id}`}
                 title={question.question ?? question.text}
                 options={question?.options}
-                source={decodeURI(params.slug)}
+                config={
+                  componentConfig[params.slug as keyof typeof componentConfig]
+                    ?.ratingScaleQuestion
+                }
                 name={question.id}
                 value={formik.values[question.id]}
                 onChange={formik.handleChange}
+              />
+            );
+          } else {
+            return (
+              <InputQuestions
+                onChange={formik.handleChange}
+                value={formik.values[question.id]}
+                key={`quest-${question.id}`}
+                name={question.id}
+                title={question.question}
               />
             );
           }

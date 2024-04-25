@@ -1,3 +1,4 @@
+import { storeKeys } from "@/utils/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -27,6 +28,6 @@ export const useConfig = create<ConfigState>()(
       updateConfig: (config) =>
         set((state) => ({ config: transformConfig(state.config, config) })),
     }),
-    { name: "prosocial_config" },
+    { name: storeKeys.CONFIG_STORE },
   ),
 );

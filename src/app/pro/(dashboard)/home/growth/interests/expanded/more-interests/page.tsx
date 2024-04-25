@@ -114,7 +114,7 @@ export default function InterestedExtendedPage() {
         <Flex justifyContent="flex-end">
           <BackButton
             icon={<GrClose />}
-            destination={appRouteLinks.interestsExpaned}
+            destination={appRouteLinks.interestsExpanded}
           />
         </Flex>
         <Text fontWeight="lg" fontSize="2xl">

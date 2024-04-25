@@ -14,6 +14,7 @@ export default function UseRegistrationPage() {
   const [phone, setPhone] = useState("");
   const toast = useToast();
   const router = useRouter();
+  const [acceptTc, setAcceptTc] = useState(false);
 
   useEffect(() => {
     setCookie(configExtras.user_visited_intro_page, "true");
@@ -62,6 +63,14 @@ export default function UseRegistrationPage() {
       universityId: "",
     },
     onSubmit: (values) => {
+      if (!acceptTc) {
+        toast({
+          description:
+            "Please, accept the Terms and Conditions before signing up",
+          status: "error",
+        });
+        return;
+      }
       const { dob, email, password, firstName, lastName, universityId } =
         values;
       if (!phone) {
@@ -96,5 +105,13 @@ export default function UseRegistrationPage() {
     validationSchema,
   });
 
-  return { formik, setPhone, phone, loading, loadingGroups, groups } as const;
+  return {
+    formik,
+    setPhone,
+    phone,
+    loading,
+    loadingGroups,
+    groups,
+    setAcceptTc,
+  } as const;
 }

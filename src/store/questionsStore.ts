@@ -1,4 +1,5 @@
 import { SubmitUserInterestInput } from "@/__generated__/graphql";
+import { storeKeys } from "@/utils/constants";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -27,6 +28,25 @@ interface QuestionsState {
   interestsAnswer: SubmitUserInterestInput[];
   // eslint-disable-next-line no-unused-vars
   updateInterestsAnswer: (interestsAnswer: SubmitUserInterestInput[]) => void;
+  socialPreferenceAnswers: { [id: number]: string };
+  updateSocialPreferenceAnswers: (
+    // eslint-disable-next-line no-unused-vars
+    socialPreferenceAnswers: { [id: number]: string },
+  ) => void;
+  socialPreferenceReferrees: Record<string, string>;
+  updateSocialPreferenceReferrees: (
+    // eslint-disable-next-line no-unused-vars
+    socialPreferenceReferrees: Record<string, string>,
+  ) => void;
+  submittedQuestions: boolean;
+  // eslint-disable-next-line no-unused-vars
+  updateSubmittedQuestions: (submittedQuestions: boolean) => void;
+  submittedPreferences: boolean;
+  // eslint-disable-next-line no-unused-vars
+  updateSubmittedPreferences: (submittedPreferences: boolean) => void;
+  submittedInterests: boolean;
+  // eslint-disable-next-line no-unused-vars
+  updateSubmittedInterests: (submittedInterests: boolean) => void;
 }
 
 export const useAppQuestions = create<QuestionsState>()(
@@ -47,8 +67,23 @@ export const useAppQuestions = create<QuestionsState>()(
         updateMeAnswers: (meAnswers) => set({ meAnswers }),
         interestsAnswer: [],
         updateInterestsAnswer: (interestsAnswer) => set({ interestsAnswer }),
+        socialPreferenceAnswers: [],
+        updateSocialPreferenceAnswers: (socialPreferenceAnswers) =>
+          set({ socialPreferenceAnswers }),
+        socialPreferenceReferrees: {},
+        updateSocialPreferenceReferrees: (socialPreferenceReferrees) =>
+          set({ socialPreferenceReferrees }),
+        submittedQuestions: false,
+        updateSubmittedQuestions: (submittedQuestions) =>
+          set({ submittedQuestions }),
+        submittedPreferences: false,
+        updateSubmittedPreferences: (submittedPreferences) =>
+          set({ submittedPreferences }),
+        submittedInterests: false,
+        updateSubmittedInterests: (submittedInterests) =>
+          set({ submittedInterests }),
       }),
-      { name: "prosocial_questions" },
+      { name: storeKeys.QUESTIONS_STORE },
     ),
   ),
 );

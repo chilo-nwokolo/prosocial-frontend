@@ -14,6 +14,7 @@ export default function useResultPage() {
   const { data, loading } = useQuery(QUERY_ME_PERSONALITY_SCORE);
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
+  const [resultNote, setResultNote] = useState("");
 
   useAppConfig({
     initialConfig: [
@@ -46,7 +47,7 @@ export default function useResultPage() {
   );
 
   const onSubmit = () => {
-    const result = selected.map((id) => {
+    let result = selected.map((id) => {
       if (personalityBucketQuestions.includes(id)) {
         return {
           response: "yes",
@@ -58,6 +59,19 @@ export default function useResultPage() {
         bucket_id: id,
       };
     });
+    if (resultNote) {
+      result = result.map((result, i) => {
+        if (i === 0) {
+          return {
+            ...result,
+            butterfly_info: {
+              note: resultNote,
+            },
+          };
+        }
+        return result;
+      });
+    }
     submit({
       variables: {
         input: result,
@@ -75,5 +89,7 @@ export default function useResultPage() {
     selected,
     submitting,
     onSubmit,
+    resultNote,
+    setResultNote,
   } as const;
 }

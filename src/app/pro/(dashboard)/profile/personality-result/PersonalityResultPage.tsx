@@ -12,8 +12,10 @@ import {
   Heading,
   Image,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function PersonalityResultPage() {
   // eslint-disable-next-line no-unused-vars
@@ -21,9 +23,20 @@ export default function PersonalityResultPage() {
     state.personalityType,
     state.setPersonalityType,
   ]);
+  const router = useRouter();
+  const toast = useToast();
 
   const { data, loading, error } = useQuery(QUERY_ME_PERSONALITY_SCORE, {
     fetchPolicy: "network-only",
+    onCompleted: (data) => {
+      if (!data.me?.personalityScore?.personalityBucketType) {
+        toast({
+          status: "error",
+          title: "Please complete your registration first",
+        });
+        router.push(appRouteLinks.onbording);
+      }
+    },
   });
 
   const result = data?.me?.personalityScore?.personalityBucketType;
@@ -60,8 +73,8 @@ export default function PersonalityResultPage() {
             </Card>
           ))}
         </Flex>
-        <Link href={appRouteLinks.growth}>
-          <Button width="full">Done</Button>
+        <Link href={appRouteLinks.home}>
+          <Button width="full">Go back</Button>
         </Link>
       </Flex>
     </QueryContainer>

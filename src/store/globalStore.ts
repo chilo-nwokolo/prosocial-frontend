@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Pull_User_GroupQuery } from "@/__generated__/graphql";
+import { storeKeys } from "@/utils/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -43,6 +44,6 @@ export const useGlobalStore = create<GlobalState>()(
       setInteractionFeedback: (interactionFeedback) =>
         set({ interactionFeedback }),
     }),
-    { name: "prosocial_global" },
+    { name: storeKeys.GLOBAL_STORE },
   ),
 );

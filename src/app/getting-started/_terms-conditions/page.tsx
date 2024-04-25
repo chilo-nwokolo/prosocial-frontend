@@ -31,8 +31,15 @@ export default function TermsAndConditionsPage() {
 
   return (
     <Box position="relative">
-      <Box>
-        <Text fontWeight="500" fontSize="lg">
+      <Box
+        border="1px solid"
+        bg="white"
+        borderColor="primary.200"
+        p="5"
+        mt="-5"
+        mx="-6"
+      >
+        <Text as="h1" fontWeight="500" fontSize="lg">
           ProSocial Networks LLC Terms of Use Agreement
         </Text>
         &nbsp;
@@ -1632,9 +1639,23 @@ export default function TermsAndConditionsPage() {
           request a refund as described above in Section 8.
         </Text>
       </Box>
-      <Box position="fixed" bottom="0" bg="#fdf5e9" p="4" ml="-6" w="lg">
+      <Box
+        position="fixed"
+        bottom="0"
+        bg="#fdf5e9"
+        p="4"
+        ml="-6"
+        w="lg"
+        borderTop="1px solid"
+        borderTopColor="primary.200"
+      >
         <Flex>
-          <Checkbox onChange={(state) => setCanAccept(state.target.checked)}>
+          <Checkbox
+            colorScheme="red"
+            size="lg"
+            fontSize="larger"
+            onChange={(state) => setCanAccept(state.target.checked)}
+          >
             I have read and accept the Terms and Conditions
           </Checkbox>
         </Flex>

@@ -27,7 +27,7 @@ export const Button = defineStyleConfig({
       color: "white",
       boxShadow: "2px 2px 1px 0px #000",
       _hover: {
-        bg: "#f95c47",
+        bg: "#F93A20",
         color: "white",
       },
       _active: {
@@ -36,16 +36,16 @@ export const Button = defineStyleConfig({
       },
     },
     secondary: {
-      bg: "#e3d5d6",
-      color: "#3a3738",
-      boxShadow: "2px 2px 1px 0px #876a6c",
+      bg: "#fff",
+      color: "#3A3738",
+      boxShadow: "2px 2px 1px 0px #876a6c94",
       _hover: {
-        bg: "#f95c47",
-        color: "white",
+        bg: "#D8EBF3",
+        color: "#3A3738",
       },
       _active: {
-        bg: "#e3d5d6",
-        boxShadow: "0px 0px 1px 0px #000",
+        bg: "#D8EBF3",
+        boxShadow: "0px 0px 1px 0px #876a6c94",
       },
     },
     outline: {

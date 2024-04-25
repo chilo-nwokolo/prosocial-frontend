@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { GrGrow } from "react-icons/gr";
 // import { FaPeopleArrows } from "react-icons/fa";
 import { BiSolidChevronRight } from "react-icons/bi";
 import { appRouteLinks } from "@/utils/constants";
@@ -7,13 +6,21 @@ import Link from "next/link";
 
 const homeSections = [
   {
-    id: 1,
-    icon: <GrGrow style={{ fontSize: "30px" }} />,
-    title: "Growth",
-    desc: "Discover your strengths and growth areas",
-    subText: "Tell us about your talents and interests",
-    destination: appRouteLinks.growth,
+    id: 3,
+    title: "Your personality",
+    destination: appRouteLinks.profilePersonalityResult,
+    desc: "",
+    subText: "",
+    icon: null,
   },
+  // {
+  //   id: 1,
+  //   icon: <GrGrow style={{ fontSize: "30px" }} />,
+  //   title: "Growth",
+  //   desc: "Discover your strengths and growth areas",
+  //   subText: "Tell us about your talents and interests",
+  //   destination: appRouteLinks.growth,
+  // },
   // {
   //   id: 2,
   //   title: "Social",
@@ -27,6 +34,15 @@ const homeSections = [
 export default function HomePage() {
   return (
     <Flex flexDir="column" w="full" gap="5">
+      <Box gap="4" mb="3">
+        <Text as="h2" fontWeight="lg" fontSize="2xl">
+          What to expect next
+        </Text>
+        <Text mt="3">
+          You will receive an email from support@prosocialnetworks.com with your
+          group and instructions for your outing by June 1st.
+        </Text>
+      </Box>
       {homeSections.map((section) => (
         <Link href={section.destination} key={section.id}>
           <Flex
@@ -41,7 +57,7 @@ export default function HomePage() {
             py="10"
             px="5"
           >
-            <Text>{section.icon}</Text>
+            <Text>{section?.icon}</Text>
             <Flex alignItems="center" gap="4">
               <Text fontWeight="medium" fontSize="2xl">
                 {section.title}

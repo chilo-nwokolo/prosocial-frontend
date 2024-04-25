@@ -21,6 +21,8 @@ export const appRouteLinks = {
   // authenticated routes
   intro: "/pro/intro",
   result: "/pro/intro/result",
+  introInterests: "/pro/intro/interests",
+  introSocialPreferences: "/pro/intro/social-preferences",
   resultSuccess: "/pro/intro/result/success",
   // dashboard routes
   home: "/pro/home",
@@ -36,8 +38,8 @@ export const appRouteLinks = {
   socialPreference: "/pro/profile/social-preference",
   socialScheduleSuccess: "/pro/profile/social-preference/success",
   interestsPair: "/pro/home/growth/interests/pair",
-  interestsExpaned: "/pro/home/growth/interests/expanded",
-  interestsExpanedMore: "/pro/home/growth/interests/expanded/more-interests",
+  interestsExpanded: "/pro/home/growth/interests/expanded",
+  interestsExpandedMore: "/pro/home/growth/interests/expanded/more-interests",
   logout: "/pro/logout",
   // outing feedback routes
   outingFeedback: "/group-feedback",
@@ -64,8 +66,11 @@ export const formFeedback = {
 };
 
 export const AnswerType = {
+  RATING_SCALE_LABEL: "RATING_SCALE_LABEL",
   RATING_SCALE: "RATING_SCALE",
   SINGLE_CHOICE: "SINGLE_CHOICE",
+  MULTIPLE_CHOICE: "MULTIPLE_CHOICE",
+  TEXT: "TEXT",
 };
 
 export const configExtras = {
@@ -80,6 +85,7 @@ export const configExtras = {
   user_quiz_personality_2: "user_quiz_personality-2",
   user_quiz_personality_3: "user_quiz_personality-3",
   user_has_seen_retyped_result_1: "user_has_seen_retyped_result_1",
+  user_accepted_terms_and_conditions: "user_accepted_terms_and_conditions",
 };
 
 export const externalLinks = {
@@ -93,4 +99,11 @@ export const userType = "userType";
 export const youtubeLinks = {
   welcomePageDesktop: "nt4VRSr0JNs?rel=0",
   welcomePageMobile: "DmwvnBVP0zw?rel=0",
+};
+
+export const storeKeys = {
+  QUESTIONS_STORE: "prosocial_questions",
+  GLOBAL_STORE: "prosocial_global",
+  CONFIG_STORE: "prosocial_config",
+  USER_STORE: "prosocial_user",
 };

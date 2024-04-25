@@ -3,12 +3,12 @@ import { AnswerType } from "@/utils/constants";
 export const genderOptions = [
   { id: 1, title: "Female", value: "FEMALE" },
   { id: 2, title: "Male", value: "MALE" },
-  {
-    id: 3,
-    title: "Gender variant/Non-conforming",
-    value: "NONCONFORMING",
-  },
-  { id: 4, title: "Transgender", value: "TRANSGENDER" },
+  // {
+  //   id: 3,
+  //   title: "Gender variant/Non-conforming",
+  //   value: "NONCONFORMING",
+  // },
+  // { id: 4, title: "Transgender", value: "TRANSGENDER" },
   { id: 5, title: "Prefer not to answer", value: "OTHER" },
 ];
 
@@ -66,6 +66,7 @@ export const relationshipStatusOptions = [
     title: "In a committed relationship",
     value: "In a committed relationship",
   },
+  { id: 4, title: "Married", value: "Married" },
 ];
 
 export const politicalOrientationOptions = [
@@ -103,66 +104,118 @@ export const personalQuestionsData = [
     questions: [
       {
         id: "gender",
-        question: "What gender do you identify with?",
+        question: "1. What gender do you identify with?",
         options: genderOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
         id: "race",
-        question: "What is your race/ethnicity?",
+        question: "2. What is your race/ethnicity?",
         options: raceOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
         id: "relationship_status",
-        question: "What is your relationship status?",
+        question: "3. What is your relationship status?",
         options: relationshipStatusOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
         id: "level_of_education",
-        question: "What is your level of education?",
+        question: "4. What is your level of education?",
         options: educationOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
       {
         id: "zip_code",
-        question: "What is your zip code?",
+        question: "5. What is your zip code?",
         type: "text",
       },
       {
         id: "political_orientation",
-        question: "What is your political orientation?",
+        question: "6. What is your political orientation?",
         options: politicalOrientationOptions,
         type: AnswerType.RATING_SCALE,
       },
       {
-        id: "socialization",
-        question: "How often do you go out to socialize?",
+        id: "type_of_city_grown",
+        question:
+          "7. What kind of area did you grow up in from ages 0-18? Select all that apply:",
         options: [
-          { id: 1, title: "Almost never", value: "Almost never" },
-          { id: 2, title: "1/x a week", value: "1/x a week" },
-          { id: 3, title: "2/x a week", value: "2/x a week" },
-          { id: 4, title: "Most days", value: "Most days" },
-          { id: 5, title: "Every day", value: "Every day" },
+          { id: 1, title: "City", value: "City" },
+          { id: 2, title: "Town", value: "Town" },
+          { id: 3, title: "Suburban", value: "Suburban" },
+          { id: 4, title: "Rural", value: "Rural" },
+        ],
+        type: AnswerType.MULTIPLE_CHOICE,
+      },
+      {
+        id: "family_size_in_numbers",
+        question:
+          "8. How big is your family of origin (the people that you lived with)?",
+        options: [
+          { id: 1, title: "1-2 people", value: "1-2 people" },
+          { id: 2, title: "3-4 people", value: "3-4 people" },
+          { id: 3, title: "5-7 people", value: "5-7 people" },
+          { id: 4, title: "7+ people", value: "7+ people" },
+        ],
+        type: AnswerType.MULTIPLE_CHOICE,
+      },
+      {
+        id: "occupation",
+        question: "9. What is your occupation?",
+        type: AnswerType.TEXT,
+      },
+      {
+        id: "has_children",
+        question: "10. Do you have children??",
+        options: [
+          { id: 1, title: "Yes", value: "true" },
+          { id: 2, title: "No", value: "false" },
         ],
         type: AnswerType.RATING_SCALE,
       },
       {
-        id: "to_socialization",
-        question: "How often would you like to go out to socialize?",
+        id: "religiosity_range",
+        question: "11. Do you consider yourself religious or spiritual?",
         options: [
-          { id: 1, title: "Almost never", value: "Almost never" },
-          { id: 2, title: "1/x a week", value: "1/x a week" },
-          { id: 3, title: "2/x a week", value: "2/x a week" },
-          { id: 4, title: "Most days", value: "Most days" },
-          { id: 5, title: "Every day", value: "Every day" },
+          { id: 1, title: "1", value: "1" },
+          { id: 2, title: "2", value: "2" },
+          { id: 3, title: "3", value: "3" },
+          { id: 4, title: "4", value: "4" },
+          { id: 5, title: "5", value: "5" },
+          { id: 6, title: "6", value: "6" },
+          { id: 7, title: "7", value: "7" },
         ],
         type: AnswerType.RATING_SCALE,
       },
+      // {
+      //   id: "socialization",
+      //   question: "12. How often do you go out to socialize?",
+      //   options: [
+      //     { id: 1, title: "Almost never", value: "Almost never" },
+      //     { id: 2, title: "1/x a week", value: "1/x a week" },
+      //     { id: 3, title: "2/x a week", value: "2/x a week" },
+      //     { id: 4, title: "Most days", value: "Most days" },
+      //     { id: 5, title: "Every day", value: "Every day" },
+      //   ],
+      //   type: AnswerType.RATING_SCALE,
+      // },
+      // {
+      //   id: "to_socialization",
+      //   question: "13. How often would you like to go out to socialize?",
+      //   options: [
+      //     { id: 1, title: "Almost never", value: "Almost never" },
+      //     { id: 2, title: "1/x a week", value: "1/x a week" },
+      //     { id: 3, title: "2/x a week", value: "2/x a week" },
+      //     { id: 4, title: "Most days", value: "Most days" },
+      //     { id: 5, title: "Every day", value: "Every day" },
+      //   ],
+      //   type: AnswerType.RATING_SCALE,
+      // },
       {
         id: "health_rating",
-        question: "How would you rate your health, generally speaking?",
+        question: "12. How would you rate your health, generally speaking?",
         options: healthRatingOptions,
         type: AnswerType.RATING_SCALE,
       },
@@ -183,5 +236,13 @@ export const personalQuestionsData = [
     meta: "In the past month...",
     description:
       "The following questions are designed to help us understand how you currently feel about life. For every question, please choose the answer that best describes how you felt during the past month.",
+  },
+  {
+    id: 4,
+    section: "How you approach life",
+    totalQuestions: 30,
+    meta: "I am someone who",
+    description:
+      "Do your best to choose the option that best reflects your behaviors, actions and thoughts",
   },
 ];

@@ -1,3 +1,4 @@
+import { ComponentConfigType } from "@/app/pro/(onboarding)/intro/[slug]/componentConfig";
 import {
   Box,
   Flex,
@@ -21,7 +22,7 @@ type Props = {
       }[]
     | null
     | undefined;
-  source: string;
+  config?: ComponentConfigType;
   name: string;
   error?: string;
   // eslint-disable-next-line no-unused-vars
@@ -42,6 +43,7 @@ export function RadioCard(props: any) {
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
+        borderColor="gray.500"
         _checked={{
           bg: "teal.600",
           color: "white",
@@ -66,7 +68,7 @@ export default function RatingScaleQuestion({
   title,
   options,
   error,
-  source,
+  config,
   name,
   onChange,
   value,
@@ -84,50 +86,55 @@ export default function RatingScaleQuestion({
         as="legend"
         border="1px solid"
         mb="0"
-        borderColor="gray.200"
+        borderColor="gray.500"
         p="5"
         w="full"
       >
-        {source === "The basics" ? title : title.toLowerCase()}
+        {config?.lowerCaseTitle ? title.toLowerCase() : title}
       </FormLabel>
       <RadioGroup defaultValue={value}>
         <HStack {...group} gap="0">
           {options?.length
             ? options.map((value) => {
                 const radio = getRadioProps({
-                  value: source === "The basics" ? value.value : value.id,
+                  value: config?.useIdAsValue ? value.id : value.value,
                   onChange,
                 });
                 return (
                   <RadioCard key={value.id} {...radio}>
-                    {source === "Behaviors and beliefs"
-                      ? value?.title?.charAt(value?.title.length - 1)
-                      : value.title}
+                    {config?.returnTitle
+                      ? value.title
+                      : value?.title?.charAt(value?.title.length - 1)}
                   </RadioCard>
                 );
               })
             : null}
         </HStack>
       </RadioGroup>
-      {source === "Behaviors and beliefs" ? (
+      {config?.hasLabel ? (
         <Flex
           border="1px solid"
-          borderColor="gray.200"
+          borderColor="gray.500"
           borderTop="none"
           justifyContent="space-between"
           px="2"
         >
-          <Text fontSize="xs">
-            Strongly <br />
-            disagree
+          <Text fontSize="xs" whiteSpace="pre-line" textAlign="center">
+            {config?.leftLabel}
           </Text>
-          <Text fontSize="xs">
-            Strongly <br />
-            agree
+          <Text fontSize="xs" whiteSpace="pre-line" textAlign="center">
+            {config?.midLabel}
+          </Text>
+          <Text fontSize="xs" whiteSpace="pre-line" textAlign="center">
+            {config?.rightLabel}
           </Text>
         </Flex>
       ) : null}
-      {error ? <FormHelperText>{error}</FormHelperText> : null}
+      {error ? (
+        <FormHelperText color="critical.100" fontSize="xs">
+          {error}
+        </FormHelperText>
+      ) : null}
     </FormControl>
   );
 }

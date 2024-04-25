@@ -11,6 +11,7 @@ export const transformQuestions = (
     description: personalQuestionsData[0]?.description,
     totalQuestions: personalQuestionsData[0].questions?.length,
     questions: personalQuestionsData[0].questions,
+    destination: personalQuestionsData[0].section,
   };
 
   const otherQuestions = questions.onBoardCategoriesWithQuestions?.map(
@@ -20,13 +21,17 @@ export const transformQuestions = (
       if (category.id === "2") {
         questions = questionsClone?.sort(() => Math.random() - 0.5);
       }
+
+      const renameCategory = category.name.replace("&", "and");
+
       return {
         id: category.id,
-        category: category.name.replace("&", "and"),
+        category: renameCategory,
         meta: personalQuestionsData[parseInt(category.id) - 1]?.meta,
         description:
           personalQuestionsData[parseInt(category.id) - 1]?.description,
         totalQuestions: category.questions?.length,
+        destination: renameCategory,
         questions,
       };
     },

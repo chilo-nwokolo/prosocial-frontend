@@ -3,7 +3,12 @@ import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import { LOGIN_USER } from "../gql";
-import { AccessToken, appRouteLinks, formFeedback } from "@/utils/constants";
+import {
+  AccessToken,
+  appRouteLinks,
+  formFeedback,
+  storeKeys,
+} from "@/utils/constants";
 import { useToast } from "@chakra-ui/react";
 import { useUserStore } from "@/store";
 import { deleteCookie, getCookie, setCookie } from "@/libs/cookies";
@@ -38,7 +43,8 @@ export default function useLoginPage() {
           password,
         },
         onCompleted: (data) => {
-          localStorage.removeItem("prosocial_user");
+          localStorage.removeItem(storeKeys.USER_STORE);
+          localStorage.removeItem(storeKeys.QUESTIONS_STORE);
           updateUser(data);
           router.push(appRouteLinks.onbording);
           setCookie("accessToken", data.login.token);

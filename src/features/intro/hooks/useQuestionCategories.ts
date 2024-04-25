@@ -1,16 +1,28 @@
-import { useAppQuestions } from "@/store";
+import { useAppQuestions, useConfig } from "@/store";
 import { useMutation } from "@apollo/client";
 import { useDisclosure, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { QUESTION_RESPONSE_MUTATION, UPDATE_USER_PROFILE } from "../gql";
-import { appRouteLinks } from "@/utils/constants";
+import { appRouteLinks, configExtras } from "@/utils/constants";
 import { apolloErrorHandler, combineIntoFormattedArray } from "@/utils/helpers";
+import { useMemo } from "react";
 
 export default function useQuestionCategories() {
-  const [onboardQuestions, onboardAnswers] = useAppQuestions((state) => [
+  const [
+    onboardQuestions,
+    onboardAnswers,
+    socialPreferenceAnswers,
+    updateSubmittedQuestions,
+    updateSubmittedPreferences,
+  ] = useAppQuestions((state) => [
     state.onboardQuestions,
     state.onboardAnswers,
+    state.socialPreferenceAnswers,
+    state.updateSubmittedQuestions,
+    state.updateSubmittedPreferences,
   ]);
+  const [config] = useConfig((state) => [state.config]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const toast = useToast();
@@ -39,7 +51,7 @@ export default function useQuestionCategories() {
     },
   });
 
-  const getQuestionsAnswersCount = () => {
+  const getQuestionsAnswersCount = useMemo(() => {
     const answersObject = Object?.values(onboardAnswers || {}).flat();
 
     const questionsLength = onboardQuestions?.reduce(
@@ -51,8 +63,15 @@ export default function useQuestionCategories() {
     const answersLength = answersObject.reduce((acc: number, curr: any) => {
       return acc + Object.keys(curr).length;
     }, 0);
-    return questionsLength === answersLength;
-  };
+
+    const result = questionsLength === answersLength;
+
+    if (result) {
+      updateSubmittedQuestions(true);
+    }
+
+    return result;
+  }, [onboardAnswers, onboardQuestions, updateSubmittedQuestions]);
 
   const onSubmit = async () => {
     onOpen();
@@ -81,6 +100,50 @@ export default function useQuestionCategories() {
     });
   };
 
+  const calculateSocialPreferenceAnswers = useMemo(() => {
+    const singleKeys = ["4", "5", "6", "7", "18"];
+    let counted1 = false;
+    let counted2 = false;
+
+    let count = 0;
+
+    for (let key in socialPreferenceAnswers) {
+      if (singleKeys.includes(key)) {
+        if (socialPreferenceAnswers[key].length) {
+          count += 1;
+        }
+      }
+      if (
+        !counted1 &&
+        socialPreferenceAnswers["8"].length &&
+        socialPreferenceAnswers["9"].length &&
+        socialPreferenceAnswers["10"].length
+      ) {
+        counted1 = true;
+        count += 1;
+      }
+      if (
+        !counted2 &&
+        socialPreferenceAnswers["12"].length &&
+        socialPreferenceAnswers["13"].length &&
+        socialPreferenceAnswers["14"].length
+      ) {
+        counted2 = true;
+        count += 1;
+      }
+    }
+
+    if (config[configExtras.user_has_uploaded_profile_picture]) {
+      count += 1;
+    }
+
+    if (count === 8) {
+      updateSubmittedPreferences(true);
+    }
+
+    return `${count} / 8`;
+  }, [config, socialPreferenceAnswers, updateSubmittedPreferences]);
+
   return {
     isOpen,
     onboardQuestions,
@@ -88,5 +151,6 @@ export default function useQuestionCategories() {
     onClose,
     onboardAnswers,
     getQuestionsAnswersCount,
+    calculateSocialPreferenceAnswers,
   } as const;
 }

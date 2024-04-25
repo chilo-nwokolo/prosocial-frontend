@@ -40,7 +40,7 @@ export default function WelcomePage() {
         </Flex>
       </TranscriptComponent>
       <Flex justifyContent="center" flexDir="column" gap="4" my="8">
-        <Link href={appRouteLinks.serviceTerms}>
+        <Link href={appRouteLinks.register}>
           <Button w="full">Next</Button>
         </Link>
       </Flex>
