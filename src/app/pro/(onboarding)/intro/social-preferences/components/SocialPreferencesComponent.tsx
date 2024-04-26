@@ -135,7 +135,7 @@ export default function SocialPreferencesComponent() {
         // Fitness 19 member
         const refereesLength = referrals.length;
 
-        if (!refereesLength || refereesLength % 2 > 0) {
+        if (!refereesLength) {
           toast({
             status: "error",
             description:
@@ -191,7 +191,7 @@ export default function SocialPreferencesComponent() {
           },
         ];
       }
-
+      // console.log("formData :>> ", formData);
       mutate({
         variables: {
           input: {
