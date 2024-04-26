@@ -10,12 +10,13 @@ export default function SuccessPage() {
           Awesome!
         </Text>
         <Text>
-          Now you need to set your social preferences so that we can pair you
-          for an outing.
+          You have also been sent a confirmation email that you completed the
+          registration. You will receive an email by June 1 with the members of
+          your group for your outing.
         </Text>
         <Flex flexDir="column" gap="4" mt="10">
           <Link href={`${appRouteLinks.home}`}>
-            <Button w="full">Next</Button>
+            <Button w="full">Done</Button>
           </Link>
         </Flex>
       </Box>
