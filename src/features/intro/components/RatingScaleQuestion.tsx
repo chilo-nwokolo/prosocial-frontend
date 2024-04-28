@@ -111,6 +111,25 @@ export default function RatingScaleQuestion({
             : null}
         </HStack>
       </RadioGroup>
+      {/* TODO figure out a better way to handle this */}
+      {title.includes("religious or spiritual") ? (
+        <Flex
+          border="1px solid"
+          borderColor="gray.500"
+          borderTop="none"
+          justifyContent="space-between"
+          px="2"
+        >
+          <Text fontSize="xs" whiteSpace="pre-line" textAlign="center">
+            Strongly <br />
+            disagree
+          </Text>
+          <Text fontSize="xs" whiteSpace="pre-line" textAlign="center">
+            Strongly <br />
+            agree
+          </Text>
+        </Flex>
+      ) : null}
       {config?.hasLabel ? (
         <Flex
           border="1px solid"

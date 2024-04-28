@@ -167,6 +167,15 @@ export function convertSocialPrefResponseToInitialValues(
                   `ref-lastName-friend-${option.key?.charAt(option.key.length - 1)}`
                 ] = lastname;
               });
+            } else if (
+              answer.social_preference_option.id === "30" &&
+              answer.meta?.length
+            ) {
+              answer.meta?.forEach((option) => {
+                const [firstname, lastname] = option.value!.split(" ");
+                referrals[`ref-firstName-friend-1`] = firstname;
+                referrals[`ref-lastName-friend-1`] = lastname;
+              });
             }
           } else {
             // @ts-ignore
