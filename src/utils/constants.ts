@@ -89,7 +89,7 @@ export const configExtras = {
 };
 
 export const externalLinks = {
-  email: "prosocialapplication@gmail.com",
+  email: "support@prosocialnetworks.com",
   website: "https://www.prosocialnetworks.com/",
 };
 

@@ -10,7 +10,7 @@ export default function SuccessPage() {
           Awesome!
         </Text>
         <Text>
-          You have also been sent a confirmation email that you completed the
+          You have been sent a confirmation email that you completed the
           registration. You will receive an email by June 1 with the members of
           your group for your outing.
         </Text>

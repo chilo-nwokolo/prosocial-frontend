@@ -168,7 +168,7 @@ export const personalQuestionsData = [
       },
       {
         id: "has_children",
-        question: "10. Do you have children??",
+        question: "10. Do you have children?",
         options: [
           { id: 1, title: "Yes", value: "true" },
           { id: 2, title: "No", value: "false" },
