@@ -1,8 +1,12 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+"use client";
+import { Box, Flex, Text, useToast } from "@chakra-ui/react";
 // import { FaPeopleArrows } from "react-icons/fa";
 import { BiSolidChevronRight } from "react-icons/bi";
-import { appRouteLinks } from "@/utils/constants";
+import { appRouteLinks, configExtras, externalLinks } from "@/utils/constants";
 import Link from "next/link";
+import useAppConfig from "@/hooks/useAppConfig";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const homeSections = [
   {
@@ -32,6 +36,24 @@ const homeSections = [
 ];
 
 export default function HomePage() {
+  const { config, loading } = useAppConfig({});
+  const router = useRouter();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (
+      !loading &&
+      config &&
+      !config[configExtras.user_has_seen_personality_score]
+    ) {
+      toast({
+        status: "error",
+        description: "Please, complete your registration first",
+      });
+      return router.push(appRouteLinks.onbording);
+    }
+  }, [config, loading]);
+
   return (
     <Flex flexDir="column" w="full" gap="5">
       <Box gap="4" mb="3">
@@ -39,8 +61,8 @@ export default function HomePage() {
           What to expect next
         </Text>
         <Text mt="3">
-          You will receive an email from support@prosocialnetworks.com with your
-          group and instructions for your outing by June 1st.
+          You will receive an email from {externalLinks.email} with your group
+          and instructions for your outing by June 1st.
         </Text>
       </Box>
       {homeSections.map((section) => (

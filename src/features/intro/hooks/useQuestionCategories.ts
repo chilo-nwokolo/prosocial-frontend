@@ -104,6 +104,7 @@ export default function useQuestionCategories() {
     const singleKeys = ["4", "5", "6", "7", "18"];
     let counted1 = false;
     let counted2 = false;
+    console.log("socialPreferenceAnswers :>> ", socialPreferenceAnswers);
 
     let count = 0;
 
@@ -131,6 +132,10 @@ export default function useQuestionCategories() {
         counted2 = true;
         count += 1;
       }
+    }
+
+    if (!socialPreferenceAnswers["18"]) {
+      count += 1;
     }
 
     if (config[configExtras.user_has_uploaded_profile_picture]) {
