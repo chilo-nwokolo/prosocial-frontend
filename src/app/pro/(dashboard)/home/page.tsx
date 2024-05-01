@@ -52,6 +52,7 @@ export default function HomePage() {
       });
       return router.push(appRouteLinks.onbording);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config, loading]);
 
   return (
