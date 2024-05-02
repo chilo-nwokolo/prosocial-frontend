@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAppQuestions } from "@/store";
 import { useMutation, useQuery } from "@apollo/client";
 import {
+  CONFIRM_USER_SUBMISSION,
   QUERY_ME_PERSONALITY_SCORE,
   USER_BUCKET_QUESTIONS_RESPONSE_INPUT,
 } from "../gql";
@@ -11,10 +12,16 @@ import { appRouteLinks, configExtras } from "@/utils/constants";
 import useAppConfig from "@/hooks/useAppConfig";
 
 export default function useResultPage() {
-  const { data, loading } = useQuery(QUERY_ME_PERSONALITY_SCORE);
+  const { data, loading } = useQuery(QUERY_ME_PERSONALITY_SCORE, {
+    onCompleted: () => {
+      mutate();
+    },
+  });
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
   const [resultNote, setResultNote] = useState("");
+
+  const [mutate] = useMutation(CONFIRM_USER_SUBMISSION);
 
   useAppConfig({
     initialConfig: [

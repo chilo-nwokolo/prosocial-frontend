@@ -86,3 +86,12 @@ export const UPDATE_USER_PROFILE = gql(`
     }
   }
 `);
+
+export const CONFIRM_USER_SUBMISSION = gql(`
+  mutation CONFIRM_USER_SUBMISSION {
+    confirmUserSubmission {
+      status
+      message
+    }
+  }
+`);
