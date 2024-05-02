@@ -2,6 +2,7 @@ import { Providers } from "@/components/Providers";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>{children}</Providers>
+        {process.env.NODE_ENV === "production" ? (
+          <GoogleAnalytics gaId="G-VYFS0L1TWZ" />
+        ) : null}
       </body>
     </html>
   );
