@@ -88,10 +88,12 @@ export default function InterestedExtendedPage() {
 
   const [key, setKey] = useState(1);
 
-  const [interestsAnswer, updateInterestsAnswer] = useAppQuestions((state) => [
-    state.interestsAnswer,
-    state.updateInterestsAnswer,
-  ]);
+  const [interestsAnswer, updateInterestsAnswer, updateSubmittedInterests] =
+    useAppQuestions((state) => [
+      state.interestsAnswer,
+      state.updateInterestsAnswer,
+      state.updateSubmittedInterests,
+    ]);
 
   const {
     data: result,
@@ -171,6 +173,7 @@ export default function InterestedExtendedPage() {
         status: "success",
         title: "Interests updated successfully",
       });
+      updateSubmittedInterests(true);
       await client.refetchQueries({
         include: ["QUERY_INTERESTS_BY_NONE_TRAITS"],
       });

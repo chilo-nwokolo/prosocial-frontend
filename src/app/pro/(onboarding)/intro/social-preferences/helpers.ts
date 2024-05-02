@@ -134,8 +134,6 @@ export function convertSocialPrefResponseToInitialValues(
 
   let referrals: Record<string, string> = {};
 
-  console.log(response);
-
   const answers = response.user?.social_preference_answers;
 
   if (answers?.length) {

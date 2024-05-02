@@ -191,7 +191,6 @@ export default function SocialPreferencesComponent() {
           },
         ];
       }
-      // console.log("formData :>> ", formData);
       mutate({
         variables: {
           input: {
@@ -231,8 +230,6 @@ export default function SocialPreferencesComponent() {
 
     const referreesLength = Object.keys(socialPreferenceReferrees).length;
 
-    console.log({ socialPreferenceReferrees });
-
     if (referreesLength) {
       for (let key in socialPreferenceReferrees) {
         result[key] = socialPreferenceReferrees[key];
@@ -243,7 +240,6 @@ export default function SocialPreferencesComponent() {
       const map = Array.from(set).map((item) => {
         return { name: item, value: "" };
       });
-      console.log(map);
       setReferrals(map);
     }
   }, [socialPreferenceReferrees]);

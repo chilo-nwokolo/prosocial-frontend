@@ -9,12 +9,16 @@ import { useMemo } from "react";
 
 export default function useQuestionCategories() {
   const [
+    submittedInterests,
+    submittedPreferences,
     onboardQuestions,
     onboardAnswers,
     socialPreferenceAnswers,
     updateSubmittedQuestions,
     updateSubmittedPreferences,
   ] = useAppQuestions((state) => [
+    state.submittedInterests,
+    state.submittedPreferences,
     state.onboardQuestions,
     state.onboardAnswers,
     state.socialPreferenceAnswers,
@@ -74,6 +78,20 @@ export default function useQuestionCategories() {
   }, [onboardAnswers, onboardQuestions, updateSubmittedQuestions]);
 
   const onSubmit = async () => {
+    if (!submittedPreferences) {
+      toast({
+        status: "error",
+        description: "Please, complete the social preferences section",
+      });
+      return;
+    }
+    if (!submittedInterests) {
+      toast({
+        status: "error",
+        description: "Please, complete the interests section",
+      });
+      return;
+    }
     onOpen();
     const profileAnswers = onboardAnswers["The-basics"];
 
@@ -104,7 +122,6 @@ export default function useQuestionCategories() {
     const singleKeys = ["4", "5", "6", "7", "18"];
     let counted1 = false;
     let counted2 = false;
-    console.log("socialPreferenceAnswers :>> ", socialPreferenceAnswers);
 
     let count = 0;
 
@@ -142,7 +159,7 @@ export default function useQuestionCategories() {
       count += 1;
     }
 
-    if (count === 8) {
+    if (count >= 7) {
       updateSubmittedPreferences(true);
     }
 
