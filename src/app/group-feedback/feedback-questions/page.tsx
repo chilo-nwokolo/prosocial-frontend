@@ -112,6 +112,7 @@ export default function FeedbackQuestionsPage() {
 
   useEffect(() => {
     checkResultBreakdown();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkResultBreakdown = useCallback(() => {
