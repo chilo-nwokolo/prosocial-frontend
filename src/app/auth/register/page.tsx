@@ -107,6 +107,7 @@ export default function RegistrationPage() {
                 international
                 className="telInput"
                 withCountryCallingCode
+                // @ts-ignore
                 value={phone}
                 // @ts-ignore
                 onChange={setPhone}
