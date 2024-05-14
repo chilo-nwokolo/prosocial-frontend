@@ -46,6 +46,9 @@ export const appRouteLinks = {
   outingFeedbackCards: "/group-feedback/feedback-cards",
   outingFeedbackQuestions: "/group-feedback/feedback-questions",
   outingFeedbackSuccess: "/group-feedback/feedback-questions/success",
+  outingFeedbackToGroup: "/group-feedback/feedback-to-group",
+  outingFeedbackHowDidTheOutingGo: "/group-feedback/how-did-the-outing-go",
+  outingFeedbackSecondOuting: "/group-feedback/second-outing",
 };
 
 export const adminRoutes = {

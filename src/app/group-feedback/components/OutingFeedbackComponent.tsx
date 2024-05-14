@@ -5,7 +5,7 @@ import FormInput from "@/components/General/FormInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useGlobalStore } from "@/store";
+import { GroupUser, useGlobalStore } from "@/store";
 import { useEffect } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { PULL_USER_GROUP } from "../graphql/gql";
@@ -22,17 +22,34 @@ const field = {
 export default function OutingFeedbackComponent() {
   const router = useRouter();
   const toast = useToast();
-  const [setOutingDate, setUserData, userData, updateGroupData] =
-    useGlobalStore((state) => [
-      state.setOutingDate,
-      state.setUserData,
-      state.userData,
-      state.updateGroupData,
-    ]);
+  const [
+    setOutingDate,
+    setUserData,
+    userData,
+    updateGroupData,
+    setOutingGroupMembers,
+  ] = useGlobalStore((state) => [
+    state.setOutingDate,
+    state.setUserData,
+    state.userData,
+    state.updateGroupData,
+    state.setOutingGroupMembers,
+  ]);
 
   const [getUserGroup, { loading }] = useLazyQuery(PULL_USER_GROUP, {
     onCompleted: (data) => {
       updateGroupData(data.pullUserGroupParticipants);
+
+      const result = [] as GroupUser[];
+
+      data?.pullUserGroupParticipants?.users?.forEach((user) => {
+        if (user.unique_id !== userData?.userId) {
+          result.push(user);
+        }
+      });
+
+      setOutingGroupMembers(result);
+
       router.push(appRouteLinks.outingFeedbackCards);
     },
     onError: (error) => {

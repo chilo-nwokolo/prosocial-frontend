@@ -1,7 +1,6 @@
 "use client";
 import { InteractionFeedbackType, useGlobalStore } from "@/store";
 import { appRouteLinks, formFeedback } from "@/utils/constants";
-import { useMutation } from "@apollo/client";
 import {
   Button,
   Flex,
@@ -9,15 +8,12 @@ import {
   FormHelperText,
   Text,
   Textarea,
-  useToast,
 } from "@chakra-ui/react";
-import { ChangeEvent, useEffect, useState } from "react";
-import { MUTATION_SUBMIT_FEEDBACK } from "../graphql/gql";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { FeedbackConnection, FeedbackResponse } from "@/__generated__/graphql";
-import { apolloErrorHandler } from "@/utils/helpers";
 
 const connections = {
   YES: "did feel a connection",
@@ -75,47 +71,14 @@ const QuestionBox = ({
 };
 
 export default function FeedbackQuestionsPage() {
-  const [
-    interactionFeedback,
-    userData,
-    outingDate,
-    setOutingDate,
-    setInteractionFeedback,
-    updateGroupData,
-    setUserData,
-  ] = useGlobalStore((state) => [
-    state.interactionFeedback,
-    state.userData,
-    state.outingDate,
-    state.setOutingDate,
-    state.setInteractionFeedback,
-    state.updateGroupData,
-    state.setUserData,
-  ]);
+  const [interactionFeedback, outingDate, setFeedbackResponses] =
+    useGlobalStore((state) => [
+      state.interactionFeedback,
+      state.outingDate,
+      state.setFeedbackResponses,
+    ]);
 
   const router = useRouter();
-  const toast = useToast();
-
-  const [submitFeedback, { loading }] = useMutation(MUTATION_SUBMIT_FEEDBACK, {
-    onCompleted: (data) => {
-      setOutingDate("");
-      setInteractionFeedback([]);
-      updateGroupData(null);
-      setUserData(null);
-      toast({
-        status: "success",
-        title: data.submitFeedback?.message,
-      });
-      formik.resetForm();
-      router.push(appRouteLinks.outingFeedbackSuccess);
-    },
-    onError: (error) => {
-      toast({
-        status: "error",
-        title: apolloErrorHandler(error),
-      });
-    },
-  });
 
   const validationSchema = yup.object({
     answerOne: yup.string().required(formFeedback.required),
@@ -138,17 +101,9 @@ export default function FeedbackQuestionsPage() {
         };
       });
 
-      const formData = {
-        group_id: userData!.groupId,
-        unique_user_id: userData!.userId,
-        feedbackResponses: responses,
-      };
+      setFeedbackResponses(responses);
 
-      submitFeedback({
-        variables: {
-          input: { ...formData },
-        },
-      });
+      router.push(appRouteLinks.outingFeedbackToGroup);
     },
     validationSchema,
   });
@@ -156,70 +111,53 @@ export default function FeedbackQuestionsPage() {
   const [result, setResult] = useState<ResultType[]>([]);
 
   useEffect(() => {
+    checkResultBreakdown();
+  }, []);
+
+  const checkResultBreakdown = useCallback(() => {
     const resultbreakdown: {
       [x: string]: InteractionFeedbackType[];
     } = {
       YES: [],
       NO: [],
-      NOINTERACTION: [],
     };
 
-    const selectedIndex = [];
+    let initialResult: ResultType[] = [];
 
-    const finalResult = [];
+    let hasYes = false;
 
     interactionFeedback.forEach((feedback) => {
       if (feedback.connection === "YES") {
         resultbreakdown.YES.push(feedback);
       } else if (feedback.connection === "NO") {
         resultbreakdown.NO.push(feedback);
-      } else if (feedback.connection === "NOINTERACTION") {
-        resultbreakdown.NOINTERACTION.push(feedback);
       }
     });
 
-    if (resultbreakdown.YES.length >= 1) {
-      for (const res in resultbreakdown) {
-        if (res === "YES") {
-          const items = resultbreakdown[res];
-          const randomIndex = Math.floor(Math.random() * items.length);
-          selectedIndex.push(randomIndex);
-          const item = items[randomIndex];
-          finalResult.push(item);
-        }
-      }
+    if (resultbreakdown?.YES?.length < 1 && resultbreakdown?.NO?.length < 1) {
+      router.push(appRouteLinks.outingFeedbackToGroup);
+      return;
     }
 
-    if (resultbreakdown.NO.length >= 1) {
-      for (const res in resultbreakdown) {
-        if (res === "NO") {
-          const items = resultbreakdown[res];
-          const randomIndex = Math.floor(Math.random() * items.length);
-          selectedIndex.push(randomIndex);
-          const item = items[randomIndex];
-          finalResult.push(item);
-        }
-      }
+    if (resultbreakdown?.YES?.length) {
+      hasYes = true;
+      const question = resultbreakdown["YES"][0];
+      initialResult = [
+        ...initialResult,
+        { ...question, inputName: "answerOne" },
+      ];
     }
 
-    if (selectedIndex.length < 1) {
-      finalResult.push(interactionFeedback[0]);
-      finalResult.push(interactionFeedback[2]);
-    } else if (selectedIndex.length === 1) {
-      const intlength = interactionFeedback.length;
-      if (!selectedIndex.includes(intlength - 1)) {
-        finalResult.push(interactionFeedback[intlength - 1]);
-      } else {
-        finalResult.push(interactionFeedback[intlength - 2]);
-      }
+    if (resultbreakdown?.NO?.length) {
+      const question2 = resultbreakdown["NO"][0];
+      initialResult = [
+        ...initialResult,
+        { ...question2, inputName: hasYes ? "answerTwo" : "answerOne" },
+      ];
     }
 
-    const res = finalResult.map((result, i) => {
-      return { ...result, inputName: i === 0 ? "answerOne" : "answerTwo" };
-    });
-
-    setResult(res);
-  }, [interactionFeedback]);
+    setResult(initialResult);
+  }, [interactionFeedback, router]);
 
   return (
     <Flex flexDir="column">
@@ -245,9 +183,7 @@ export default function FeedbackQuestionsPage() {
           ))}
         </Flex>
         <Flex mt="5" justifyContent="center">
-          <Button isLoading={loading} type="submit">
-            Save
-          </Button>
+          <Button type="submit">Save</Button>
         </Flex>
       </form>
     </Flex>

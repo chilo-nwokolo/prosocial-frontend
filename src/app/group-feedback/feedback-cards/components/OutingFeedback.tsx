@@ -11,10 +11,9 @@ const StudentRateBox = dynamic(
 );
 
 export default function OutingFeedback() {
-  const [groupData, interactionFeedback, userData] = useGlobalStore((state) => [
-    state.groupData,
+  const [outingGroupMembers, interactionFeedback] = useGlobalStore((state) => [
+    state.outingGroupMembers,
     state.interactionFeedback,
-    state.userData,
   ]);
 
   return (
@@ -30,19 +29,15 @@ export default function OutingFeedback() {
         if we match you with them again.
       </Text>
       <Flex mt="5" flexDir="column" gap="5">
-        {groupData?.users?.map((user) => {
-          if (user.unique_id === userData?.userId) {
-            return null;
-          }
-          return <StudentRateBox key={user.id} user={user} />;
+        {outingGroupMembers?.map((user) => {
+          return <StudentRateBox key={user?.id} user={user} />;
         })}
       </Flex>
       <Flex mt="5" justifyContent="center">
         <Link href={appRouteLinks.outingFeedbackQuestions}>
           <Button
             isDisabled={
-              Number(groupData?.users?.length) - 1 !==
-              interactionFeedback.length
+              outingGroupMembers?.length !== interactionFeedback.length
             }
           >
             Save

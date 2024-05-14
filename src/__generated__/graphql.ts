@@ -101,6 +101,7 @@ export enum DayName {
 }
 
 export enum FeedbackConnection {
+  Needmoreinteraction = 'NEEDMOREINTERACTION',
   No = 'NO',
   Nointeraction = 'NOINTERACTION',
   Yes = 'YES'
@@ -108,6 +109,7 @@ export enum FeedbackConnection {
 
 export type FeedbackResponse = {
   connection?: InputMaybe<FeedbackConnection>;
+  meta?: InputMaybe<Array<MetaKeyValueInput>>;
   note?: InputMaybe<Scalars['String']['input']>;
   receiving_user_id?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -348,14 +350,20 @@ export type OutingFeedback = {
   feedback_responses?: Maybe<Array<OutingFeedbackResponse>>;
   group?: Maybe<UserGroup>;
   id: Scalars['ID']['output'];
+  meta?: Maybe<Array<MetaKeyValue>>;
+  outing_feedback_note?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   user?: Maybe<User>;
+  user_excluded_matches?: Maybe<Array<User>>;
 };
 
 export type OutingFeedbackInput = {
   feedbackResponses: Array<FeedbackResponse>;
   group_id: Scalars['ID']['input'];
+  meta?: InputMaybe<Array<MetaKeyValueInput>>;
+  outing_feedback_note?: InputMaybe<Scalars['String']['input']>;
   unique_user_id: Scalars['ID']['input'];
+  user_excluded_matches?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type OutingFeedbackResponse = {
@@ -363,6 +371,7 @@ export type OutingFeedbackResponse = {
   connection?: Maybe<FeedbackConnection>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['ID']['output'];
+  meta?: Maybe<Array<MetaKeyValue>>;
   note?: Maybe<Scalars['String']['output']>;
   outing_feedback?: Maybe<OutingFeedback>;
   receiving_user?: Maybe<User>;

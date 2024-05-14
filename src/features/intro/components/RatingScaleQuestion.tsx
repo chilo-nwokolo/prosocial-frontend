@@ -11,9 +11,10 @@ import {
   useRadio,
   useRadioGroup,
 } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 type Props = {
-  title: string;
+  title: string | ReactNode;
   options:
     | {
         id: string;
@@ -82,16 +83,21 @@ export default function RatingScaleQuestion({
 
   return (
     <FormControl as="fieldset">
-      <FormLabel
-        as="legend"
-        border="1px solid"
-        mb="0"
-        borderColor="gray.500"
-        p="5"
-        w="full"
-      >
-        {config?.lowerCaseTitle ? title.toLowerCase() : title}
-      </FormLabel>
+      {typeof title === "string" ? (
+        <FormLabel
+          as="legend"
+          border="1px solid"
+          mb="0"
+          borderColor="gray.500"
+          p="5"
+          w="full"
+        >
+          {config?.lowerCaseTitle ? title.toLowerCase() : title}
+        </FormLabel>
+      ) : (
+        title
+      )}
+
       <RadioGroup defaultValue={value}>
         <HStack {...group} gap="0">
           {options?.length
@@ -112,7 +118,7 @@ export default function RatingScaleQuestion({
         </HStack>
       </RadioGroup>
       {/* TODO figure out a better way to handle this */}
-      {title.includes("religious or spiritual") ? (
+      {typeof title === "string" && title.includes("religious or spiritual") ? (
         <Flex
           border="1px solid"
           borderColor="gray.500"

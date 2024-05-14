@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { Pull_User_GroupQuery } from "@/__generated__/graphql";
+import {
+  FeedbackResponse,
+  Pull_User_GroupQuery,
+} from "@/__generated__/graphql";
 import { storeKeys } from "@/utils/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -17,6 +20,20 @@ export type InteractionFeedbackType = {
 
 type pullUserGroupData = Pull_User_GroupQuery["pullUserGroupParticipants"];
 
+export type GroupUser = {
+  __typename?: "User" | undefined;
+  id: string;
+  name: string;
+  unique_id: string;
+  profile?:
+    | {
+        __typename?: "UserProfile" | undefined;
+        avatar?: string | null | undefined;
+      }
+    | null
+    | undefined;
+};
+
 interface GlobalState {
   outingDate: string;
   // eslint-disable-next-line no-unused-vars
@@ -29,6 +46,20 @@ interface GlobalState {
   setInteractionFeedback: ([
     { connection, userId },
   ]: InteractionFeedbackType[]) => void;
+  blockFromOuting: string[];
+  updateBlockFromOuting: (blockFromOuting: string[]) => void;
+  feedbackResponses: FeedbackResponse[];
+  setFeedbackResponses: (feedbackResponses: FeedbackResponse[]) => void;
+  excludeUsers: string[];
+  setExcludeUsers: (excludeUsers: string[]) => void;
+  outingGroupMembers: GroupUser[] | null;
+  setOutingGroupMembers: (outingGroupMembers: GroupUser[] | null) => void;
+  outingTextFeedback: string;
+  setOutingTextFeedback: (outingTextFeedback: string) => void;
+  participationConfirmation: string;
+  setParticipationConfirmation: (participationConfirmation: string) => void;
+  secondOuting: string;
+  setSecondOuting: (secondOuting: string) => void;
 }
 
 export const useGlobalStore = create<GlobalState>()(
@@ -43,6 +74,23 @@ export const useGlobalStore = create<GlobalState>()(
       interactionFeedback: [],
       setInteractionFeedback: (interactionFeedback) =>
         set({ interactionFeedback }),
+      blockFromOuting: [],
+      updateBlockFromOuting: (blockFromOuting) => set({ blockFromOuting }),
+      feedbackResponses: [],
+      setFeedbackResponses: (feedbackResponses) => set({ feedbackResponses }),
+      excludeUsers: [],
+      setExcludeUsers: (excludeUsers) => set({ excludeUsers }),
+      outingGroupMembers: null,
+      setOutingGroupMembers: (outingGroupMembers) =>
+        set({ outingGroupMembers }),
+      outingTextFeedback: "",
+      setOutingTextFeedback: (outingTextFeedback) =>
+        set({ outingTextFeedback }),
+      participationConfirmation: "",
+      setParticipationConfirmation: (participationConfirmation) =>
+        set({ participationConfirmation }),
+      secondOuting: "",
+      setSecondOuting: (secondOuting) => set({ secondOuting }),
     }),
     { name: storeKeys.GLOBAL_STORE },
   ),

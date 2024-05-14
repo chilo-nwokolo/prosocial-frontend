@@ -64,7 +64,7 @@ const registrationOptions2 = [
     inputType: "password",
     name: "password",
     infoText:
-      "Password must contain at least 8 characters and a combination of uppercase letters, lowercase letters, numbers, and symbols.",
+      "Password must contain at least 8 characters and a combination of uppercase letters, lowercase letters, numbers, and symbols. Symbols include: !, @, #, $, %, ^, &, *, (, ), _, and +.",
   },
 ];
 

@@ -1,4 +1,4 @@
-import { InteractionFeedbackType, useGlobalStore } from "@/store";
+import { GroupUser, InteractionFeedbackType, useGlobalStore } from "@/store";
 import { updateInteractionArray } from "@/utils/admin.utils";
 import { ImageLinks } from "@/utils/constants";
 import {
@@ -11,19 +11,6 @@ import {
   useRadio,
   useRadioGroup,
 } from "@chakra-ui/react";
-
-type User = {
-  __typename?: "User" | undefined;
-  id: string;
-  name: string;
-  profile?:
-    | {
-        __typename?: "UserProfile" | undefined;
-        avatar?: string | null | undefined;
-      }
-    | null
-    | undefined;
-};
 
 export function RadioCard(props: any) {
   const { getInputProps, getRadioProps } = useRadio(props);
@@ -60,9 +47,10 @@ export function RadioCard(props: any) {
   );
 }
 
-export default function StudentRateBox({ user }: { user: User }) {
+export default function StudentRateBox({ user }: { user: GroupUser }) {
   const options = [
     { title: "Yes", value: "YES" },
+    { title: "Need More Interaction", value: "NEEDMOREINTERACTION" },
     { title: "No", value: "NO" },
     { title: "Didn't interact", value: "NOINTERACTION" },
   ];
@@ -74,10 +62,10 @@ export default function StudentRateBox({ user }: { user: User }) {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "feedback",
     onChange: (status) => {
-      handleResponse({ connection: status, userId: user.id, name: user.name });
+      handleResponse({ connection: status, userId: user?.id, name: user.name });
     },
     defaultValue:
-      interactionFeedback.find((feedback) => feedback.userId === user.id)
+      interactionFeedback.find((feedback) => feedback.userId === user?.id)
         ?.connection || "",
   });
 
