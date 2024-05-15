@@ -50,20 +50,6 @@ type MeInterestResponse = {
   is_top_interest?: TopInterestEnum | null | undefined;
 };
 
-// eslint-disable-next-line no-unused-vars
-const topInterestIds = [
-  "19",
-  "27",
-  "38",
-  "44",
-  "62",
-  "70",
-  "74",
-  "88",
-  "95",
-  "109",
-];
-
 export default function InterestedExtendedPage() {
   const { updateConfig } = useAppConfig({});
 
