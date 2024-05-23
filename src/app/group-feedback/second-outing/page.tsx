@@ -23,7 +23,7 @@ export default function OutingFeedbackSecondOuting() {
           <Text fontSize="2xl" as="h1" mt="3" fontWeight="semibold">
             Outing feedback
           </Text>
-          <Text fontSize="sm" as="h2">
+          <Text mt="3" fontSize="xl" as="h2">
             Would you like to go on a second outing for a second free month
             membership at Fitness 19?
           </Text>
