@@ -18,9 +18,6 @@ export default function OutingFeedback() {
 
   return (
     <Flex flexDir="column">
-      <Text fontSize="sm" textAlign="right">
-        Complete in about 3 minutes.
-      </Text>
       <Text fontSize="2xl" mt="3" fontWeight="semibold">
         Outing feedback
       </Text>

@@ -16,12 +16,17 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 export default function FeedbackPage() {
-  const [setOutingTextFeedback, setParticipationConfirmation] = useGlobalStore(
-    (state) => [
-      state.setOutingTextFeedback,
-      state.setParticipationConfirmation,
-    ],
-  );
+  const [
+    setOutingTextFeedback,
+    setParticipationConfirmation,
+    outingTextFeedback,
+    participationConfirmation,
+  ] = useGlobalStore((state) => [
+    state.setOutingTextFeedback,
+    state.setParticipationConfirmation,
+    state.outingTextFeedback,
+    state.participationConfirmation,
+  ]);
 
   const router = useRouter();
 
@@ -32,8 +37,8 @@ export default function FeedbackPage() {
 
   const formik = useFormik({
     initialValues: {
-      feedback: "",
-      willParticipate: "",
+      feedback: outingTextFeedback || "",
+      willParticipate: participationConfirmation || "",
     },
     onSubmit: (data) => {
       setOutingTextFeedback(data.feedback);

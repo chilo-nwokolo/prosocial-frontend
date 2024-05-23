@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function FeedbackToGroup() {
-  const [outingGroupMembers, setExcludeUsers] = useGlobalStore((state) => [
-    state.outingGroupMembers,
-    state.setExcludeUsers,
-  ]);
+  const [outingGroupMembers, setExcludeUsers, excludeUsers] = useGlobalStore(
+    (state) => [
+      state.outingGroupMembers,
+      state.setExcludeUsers,
+      state.excludeUsers,
+    ],
+  );
 
   const router = useRouter();
   const [checked, setChecked] = useState<string[]>([]);
@@ -49,7 +52,11 @@ export default function FeedbackToGroup() {
         {outingGroupMembers?.map((user, i) => {
           return (
             <Box p="3" bg={i % 2 === 0 ? "gray.100" : "#fff"} key={user.id}>
-              <Checkbox value={user.id} onChange={() => handleCheck(user.id)}>
+              <Checkbox
+                value={user.id}
+                defaultChecked={excludeUsers.includes(user.id)}
+                onChange={() => handleCheck(user.id)}
+              >
                 {user.name}
               </Checkbox>
             </Box>

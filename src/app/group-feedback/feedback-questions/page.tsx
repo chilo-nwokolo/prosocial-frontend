@@ -1,6 +1,6 @@
 "use client";
 import { InteractionFeedbackType, useGlobalStore } from "@/store";
-import { appRouteLinks, formFeedback } from "@/utils/constants";
+import { appRouteLinks } from "@/utils/constants";
 import {
   Button,
   Flex,
@@ -12,7 +12,6 @@ import {
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import * as yup from "yup";
 import { FeedbackConnection, FeedbackResponse } from "@/__generated__/graphql";
 
 const connections = {
@@ -71,33 +70,49 @@ const QuestionBox = ({
 };
 
 export default function FeedbackQuestionsPage() {
-  const [interactionFeedback, outingDate, setFeedbackResponses] =
-    useGlobalStore((state) => [
-      state.interactionFeedback,
-      state.outingDate,
-      state.setFeedbackResponses,
-    ]);
+  const [
+    interactionFeedback,
+    outingDate,
+    setFeedbackResponses,
+    feedbackResponses,
+  ] = useGlobalStore((state) => [
+    state.interactionFeedback,
+    state.outingDate,
+    state.setFeedbackResponses,
+    state.feedbackResponses,
+  ]);
 
   const router = useRouter();
 
-  const validationSchema = yup.object({
-    answerOne: yup.string().required(formFeedback.required),
-    answerTwo: yup.string().required(formFeedback.required),
-  });
+  const genInitialValues = () => {
+    const result: { [x: string]: string } = {};
+    if (feedbackResponses.length) {
+      feedbackResponses.forEach((responses) => {
+        responses.meta?.forEach((meta) => {
+          if (meta.value.includes("answer")) {
+            result[meta.value] = responses?.note || "";
+          }
+        });
+      });
+    } else {
+      result["answerOne"] = "";
+      result["answerTwo"] = "";
+    }
+    return result;
+  };
 
   const formik = useFormik({
-    initialValues: {
-      answerOne: "",
-      answerTwo: "",
-    },
+    initialValues: genInitialValues(),
     onSubmit: (feedback) => {
       const responses: FeedbackResponse[] = result.map((res) => {
         return {
-          note: `${
-            feedback[res.inputName as keyof typeof feedback]
-          } \n Outing Date: ${outingDate}`,
+          note: `${feedback[res.inputName as keyof typeof feedback]}`,
           connection: res.connection as FeedbackConnection,
           receiving_user_id: res.userId,
+          meta: [
+            { key: "outingDate", value: outingDate },
+            { key: "location", value: res.inputName },
+          ],
         };
       });
 
@@ -105,7 +120,7 @@ export default function FeedbackQuestionsPage() {
 
       router.push(appRouteLinks.outingFeedbackToGroup);
     },
-    validationSchema,
+    enableReinitialize: true,
   });
 
   const [result, setResult] = useState<ResultType[]>([]);
@@ -162,9 +177,6 @@ export default function FeedbackQuestionsPage() {
 
   return (
     <Flex flexDir="column">
-      <Text fontSize="sm" textAlign="right">
-        Complete in about 3 minutes.
-      </Text>
       <Text fontSize="2xl" mt="3" fontWeight="semibold">
         Two Questions
       </Text>
