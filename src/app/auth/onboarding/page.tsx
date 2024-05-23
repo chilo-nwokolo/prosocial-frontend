@@ -38,12 +38,12 @@ export default function OnboardingPage() {
 
   const [
     updateOnboardQuestions,
-    updateOnboardAnswers,
+    // updateOnboardAnswers,
     updateSocialPreferenceAnswers,
     updateSocialPreferenceReferrees,
   ] = useAppQuestions((state) => [
     state.updateOnboardQuestions,
-    state.updateOnboardAnswers,
+    // state.updateOnboardAnswers,
     state.updateSocialPreferenceAnswers,
     state.updateSocialPreferenceReferrees,
   ]);
@@ -68,7 +68,7 @@ export default function OnboardingPage() {
 
   const [getQuestions, { loading }] = useLazyQuery(QUERY_QUESTIONS, {
     onCompleted: (data) => {
-      updateOnboardAnswers(null);
+      // updateOnboardAnswers(null);
       const result = transformQuestions(data);
       updateOnboardQuestions(result);
       // localStorage.clear();

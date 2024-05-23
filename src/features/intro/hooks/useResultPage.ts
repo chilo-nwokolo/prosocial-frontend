@@ -29,11 +29,15 @@ export default function useResultPage() {
     ],
   });
 
-  const [updatePersonalityBucketQuestions, personalityBucketQuestions] =
-    useAppQuestions((state) => [
-      state.updatePersonalityBucketQuestions,
-      state.personalityBucketQuestions,
-    ]);
+  const [
+    updatePersonalityBucketQuestions,
+    personalityBucketQuestions,
+    updateOnboardAnswers,
+  ] = useAppQuestions((state) => [
+    state.updatePersonalityBucketQuestions,
+    state.personalityBucketQuestions,
+    state.updateOnboardAnswers,
+  ]);
 
   const result = data?.me?.personalityScore?.personalityBucketType;
 
@@ -48,6 +52,7 @@ export default function useResultPage() {
         apolloErrorHandler(error);
       },
       onCompleted: () => {
+        updateOnboardAnswers(null);
         router.push(appRouteLinks.resultSuccess);
       },
     },
