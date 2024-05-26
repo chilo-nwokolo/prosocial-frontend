@@ -15,7 +15,7 @@ export default function EmailConfirmationPage() {
           ProSocial.
         </Text>
         <Link href={appRouteLinks.login}>
-          <Button w="full">Go to Login</Button>
+          <Button w="full">Close</Button>
         </Link>
       </Flex>
     </Center>

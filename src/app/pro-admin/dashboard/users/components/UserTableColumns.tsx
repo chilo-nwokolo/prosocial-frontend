@@ -1,4 +1,5 @@
 import { Query_Admin_UsersQuery } from "@/__generated__/graphql";
+import { calculateAge } from "@/utils/admin.utils";
 import { Box, Checkbox } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 
@@ -41,7 +42,7 @@ export const columns = [
     cell: (info) => (
       <Box>
         {/* @ts-ignore */}
-        {new Date().getFullYear() - new Date(info.getValue()).getFullYear()}
+        {calculateAge(info.getValue())}
       </Box>
     ),
   }),

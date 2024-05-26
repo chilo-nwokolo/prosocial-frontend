@@ -55,7 +55,7 @@ export default function FeedbackPage() {
         <Text fontSize="2xl" as="h1" mt="3" fontWeight="semibold">
           How did the outing go for you?
         </Text>
-        <Text fontSize="sm">
+        <Text>
           Please take a moment to write a few sentences about your experience.
         </Text>
         <FormControl>

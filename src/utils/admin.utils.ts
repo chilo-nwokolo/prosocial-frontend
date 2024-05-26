@@ -150,3 +150,24 @@ export const updateInteractionArray = (
   newFeedback.push(singleFeedback);
   return newFeedback;
 };
+
+export function calculateAge(dobString: Date | string) {
+  // Parse the input date string into a Date object
+  const dob = new Date(dobString);
+
+  // Get the current date
+  const now = new Date();
+
+  // Calculate the year difference
+  let age = now.getFullYear() - dob.getFullYear();
+
+  // Adjust if the current date is before the birth date in the current year
+  const monthDifference = now.getMonth() - dob.getMonth();
+  const dayDifference = now.getDate() - dob.getDate();
+
+  if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+    age--;
+  }
+
+  return age;
+}
