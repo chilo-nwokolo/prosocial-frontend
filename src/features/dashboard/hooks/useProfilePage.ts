@@ -14,7 +14,7 @@ export default function useProfilePage() {
   ]);
   const toast = useToast();
 
-  const { loading, error } = useQuery(ME_QUERY, {
+  const { loading, error, data } = useQuery(ME_QUERY, {
     onCompleted: (data) => {
       setUserProfile(data);
     },
@@ -32,10 +32,12 @@ export default function useProfilePage() {
 
   const password = "password";
 
+  const avatar = data?.me?.profile?.avatar;
+
   const formik = useFormik({
     initialValues: {
-      phone: userProfile?.me?.phone || "+123223233",
-      email: userProfile?.me?.email || "sample@mail.com",
+      phone: data?.me?.phone || "+123223233",
+      email: data?.me?.email || "sample@mail.com",
       password,
     },
     onSubmit: (values) => {
@@ -65,6 +67,6 @@ export default function useProfilePage() {
     error,
     submit,
     updating,
-    userProfile,
+    avatar,
   } as const;
 }

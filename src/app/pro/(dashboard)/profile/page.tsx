@@ -10,7 +10,7 @@ import { appRouteLinks } from "@/utils/constants";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { formik, loading, error, updating, userProfile } = useProfilePage();
+  const { formik, loading, error, updating, avatar } = useProfilePage();
 
   return (
     <QueryContainer loading={loading} error={error}>
@@ -18,9 +18,7 @@ export default function ProfilePage() {
         <Text textAlign="center" fontSize="lg" fontWeight="medium">
           Profile Photo
         </Text>
-        <ProfilePictureUploader
-          currentImage={userProfile?.me?.profile?.avatar}
-        />
+        <ProfilePictureUploader currentImage={avatar} />
         <form onSubmit={formik.handleSubmit}>
           <Flex flexDir="column" gap="5" mb="10">
             <EditableFormInput
