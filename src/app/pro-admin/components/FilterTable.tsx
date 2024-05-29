@@ -15,6 +15,7 @@ import PaginationData from "../dashboard/users/components/PaginationData";
 import { useFilterContext } from "../dashboard/users/hooks/useFilterContext";
 import { useRouter } from "next/navigation";
 import { adminRoutes } from "@/utils/constants";
+import useDownloadData from "../dashboard/users/hooks/useDownloadData";
 
 const AdminTable = dynamic(
   () => import("@/app/pro-admin/dashboard/users/components/AdminTable"),
@@ -36,6 +37,8 @@ export default function FilterTable({
 }: Props) {
   const { groupView } = useFilterContext();
   const router = useRouter();
+  const handleDownload = useDownloadData();
+
   return (
     <>
       <Grid templateColumns="repeat(4, 1fr)" gap={4} mb="5">
@@ -66,7 +69,8 @@ export default function FilterTable({
                 Add to group
               </Button>
               <Button
-              // isDisabled={!table.getSelectedRowModel().flatRows.length}
+                // isDisabled={!table.getSelectedRowModel().flatRows.length}
+                onClick={handleDownload}
               >
                 Download data as CSV
               </Button>
