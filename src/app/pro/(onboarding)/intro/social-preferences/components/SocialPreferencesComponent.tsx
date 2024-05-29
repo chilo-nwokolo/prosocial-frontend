@@ -1,5 +1,5 @@
 "use client";
-import { appRouteLinks, formFeedback } from "@/utils/constants";
+import { appRouteLinks, configExtras, formFeedback } from "@/utils/constants";
 import {
   Box,
   Button,
@@ -25,7 +25,7 @@ import FriendTypeSelect from "./FriendTypeSelect";
 import { useMutation } from "@apollo/client";
 import { convertSocialPreferenceObjectToArray } from "../helpers";
 import { UserSocialPreferenceSubmitInput } from "@/__generated__/graphql";
-import { useAppQuestions } from "@/store";
+import { useAppQuestions, useConfig } from "@/store";
 import {
   fitness19Member,
   outingDynamics,
@@ -35,12 +35,15 @@ import {
 } from "../helpers";
 import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
 import { SUBMIT_SOCIAL_PREFERENCES } from "../graphql/gql";
+import useAppConfig from "@/hooks/useAppConfig";
 
 type ReferralList = { name: string; value: string }[];
 
 export default function SocialPreferencesComponent() {
   const router = useRouter();
   const [referrals, setReferrals] = useState<ReferralList>([]);
+  const { updateConfig } = useAppConfig({});
+  const [updateLocalConfig] = useConfig((state) => [state.updateConfig]);
 
   const [referralInput, setReferralInput] = useState<Record<string, string>>(
     {},
@@ -88,6 +91,10 @@ export default function SocialPreferencesComponent() {
         status: "success",
         description: data.handleSocialPreferenceSubmit.message,
       });
+      updateConfig([
+        { key: configExtras.user_has_filled_social_preferences, value: "true" },
+      ]);
+      updateLocalConfig({ user_has_filled_social_preferences: true });
       router.push(appRouteLinks.intro);
     },
   });

@@ -2,6 +2,7 @@ import {
   QUERY_ME_SETTINGS,
   UPDATE_USER_SETTINGS,
 } from "@/features/dashboard/profile/gql/queries";
+import { client } from "@/service";
 import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 
@@ -56,6 +57,7 @@ export default function useAppConfig({
         "config ::: ",
         data.updateUserSettings.settings?.preference_settings,
       );
+      client.refetchQueries({ include: [QUERY_ME_SETTINGS] });
     },
   });
 

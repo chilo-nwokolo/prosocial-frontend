@@ -125,6 +125,10 @@ export default function useQuestionCategories() {
 
     let count = 0;
 
+    if (!config[configExtras.user_has_filled_social_preferences]) {
+      return `${count} / 8`;
+    }
+
     for (let key in socialPreferenceAnswers) {
       if (singleKeys.includes(key)) {
         if (socialPreferenceAnswers[key].length) {

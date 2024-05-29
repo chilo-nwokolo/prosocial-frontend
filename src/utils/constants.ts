@@ -89,6 +89,7 @@ export const configExtras = {
   user_quiz_personality_3: "user_quiz_personality-3",
   user_has_seen_retyped_result_1: "user_has_seen_retyped_result_1",
   user_accepted_terms_and_conditions: "user_accepted_terms_and_conditions",
+  user_has_filled_social_preferences: "user_has_filled_social_preferences",
 };
 
 export const externalLinks = {
