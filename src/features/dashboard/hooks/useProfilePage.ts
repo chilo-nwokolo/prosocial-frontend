@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useFormik } from "formik";
 import { useQuery, useMutation } from "@apollo/client";
 import { useUserStore } from "@/store";
@@ -20,8 +19,6 @@ export default function useProfilePage() {
       setUserProfile(data);
     },
   });
-
-  const [profileImage] = useState(userProfile?.me?.profile?.avatar || null);
 
   const [submit, { loading: updating }] = useMutation(UPDATE_USER_INFO, {
     onCompleted: () => {
@@ -68,6 +65,6 @@ export default function useProfilePage() {
     error,
     submit,
     updating,
-    profileImage,
+    userProfile,
   } as const;
 }
