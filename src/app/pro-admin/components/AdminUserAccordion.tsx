@@ -19,6 +19,7 @@ import NarcissismFilter from "../dashboard/users/components/NarcissismFilter";
 // import FeedbackFilter from "../dashboard/users/components/FeedbackFilter";
 // import AppliedFilter from "../dashboard/users/components/AppliedFilter";
 import { useFilterContext } from "../dashboard/users/hooks/useFilterContext";
+import SocialFilter from "../dashboard/users/components/SocialFilter";
 
 export default function AdminUserAccordion() {
   const { isOpen, onToggle, onOpen } = useDisclosure();
@@ -58,10 +59,9 @@ export default function AdminUserAccordion() {
           {activeButton === "Affinities" && <AffinitiesFilter />}
           {activeButton === "Group Distribution" && <GroupDistributionFilter />}
           {activeButton === "Big 5 Personality" && <Big5Personality />}
-          {activeButton === "Narcissism - Social beliefs - Behavioral" && (
-            <NarcissismFilter />
-          )}
+          {activeButton === "Psychology" && <NarcissismFilter />}
           {activeButton === "Availability" && <AvailabilityFilter />}
+          {activeButton === "Social" && <SocialFilter />}
           {/* {activeButton === "Interests" && <InterestsFilter />} */}
           {/* {activeButton === "Feedback" && <FeedbackFilter />} */}
           {/* {activeButton === "Applied" && <AppliedFilter />} */}

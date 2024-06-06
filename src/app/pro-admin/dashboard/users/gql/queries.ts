@@ -9,6 +9,21 @@ export const QUERY_ADMIN_USERS = gql(`
       email
       phone
       dob
+    	groups {
+        id
+        name
+      }
+    	social_preference_answers {
+        id
+        answer
+        description
+        social_preference_option {
+          id
+          title
+          note
+          description
+        }
+      }
       question_responses {
         id
       }
@@ -33,6 +48,11 @@ export const QUERY_ADMIN_USERS = gql(`
         race
         relationship_status
         health_rating
+        zip_code
+        has_children
+        occupation
+        family_size_in_numbers
+        type_of_city_grown
       }
     }
   }

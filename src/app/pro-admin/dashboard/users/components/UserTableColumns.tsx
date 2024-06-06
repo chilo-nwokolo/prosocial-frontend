@@ -98,4 +98,16 @@ export const columns = [
   columnHelper.accessor("personalityScore.narcissism", {
     header: () => <span>Narcissism Score</span>,
   }),
+  columnHelper.accessor("profile.type_of_city_grown", {
+    header: () => <span>Home Area</span>,
+  }),
+  columnHelper.accessor("profile.family_size_in_numbers", {
+    header: () => <span>Family of origin size</span>,
+  }),
+  columnHelper.accessor("profile.has_children", {
+    header: () => <span>Has Children</span>,
+  }),
+  columnHelper.accessor("profile.zip_code", {
+    header: () => <span>Zip Code</span>,
+  }),
 ];

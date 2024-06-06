@@ -25,6 +25,17 @@ export const FILTER_CATEGORY_KEYS = {
   socialBeliefsScore: "socialBeliefsScore",
   behavioralHealthScore: "behavioralHealthScore",
   groupId: "groupId",
+  homeArea: "homeArea",
+  zipCode: "zipCode",
+  familySizeInNumbers: "familySizeInNumbers",
+  hasChildren: "hasChildren",
+  friendTypeWanted: "friendTypeWanted",
+  friendTypeSelf: "friendTypeSelf",
+  socialActivityWanted: "socialActivityWanted",
+  socialActivityActual: "socialActivityActual",
+  outingGroupMakeup: "outingGroupMakeup",
+  f19Member: "f19Member",
+  referredAFriend: "referredAFriend",
 };
 
 export const FILTER_QUERY_KEYS = {
@@ -55,6 +66,17 @@ export const FILTER_QUERY_KEYS = {
   behavioralHealthMin: "behavioral_health_min",
   behavioralHealthMax: "behavioral_health_max",
   groupId: "group_id",
+  homeArea: "home_area",
+  zipCode: "zip_code",
+  familySizeInNumbers: "family_size_in_numbers",
+  hasChildren: "has_children",
+  friendTypeWanted: "friend_type_wanted",
+  friendTypeSelf: "friend_type_self",
+  socialActivityWanted: "social_activity_wanted",
+  socialActivityActual: "social_activity_actual",
+  outingGroupMakeup: "outing_group_makeup",
+  f19Member: "f19_member",
+  referredAFriend: "referred_a_friend",
 };
 
 // Filters without children
@@ -66,6 +88,7 @@ export const FILTER_PARENT_NAMES = {
   bigFivePersonality: "big_five_personality",
   narcissismSocialBehavioral: "narcissism_social_behavioral",
   groupId: "group_id",
+  social: "social",
 };
 
 export const activeFilterHandler = (name: string, activeFilters: string[]) => {

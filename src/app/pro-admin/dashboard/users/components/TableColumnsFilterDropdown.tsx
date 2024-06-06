@@ -38,6 +38,26 @@ export const columnsList = [
         value: "Political Orientation",
         key: "profile_political_orientation",
       },
+      {
+        id: 4,
+        value: "Home Area",
+        key: "profile_type_of_city_grown",
+      },
+      {
+        id: 5,
+        value: "Family of origin size",
+        key: "profile_family_size_in_numbers",
+      },
+      {
+        id: 6,
+        value: "Chlildren",
+        key: "profile_has_children",
+      },
+      {
+        id: 7,
+        value: "Zip Code",
+        key: "profile_zip_code",
+      },
     ],
   },
   {

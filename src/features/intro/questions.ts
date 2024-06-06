@@ -93,6 +93,30 @@ export const healthRatingOptions = [
   { id: 5, title: "Excellent", value: "Excellent" },
 ];
 
+export const homeAreaOptions = [
+  { id: 1, title: "City", value: "City" },
+  { id: 2, title: "Town", value: "Town" },
+  { id: 3, title: "Suburban", value: "Suburban" },
+  { id: 4, title: "Rural", value: "Rural" },
+];
+
+export const familySizeOptions = [
+  { id: 1, title: "1-2 people", value: "1-2 people" },
+  { id: 2, title: "3-4 people", value: "3-4 people" },
+  { id: 3, title: "5-7 people", value: "5-7 people" },
+  { id: 4, title: "7+ people", value: "7+ people" },
+];
+
+export const hasChildrenOptionsAdmin = [
+  { id: 1, title: "Yes", value: true },
+  { id: 2, title: "No", value: false },
+];
+
+export const hasChildrenOptions = [
+  { id: 1, title: "Yes", value: "true" },
+  { id: 2, title: "No", value: "false" },
+];
+
 export const personalQuestionsData = [
   {
     id: 1,
@@ -141,24 +165,14 @@ export const personalQuestionsData = [
         id: "type_of_city_grown",
         question:
           "7. What kind of area did you grow up in from ages 0-18? Select all that apply:",
-        options: [
-          { id: 1, title: "City", value: "City" },
-          { id: 2, title: "Town", value: "Town" },
-          { id: 3, title: "Suburban", value: "Suburban" },
-          { id: 4, title: "Rural", value: "Rural" },
-        ],
+        options: homeAreaOptions,
         type: AnswerType.MULTIPLE_CHOICE,
       },
       {
         id: "family_size_in_numbers",
         question:
           "8. How big is your family of origin (the people that you lived with)?",
-        options: [
-          { id: 1, title: "1-2 people", value: "1-2 people" },
-          { id: 2, title: "3-4 people", value: "3-4 people" },
-          { id: 3, title: "5-7 people", value: "5-7 people" },
-          { id: 4, title: "7+ people", value: "7+ people" },
-        ],
+        options: familySizeOptions,
         type: AnswerType.MULTIPLE_CHOICE,
       },
       {
@@ -169,10 +183,7 @@ export const personalQuestionsData = [
       {
         id: "has_children",
         question: "10. Do you have children?",
-        options: [
-          { id: 1, title: "Yes", value: "true" },
-          { id: 2, title: "No", value: "false" },
-        ],
+        options: hasChildrenOptions,
         type: AnswerType.RATING_SCALE,
       },
       {
