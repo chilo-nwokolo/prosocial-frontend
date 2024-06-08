@@ -3,7 +3,6 @@ export default function DownloadFile(
   filename: string,
   mime = "application/octet-stream",
 ) {
-  console.log(data);
   const blob = new Blob([data], { type: mime });
   const blobURL =
     window.URL && window.URL.createObjectURL
