@@ -52,7 +52,6 @@ export default function FilterTable({
   }, [activeUser?.unique_id]);
 
   const handleClick = (user: AdminUserType) => {
-    console.log(user);
     setActiveUser(user);
   };
 
