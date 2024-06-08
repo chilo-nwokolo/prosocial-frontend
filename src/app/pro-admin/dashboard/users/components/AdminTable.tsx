@@ -10,12 +10,15 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { Table as TanstackTable, flexRender } from "@tanstack/react-table";
-import { Query_Admin_UsersQuery } from "@/__generated__/graphql";
+import { AdminUserType } from "@/app/pro-admin/components/UserPreviewModal";
 
 export default function AdminTable({
   table,
+  handleClick,
 }: {
-  table: TanstackTable<Query_Admin_UsersQuery["adminQueryUsers"]>;
+  table: TanstackTable<AdminUserType>;
+  // eslint-disable-next-line no-unused-vars
+  handleClick: (e: any) => void;
 }) {
   return (
     <div className="p-2">
@@ -44,7 +47,11 @@ export default function AdminTable({
           </Thead>
           <Tbody>
             {table.getRowModel().rows.map((row) => (
-              <Tr key={row.id}>
+              <Tr
+                key={row.id}
+                cursor="pointer"
+                onClick={() => handleClick(row.original)}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <Td key={cell.id} border="1px solid">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

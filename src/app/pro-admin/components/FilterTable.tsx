@@ -8,6 +8,7 @@ import {
   GridItem,
   Skeleton,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import TableColumnsFilterDropdown from "../dashboard/users/components/TableColumnsFilterDropdown";
 import dynamic from "next/dynamic";
@@ -16,6 +17,8 @@ import { useFilterContext } from "../dashboard/users/hooks/useFilterContext";
 import { useRouter } from "next/navigation";
 import { adminRoutes } from "@/utils/constants";
 import useDownloadData from "../dashboard/users/hooks/useDownloadData";
+import UserPreviewModal, { AdminUserType } from "./UserPreviewModal";
+import { useEffect, useState } from "react";
 
 const AdminTable = dynamic(
   () => import("@/app/pro-admin/dashboard/users/components/AdminTable"),
@@ -38,6 +41,25 @@ export default function FilterTable({
   const { groupView } = useFilterContext();
   const router = useRouter();
   const handleDownload = useDownloadData();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [activeUser, setActiveUser] = useState<AdminUserType | null>(null);
+
+  useEffect(() => {
+    if (activeUser) {
+      onOpen();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeUser?.unique_id]);
+
+  const handleClick = (user: AdminUserType) => {
+    console.log(user);
+    setActiveUser(user);
+  };
+
+  const handleClose = () => {
+    onClose();
+    setActiveUser(null);
+  };
 
   return (
     <>
@@ -86,11 +108,16 @@ export default function FilterTable({
           </Box>
         ) : (
           <>
-            <AdminTable table={table} />
+            <AdminTable table={table} handleClick={handleClick} />
             <PaginationData table={table} />
           </>
         )}
       </Box>
+      <UserPreviewModal
+        isOpen={isOpen}
+        onClose={handleClose}
+        userInView={activeUser}
+      />
     </>
   );
 }
