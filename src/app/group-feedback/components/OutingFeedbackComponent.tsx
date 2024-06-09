@@ -63,8 +63,12 @@ export default function OutingFeedbackComponent() {
   const params = useSearchParams();
 
   useEffect(() => {
+    let groupId: string = "";
     const userId = params.get("userId");
-    const groupId = params.get("groupId");
+    groupId = params.get("amp;groupId") || "";
+    if (!groupId) {
+      groupId = params.get("groupId") || "";
+    }
     if (userId && groupId) {
       setUserData({ userId, groupId });
     }
