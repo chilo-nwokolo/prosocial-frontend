@@ -1,6 +1,7 @@
 "use client";
 import {
   Box,
+  Flex,
   Table,
   TableContainer,
   Tbody,
@@ -11,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Table as TanstackTable, flexRender } from "@tanstack/react-table";
 import { AdminUserType } from "@/app/pro-admin/components/UserPreviewModal";
+import { FaInfoCircle } from "react-icons/fa";
 
 export default function AdminTable({
   table,
@@ -58,10 +60,17 @@ export default function AdminTable({
                         border="1px solid"
                         onClick={() => handleClick(row.original)}
                       >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
+                        <Flex
+                          alignItems="center"
+                          gap={2}
+                          justifyContent={"space-between"}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                          <FaInfoCircle />
+                        </Flex>
                       </Td>
                     ) : (
                       <Td key={cell.id} border="1px solid">
