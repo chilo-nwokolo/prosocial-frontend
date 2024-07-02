@@ -92,7 +92,7 @@ export default function UseRegistrationPage() {
           },
         },
         onCompleted: () => {
-          router.push(appRouteLinks.confirmEmail);
+          router.push(appRouteLinks.onbording);
         },
         onError: (error) => {
           toast({
