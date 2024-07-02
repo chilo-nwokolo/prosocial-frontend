@@ -1,7 +1,6 @@
 "use client";
 import {
   Box,
-  Button,
   Table,
   TableContainer,
   Tbody,
@@ -30,9 +29,6 @@ export default function AdminTable({
             {table.getHeaderGroups()?.map((headerGroup) => (
               <Tr key={headerGroup.id}>
                 <>
-                  <Th border="1px solid" fontSize="lg" fontWeight="regular">
-                    Action
-                  </Th>
                   {headerGroup.headers.map((header) => (
                     <Th
                       key={header.id}
@@ -55,19 +51,27 @@ export default function AdminTable({
             {table.getRowModel().rows.map((row) => (
               <Tr key={row.id} cursor="pointer">
                 <>
-                  <Td border="1px solid">
-                    <Button onClick={() => handleClick(row.original)}>
-                      View Details
-                    </Button>
-                  </Td>
-                  {row.getVisibleCells().map((cell) => (
-                    <Td key={cell.id} border="1px solid">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </Td>
-                  ))}
+                  {row.getVisibleCells().map((cell) =>
+                    cell.column.id === "name" ? (
+                      <Td
+                        key={cell.id}
+                        border="1px solid"
+                        onClick={() => handleClick(row.original)}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </Td>
+                    ) : (
+                      <Td key={cell.id} border="1px solid">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </Td>
+                    ),
+                  )}
                 </>
               </Tr>
             ))}
