@@ -1,17 +1,19 @@
 "use client";
 import {
   Box,
-  Button,
+  Flex,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
 } from "@chakra-ui/react";
 import { Table as TanstackTable, flexRender } from "@tanstack/react-table";
 import { AdminUserType } from "@/app/pro-admin/components/UserPreviewModal";
+import { FaInfoCircle } from "react-icons/fa";
 
 export default function AdminTable({
   table,
@@ -30,9 +32,6 @@ export default function AdminTable({
             {table.getHeaderGroups()?.map((headerGroup) => (
               <Tr key={headerGroup.id}>
                 <>
-                  <Th border="1px solid" fontSize="lg" fontWeight="regular">
-                    Action
-                  </Th>
                   {headerGroup.headers.map((header) => (
                     <Th
                       key={header.id}
@@ -55,19 +54,36 @@ export default function AdminTable({
             {table.getRowModel().rows.map((row) => (
               <Tr key={row.id} cursor="pointer">
                 <>
-                  <Td border="1px solid">
-                    <Button onClick={() => handleClick(row.original)}>
-                      View Details
-                    </Button>
-                  </Td>
-                  {row.getVisibleCells().map((cell) => (
-                    <Td key={cell.id} border="1px solid">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </Td>
-                  ))}
+                  {row.getVisibleCells().map((cell) =>
+                    cell.column.id === "name" ? (
+                      <Td
+                        key={cell.id}
+                        border="1px solid"
+                        onClick={() => handleClick(row.original)}
+                      >
+                        <Flex
+                          alignItems="center"
+                          gap={2}
+                          justifyContent={"space-between"}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                          <Text color="gray.600">
+                            <FaInfoCircle />
+                          </Text>
+                        </Flex>
+                      </Td>
+                    ) : (
+                      <Td key={cell.id} border="1px solid">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </Td>
+                    ),
+                  )}
                 </>
               </Tr>
             ))}
