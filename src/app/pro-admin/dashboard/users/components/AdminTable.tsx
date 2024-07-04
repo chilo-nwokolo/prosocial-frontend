@@ -6,6 +6,7 @@ import {
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -69,7 +70,9 @@ export default function AdminTable({
                             cell.column.columnDef.cell,
                             cell.getContext(),
                           )}
-                          <FaInfoCircle />
+                          <Text color="gray.600">
+                            <FaInfoCircle />
+                          </Text>
                         </Flex>
                       </Td>
                     ) : (
