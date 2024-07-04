@@ -195,14 +195,19 @@ export default function InterestedExtendedPage() {
     );
 
     if (foundIndex < 0 && !flattenedInterests?.includes(value)) {
-      updateInterestsAnswer([
+      let newInterestAnswer = [
         ...interestsAnswer,
         { response: value, interest_id: id },
-      ]);
+      ];
+      updateInterestsAnswer(newInterestAnswer);
+      setFlattenedInterets(
+        newInterestAnswer.map((interest) => interest.response),
+      );
     } else if (foundIndex >= 0 || flattenedInterests?.includes(value)) {
       const result = [...interestsAnswer];
       result.splice(foundIndex, 1);
       updateInterestsAnswer(result);
+      setFlattenedInterets(result.map((interest) => interest.response));
     }
   };
 
