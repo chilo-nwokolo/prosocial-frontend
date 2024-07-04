@@ -138,6 +138,13 @@ export default function InterestedExtendedPage() {
           interests.push("" + interest.title);
         });
         setFlattenedInterets(interests);
+        updateInterestsAnswer(
+          interestsResponse?.map((interest) => ({
+            interest_id: interest.id as string,
+            response: interest.title as string,
+            is_top_interest: interest.pivot?.is_top_interest,
+          })),
+        );
         setKey(key + 1);
         return;
       }
