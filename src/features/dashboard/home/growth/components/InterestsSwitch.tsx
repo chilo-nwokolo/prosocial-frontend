@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Switch } from "@chakra-ui/react";
+import { Checkbox, FormControl, FormLabel } from "@chakra-ui/react";
 
 type Props = {
   interest: {
@@ -19,7 +19,7 @@ export default function InterestsSwitch({
   return (
     <>
       <FormControl display="flex" alignItems="center" gap="3">
-        <Switch
+        <Checkbox
           colorScheme="gray"
           onChange={(e) => onChange(interest.title as string, e.target.id)}
           value={interest.id as string}
