@@ -25,7 +25,7 @@ export default function InterestsSwitch({
           value={interest.id as string}
           id={interest.id as string}
           defaultChecked={isChecked}
-          checked={isChecked}
+          isChecked={isChecked}
         />
         <FormLabel htmlFor={interest.id as string} w="full" py="2" mb="0">
           {interest.title}

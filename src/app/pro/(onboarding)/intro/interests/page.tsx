@@ -33,7 +33,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { GrClose } from "react-icons/gr";
 
 type Interest = {
@@ -82,10 +82,26 @@ export default function InterestedExtendedPage() {
     ]);
 
   const {
-    data: result,
+    data,
     loading: isLoading,
     error,
   } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
+
+  const result = useMemo(() => {
+    // let sortedData = [...(data?.interestsByNoneTrait ?? [])];
+    return {
+      ...data,
+      interestsByNoneTrait: [...(data?.interestsByNoneTrait ?? [])].sort(
+        (a, b) => {
+          if (a.title && b.title) {
+            if (a.title < b.title) return -1;
+            if (a.title > b.title) return 1;
+          }
+          return 0;
+        },
+      ),
+    };
+  }, [data]);
 
   const getTopInterests = (interests: Array<MeInterestResponse>) => {
     const found = interests.map((interest) => {
@@ -195,13 +211,28 @@ export default function InterestedExtendedPage() {
     );
 
     if (foundIndex < 0 && !flattenedInterests?.includes(value)) {
-      let newInterestAnswer = [
-        ...interestsAnswer,
+      const selectedTrait = result?.interestsByNoneTrait?.find((trait) => {
+        return trait.interests?.find((interest) => interest.id === id);
+      });
+      const currentInterestWithTrait = interestsAnswer.filter((answer) =>
+        selectedTrait?.interests?.find(
+          (interest) => interest.id === answer.interest_id,
+        ),
+      );
+      let filteredInterests = interestsAnswer;
+      if (currentInterestWithTrait) {
+        filteredInterests = interestsAnswer.filter(
+          (interest) => !currentInterestWithTrait.includes(interest),
+        );
+      }
+      const updatedInterests = [
+        ...filteredInterests,
         { response: value, interest_id: id },
       ];
-      updateInterestsAnswer(newInterestAnswer);
+      updateInterestsAnswer(updatedInterests);
+
       setFlattenedInterets(
-        newInterestAnswer.map((interest) => interest.response),
+        updatedInterests?.map((interest) => interest.response),
       );
     } else if (foundIndex >= 0 || flattenedInterests?.includes(value)) {
       const result = [...interestsAnswer];
