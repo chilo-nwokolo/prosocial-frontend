@@ -50,6 +50,9 @@ interface UserState {
   personalityType: UserPersonalityType | null;
   // eslint-disable-next-line no-unused-vars
   setPersonalityType: (personalityType: UserPersonalityType) => void;
+  avatar: File | null;
+  // eslint-disable-next-line no-unused-vars
+  setAvatar: (avatar: File) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -57,7 +60,8 @@ export const useUserStore = create<UserState>()(
     (set) => ({
       user: null,
       updateUser: (user) => set({ user }),
-
+      avatar: null,
+      setAvatar: (avatar) => set({ avatar }),
       userProfile: null,
       setUserProfile: (userProfile) => set({ userProfile }),
 

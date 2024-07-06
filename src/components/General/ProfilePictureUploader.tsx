@@ -18,7 +18,8 @@ import { FiEdit2 } from "react-icons/fi";
 import imageCompression from "browser-image-compression";
 import useAppConfig from "@/hooks/useAppConfig";
 import { configExtras } from "@/utils/constants";
-import { useConfig } from "@/store";
+import { useConfig, useUserStore } from "@/store";
+import { usePathname } from "next/navigation";
 
 type Props = {
   currentImage?: File | string | null;
@@ -35,6 +36,8 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
   const [compressingImage, setCompressingImage] = useState(false);
   const { updateConfig } = useAppConfig({});
   const [updateStoreConfig] = useConfig((state) => [state.updateConfig]);
+  const [setAvatar] = useUserStore((state) => [state.setAvatar]);
+  const pathname = usePathname();
 
   const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
     onCompleted: async () => {
@@ -103,15 +106,21 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
     }
     if (e.target.files?.length) {
       uploadedImage.current = uploadedFile;
-      upload({
-        variables: {
-          input: {
-            profile: {
-              avatar: uploadedFile,
+      if (pathname === "/auth/register") {
+        setAvatar(uploadedFile);
+        setProfileImage(uploadedImage.current);
+        setCompressingImage(false);
+      } else {
+        upload({
+          variables: {
+            input: {
+              profile: {
+                avatar: uploadedFile,
+              },
             },
           },
-        },
-      });
+        });
+      }
     }
   };
 
@@ -123,32 +132,32 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
       w="full"
       mt="10"
     >
+      {loading || compressingImage ? (
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          position="absolute"
+          h="150px"
+          w="150px"
+          bg="gray"
+          opacity="0.4"
+          rounded="full"
+          zIndex="banner"
+          mt="-10"
+        >
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="white"
+            color="blue.900"
+            size="xl"
+          />
+        </Flex>
+      ) : (
+        <></>
+      )}
       {profileImage ? (
         <>
-          {loading || compressingImage ? (
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              position="absolute"
-              h="150px"
-              w="150px"
-              bg="gray"
-              opacity="0.4"
-              rounded="full"
-              zIndex="banner"
-              mt="-10"
-            >
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="white"
-                color="blue.900"
-                size="xl"
-              />
-            </Flex>
-          ) : (
-            <></>
-          )}
           <Box position="relative">
             <Image
               src={
@@ -191,6 +200,7 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
             alignItems="center"
             flexDir="column"
             position="relative"
+            m={0}
           >
             <CgProfile style={{ fontSize: "80px" }} />
             <UploadProfilePictureButton />
