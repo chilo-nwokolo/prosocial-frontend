@@ -1,6 +1,7 @@
 import {
   Login_UserMutation,
   MeQuery,
+  RegisterMutation,
   TimeRange,
 } from "@/__generated__/graphql";
 import { storeKeys } from "@/utils/constants";
@@ -34,9 +35,9 @@ type UserPersonalityType = {
 };
 
 interface UserState {
-  user: Login_UserMutation | null;
+  user: Login_UserMutation | RegisterMutation | null;
   // eslint-disable-next-line no-unused-vars
-  updateUser: (user: Login_UserMutation) => void;
+  updateUser: (user: Login_UserMutation | RegisterMutation) => void;
   userProfile: MeQuery | null;
   // eslint-disable-next-line no-unused-vars
   setUserProfile: (userProfile: MeQuery) => void;

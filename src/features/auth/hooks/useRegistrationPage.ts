@@ -9,13 +9,16 @@ import { QUERY_UNIVERSITY_GROUPS, REGISTER_USER } from "../gql";
 import { useRouter } from "next/navigation";
 import { apolloErrorHandler } from "@/utils/helpers";
 import { setCookie } from "@/libs/cookies";
+import { useConfig, useUserStore } from "@/store";
 
 export default function UseRegistrationPage() {
   const [phone, setPhone] = useState("");
   const toast = useToast();
   const router = useRouter();
   const [acceptTc, setAcceptTc] = useState(false);
+  const [updateUser] = useUserStore((state) => [state.updateUser]);
 
+  const config = useConfig((state) => state.config);
   useEffect(() => {
     setCookie(configExtras.user_visited_intro_page, "true");
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,6 +66,13 @@ export default function UseRegistrationPage() {
       universityId: "",
     },
     onSubmit: (values) => {
+      if (config.user_has_uploaded_profile_picture !== "true") {
+        toast({
+          description: "Please upload a profile picture",
+          status: "error",
+        });
+        return;
+      }
       if (!acceptTc) {
         toast({
           description:
@@ -80,6 +90,7 @@ export default function UseRegistrationPage() {
         });
         return;
       }
+
       register({
         variables: {
           input: {
@@ -91,8 +102,10 @@ export default function UseRegistrationPage() {
             university_id: universityId,
           },
         },
-        onCompleted: () => {
-          router.push(appRouteLinks.confirmEmail);
+        onCompleted: (data) => {
+          updateUser(data);
+          setCookie("accessToken", data.register.token);
+          router.push(appRouteLinks.onbording);
         },
         onError: (error) => {
           toast({

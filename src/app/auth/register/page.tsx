@@ -21,6 +21,7 @@ import AppModal from "@/components/AppModal";
 import Link from "next/link";
 import { appRouteLinks } from "@/utils/constants";
 import IFrameModal from "@/components/General/IFrameModal";
+import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
 
 const registrationOptions = [
   {
@@ -195,6 +196,18 @@ export default function RegistrationPage() {
                 }
               />
             ))}
+
+            <Flex flexDir="column">
+              <Text as="h2" fontWeight="bold">
+                Add a profile photo
+              </Text>
+              <Text mt={2}>
+                Please add a clear photo of your face without sunglasses. Your
+                profile photo is not public but will be seen by potential
+                friends once an outing has been completed.
+              </Text>
+              <ProfilePictureUploader />
+            </Flex>
             <Flex>
               <Checkbox
                 onChange={(state) => setAcceptTc(state.target.checked)}

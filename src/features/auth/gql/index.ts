@@ -12,8 +12,14 @@ export const QUERY_UNIVERSITY_GROUPS = gql(`
 export const REGISTER_USER = gql(`
   mutation Register($input: RegisterUserInput!) {
     register(input: $input) {
+    token
+    user {
       id
       name
+      phone
+      email
+      user_type
+      }
     }
   }
 `);

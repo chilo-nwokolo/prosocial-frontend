@@ -16,6 +16,8 @@ import { deleteCookie, getCookie } from "@/libs/cookies";
 import useAppConfig from "@/hooks/useAppConfig";
 import { QUERY_USER_SOCIAL_PREFERENCE } from "@/app/pro/(onboarding)/intro/social-preferences/graphql/gql";
 import { convertSocialPrefResponseToInitialValues } from "@/app/pro/(onboarding)/intro/social-preferences/helpers";
+import { useMemo } from "react";
+import { Login_UserMutation, RegisterMutation } from "@/__generated__/graphql";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -50,12 +52,18 @@ export default function OnboardingPage() {
   const [userData] = useUserStore((state) => [state.user]);
 
   const toast = useToast();
-
+  const userId = useMemo(() => {
+    return (
+      (userData as RegisterMutation)?.register?.user?.id ||
+      (userData as Login_UserMutation)?.login?.user?.id
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [getSocialPreferences, { loading: loadingUser }] = useLazyQuery(
     QUERY_USER_SOCIAL_PREFERENCE,
     {
       variables: {
-        id: userData?.login.user.id,
+        id: userId,
       },
       onCompleted: (response) => {
         const { result, referrals } =
