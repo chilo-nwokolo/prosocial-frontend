@@ -150,45 +150,20 @@ export const personalQuestionsData = [
         options: educationOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
-      {
-        id: "zip_code",
-        question: "5. What is your zip code?",
-        type: "text",
-      },
-      {
-        id: "political_orientation",
-        question: "6. What is your political orientation?",
-        options: politicalOrientationOptions,
-        type: AnswerType.RATING_SCALE,
-      },
-      {
-        id: "type_of_city_grown",
-        question:
-          "7. What kind of area did you grow up in from ages 0-18? Select all that apply:",
-        options: homeAreaOptions,
-        type: AnswerType.MULTIPLE_CHOICE,
-      },
-      {
-        id: "family_size_in_numbers",
-        question:
-          "8. How big is your family of origin (the people that you lived with)?",
-        options: familySizeOptions,
-        type: AnswerType.MULTIPLE_CHOICE,
-      },
-      {
-        id: "occupation",
-        question: "9. What is your occupation?",
-        type: AnswerType.TEXT,
-      },
+      // {
+      //   id: "zip_code",
+      //   question: "5. What is your zip code?",
+      //   type: "text",
+      // },
       {
         id: "has_children",
-        question: "10. Do you have children?",
+        question: "5. Do you have children?",
         options: hasChildrenOptions,
         type: AnswerType.RATING_SCALE,
       },
       {
         id: "religiosity_range",
-        question: "11. Do you consider yourself religious or spiritual?",
+        question: "6. Do you consider yourself religious or spiritual?",
         options: [
           { id: 1, title: "1", value: "1" },
           { id: 2, title: "2", value: "2" },
@@ -200,6 +175,32 @@ export const personalQuestionsData = [
         ],
         type: AnswerType.RATING_SCALE,
       },
+      {
+        id: "political_orientation",
+        question: "7. What is your political orientation?",
+        options: politicalOrientationOptions,
+        type: AnswerType.RATING_SCALE,
+      },
+      // {
+      //   id: "type_of_city_grown",
+      //   question:
+      //     "7. What kind of area did you grow up in from ages 0-18? Select all that apply:",
+      //   options: homeAreaOptions,
+      //   type: AnswerType.MULTIPLE_CHOICE,
+      // },
+      // {
+      //   id: "family_size_in_numbers",
+      //   question:
+      //     "8. How big is your family of origin (the people that you lived with)?",
+      //   options: familySizeOptions,
+      //   type: AnswerType.MULTIPLE_CHOICE,
+      // },
+      // {
+      //   id: "occupation",
+      //   question: "9. What is your occupation?",
+      //   type: AnswerType.TEXT,
+      // },
+
       // {
       //   id: "socialization",
       //   question: "12. How often do you go out to socialize?",
@@ -224,12 +225,12 @@ export const personalQuestionsData = [
       //   ],
       //   type: AnswerType.RATING_SCALE,
       // },
-      {
-        id: "health_rating",
-        question: "12. How would you rate your health, generally speaking?",
-        options: healthRatingOptions,
-        type: AnswerType.RATING_SCALE,
-      },
+      // {
+      //   id: "health_rating",
+      //   question: "12. How would you rate your health, generally speaking?",
+      //   options: healthRatingOptions,
+      //   type: AnswerType.RATING_SCALE,
+      // },
     ],
   },
   {

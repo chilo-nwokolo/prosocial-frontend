@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { LiaToggleOnSolid, LiaToggleOffSolid } from "react-icons/lia";
+import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 
 type SwitchAccordionProps = {
   title: string;
@@ -40,18 +40,18 @@ function InterestsAccordion({
           <>
             <h2>
               <AccordionButton>
-                {isExpanded ? (
-                  <Text color="gray.600">
-                    <LiaToggleOnSolid style={{ fontSize: "30px" }} />
-                  </Text>
-                ) : (
-                  <Text color="gray.600">
-                    <LiaToggleOffSolid style={{ fontSize: "30px" }} />
-                  </Text>
-                )}
-                <Box as="span" flex="1" ml="3" textAlign="left">
+                <Box as="span" ml="3" textAlign="left">
                   {title}
                 </Box>
+                {isExpanded ? (
+                  <Text color="gray.600" flex={1}>
+                    <RiArrowDropUpLine style={{ fontSize: "30px" }} />
+                  </Text>
+                ) : (
+                  <Text color="gray.600" flex={1}>
+                    <RiArrowDropDownLine style={{ fontSize: "30px" }} />
+                  </Text>
+                )}
                 <Image
                   src={imageUrl}
                   width={75}

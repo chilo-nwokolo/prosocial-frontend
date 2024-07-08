@@ -126,7 +126,7 @@ export default function useQuestionCategories() {
     let count = 0;
 
     if (!config[configExtras.user_has_filled_social_preferences]) {
-      return `${count} / 8`;
+      return `${count} / 4`;
     }
 
     for (let key in socialPreferenceAnswers) {
@@ -167,7 +167,7 @@ export default function useQuestionCategories() {
       updateSubmittedPreferences(true);
     }
 
-    return `${count} / 8`;
+    return `${count} / 4`;
   }, [config, socialPreferenceAnswers, updateSubmittedPreferences]);
 
   return {

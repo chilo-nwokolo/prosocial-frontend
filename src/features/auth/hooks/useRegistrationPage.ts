@@ -9,12 +9,18 @@ import { QUERY_UNIVERSITY_GROUPS, REGISTER_USER } from "../gql";
 import { useRouter } from "next/navigation";
 import { apolloErrorHandler } from "@/utils/helpers";
 import { setCookie } from "@/libs/cookies";
+import { useUserStore } from "@/store";
+import useUploadProfilePicture from "@/features/dashboard/home/growth/hooks/useUploadProfilePicture";
 
 export default function UseRegistrationPage() {
   const [phone, setPhone] = useState("");
   const toast = useToast();
   const router = useRouter();
   const [acceptTc, setAcceptTc] = useState(false);
+  const [updateUser, avatar] = useUserStore((state) => [
+    state.updateUser,
+    state.avatar,
+  ]);
 
   useEffect(() => {
     setCookie(configExtras.user_visited_intro_page, "true");
@@ -34,7 +40,11 @@ export default function UseRegistrationPage() {
   );
 
   const [register, { loading }] = useMutation(REGISTER_USER);
-
+  const {
+    upload,
+    loading: isUploadingProfilePic,
+    error,
+  } = useUploadProfilePicture();
   const validationSchema = yup.object({
     dob: yup.date().required(formFeedback.required),
     email: yup
@@ -63,6 +73,13 @@ export default function UseRegistrationPage() {
       universityId: "",
     },
     onSubmit: (values) => {
+      if (!avatar) {
+        toast({
+          description: "Please, upload a profile picture",
+          status: "error",
+        });
+        return;
+      }
       if (!acceptTc) {
         toast({
           description:
@@ -80,6 +97,7 @@ export default function UseRegistrationPage() {
         });
         return;
       }
+
       register({
         variables: {
           input: {
@@ -91,8 +109,28 @@ export default function UseRegistrationPage() {
             university_id: universityId,
           },
         },
-        onCompleted: () => {
-          router.push(appRouteLinks.confirmEmail);
+        onCompleted: async (data) => {
+          updateUser(data);
+          setCookie("accessToken", data.register.token);
+          await upload({
+            variables: {
+              input: {
+                profile: {
+                  avatar,
+                },
+              },
+            },
+          });
+          if (error) {
+            toast({
+              title: "Picture upload failed. Please try again",
+              status: "error",
+            });
+            return;
+          }
+          if (!isUploadingProfilePic) {
+            router.push(appRouteLinks.onbording);
+          }
         },
         onError: (error) => {
           toast({

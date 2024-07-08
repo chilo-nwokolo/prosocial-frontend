@@ -27,28 +27,27 @@ import {
   FormLabel,
   Input,
   RadioGroup,
-  Select,
   Stack,
   Text,
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { GrClose } from "react-icons/gr";
 
-type Interest = {
-  __typename?: "Interest" | undefined;
-  id?: string | null | undefined;
-  image_url?: string | null | undefined;
-  title?: string | null | undefined;
-};
+// type Interest = {
+//   __typename?: "Interest" | undefined;
+//   id?: string | null | undefined;
+//   image_url?: string | null | undefined;
+//   title?: string | null | undefined;
+// };
 
-type MeInterestResponse = {
-  __typename?: "Interest" | undefined;
-  id?: string | null | undefined;
-  title?: string | null | undefined;
-  is_top_interest?: TopInterestEnum | null | undefined;
-};
+// type MeInterestResponse = {
+//   __typename?: "Interest" | undefined;
+//   id?: string | null | undefined;
+//   title?: string | null | undefined;
+//   is_top_interest?: TopInterestEnum | null | undefined;
+// };
 
 export default function InterestedExtendedPage() {
   const { updateConfig } = useAppConfig({});
@@ -57,16 +56,16 @@ export default function InterestedExtendedPage() {
     null,
   );
 
-  const [topSelectedInterest, setTopSelectedInterest] = useState<{
-    id: string;
-    title: string;
-    interests: Array<Interest>;
-  }>({ id: "", interests: [], title: "" });
+  // const [topSelectedInterest, setTopSelectedInterest] = useState<{
+  //   id: string;
+  //   title: string;
+  //   interests: Array<Interest>;
+  // }>({ id: "", interests: [], title: "" });
 
-  const [topChildInterest, setTopChildInterest] = useState({
-    title: "",
-    id: "",
-  });
+  // const [topChildInterest, setTopChildInterest] = useState({
+  //   title: "",
+  //   id: "",
+  // });
 
   const [newInterest, setNewInterest] = useState("");
 
@@ -82,62 +81,84 @@ export default function InterestedExtendedPage() {
     ]);
 
   const {
-    data: result,
+    data,
     loading: isLoading,
     error,
   } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
 
-  const getTopInterests = (interests: Array<MeInterestResponse>) => {
-    const found = interests.map((interest) => {
-      // @ts-ignore
-      if (interest?.pivot?.is_top_interest === "YES") {
-        return interest.title;
-      }
-      return null;
-    });
-
-    let topInterest = {
-      id: "",
-      title: "",
-      interests: [],
-    };
-    let topChildInterest = {
-      id: "",
-      title: "",
-    };
-
-    result?.interestsByNoneTrait?.forEach((interest) => {
-      if (found.includes(interest.title)) {
-        topInterest = {
-          id: interest.id || "",
-          title: interest.title || "",
-          interests: interest.interests as any,
-        };
-        interest.interests?.forEach((childInterest) => {
-          if (found.includes(childInterest.title)) {
-            topChildInterest = {
-              title: childInterest.title || "",
-              id: childInterest.id || "",
-            };
+  const result = useMemo(() => {
+    // let sortedData = [...(data?.interestsByNoneTrait ?? [])];
+    return {
+      ...data,
+      interestsByNoneTrait: [...(data?.interestsByNoneTrait ?? [])].sort(
+        (a, b) => {
+          if (a.title && b.title) {
+            if (a.title < b.title) return -1;
+            if (a.title > b.title) return 1;
           }
-        });
-      }
-    });
+          return 0;
+        },
+      ),
+    };
+  }, [data]);
 
-    setTopSelectedInterest(topInterest);
-    setTopChildInterest(topChildInterest);
-  };
+  // const getTopInterests = (interests: Array<MeInterestResponse>) => {
+  //   const found = interests.map((interest) => {
+  //     // @ts-ignore
+  //     if (interest?.pivot?.is_top_interest === "YES") {
+  //       return interest.title;
+  //     }
+  //     return null;
+  //   });
+
+  //   let topInterest = {
+  //     id: "",
+  //     title: "",
+  //     interests: [],
+  //   };
+  //   let topChildInterest = {
+  //     id: "",
+  //     title: "",
+  //   };
+
+  //   result?.interestsByNoneTrait?.forEach((interest) => {
+  //     if (found.includes(interest.title)) {
+  //       topInterest = {
+  //         id: interest.id || "",
+  //         title: interest.title || "",
+  //         interests: interest.interests as any,
+  //       };
+  //       interest.interests?.forEach((childInterest) => {
+  //         if (found.includes(childInterest.title)) {
+  //           topChildInterest = {
+  //             title: childInterest.title || "",
+  //             id: childInterest.id || "",
+  //           };
+  //         }
+  //       });
+  //     }
+  //   });
+
+  //   // setTopSelectedInterest(topInterest);
+  //   // setTopChildInterest(topChildInterest);
+  // };
 
   const { loading: loadingInterests } = useQuery(QUERY_ME_INTERESTS, {
     onCompleted: (data) => {
       const interests: string[] = [];
       const interestsResponse = data?.me?.interests;
       if (interestsResponse?.length) {
-        getTopInterests(interestsResponse);
+        // getTopInterests(interestsResponse);
         interestsResponse?.forEach((interest) => {
           interests.push("" + interest.title);
         });
         setFlattenedInterets(interests);
+        updateInterestsAnswer(
+          interestsResponse?.map((interest) => ({
+            interest_id: interest.id as string,
+            response: interest.title as string,
+          })),
+        );
         setKey(key + 1);
         return;
       }
@@ -188,82 +209,85 @@ export default function InterestedExtendedPage() {
     );
 
     if (foundIndex < 0 && !flattenedInterests?.includes(value)) {
-      updateInterestsAnswer([
-        ...interestsAnswer,
-        { response: value, interest_id: id },
-      ]);
+      const updatedInterests = [{ response: value, interest_id: id }];
+      updateInterestsAnswer(updatedInterests);
+
+      setFlattenedInterets(
+        updatedInterests?.map((interest) => interest.response),
+      );
     } else if (foundIndex >= 0 || flattenedInterests?.includes(value)) {
       const result = [...interestsAnswer];
       result.splice(foundIndex, 1);
       updateInterestsAnswer(result);
+      setFlattenedInterets(result.map((interest) => interest.response));
     }
   };
 
-  const selectTopInterest = (interestId: any) => {
-    if (!interestId) {
-      toast({
-        status: "error",
-        title: "Invalid selection",
-      });
-      return;
-    }
-    const res = result?.interestsByNoneTrait?.find(
-      (interest) => interest.id === interestId,
-    );
+  // const selectTopInterest = (interestId: any) => {
+  //   if (!interestId) {
+  //     toast({
+  //       status: "error",
+  //       title: "Invalid selection",
+  //     });
+  //     return;
+  //   }
+  //   const res = result?.interestsByNoneTrait?.find(
+  //     (interest) => interest.id === interestId,
+  //   );
 
-    setTopChildInterest({
-      title: "",
-      id: "",
-    });
+  //   setTopChildInterest({
+  //     title: "",
+  //     id: "",
+  //   });
 
-    setTopSelectedInterest({
-      id: res?.id || "",
-      title: res?.title || "",
-      interests: res?.interests || [],
-    });
-  };
+  //   setTopSelectedInterest({
+  //     id: res?.id || "",
+  //     title: res?.title || "",
+  //     interests: res?.interests || [],
+  //   });
+  // };
 
   const handleInterestsSubmit = async () => {
-    if (!topSelectedInterest.id || !topChildInterest.id) {
-      toast({
-        status: "error",
-        title: "Please select your top interests",
-      });
-      return;
-    }
+    // if (!topSelectedInterest.id || !topChildInterest.id) {
+    //   toast({
+    //     status: "error",
+    //     title: "Please select your top interests",
+    //   });
+    //   return;
+    // }
 
-    const topInterestsIds = [topChildInterest.id, topSelectedInterest.id];
-    const allInterestIds = interestsAnswer.map(
-      (interest) => interest.interest_id,
-    );
+    // const topInterestsIds = [topChildInterest.id, topSelectedInterest.id];
+    // const allInterestIds = interestsAnswer.map(
+    //   (interest) => interest.interest_id,
+    // );
 
-    let interests: SubmitUserInterestInput[] = [];
+    let interests: SubmitUserInterestInput[] = [...interestsAnswer];
 
-    if (allInterestIds.includes(topSelectedInterest.id)) {
-      interests = interestsAnswer.map((interest) => {
-        if (topInterestsIds.includes(interest.interest_id)) {
-          return {
-            ...interest,
-            is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
-          };
-        }
-        return interest;
-      });
-    } else {
-      interests = [
-        ...interestsAnswer,
-        {
-          response: topSelectedInterest.title,
-          interest_id: topSelectedInterest.id,
-          is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
-        },
-        {
-          response: topChildInterest.title,
-          interest_id: topChildInterest.id,
-          is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
-        },
-      ];
-    }
+    // if (allInterestIds.includes(topSelectedInterest.id)) {
+    //   interests = interestsAnswer.map((interest) => {
+    //     if (topInterestsIds.includes(interest.interest_id)) {
+    //       return {
+    //         ...interest,
+    //         is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
+    //       };
+    //     }
+    //     return interest;
+    //   });
+    // } else {
+    //   interests = [
+    //     ...interestsAnswer,
+    //     {
+    //       response: topSelectedInterest.title,
+    //       interest_id: topSelectedInterest.id,
+    //       is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
+    //     },
+    //     {
+    //       response: topChildInterest.title,
+    //       interest_id: topChildInterest.id,
+    //       is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
+    //     },
+    //   ];
+    // }
 
     if (newInterest) {
       await createInterest({
@@ -299,16 +323,16 @@ export default function InterestedExtendedPage() {
     });
   };
 
-  const handleSelectTopChildrenInterest = (value: string) => {
-    const selectedChild = topSelectedInterest.interests.find(
-      (interest) => interest.id === value,
-    );
+  // const handleSelectTopChildrenInterest = (value: string) => {
+  //   const selectedChild = topSelectedInterest.interests.find(
+  //     (interest) => interest.id === value,
+  //   );
 
-    setTopChildInterest({
-      title: selectedChild?.title || "",
-      id: value,
-    });
-  };
+  //   setTopChildInterest({
+  //     title: selectedChild?.title || "",
+  //     id: value,
+  //   });
+  // };
 
   return (
     <QueryContainer loading={isLoading || loadingInterests} error={error}>
@@ -326,7 +350,7 @@ export default function InterestedExtendedPage() {
                 key={"" + trait.id + key}
                 title={trait.title as string}
                 id={trait.id as string}
-                onChange={onChange}
+                // onChange={onChange}
                 defaultIndex={
                   flattenedInterests?.includes("" + trait.title) ? [0] : []
                 }
@@ -367,7 +391,7 @@ export default function InterestedExtendedPage() {
 
           <Divider mt="7" borderColor="gray.500" />
 
-          <Flex flexDir="column" mt="5" gap="5">
+          {/* <Flex flexDir="column" mt="5" gap="5">
             <FormControl>
               <FormLabel>
                 Out of all these options, what is your top interest?
@@ -412,7 +436,7 @@ export default function InterestedExtendedPage() {
                 ))}
               </Select>
             </FormControl>
-          </Flex>
+          </Flex> */}
           <FormControl mt="3">
             <FormLabel as="h2">
               <Flex flexDir="column">

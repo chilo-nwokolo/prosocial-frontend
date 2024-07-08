@@ -19,21 +19,13 @@ import { ChangeEvent, useEffect, useState } from "react";
 import SocialPreferencesAccordion from "./SocialPreferencesAccordion";
 import RatingScaleQuestion from "@/features/intro/components/RatingScaleQuestion";
 import { useFormik } from "formik";
-import SingleChoiceQuestion from "@/features/intro/components/SingleChoiceQuestion";
 import * as yup from "yup";
 import FriendTypeSelect from "./FriendTypeSelect";
 import { useMutation } from "@apollo/client";
 import { convertSocialPreferenceObjectToArray } from "../helpers";
 import { UserSocialPreferenceSubmitInput } from "@/__generated__/graphql";
 import { useAppQuestions, useConfig } from "@/store";
-import {
-  fitness19Member,
-  outingDynamics,
-  socializationOptions,
-  toSocializeOptions,
-  yesNo,
-} from "../helpers";
-import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
+import { socializationOptions, toSocializeOptions, yesNo } from "../helpers";
 import { SUBMIT_SOCIAL_PREFERENCES } from "../graphql/gql";
 import useAppConfig from "@/hooks/useAppConfig";
 
@@ -70,15 +62,12 @@ export default function SocialPreferencesComponent() {
   const validationSchema = yup.object({
     4: yup.string().required(formFeedback.required),
     5: yup.string().required(formFeedback.required),
-    6: yup.string().required(formFeedback.required),
-    7: yup.string().required(formFeedback.required),
+
     8: yup.string().required(formFeedback.required),
-    9: yup.string().required(formFeedback.required),
-    10: yup.string().required(formFeedback.required),
+
     11: yup.string(),
     12: yup.string().required(formFeedback.required),
-    13: yup.string().required(formFeedback.required),
-    14: yup.string().required(formFeedback.required),
+
     15: yup.string(),
     18: yup.string(),
   });
@@ -279,9 +268,9 @@ export default function SocialPreferencesComponent() {
             {/* Q1 */}
             <Flex flexDir="column" gap="3">
               <Text>1. What types of friends are you looking for?</Text>
-              <Text fontWeight="normal" fontSize="small">
+              {/* <Text fontWeight="normal" fontSize="small">
                 Select your top 3
-              </Text>
+              </Text> */}
               <FriendTypeSelect
                 value={formik.values[8]}
                 onChange={formik.handleChange}
@@ -289,22 +278,6 @@ export default function SocialPreferencesComponent() {
                 name="8"
                 title="First choice"
                 error={formik.errors[8]}
-              />
-              <FriendTypeSelect
-                value={formik.values[9]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="9"
-                title="Second choice"
-                error={formik.errors[9]}
-              />
-              <FriendTypeSelect
-                value={formik.values[10]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="10"
-                title="Third choice"
-                error={formik.errors[10]}
               />
 
               {/* Q1b */}
@@ -326,9 +299,9 @@ export default function SocialPreferencesComponent() {
             {/* Q2 */}
             <Flex flexDir="column" gap="3">
               <Text>2. What type of friend do you think you are?</Text>
-              <Text fontWeight="normal" fontSize="small">
+              {/* <Text fontWeight="normal" fontSize="small">
                 Select your top 3
-              </Text>
+              </Text> */}
               <FriendTypeSelect
                 value={formik.values[12]}
                 onChange={formik.handleChange}
@@ -336,24 +309,6 @@ export default function SocialPreferencesComponent() {
                 name="12"
                 title="First choice"
                 error={formik.errors[12]}
-                hideFriend={["Parent Friend"]}
-              />
-              <FriendTypeSelect
-                value={formik.values[13]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="13"
-                title="Second choice"
-                error={formik.errors[13]}
-                hideFriend={["Parent Friend"]}
-              />
-              <FriendTypeSelect
-                value={formik.values[14]}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="14"
-                title="Third choice"
-                error={formik.errors[14]}
                 hideFriend={["Parent Friend"]}
               />
 
@@ -393,41 +348,6 @@ export default function SocialPreferencesComponent() {
               value={formik.values[5]}
               config={{ returnTitle: true, useIdAsValue: true }}
               error={formik.errors[5]}
-            />
-
-            {/* Q5 */}
-            <SingleChoiceQuestion
-              title="5. When you do your outing with Fitness19 members, would you like:"
-              infoText="We will do our best to place you in a group of your preference."
-              value={formik.values[6]}
-              name="6"
-              onChange={formik.handleChange}
-              options={outingDynamics}
-              config={{ useIdAsValue: true }}
-              error={formik.errors[6]}
-            />
-
-            <Flex flexDir="column">
-              <Text as="h2" fontWeight="bold">
-                Add a profile photo
-              </Text>
-              <Text>
-                Please add a clear photo of your face without sunglasses. Your
-                profile photo is not public but will be seen by potential
-                friends once an outing has been completed.
-              </Text>
-              <ProfilePictureUploader />
-            </Flex>
-
-            {/* Q6 */}
-            <RatingScaleQuestion
-              title="6. Are you already a member of Fitness19 or a friend of a member?"
-              value={formik.values[7]}
-              name="7"
-              onChange={formik.handleChange}
-              options={fitness19Member}
-              config={{ returnTitle: true, useIdAsValue: true }}
-              error={formik.errors[7]}
             />
 
             {formik.values[7] === "29" ? (
