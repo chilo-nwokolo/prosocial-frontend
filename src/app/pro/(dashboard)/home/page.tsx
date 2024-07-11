@@ -11,9 +11,17 @@ import { useRouter } from "next/navigation";
 const homeSections = [
   {
     id: 3,
-    title: "Your personality",
+    title: "Your social category",
     destination: appRouteLinks.profilePersonalityResult,
     desc: "",
+    subText: "",
+    icon: null,
+  },
+  {
+    id: 4,
+    title: "Outing feedback",
+    destination: appRouteLinks.outingFeedback,
+    desc: "View your group, Give outing feedback",
     subText: "",
     icon: null,
   },
