@@ -20,7 +20,7 @@ const homeSections = [
   {
     id: 4,
     title: "Outing feedback",
-    destination: appRouteLinks.outingFeedback,
+    destination: "#",
     desc: "View your group, Give outing feedback",
     subText: "",
     icon: null,
@@ -80,13 +80,14 @@ export default function HomePage() {
             cursor="pointer"
             flexDir="column"
             w="full"
-            _hover={{ shadow: "md" }}
+            _hover={{ shadow: section.destination === "#" ? "none" : "md" }}
             gap="4"
             border="1px solid"
             borderColor="gray.400"
             borderRadius="xl"
             py="10"
             px="5"
+            opacity={section.destination === "#" ? 0.5 : 1}
           >
             <Text>{section?.icon}</Text>
             <Flex alignItems="center" gap="4">
