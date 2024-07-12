@@ -341,8 +341,12 @@ export default function InterestedExtendedPage() {
           <BackButton icon={<GrClose />} destination={appRouteLinks.intro} />
         </Flex>
         <Text fontWeight="lg" fontSize="2xl">
-          What are your interests
+          What is your top interest
         </Text>
+        <Text mt={2} color={"GrayText"}>
+          View the categories and select your one top interest from within them.
+        </Text>
+
         <Flex flexDir="column" mt="4">
           {result?.interestsByNoneTrait?.length ? (
             result?.interestsByNoneTrait?.map((trait) => (

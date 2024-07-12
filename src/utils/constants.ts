@@ -42,13 +42,13 @@ export const appRouteLinks = {
   interestsExpandedMore: "/pro/home/growth/interests/expanded/more-interests",
   logout: "/pro/logout",
   // outing feedback routes
-  outingFeedback: "/group-feedback",
-  outingFeedbackCards: "/group-feedback/feedback-cards",
-  outingFeedbackQuestions: "/group-feedback/feedback-questions",
-  outingFeedbackSuccess: "/group-feedback/feedback-questions/success",
-  outingFeedbackToGroup: "/group-feedback/feedback-to-group",
-  outingFeedbackHowDidTheOutingGo: "/group-feedback/how-did-the-outing-go",
-  outingFeedbackSecondOuting: "/group-feedback/second-outing",
+  outingFeedback: "/pro/group-feedback",
+  outingFeedbackCards: "/pro/group-feedback/feedback-cards",
+  outingFeedbackQuestions: "/pro/group-feedback/feedback-questions",
+  outingFeedbackSuccess: "/pro/group-feedback/feedback-questions/success",
+  outingFeedbackToGroup: "/pro/group-feedback/feedback-to-group",
+  outingFeedbackHowDidTheOutingGo: "/pro/group-feedback/how-did-the-outing-go",
+  outingFeedbackSecondOuting: "/pro/group-feedback/second-outing",
 };
 
 export const adminRoutes = {

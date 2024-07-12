@@ -181,6 +181,13 @@ export const personalQuestionsData = [
         options: politicalOrientationOptions,
         type: AnswerType.RATING_SCALE,
       },
+      {
+        id: "additional_political_orientation",
+        question:
+          "If you don't feel that you fit on this political orientation scale, please provide additional detail:",
+        type: AnswerType.TEXT,
+        optional: true,
+      },
       // {
       //   id: "type_of_city_grown",
       //   question:

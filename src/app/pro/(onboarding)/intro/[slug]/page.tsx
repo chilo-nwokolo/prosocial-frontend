@@ -90,13 +90,16 @@ export default function IntroQuestionsPage({
             );
           } else if (question.type === AnswerType.TEXT) {
             return (
-              <InputQuestions
-                onChange={formik.handleChange}
-                value={formik.values[question.id]}
-                key={`quest-${question.id}`}
-                name={question.id}
-                title={question.question}
-              />
+              <>
+                <InputQuestions
+                  onChange={formik.handleChange}
+                  value={formik.values[question.id]}
+                  key={`quest-${question.id}`}
+                  name={question.id}
+                  title={question.question}
+                  isOptional={question?.optional}
+                />
+              </>
             );
           } else if (question.type === AnswerType.MULTIPLE_CHOICE) {
             return (
