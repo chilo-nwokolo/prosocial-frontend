@@ -12,6 +12,10 @@ export const ME_QUERY = gql(`
       profile {
         avatar
       }
+      groups {
+        id
+        name
+      }
     }
   }
 `);

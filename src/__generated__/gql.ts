@@ -13,13 +13,13 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n": types.Pull_User_GroupDocument,
-    "\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n": types.Mutation_Submit_FeedbackDocument,
     "\n  query QUERY_GROUPS {\n    groups {\n      id\n      name\n      outing_date\n      note\n      feedback_received\n      group_invite_status\n      created_at\n      users {\n        id\n        name\n        email\n      }\n    }\n  }\n": types.Query_GroupsDocument,
     "\n  mutation SendGroupInviteToParticipants($group_id: ID!){\n    sendGroupInviteToParticipants(group_id: $group_id) {\n      status\n      message\n    }  \n  }\n": types.SendGroupInviteToParticipantsDocument,
     "\n  query QUERY_GROUP($id: ID!) {\n    fetchGroup(id: $id) {\n      id\n      name\n      outing_date\n      note\n      feedback_received\n      group_invite_status\n      created_at\n      feedback_received\n      outing_feedbacks {\n        id\n        user {\n          id\n          name\n          unique_id\n        }\n        feedback_responses {\n          id\n          note\n          connection\n          receiving_user {\n            id\n            name \n            unique_id\n          }\n        }\n      }\n    }\n  }\n": types.Query_GroupDocument,
     "\n  query QUERY_ADMIN_USERS($input: adminQueryUsersInput) {\n    adminQueryUsers(input: $input) {\n      id\n      name\n      unique_id\n      email\n      phone\n      dob\n      groups {\n        id\n        name\n      }\n      social_preference_answers {\n        id\n        answer\n        description\n        note\n        social_preference_option {\n          id\n          title\n          social_preference {\n            id\n            title\n          }\n        }\n      }\n      interests {\n        id\n        title\n      }\n      question_responses {\n        id\n      }\n      personalityScore {\n        id\n        extroversion\n        agreeableness\n        conscientiousness\n        neuroticism\n        openness\n        narcissism\n        personalityBucketType {\n          id\n          name\n          sub_title\n        }\n      }\n      profile {\n        political_orientation\n        level_of_education\n        gender\n        race\n        relationship_status\n        health_rating\n        zip_code\n        has_children\n        occupation\n        family_size_in_numbers\n        type_of_city_grown\n        avatar\n      }\n    }\n  }\n": types.Query_Admin_UsersDocument,
     "\n  mutation CREATE_GROUP_MUTATION($input: UserGroupInput!) {\n    createGroup(input:$input) {\n      id\n    }\n  }\n": types.Create_Group_MutationDocument,
+    "\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n": types.Pull_User_GroupDocument,
+    "\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n": types.Mutation_Submit_FeedbackDocument,
     "\n  mutation SUBMIT_SOCIAL_PREFERENCES($input: HandleSocialPreferenceSubmitInput!) {\n    handleSocialPreferenceSubmit(input: $input) {\n      status\n      message\n    }\n  }\n": types.Submit_Social_PreferencesDocument,
     "\n  query QUERY_USER_SOCIAL_PREFERENCE($id: ID) {\n    user(id: $id) {\n      id\n      name\n      social_preference_answers {\n        id\n        answer\n        social_preference_option {\n          id\n          title\n          social_preference {\n            id\n            title\n          }\n        }\n        meta {\n          key\n          value\n        }\n      }\n    }\n  }\n": types.Query_User_Social_PreferenceDocument,
     "\n  query QUERY_UNIVERSITY_GROUPS{\n    universities {\n      id\n      name\n    }\n  }\n": types.Query_University_GroupsDocument,
@@ -40,7 +40,7 @@ const documents = {
     "\n  mutation SUBMIT_USER_INTERESTS ($input: UserInterestInputs!) {\n    submitUserInterest(input: $input) {\n      status\n      message\n    }\n  }\n": types.Submit_User_InterestsDocument,
     "\n  mutation CREATE_JOURNAL_ENTRY ($input: String!, $journal_category_id: ID!) {\n    mutateJournal(input: $input, journal_category_id: $journal_category_id) {\n      id\n      category {\n        id\n      }\n    }\n  }\n": types.Create_Journal_EntryDocument,
     "\n  mutation CREATE_USER_INTEREST($input: CreateInterestInput!) {\n    createInterest(input: $input) {\n      id\n      title\n    }\n  }\n": types.Create_User_InterestDocument,
-    "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n": types.MeDocument,
+    "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query ME_QUESTION_RESPONSES {\n    me {\n      id\n      question_responses {\n        id\n        question {\n          id\n        }\n        answer {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.Me_Question_ResponsesDocument,
     "\n  query ME_SCHEDULES {\n    me {\n      schedules {\n        day_name\n        time_range\n        status\n      }\n    }\n  }\n": types.Me_SchedulesDocument,
     "\n  query QUERY_ME_SETTINGS {\n    me {\n      settings {\n        preference_settings {\n          key\n          value \n        }\n      }\n    }\n  }\n": types.Query_Me_SettingsDocument,
@@ -74,14 +74,6 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n"];
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function gql(source: "\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n"];
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
 export function gql(source: "\n  query QUERY_GROUPS {\n    groups {\n      id\n      name\n      outing_date\n      note\n      feedback_received\n      group_invite_status\n      created_at\n      users {\n        id\n        name\n        email\n      }\n    }\n  }\n"): (typeof documents)["\n  query QUERY_GROUPS {\n    groups {\n      id\n      name\n      outing_date\n      note\n      feedback_received\n      group_invite_status\n      created_at\n      users {\n        id\n        name\n        email\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -99,6 +91,14 @@ export function gql(source: "\n  query QUERY_ADMIN_USERS($input: adminQueryUsers
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation CREATE_GROUP_MUTATION($input: UserGroupInput!) {\n    createGroup(input:$input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CREATE_GROUP_MUTATION($input: UserGroupInput!) {\n    createGroup(input:$input) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query PULL_USER_GROUP($user_unique_id: String!, $group_id: ID!){\n    pullUserGroupParticipants(user_unique_id: $user_unique_id, group_id: $group_id) {\n      id\n      name\n      users {\n        id\n        name\n        unique_id\n        profile {\n          avatar\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation MUTATION_SUBMIT_FEEDBACK($input: OutingFeedbackInput!) {\n    submitFeedback(input: $input) {\n      status\n      message\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -182,7 +182,7 @@ export function gql(source: "\n  mutation CREATE_USER_INTEREST($input: CreateInt
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n"): (typeof documents)["\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
