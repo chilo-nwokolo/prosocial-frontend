@@ -8,6 +8,7 @@ import useAppConfig from "@/hooks/useAppConfig";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store";
+import { Login_UserMutation, RegisterMutation } from "@/__generated__/graphql";
 
 const homeSections = [
   {
@@ -48,7 +49,7 @@ export default function HomePage() {
   const { config, loading } = useAppConfig({});
   const router = useRouter();
   const toast = useToast();
-  const [userProfile] = useUserStore((state) => [state.userProfile]);
+  const [user] = useUserStore((state) => [state.user]);
 
   useEffect(() => {
     if (
@@ -79,7 +80,9 @@ export default function HomePage() {
       {homeSections.map((section) => (
         <Link
           href={
-            section.id === 4 && !userProfile?.me?.groups?.length
+            section.id === 4 &&
+            ((user as Login_UserMutation)?.login?.user?.groups?.length === 0 ||
+              (user as RegisterMutation)?.register?.user?.groups?.length === 0)
               ? "#"
               : section.destination
           }
@@ -91,7 +94,11 @@ export default function HomePage() {
             w="full"
             _hover={{
               shadow:
-                section.id === 4 && !userProfile?.me?.groups?.length
+                section.id === 4 &&
+                ((user as Login_UserMutation)?.login?.user?.groups?.length ===
+                  0 ||
+                  (user as RegisterMutation)?.register?.user?.groups?.length ===
+                    0)
                   ? "none"
                   : "md",
             }}
@@ -102,7 +109,13 @@ export default function HomePage() {
             py="10"
             px="5"
             opacity={
-              section.id === 4 && !userProfile?.me?.groups?.length ? 0.5 : 1
+              section.id === 4 &&
+              ((user as Login_UserMutation)?.login?.user?.groups?.length ===
+                0 ||
+                (user as RegisterMutation)?.register?.user?.groups?.length ===
+                  0)
+                ? 0.5
+                : 1
             }
           >
             <Text>{section?.icon}</Text>
