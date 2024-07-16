@@ -8,7 +8,8 @@ import useAppConfig from "@/hooks/useAppConfig";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store";
-import { Login_UserMutation, RegisterMutation } from "@/__generated__/graphql";
+import { useQuery } from "@apollo/client";
+import { ME_QUERY } from "@/features/dashboard/profile/gql/queries";
 
 const homeSections = [
   {
@@ -22,7 +23,7 @@ const homeSections = [
   {
     id: 4,
     title: "Outing feedback",
-    destination: appRouteLinks.outingFeedback,
+    destination: appRouteLinks.outingMembers,
     desc: "View your group, Give outing feedback",
     subText: "",
     icon: null,
@@ -49,8 +50,17 @@ export default function HomePage() {
   const { config, loading } = useAppConfig({});
   const router = useRouter();
   const toast = useToast();
-  const [user] = useUserStore((state) => [state.user]);
 
+  const [setUserProfile, userProfile] = useUserStore((state) => [
+    state.setUserProfile,
+    state.userProfile,
+  ]);
+
+  useQuery(ME_QUERY, {
+    onCompleted: (data) => {
+      setUserProfile(data);
+    },
+  });
   useEffect(() => {
     if (
       !loading &&
@@ -80,9 +90,7 @@ export default function HomePage() {
       {homeSections.map((section) => (
         <Link
           href={
-            section.id === 4 &&
-            ((user as Login_UserMutation)?.login?.user?.groups?.length === 0 ||
-              (user as RegisterMutation)?.register?.user?.groups?.length === 0)
+            section.id === 4 && userProfile?.me?.groups?.length === 0
               ? "#"
               : section.destination
           }
@@ -94,11 +102,7 @@ export default function HomePage() {
             w="full"
             _hover={{
               shadow:
-                section.id === 4 &&
-                ((user as Login_UserMutation)?.login?.user?.groups?.length ===
-                  0 ||
-                  (user as RegisterMutation)?.register?.user?.groups?.length ===
-                    0)
+                section.id === 4 && userProfile?.me?.groups?.length === 0
                   ? "none"
                   : "md",
             }}
@@ -109,11 +113,7 @@ export default function HomePage() {
             py="10"
             px="5"
             opacity={
-              section.id === 4 &&
-              ((user as Login_UserMutation)?.login?.user?.groups?.length ===
-                0 ||
-                (user as RegisterMutation)?.register?.user?.groups?.length ===
-                  0)
+              section.id === 4 && userProfile?.me?.groups?.length === 0
                 ? 0.5
                 : 1
             }

@@ -15,6 +15,10 @@ export const ME_QUERY = gql(`
       groups {
         id
         name
+        users {
+          name
+          id
+        }
       }
     }
   }
