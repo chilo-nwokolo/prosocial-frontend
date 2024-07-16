@@ -116,7 +116,21 @@ export default function FeedbackQuestionsPage() {
         };
       });
 
-      setFeedbackResponses(responses);
+      let remainingFeedback = interactionFeedback
+        .filter(
+          (feedback) =>
+            !responses.some((res) => res.receiving_user_id === feedback.userId),
+        )
+        .map((res) => {
+          return {
+            note: ``,
+            connection: res.connection as FeedbackConnection,
+            receiving_user_id: res.userId,
+            meta: [{ key: "outingDate", value: outingDate }],
+          };
+        });
+
+      setFeedbackResponses([...responses, ...remainingFeedback]);
 
       router.push(appRouteLinks.outingFeedbackToGroup);
     },

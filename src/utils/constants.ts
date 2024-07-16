@@ -42,6 +42,7 @@ export const appRouteLinks = {
   interestsExpandedMore: "/pro/home/growth/interests/expanded/more-interests",
   logout: "/pro/logout",
   // outing feedback routes
+  outingMembers: "/pro/group-members",
   outingFeedback: "/pro/group-feedback",
   outingFeedbackCards: "/pro/group-feedback/feedback-cards",
   outingFeedbackQuestions: "/pro/group-feedback/feedback-questions",

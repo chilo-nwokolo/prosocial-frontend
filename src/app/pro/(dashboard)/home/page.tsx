@@ -7,6 +7,9 @@ import Link from "next/link";
 import useAppConfig from "@/hooks/useAppConfig";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store";
+import { useQuery } from "@apollo/client";
+import { ME_QUERY } from "@/features/dashboard/profile/gql/queries";
 
 const homeSections = [
   {
@@ -20,7 +23,7 @@ const homeSections = [
   {
     id: 4,
     title: "Outing feedback",
-    destination: "#",
+    destination: appRouteLinks.outingMembers,
     desc: "View your group, Give outing feedback",
     subText: "",
     icon: null,
@@ -48,6 +51,16 @@ export default function HomePage() {
   const router = useRouter();
   const toast = useToast();
 
+  const [setUserProfile, userProfile] = useUserStore((state) => [
+    state.setUserProfile,
+    state.userProfile,
+  ]);
+
+  useQuery(ME_QUERY, {
+    onCompleted: (data) => {
+      setUserProfile(data);
+    },
+  });
   useEffect(() => {
     if (
       !loading &&
@@ -75,19 +88,35 @@ export default function HomePage() {
         </Text>
       </Box>
       {homeSections.map((section) => (
-        <Link href={section.destination} key={section.id}>
+        <Link
+          href={
+            section.id === 4 && userProfile?.me?.groups?.length === 0
+              ? "#"
+              : section.destination
+          }
+          key={section.id}
+        >
           <Flex
             cursor="pointer"
             flexDir="column"
             w="full"
-            _hover={{ shadow: section.destination === "#" ? "none" : "md" }}
+            _hover={{
+              shadow:
+                section.id === 4 && userProfile?.me?.groups?.length === 0
+                  ? "none"
+                  : "md",
+            }}
             gap="4"
             border="1px solid"
             borderColor="gray.400"
             borderRadius="xl"
             py="10"
             px="5"
-            opacity={section.destination === "#" ? 0.5 : 1}
+            opacity={
+              section.id === 4 && userProfile?.me?.groups?.length === 0
+                ? 0.5
+                : 1
+            }
           >
             <Text>{section?.icon}</Text>
             <Flex alignItems="center" gap="4">

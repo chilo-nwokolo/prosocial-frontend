@@ -19,9 +19,17 @@ export const REGISTER_USER = gql(`
       phone
       email
       user_type
+      groups { 
+        id
+        name
+        users {
+          name
+          id
+        }
       }
     }
   }
+}
 `);
 
 export const VERIFY_EMAIL = gql(`
@@ -43,6 +51,14 @@ export const LOGIN_USER = gql(`
         phone
         email
         user_type
+        groups {
+          id
+          name
+          users {
+            name
+            id
+          }
+        }
       }
     }
   }
