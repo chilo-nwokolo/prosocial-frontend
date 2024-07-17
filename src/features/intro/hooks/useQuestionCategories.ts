@@ -60,7 +60,10 @@ export default function useQuestionCategories() {
 
     const questionsLength = onboardQuestions?.reduce(
       (acc: number, curr: any) => {
-        return acc + curr.questions.length;
+        const optionalQuestions = curr.questions.filter(
+          (question: any) => question.optional,
+        );
+        return acc + (curr.questions.length - optionalQuestions.length);
       },
       0,
     );
