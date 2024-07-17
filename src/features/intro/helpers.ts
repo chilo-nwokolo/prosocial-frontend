@@ -9,7 +9,9 @@ export const transformQuestions = (
     category: personalQuestionsData[0].section,
     meta: personalQuestionsData[0]?.meta,
     description: personalQuestionsData[0]?.description,
-    totalQuestions: personalQuestionsData[0].questions?.length,
+    totalQuestions: personalQuestionsData[0].questions?.length
+      ? personalQuestionsData[0].questions.length - 1
+      : 0,
     questions: personalQuestionsData[0].questions,
     destination: personalQuestionsData[0].section,
   };

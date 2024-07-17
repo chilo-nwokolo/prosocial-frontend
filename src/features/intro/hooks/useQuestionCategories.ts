@@ -119,9 +119,9 @@ export default function useQuestionCategories() {
   };
 
   const calculateSocialPreferenceAnswers = useMemo(() => {
-    const singleKeys = ["4", "5", "6", "7", "18"];
-    let counted1 = false;
-    let counted2 = false;
+    const singleKeys = ["4", "5", "8", "12"];
+    // let counted1 = false;
+    // let counted2 = false;
 
     let count = 0;
 
@@ -135,35 +135,35 @@ export default function useQuestionCategories() {
           count += 1;
         }
       }
-      if (
-        !counted1 &&
-        socialPreferenceAnswers["8"].length &&
-        socialPreferenceAnswers["9"].length &&
-        socialPreferenceAnswers["10"].length
-      ) {
-        counted1 = true;
-        count += 1;
-      }
-      if (
-        !counted2 &&
-        socialPreferenceAnswers["12"].length &&
-        socialPreferenceAnswers["13"].length &&
-        socialPreferenceAnswers["14"].length
-      ) {
-        counted2 = true;
-        count += 1;
-      }
+      // if (
+      //   !counted1 &&
+      //   socialPreferenceAnswers["8"].length &&
+      //   socialPreferenceAnswers["9"].length &&
+      //   socialPreferenceAnswers["10"].length
+      // ) {
+      //   counted1 = true;
+      //   count += 1;
+      // }
+      // if (
+      //   !counted2 &&
+      //   socialPreferenceAnswers["12"].length &&
+      //   socialPreferenceAnswers["13"].length &&
+      //   socialPreferenceAnswers["14"].length
+      // ) {
+      //   counted2 = true;
+      //   count += 1;
+      // }
     }
 
-    if (!socialPreferenceAnswers["18"]) {
-      count += 1;
-    }
+    // if (!socialPreferenceAnswers["18"]) {
+    //   count += 1;
+    // }
 
-    if (config[configExtras.user_has_uploaded_profile_picture]) {
-      count += 1;
-    }
+    // if (config[configExtras.user_has_uploaded_profile_picture]) {
+    //   count += 1;
+    // }
 
-    if (count >= 7) {
+    if (count >= 4) {
       updateSubmittedPreferences(true);
     }
 
