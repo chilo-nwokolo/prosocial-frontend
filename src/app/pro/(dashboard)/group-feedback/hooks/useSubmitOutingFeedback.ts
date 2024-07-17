@@ -8,19 +8,13 @@ import { apolloErrorHandler } from "@/utils/helpers";
 import { OutingFeedbackInput } from "@/__generated__/graphql";
 
 export default function useSubmitOutingFeedback() {
-  const [
-    userData,
-    feedbackResponses,
-    excludeUsers,
-    outingTextFeedback,
-    participationConfirmation,
-  ] = useGlobalStore((state) => [
-    state.userData,
-    state.feedbackResponses,
-    state.excludeUsers,
-    state.outingTextFeedback,
-    state.participationConfirmation,
-  ]);
+  const [userData, feedbackResponses, excludeUsers, outingTextFeedback] =
+    useGlobalStore((state) => [
+      state.userData,
+      state.feedbackResponses,
+      state.excludeUsers,
+      state.outingTextFeedback,
+    ]);
 
   const toast = useToast();
   const router = useRouter();
@@ -49,11 +43,7 @@ export default function useSubmitOutingFeedback() {
       feedbackResponses,
       meta: [
         {
-          key: "Would you participate in an outing like this if you weren’t getting a free month at Fitness 19?",
-          value: participationConfirmation,
-        },
-        {
-          key: "Would you like to go on a second outing for a second free month membership at Fitness 19?",
+          key: "Would you like to go on a second outing?",
           value: message,
         },
       ],
