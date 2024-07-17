@@ -24,8 +24,7 @@ export default function OutingFeedbackSecondOuting() {
             Outing feedback
           </Text>
           <Text mt="3" fontSize="xl" as="h2">
-            Would you like to go on a second outing for a second free month
-            membership at Fitness 19?
+            Would you like to go on a second outing?
           </Text>
           <RatingScaleQuestion
             name="secondOuting"
@@ -51,14 +50,14 @@ export default function OutingFeedbackSecondOuting() {
             ]}
             config={{ useIdAsValue: false, returnTitle: true }}
           />
-          {formik.values.secondOuting === "YES" ? (
+          {/* {formik.values.secondOuting === "YES" ? (
             <Text mt="3">
               We will provide the new groups by July 5 and expect the outing to
               be completed by July 31. If you do not complete the second outing
               or fail to provide feedback, then you will not receive your free
               month of membership with classes at Fitness 19, Arlington Heights.
             </Text>
-          ) : null}
+          ) : null} */}
           <Box mt="10">
             <Button w="full" type="submit" isLoading={loading}>
               Submit
