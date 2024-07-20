@@ -84,7 +84,7 @@ export default function HomePage() {
         </Text>
         <Text mt="3">
           You will receive an email from {externalLinks.email} with your group
-          and instructions for your outing by June 1st.
+          and instructions for your outing.
         </Text>
       </Box>
       {homeSections.map((section) => (
