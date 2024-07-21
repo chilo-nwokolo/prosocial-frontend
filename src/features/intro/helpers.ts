@@ -16,8 +16,9 @@ export const transformQuestions = (
     destination: personalQuestionsData[0].section,
   };
 
-  const otherQuestions = questions.onBoardCategoriesWithQuestions?.map(
-    (category) => {
+  const otherQuestions = questions.onBoardCategoriesWithQuestions
+    ?.filter((cat) => cat.id !== "3" && cat.id !== "4")
+    ?.map((category) => {
       const questionsClone = [...category.questions!];
       let questions = questionsClone;
       if (category.id === "2") {
@@ -36,8 +37,7 @@ export const transformQuestions = (
         destination: renameCategory,
         questions,
       };
-    },
-  );
+    });
 
   if (otherQuestions?.length) {
     return [personalQuestions, ...otherQuestions];
