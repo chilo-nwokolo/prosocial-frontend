@@ -93,10 +93,11 @@ const QuestionCategoryLinkBox = ({
           {question.totalQuestions ? (
             <Text>
               {
-                Object.values(
+                Object.entries(
                   onboardAnswers?.[question.category.replaceAll(" ", "-")] ||
                     "",
-                )?.length
+                )?.filter(([key]) => key !== "additional_political_orientation")
+                  ?.length
               }
               /{question.totalQuestions}
             </Text>

@@ -68,7 +68,11 @@ export default function useQuestionCategories() {
       0,
     );
     const answersLength = answersObject.reduce((acc: number, curr: any) => {
-      return acc + Object.keys(curr).length;
+      let count = Object.keys(curr).length;
+      if (curr.additional_political_orientation) {
+        count -= 1;
+      }
+      return acc + count;
     }, 0);
 
     const result = questionsLength === answersLength;
