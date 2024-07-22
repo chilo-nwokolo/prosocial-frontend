@@ -1,6 +1,7 @@
 import DownloadFile from "@/utils/downloadFile";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
+import { BASE_REST_URL } from "@/service";
 
 export default function useDownloadData() {
   const toast = useToast();
@@ -11,7 +12,7 @@ export default function useDownloadData() {
       title: "Downloading data as CSV",
     });
     const response = await axios.get(
-      "https://api.prosocialapp.com/api/download-data-csv",
+      BASE_REST_URL + "/download-data-csv",
     );
     DownloadFile(response.data, "prosocial-data.csv");
     toast.closeAll();
