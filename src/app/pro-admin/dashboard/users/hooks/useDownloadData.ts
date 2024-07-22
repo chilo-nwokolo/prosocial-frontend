@@ -11,9 +11,7 @@ export default function useDownloadData() {
       status: "loading",
       title: "Downloading data as CSV",
     });
-    const response = await axios.get(
-      BASE_REST_URL + "/download-data-csv",
-    );
+    const response = await axios.get(BASE_REST_URL + "/download-data-csv");
     DownloadFile(response.data, "prosocial-data.csv");
     toast.closeAll();
   };
