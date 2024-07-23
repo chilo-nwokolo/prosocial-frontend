@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FaChevronLeft } from "react-icons/fa";
 
 export default function PersonalityResultPage() {
   // eslint-disable-next-line no-unused-vars
@@ -44,7 +45,16 @@ export default function PersonalityResultPage() {
   return (
     <QueryContainer loading={loading} error={error}>
       <Flex mt="5" flexDir="column">
-        <Text fontWeight="500" fontSize="xl">
+        <Flex>
+          <Button
+            color="black"
+            variant="secondary"
+            onClick={() => router.back()}
+          >
+            <FaChevronLeft />
+          </Button>
+        </Flex>
+        <Text fontWeight="500" mt={5} fontSize="xl">
           Based on your answers to these additional questions, you seem to be:{" "}
         </Text>
         <Flex flexDir="column" alignItems="center" my="8">
