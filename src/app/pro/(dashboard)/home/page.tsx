@@ -83,8 +83,13 @@ export default function HomePage() {
           What to expect next
         </Text>
         <Text mt="3">
-          You will receive an email from {externalLinks.email} with your group
-          and instructions for your outing.
+          You will receive an email from{" "}
+          <Link href={`mailto:${externalLinks.email}`}>
+            <Text display="inline" textDecoration="underline">
+              {externalLinks.email}
+            </Text>
+          </Link>{" "}
+          with your group and instructions for your outing.
         </Text>
       </Box>
       {homeSections.map((section) => (
