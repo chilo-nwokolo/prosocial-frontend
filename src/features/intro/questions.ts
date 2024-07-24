@@ -14,8 +14,12 @@ export const genderOptions = [
 
 export const raceOptions = [
   { id: 1, title: "White", value: "White" },
-  { id: 2, title: "Black or African", value: "Black or African" },
-  { id: 3, title: "American", value: "American" },
+  {
+    id: 2,
+    title: "Black or African American",
+    value: "Black or African American",
+  },
+  // { id: 3, title: "American", value: "American" },
   { id: 4, title: "Hispanic/Latino", value: "Hispanic/Latino" },
   { id: 5, title: "Asian", value: "Asian" },
   {
