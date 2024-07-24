@@ -40,7 +40,7 @@ const documents = {
     "\n  mutation SUBMIT_USER_INTERESTS ($input: UserInterestInputs!) {\n    submitUserInterest(input: $input) {\n      status\n      message\n    }\n  }\n": types.Submit_User_InterestsDocument,
     "\n  mutation CREATE_JOURNAL_ENTRY ($input: String!, $journal_category_id: ID!) {\n    mutateJournal(input: $input, journal_category_id: $journal_category_id) {\n      id\n      category {\n        id\n      }\n    }\n  }\n": types.Create_Journal_EntryDocument,
     "\n  mutation CREATE_USER_INTEREST($input: CreateInterestInput!) {\n    createInterest(input: $input) {\n      id\n      title\n    }\n  }\n": types.Create_User_InterestDocument,
-    "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n        users {\n          name\n          id\n        }\n      }\n    }\n  }\n": types.MeDocument,
+    "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n        created_at\n        users {\n          name\n          id\n        }\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query ME_QUESTION_RESPONSES {\n    me {\n      id\n      question_responses {\n        id\n        question {\n          id\n        }\n        answer {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.Me_Question_ResponsesDocument,
     "\n  query ME_SCHEDULES {\n    me {\n      schedules {\n        day_name\n        time_range\n        status\n      }\n    }\n  }\n": types.Me_SchedulesDocument,
     "\n  query QUERY_ME_SETTINGS {\n    me {\n      settings {\n        preference_settings {\n          key\n          value \n        }\n      }\n    }\n  }\n": types.Query_Me_SettingsDocument,
@@ -182,7 +182,7 @@ export function gql(source: "\n  mutation CREATE_USER_INTEREST($input: CreateInt
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n        users {\n          name\n          id\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n        users {\n          name\n          id\n        }\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n        created_at\n        users {\n          name\n          id\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query ME {\n    me {\n      __typename\n      id\n      unique_id\n      name\n      email\n      phone\n      profile {\n        avatar\n      }\n      groups {\n        id\n        name\n        created_at\n        users {\n          name\n          id\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

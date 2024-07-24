@@ -15,6 +15,7 @@ export const ME_QUERY = gql(`
       groups {
         id
         name
+        created_at
         users {
           name
           id
