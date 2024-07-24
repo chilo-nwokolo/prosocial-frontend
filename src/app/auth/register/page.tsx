@@ -75,6 +75,7 @@ export default function RegistrationPage() {
     setPhone,
     phone,
     loading,
+    isUploadingProfilePic,
     loadingGroups,
     groups,
     setAcceptTc,
@@ -228,7 +229,7 @@ export default function RegistrationPage() {
               mt="5"
               w="full"
               type="submit"
-              isLoading={loading}
+              isLoading={loading || isUploadingProfilePic}
               loadingText="Creating your account"
               spinnerPlacement="end"
             >
