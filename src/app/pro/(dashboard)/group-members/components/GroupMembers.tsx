@@ -5,14 +5,29 @@ import MemberCard from "./MemberCard";
 import { useRouter } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa";
 import { appRouteLinks } from "@/utils/constants";
+import { useMemo } from "react";
 
 export default function GroupMembers() {
   const router = useRouter();
   const [userProfile] = useUserStore((state) => [state.userProfile]);
+  const activeGroup = useMemo(() => {
+    if (!userProfile?.me?.groups) return null;
+    let groups = [...userProfile.me.groups]?.sort((a, b) => {
+      if (new Date(a.created_at) < new Date(b.created_at)) {
+        return 1;
+      }
 
+      if (new Date(a.created_at) > new Date(b.created_at)) {
+        return -1;
+      }
+      return 0;
+    });
+    console.log(groups);
+    return groups?.[0];
+  }, [userProfile]);
   const handleStartFeedback = () => {
     router.push(
-      `${appRouteLinks.outingFeedback}?userId=${userProfile?.me?.unique_id}&groupId=${userProfile?.me?.groups?.[0]?.id}`,
+      `${appRouteLinks.outingFeedback}?userId=${userProfile?.me?.unique_id}&groupId=${activeGroup?.id}`,
     );
   };
   return (
@@ -27,7 +42,7 @@ export default function GroupMembers() {
       </Text>
 
       <Flex flexDir="column" mt="4">
-        {userProfile?.me?.groups?.[0]?.users?.map((user) => (
+        {activeGroup?.users?.map((user) => (
           <MemberCard name={user.name} key={user.id} />
         ))}
       </Flex>
