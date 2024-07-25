@@ -84,10 +84,11 @@ export default function HomePage() {
         </Text>
         <Text mt="3">
           You will receive an email from{" "}
-          <Link href={`mailto:${externalLinks.email}`}>
-            <Text display="inline" textDecoration="underline">
-              {externalLinks.email}
-            </Text>
+          <Link
+            href={`mailto:${externalLinks.email}`}
+            style={{ textDecoration: "underline" }}
+          >
+            {externalLinks.email}
           </Link>{" "}
           with your group and instructions for your outing.
         </Text>

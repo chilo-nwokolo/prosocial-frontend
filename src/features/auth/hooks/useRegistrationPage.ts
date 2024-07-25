@@ -148,6 +148,7 @@ export default function UseRegistrationPage() {
     setPhone,
     phone,
     loading,
+    isUploadingProfilePic,
     loadingGroups,
     groups,
     setAcceptTc,
