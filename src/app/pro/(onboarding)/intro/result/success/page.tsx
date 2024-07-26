@@ -9,9 +9,13 @@ export default function SuccessPage() {
         <Text fontSize="2xl" fontWeight="medium" mb="5">
           Awesome!
         </Text>
-        <Text>
+        <Text mb="4">
           You have been sent a confirmation email that you completed the
-          registration. You will receive an email by June 1 with the members of
+          registration. If you haven’t already done so, please make sure to
+          verify your email address.
+        </Text>
+        <Text>
+          By the end of the month, you will receive an email with the members of
           your group for your outing.
         </Text>
         <Flex flexDir="column" gap="4" mt="10">
