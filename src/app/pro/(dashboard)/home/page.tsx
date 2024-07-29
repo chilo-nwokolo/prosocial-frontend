@@ -2,7 +2,7 @@
 import { Box, Flex, Text, useToast } from "@chakra-ui/react";
 // import { FaPeopleArrows } from "react-icons/fa";
 import { BiSolidChevronRight } from "react-icons/bi";
-import { appRouteLinks, configExtras, externalLinks } from "@/utils/constants";
+import { appRouteLinks, configExtras } from "@/utils/constants";
 import Link from "next/link";
 import useAppConfig from "@/hooks/useAppConfig";
 import { useEffect } from "react";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store";
 import { useQuery } from "@apollo/client";
 import { ME_QUERY } from "@/features/dashboard/profile/gql/queries";
+import EmailLink from "@/components/General/EmailLink";
 
 const homeSections = [
   {
@@ -83,14 +84,8 @@ export default function HomePage() {
           What to expect next
         </Text>
         <Text mt="3">
-          You will receive an email from{" "}
-          <Link
-            href={`mailto:${externalLinks.email}`}
-            style={{ textDecoration: "underline" }}
-          >
-            {externalLinks.email}
-          </Link>{" "}
-          with your group and instructions for your outing.
+          You will receive an email from <EmailLink /> with your group and
+          instructions for your outing.
         </Text>
       </Box>
       {homeSections.map((section) => (
