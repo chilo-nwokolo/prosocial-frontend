@@ -1,4 +1,5 @@
-import { appRouteLinks, externalLinks } from "@/utils/constants";
+import EmailLink from "@/components/General/EmailLink";
+import { appRouteLinks } from "@/utils/constants";
 import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -11,7 +12,7 @@ export default function OutingFeedbackSuccessPage() {
         </Text>
         <Text>
           Thank you for providing your feedback. If you have additional
-          feedback, please email us at {externalLinks.email}
+          feedback, please email us at <EmailLink />
         </Text>
         <Flex flexDir="column" gap="4" mt="10">
           <Link href={appRouteLinks.home}>
