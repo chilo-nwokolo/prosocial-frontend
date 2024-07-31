@@ -23,9 +23,6 @@ export default function OutingFeedbackSecondOuting() {
           <Text fontSize="2xl" as="h1" mt="3" fontWeight="semibold">
             Outing feedback
           </Text>
-          <Text mt="3" fontSize="xl" as="h2">
-            Would you like to go on a second outing?
-          </Text>
           <RatingScaleQuestion
             name="secondOuting"
             value={formik.values.secondOuting}
@@ -40,8 +37,8 @@ export default function OutingFeedbackSecondOuting() {
                 mb="0"
                 textAlign="left"
               >
-                You would be sorted into a second group which may or may not
-                include people from your initial outing.
+                You would be sorted into another group which may or may not
+                include people from previous outing(s)
               </FormLabel>
             }
             options={[
