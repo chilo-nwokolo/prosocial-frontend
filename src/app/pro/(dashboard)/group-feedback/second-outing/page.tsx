@@ -23,6 +23,9 @@ export default function OutingFeedbackSecondOuting() {
           <Text fontSize="2xl" as="h1" mt="3" fontWeight="semibold">
             Outing feedback
           </Text>
+          <Text mt="3" fontSize="xl" as="h2">
+            Would you like to go on a second outing?
+          </Text>
           <RatingScaleQuestion
             name="secondOuting"
             value={formik.values.secondOuting}

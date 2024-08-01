@@ -33,8 +33,8 @@ export default function CreateGroupModal({
     note: yup.string().required(formFeedback.required),
     users: yup
       .array()
-      .min(4, "Minimum of 4 users per group")
-      .max(8, "Maximum of 8 users per group"),
+      .min(3, "Minimum of 3 users per group")
+      .max(10, "Maximum of 10 users per group"),
   });
 
   const toast = useToast();
