@@ -1,10 +1,18 @@
 import { Providers } from "@/components/Providers";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"], 
+  variable: '--font-inter',
+});
+
+const playfair_display = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair-display',
+})
 
 export const metadata: Metadata = {
   title: "ProSocial App",
@@ -20,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${playfair_display.variable}`}>
         <Providers>{children}</Providers>
         {process.env.NODE_ENV === "production" ? (
           <GoogleAnalytics gaId="G-VYFS0L1TWZ" />

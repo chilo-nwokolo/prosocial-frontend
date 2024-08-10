@@ -7,13 +7,18 @@ import FormInput from "@/components/General/FormInput";
 import useLoginPage from "@/features/auth/hooks/useLoginPage";
 import Link from "next/link";
 
+const logo = {
+  display: 'block',
+  margin: 'auto'
+}
+
 export default function LoginPage() {
   const { formik, loading } = useLoginPage();
 
   return (
     <Center h="90vh">
       <Box my="auto">
-        <Image src={ImageLinks.logo} width={75} height={75} alt="app logo" />
+        <Image src={ImageLinks.logo} width={75} height={75} style={logo} alt="app logo" />
         <Text
           my="4"
           as="h1"

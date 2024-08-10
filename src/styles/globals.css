@@ -14,6 +14,7 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   background: #fdf5e9;
+  font-family: var(--font-inter);
 }
 
 /* TelInput component */
@@ -33,7 +34,21 @@ body {
   width: 100%;
 }
 
-.logo{
+/*Trying to center logo
+.logo {
   display: block;
   margin-left: auto;
-  margin-right: auto;}
+  margin-right: auto;
+}*/
+
+
+.css-qe6pja, .css-lvorr0 {
+  font-family: var(--font-playfair-display);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.css-hqaej{
+  background-color: #fff;
+}
+
