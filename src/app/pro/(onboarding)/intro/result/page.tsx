@@ -47,7 +47,7 @@ export default function ResultPage() {
           </Text>
         </Tooltip>
       </Flex>
-      <Flex mt="5" flexDir="column">
+      <Flex mt="5" mb="10" flexDir="column">
         <Text fontWeight="medium" fontSize="xl">
           Based on your answers, you seem to fit one of our social categories:{" "}
         </Text>

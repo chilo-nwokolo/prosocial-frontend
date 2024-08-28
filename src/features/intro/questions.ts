@@ -154,11 +154,11 @@ export const personalQuestionsData = [
         options: educationOptions,
         type: AnswerType.SINGLE_CHOICE,
       },
-      // {
-      //   id: "zip_code",
-      //   question: "5. What is your zip code?",
-      //   type: "text",
-      // },
+      {
+        id: "zip_code",
+        question: "5. What is your zip code?",
+        type: "text",
+      },
       {
         id: "has_children",
         question: "5. Do you have children?",
