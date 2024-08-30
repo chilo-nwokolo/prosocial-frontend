@@ -64,7 +64,7 @@ export default function LoginPage() {
               <Link href={appRouteLinks.changePassword}>
                 <Text
                   fontSize="sm"
-                  color="400"
+                  color="info.100"
                   textAlign="right"
                   cursor="pointer"
                   _hover={{ textDecor: "none" }}
@@ -90,7 +90,7 @@ export default function LoginPage() {
           <Link href={appRouteLinks.register}>
             <Text
               fontSize="sm"
-              color="400"
+              color="info.100"
               cursor="pointer"
               _hover={{ textDecor: "none" }}
               textDecor="underline"
