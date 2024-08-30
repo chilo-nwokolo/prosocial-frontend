@@ -122,7 +122,11 @@ export default function HomePage() {
           >
             <Text>{section?.icon}</Text>
             <Flex alignItems="center" gap="4">
-              <Text fontWeight="600" fontSize="2xl" fontFamily="var(--font-playfair-display)">
+              <Text
+                fontWeight="600"
+                fontSize="2xl"
+                fontFamily="var(--font-playfair-display)"
+              >
                 {section.title}
               </Text>
               <Box as="span">
