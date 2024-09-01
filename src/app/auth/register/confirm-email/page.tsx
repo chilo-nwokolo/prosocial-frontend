@@ -11,7 +11,7 @@ export default function EmailConfirmationPage() {
         </Text>
         <Text>
           We have sent you an email to verify your email address. Verifying your
-          email address give you access to all the awesome features in
+          email address gives you access to all the awesome features in
           ProSocial.
         </Text>
         <Link href={appRouteLinks.login}>

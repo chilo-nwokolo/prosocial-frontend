@@ -22,6 +22,9 @@ export const theme = extendTheme({
     critical: {
       100: "#f95c47",
     },
+    info: {
+      100: "#0092c7",
+    },
     bg: "#fdf5e9",
   },
   components: {

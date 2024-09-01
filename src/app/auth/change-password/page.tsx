@@ -97,7 +97,7 @@ export default function ChangePasswordPage() {
             <Link href={appRouteLinks.login}>
               <Text
                 fontSize="sm"
-                color="blue.400"
+                color="info.100"
                 cursor="pointer"
                 _hover={{ textDecor: "none" }}
                 textDecor="underline"

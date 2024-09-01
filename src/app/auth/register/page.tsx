@@ -242,7 +242,7 @@ export default function RegistrationPage() {
           <Link href={appRouteLinks.login}>
             <Text
               fontSize="sm"
-              color="blue.400"
+              color="400"
               cursor="pointer"
               _hover={{ textDecor: "none" }}
               textDecor="underline"
