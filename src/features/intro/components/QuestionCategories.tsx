@@ -89,9 +89,11 @@ const QuestionCategoryLinkBox = ({
         boxShadow="3px 3px 3px 0px #CECDCD"
       >
         <Flex flexDir="column" gap="2">
-          <Text fontWeight="600"
-                fontSize="2xl"
-                fontFamily="var(--font-playfair-display)">
+          <Text
+            fontWeight="600"
+            fontSize="2xl"
+            fontFamily="var(--font-playfair-display)"
+          >
             {question.category}
           </Text>
           {question.totalQuestions ? (
@@ -136,9 +138,11 @@ const OtherQuestionCategoryLinkBox = ({
         boxShadow="3px 3px 3px 0px #CECDCD"
       >
         <Flex flexDir="column" gap="2">
-          <Text fontWeight="600"
-                fontSize="2xl"
-                fontFamily="var(--font-playfair-display)">
+          <Text
+            fontWeight="600"
+            fontSize="2xl"
+            fontFamily="var(--font-playfair-display)"
+          >
             {question.category}
           </Text>
           {calculateRemainder}
