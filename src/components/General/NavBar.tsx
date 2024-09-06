@@ -76,7 +76,6 @@ export default function NavBar() {
         <Link href={appRouteLinks.profile}>
           <ProfilePicture />
         </Link>
-
         <Image
           src={ImageLinks.logo}
           height={45}
@@ -84,7 +83,6 @@ export default function NavBar() {
           alt="app logo"
         ></Image>
         {/*<Text fontWeight="semibold" fontSize="2xl">ProSocial</Text>*/}
-
         <Box onClick={onOpen} cursor="pointer" p="2">
           <RiMenu2Fill style={{ fontSize: "24px" }} />
         </Box>
