@@ -24,7 +24,8 @@ export const theme = extendTheme({
       100: "#f95c47",
     },
     info: {
-      100: "#0092c7",
+     /*link color*/ 100: "#0092c7",
+     /*tooltip text color*/ 200: "#15617F",
     },
     bg: "#fdf5e9",
   },

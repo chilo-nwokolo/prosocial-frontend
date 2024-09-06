@@ -96,7 +96,7 @@ export default function RegistrationPage() {
   return (
     <>
       <Box mt="5">
-        <Text mb="4" as="h1" fontSize="2xl" fontWeight="medium">
+        <Text mb="4" as="h1" fontSize="2xl" fontWeight="600">
           Let&apos;s create your account
         </Text>
         <form onSubmit={formik.handleSubmit}>
@@ -126,7 +126,7 @@ export default function RegistrationPage() {
                     fontSize="xs"
                     cursor="default"
                     _hover={{ textDecoration: "none" }}
-                    textDecoration="underline"
+                    /*color="info.200"*/
                     onClick={onPhoneInfoOpen}
                   >
                     <AiFillInfoCircle /> Why do you ask for my phone number?
@@ -217,9 +217,11 @@ export default function RegistrationPage() {
                 I have read and accept the{" "}
                 <Button
                   onClick={onOpenTerms}
-                  color="blue"
+                  color="info.100"
                   fontWeight="500"
                   variant="link"
+                  _hover={{ textDecor: "none" }}
+                  textDecor="underline"
                 >
                   Terms and Conditions
                 </Button>
@@ -242,7 +244,7 @@ export default function RegistrationPage() {
           <Link href={appRouteLinks.login}>
             <Text
               fontSize="sm"
-              color="400"
+              color="info.100"
               cursor="pointer"
               _hover={{ textDecor: "none" }}
               textDecor="underline"
