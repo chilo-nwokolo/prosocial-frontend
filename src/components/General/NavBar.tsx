@@ -1,6 +1,7 @@
 "use client";
 import ProfilePicture from "@/components/General/ProfilePicture";
-import { appRouteLinks } from "@/utils/constants";
+import { ImageLinks, appRouteLinks } from "@/utils/constants";
+import Image from "next/image";
 import { featureFlag } from "@/utils/helpers";
 import {
   Box,
@@ -75,9 +76,10 @@ export default function NavBar() {
         <Link href={appRouteLinks.profile}>
           <ProfilePicture />
         </Link>
-        <Text fontWeight="semibold" fontSize="2xl">
-          ProSocial
-        </Text>
+        
+        <Image src={ImageLinks.logo} height={45} width={45} alt="app logo"></Image>
+        {/*<Text fontWeight="semibold" fontSize="2xl">ProSocial</Text>*/}
+        
         <Box onClick={onOpen} cursor="pointer" p="2">
           <RiMenu2Fill style={{ fontSize: "24px" }} />
         </Box>

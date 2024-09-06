@@ -108,12 +108,13 @@ export default function HomePage() {
                   : "md",
             }}
             gap="4"
-            border="1px solid"
-            borderColor="gray.400"
-            borderRadius="xl"
+            border="2px solid"
+            borderColor="primary.300"
+            borderRadius="0"
             py="10"
             px="5"
             backgroundColor="#fff"
+            boxShadow="3px 3px 3px 0px #CECDCD"
             opacity={
               section.id === 4 && userProfile?.me?.groups?.length === 0
                 ? 0.5

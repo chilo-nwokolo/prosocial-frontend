@@ -18,6 +18,7 @@ export const theme = extendTheme({
     primary: {
       100: "#f95c47",
       200: "#3a3738",
+      300: "#876A6C"
     },
     critical: {
       100: "#f95c47",

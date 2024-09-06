@@ -19,7 +19,7 @@ export default function IntroPage() {
 
   return (
     <Flex mt="5" flexDir="column">
-      <Text mb="4" fontSize="2xl" fontWeight="medium" as="h1">
+      <Text mb="4" fontSize="2xl" fontWeight="600" as="h1">
         About You
       </Text>
       <Text>
