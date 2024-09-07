@@ -92,7 +92,7 @@ const QuestionCategoryLinkBox = ({
           <Text
             fontWeight="600"
             fontSize="2xl"
-            fontFamily="var(--font-playfair-display)"
+            fontFamily="var(--font-comfortaa)"
           >
             {question.category}
           </Text>
@@ -141,7 +141,7 @@ const OtherQuestionCategoryLinkBox = ({
           <Text
             fontWeight="600"
             fontSize="2xl"
-            fontFamily="var(--font-playfair-display)"
+            fontFamily="var(--font-comfortaa)"
           >
             {question.category}
           </Text>

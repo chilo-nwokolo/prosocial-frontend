@@ -1,6 +1,6 @@
 export const ImageLinks = {
   logoWithText: "/logo-text.png",
-  logo: "/logo-update.png",
+  logo: "/logo.png",
   dpPlaceholder: "/profile_placeholder.jpeg",
 };
 
