@@ -1,7 +1,7 @@
 import { Providers } from "@/components/Providers";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Comfortaa, Lato} from "next/font/google";
+import { Comfortaa, Lato } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 const comfortaa = Comfortaa({
