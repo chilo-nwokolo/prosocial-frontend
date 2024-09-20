@@ -19,7 +19,7 @@ export const theme = extendTheme({
       100: "#f95c47",
       200: "#3a3738",
       300: "#876A6C",
-      400: "#6B4848"
+      400: "#6B4848",
     },
     critical: {
       100: "#f95c47",

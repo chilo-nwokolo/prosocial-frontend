@@ -37,7 +37,7 @@ export const Button = defineStyleConfig({
     },
     secondary: {
       w: "small",
-      border:"1px",
+      border: "1px",
       color: "#15617F",
       fontWeight: "500",
       padding: ".5em",

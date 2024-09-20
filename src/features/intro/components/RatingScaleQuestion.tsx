@@ -49,7 +49,6 @@ export function RadioCard(props: any) {
           bg: "info.100",
           color: "white",
           fontWeight: "600",
-          
         }}
         h="5.8rem"
         w="full"
