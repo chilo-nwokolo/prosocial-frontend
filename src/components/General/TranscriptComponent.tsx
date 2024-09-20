@@ -14,17 +14,17 @@ type Props = {
 
 export default function TranscriptComponent({ children }: Props) {
   return (
-    <Accordion allowToggle mt="5">
+    <Accordion allowToggle mt="5" borderColor="#6B4848" borderY="0px solid">
       <AccordionItem>
         <h2>
-          <AccordionButton borderY="1px solid" borderColor="#876a6c">
-            <Box as="span" flex="1" textAlign="left">
-              Transcript
+          <AccordionButton borderY="0px solid" borderColor="#6B4848" _hover={{ backgroundColor: 'rgba(123, 180, 206, 0.3)' }}>
+            <Box as="span" flex="1" textAlign="left" fontWeight="800">
+            Transcript
             </Box>
             <AccordionIcon />
           </AccordionButton>
         </h2>
-        <AccordionPanel pb={4} maxH="52" overflowY="auto">
+        <AccordionPanel pb={4} maxH="52" overflowY="auto" backgroundColor="white" borderTop="1px solid">
           {children}
         </AccordionPanel>
       </AccordionItem>

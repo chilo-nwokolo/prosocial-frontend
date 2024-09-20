@@ -46,9 +46,10 @@ export function RadioCard(props: any) {
         borderWidth="1px"
         borderColor="gray.500"
         _checked={{
-          bg: "teal.600",
+          bg: "info.100",
           color: "white",
-          borderColor: "teal.600",
+          fontWeight: "600",
+          
         }}
         h="5.8rem"
         w="full"
@@ -56,7 +57,8 @@ export function RadioCard(props: any) {
         textAlign="center"
         alignItems="center"
         justifyContent="center"
-        fontSize="xs"
+        fontSize="14px"
+        padding=".5em"
         whiteSpace="pre-wrap"
       >
         {props.children}

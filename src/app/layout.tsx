@@ -16,7 +16,7 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "ProSocial App",
+  title: "ProSocial Web App",
   description: "Connect with your friends",
   manifest: "/manifest.json",
   icons: { apple: "/icon-152x152" },

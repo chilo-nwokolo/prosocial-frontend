@@ -55,7 +55,7 @@ export default function SingleChoiceQuestion({
               value={config?.useIdAsValue ? option.id : option.value}
               name={name}
               onChange={onChange}
-              sx={{ border: "1.5px solid", color: "#00000070" }}
+              sx={{ border: "1.5px solid", color: "black", bg: "white" }}
             >
               {option.title}
             </Radio>
