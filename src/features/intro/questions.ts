@@ -3,12 +3,12 @@ import { AnswerType } from "@/utils/constants";
 export const genderOptions = [
   { id: 1, title: "Female", value: "FEMALE" },
   { id: 2, title: "Male", value: "MALE" },
-  // {
-  //   id: 3,
-  //   title: "Gender variant/Non-conforming",
-  //   value: "NONCONFORMING",
-  // },
-  // { id: 4, title: "Transgender", value: "TRANSGENDER" },
+  {
+    id: 3,
+    title: "Gender variant/Non-conforming",
+    value: "NONCONFORMING",
+  },
+  { id: 4, title: "Transgender", value: "TRANSGENDER" },
   { id: 5, title: "Prefer not to answer", value: "OTHER" },
 ];
 
