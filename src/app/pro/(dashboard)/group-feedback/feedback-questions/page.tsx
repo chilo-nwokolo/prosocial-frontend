@@ -61,7 +61,7 @@ const QuestionBox = ({
         placeholder="Write your thoughts here. Your response is private and will never be shared outside of the ProSocial admin team. We'll use your feedback to improve our matching for social outings."
       />
       {error ? (
-        <FormHelperText fontSize="xs" color="critical.100">
+        <FormHelperText fontSize="xs" color="critical.100" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}

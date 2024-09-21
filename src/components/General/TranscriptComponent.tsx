@@ -20,7 +20,7 @@ export default function TranscriptComponent({ children }: Props) {
           <AccordionButton
             borderY="0px solid"
             borderColor="#6B4848"
-            _hover={{ backgroundColor: "rgba(123, 180, 206, 0.3)" }}
+            /*_hover={{ backgroundColor: "rgba(149, 205, 229, 0.3)" }}*/
           >
             <Box as="span" flex="1" textAlign="left" fontWeight="800">
               Transcript

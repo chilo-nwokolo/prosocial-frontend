@@ -78,9 +78,9 @@ const QuestionCategoryLinkBox = ({
   return (
     <Link href={`${appRouteLinks.intro}/${question.destination}`}>
       <Flex
-        border="2px solid"
+        border="1px solid"
         alignItems="center"
-        borderColor="primary.300"
+        borderColor="black"
         backgroundColor="#fff"
         py="16"
         px="5"
@@ -127,9 +127,9 @@ const OtherQuestionCategoryLinkBox = ({
   return (
     <Link href={`${appRouteLinks.intro}/${question.destination}`}>
       <Flex
-        border="2px solid"
+        border="1px solid"
         alignItems="center"
-        borderColor="primary.300"
+        borderColor="black"
         py="16"
         px="5"
         borderRadius="0"

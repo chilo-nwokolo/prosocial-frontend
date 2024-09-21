@@ -33,7 +33,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { GrClose } from "react-icons/gr";
+import { FaChevronLeft } from "react-icons/fa";
 
 // type Interest = {
 //   __typename?: "Interest" | undefined;
@@ -337,13 +337,19 @@ export default function InterestedExtendedPage() {
   return (
     <QueryContainer loading={isLoading || loadingInterests} error={error}>
       <Flex flexDir="column">
-        <Flex justifyContent="flex-end">
-          <BackButton icon={<GrClose />} destination={appRouteLinks.intro} />
+        <Flex>
+          <Button
+            variant="secondary"
+            onClick={() => router.push(appRouteLinks.intro)}
+          >
+            <FaChevronLeft />
+            Back
+          </Button>
         </Flex>
-        <Text fontWeight="lg" fontSize="2xl">
-          What is your top interest
+        <Text fontWeight="lg" fontSize="2xl" color="black" marginTop="1em">
+          What is your top interest?
         </Text>
-        <Text mt={2} color={"GrayText"}>
+        <Text mt={2} color="black">
           View the categories and select your one top interest from within them.
         </Text>
 
@@ -445,14 +451,14 @@ export default function InterestedExtendedPage() {
             <FormLabel as="h2">
               <Flex flexDir="column">
                 <Text>Don&apos;t see your interest(s), list it here.</Text>
-                <Text fontSize="small" color="gray.500">
+                <Text fontSize="small" color="black" fontStyle="italic">
                   Optional
                 </Text>
               </Flex>
             </FormLabel>
             <Input
               border="1px solid"
-              borderColor="gray.400"
+              borderColor="black"
               type="text"
               value={newInterest}
               onChange={(e) => setNewInterest(e.target.value)}

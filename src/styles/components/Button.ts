@@ -23,27 +23,30 @@ export const Button = defineStyleConfig({
   // Two variants: outline and solid
   variants: {
     solid: {
-      bg: "#15617F",
+      bg: "#F95C47",
       color: "white",
       boxShadow: "1px 1px .5px 0px #876A6C",
       _hover: {
-        bg: "#006999",
+        bg: "#F9432A",
         color: "white",
       },
       _active: {
-        bg: "15617F",
+        bg: "#F95C47",
         boxShadow: "0px 0px 1px 0px #876A6C",
+      },
+      _disabled: {
+        bg: "rgba(135, 106, 108, 0.5)",
+        opacity: "1",
       },
     },
     secondary: {
       w: "small",
       border: "1px",
-      color: "#15617F",
+      color: "black",
       fontWeight: "500",
       padding: ".5em",
       _hover: {
-        color: "black",
-        bg: "white",
+        border: "2px",
       },
       _active: {
         boxShadow: "0px 0px 1px 0px #876a6c94",
@@ -51,7 +54,7 @@ export const Button = defineStyleConfig({
     },
     outline: {
       background: "transparent",
-      borderColor: "#f95c47",
+      borderColor: "#005070",
       color: "black",
       fontWeight: "normal",
       borderRadius: "lg",

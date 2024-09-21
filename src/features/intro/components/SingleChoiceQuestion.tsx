@@ -39,9 +39,9 @@ export default function SingleChoiceQuestion({
     <FormControl as="fieldset">
       <FormLabel as="legend">
         <Flex flexDir="column">
-          <Text>{title}</Text>
+          <Text fontWeight="600">{title}</Text>
           {infoText ? (
-            <Text fontSize="sm" color="gray.600">
+            <Text fontSize="sm" color="black">
               &#9432; {infoText}
             </Text>
           ) : null}
@@ -63,7 +63,7 @@ export default function SingleChoiceQuestion({
         </VStack>
       </RadioGroup>
       {error ? (
-        <FormHelperText color="critical.100" fontSize="xs">
+        <FormHelperText color="critical.100" fontSize="xs" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}

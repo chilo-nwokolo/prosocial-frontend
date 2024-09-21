@@ -44,7 +44,7 @@ export function RadioCard(props: any) {
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
-        borderColor="gray.500"
+        borderColor="black"
         _checked={{
           bg: "info.100",
           color: "white",
@@ -53,12 +53,14 @@ export function RadioCard(props: any) {
         h="5.8rem"
         w="full"
         borderTop="none"
+        borderRight="none"
         textAlign="center"
         alignItems="center"
         justifyContent="center"
         fontSize="14px"
         padding=".5em"
         whiteSpace="pre-wrap"
+        bg="white"
       >
         {props.children}
       </Flex>
@@ -89,9 +91,10 @@ export default function RatingScaleQuestion({
           as="legend"
           border="1px solid"
           mb="0"
-          borderColor="gray.500"
+          borderColor="black"
           p="5"
           w="full"
+          fontWeight="600"
         >
           {config?.lowerCaseTitle ? title.toLowerCase() : title}
         </FormLabel>
@@ -122,7 +125,7 @@ export default function RatingScaleQuestion({
       {typeof title === "string" && title.includes("religious or spiritual") ? (
         <Flex
           border="1px solid"
-          borderColor="gray.500"
+          borderColor="black"
           borderTop="none"
           justifyContent="space-between"
           px="2"
@@ -140,7 +143,7 @@ export default function RatingScaleQuestion({
       {config?.hasLabel ? (
         <Flex
           border="1px solid"
-          borderColor="gray.500"
+          borderColor="black"
           borderTop="none"
           justifyContent="space-between"
           px="2"
@@ -157,7 +160,7 @@ export default function RatingScaleQuestion({
         </Flex>
       ) : null}
       {error ? (
-        <FormHelperText color="critical.100" fontSize="xs">
+        <FormHelperText color="critical.100" fontSize="xs" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}

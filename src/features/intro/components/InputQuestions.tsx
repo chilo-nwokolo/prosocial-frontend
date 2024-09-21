@@ -18,9 +18,9 @@ export default function InputQuestions({
 }: InputQuestionsProps) {
   return (
     <FormControl>
-      <FormLabel>{title}</FormLabel>
+      <FormLabel fontWeight="600">{title}</FormLabel>
       {isOptional && (
-        <Text fontStyle="italic" fontSize="small" color="gray.500">
+        <Text fontStyle="italic" fontSize="small" color="black">
           Optional
         </Text>
       )}
@@ -29,7 +29,11 @@ export default function InputQuestions({
         name={name}
         value={value}
         onChange={onChange}
-        borderColor="gray.500"
+        borderColor="black"
+        bg="white"
+        /* _hover={{
+          border: "2px",
+        }}*/
       />
     </FormControl>
   );

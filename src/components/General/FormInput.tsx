@@ -110,7 +110,7 @@ export default function FormInput({
         )}
         <FormHelperText>
           {error ? (
-            <Text fontSize="xs" color="critical.100">
+            <Text fontSize="xs" color="critical.100" fontWeight="600">
               {error}
             </Text>
           ) : tooltip ? (

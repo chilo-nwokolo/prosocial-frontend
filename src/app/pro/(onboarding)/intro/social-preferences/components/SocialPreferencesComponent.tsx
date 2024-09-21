@@ -263,11 +263,15 @@ export default function SocialPreferencesComponent() {
             <Text as="h1" fontSize="3xl" fontWeight="semibold">
               Social Preferences
             </Text>
-            <Text>All fields required</Text>
+            <Text fontStyle="italic" marginTop="-1em">
+              All fields required
+            </Text>
 
             {/* Q1 */}
             <Flex flexDir="column" gap="3">
-              <Text>1. What types of friends are you looking for?</Text>
+              <Text fontWeight="600">
+                1. What types of friends are you looking for?
+              </Text>
               {/* <Text fontWeight="normal" fontSize="small">
                 Select your top 3
               </Text> */}
@@ -291,14 +295,16 @@ export default function SocialPreferencesComponent() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   name="11"
-                  borderColor="gray.500"
+                  borderColor="black"
                 />
               </FormControl>
             </Flex>
 
             {/* Q2 */}
             <Flex flexDir="column" gap="3">
-              <Text>2. What type of friend do you think you are?</Text>
+              <Text fontWeight="600">
+                2. What type of friend do you think you are?
+              </Text>
               {/* <Text fontWeight="normal" fontSize="small">
                 Select your top 3
               </Text> */}
@@ -322,7 +328,7 @@ export default function SocialPreferencesComponent() {
                   value={formik.values[15]}
                   onChange={formik.handleChange}
                   name="15"
-                  borderColor="gray.500"
+                  borderColor="black"
                 />
               </FormControl>
             </Flex>
@@ -434,6 +440,15 @@ export default function SocialPreferencesComponent() {
         </form>
       ) : (
         <>
+          <Text
+            mb="4"
+            fontSize="2xl"
+            fontWeight="600"
+            as="h1"
+            marginBottom="-1em"
+          >
+            ProSocial friend types
+          </Text>
           <Text>
             Take a moment to read these friend types; in the next screen we’ll
             ask you to choose the type of friend you’re looking for and the type

@@ -174,7 +174,11 @@ export default function RegistrationPage() {
                 ))}
               </Select>
               {formik.errors?.universityId ? (
-                <FormHelperText fontSize="xs" color="critical.100">
+                <FormHelperText
+                  fontSize="xs"
+                  color="critical.100"
+                  fontWeight="600"
+                >
                   {formik.errors?.universityId}
                 </FormHelperText>
               ) : null}
