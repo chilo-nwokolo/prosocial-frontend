@@ -20,8 +20,8 @@ function RadioCard(props: any) {
   const checkbox = getRadioProps();
 
   return (
-    <Box as="label" w="full"> 
-      <input {...input}/>
+    <Box as="label" w="full">
+      <input {...input} />
       <Flex
         {...checkbox}
         cursor="pointer"
