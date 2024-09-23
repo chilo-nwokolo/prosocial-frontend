@@ -366,7 +366,7 @@ export default function InterestedExtendedPage() {
                 imageUrl={trait.image_url || ""}
               >
                 <Flex flexDir="column">
-                  <RadioGroup >
+                  <RadioGroup>
                     <Stack>
                       {trait?.interests?.map((interest, i) => (
                         <Flex
@@ -397,8 +397,6 @@ export default function InterestedExtendedPage() {
               <BackButton text="Go Back" />
             </Flex>
           )}
-
-          
 
           {/* <Flex flexDir="column" mt="5" gap="5">
             <FormControl>

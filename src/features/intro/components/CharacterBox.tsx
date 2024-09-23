@@ -20,16 +20,17 @@ function RadioCard(props: any) {
   const checkbox = getRadioProps();
 
   return (
-    <Box as="label" w="full">
-      <input {...input} />
+    <Box as="label" w="full"> 
+      <input {...input}/>
       <Flex
         {...checkbox}
         cursor="pointer"
-        borderWidth="2px"
+        borderWidth="1px"
+        borderColor="black"
         _checked={{
-          bg: props.value === "yes" ? "teal.600" : "red.400",
+          bg: props.value === "yes" ? "info.100" : "red.400",
           color: "white",
-          borderColor: props.value === "yes" ? "teal.600" : "red.400",
+          borderColor: props.value === "yes" ? "info.100" : "red.400",
         }}
         _active={{
           color: "white",
@@ -103,8 +104,10 @@ export default function CharacterBox({
       <FormLabel
         as="legend"
         mb="0"
-        border="2px solid"
-        borderColor="gray.200"
+        border="1px solid"
+        borderColor="black"
+        borderBottom="none"
+        bg="white"
         p="5"
         w="full"
       >

@@ -63,7 +63,7 @@ export default function SingleChoiceQuestion({
         </VStack>
       </RadioGroup>
       {error ? (
-        <FormHelperText color="critical.100" fontSize="xs" fontWeight="600">
+        <FormHelperText color="critical.100" fontSize="14px" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}
