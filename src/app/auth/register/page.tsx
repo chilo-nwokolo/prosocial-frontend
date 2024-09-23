@@ -243,11 +243,10 @@ export default function RegistrationPage() {
             </Button>
           </Flex>
         </form>
-        <Flex mt="5" fontSize="sm" justifyContent="center" alignItems="center">
+        <Flex mt="5" justifyContent="center" alignItems="center">
           Already have an account?&nbsp;
           <Link href={appRouteLinks.login}>
             <Text
-              fontSize="sm"
               color="info.100"
               cursor="pointer"
               _hover={{ textDecor: "none" }}

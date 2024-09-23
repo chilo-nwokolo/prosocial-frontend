@@ -34,21 +34,22 @@ function InterestsAccordion({
       allowMultiple
       defaultIndex={defaultIndex}
       onChange={() => onChange && onChange(title, id)}
+      borderTop="black"
     >
       <AccordionItem>
         {({ isExpanded }) => (
           <>
             <h2>
               <AccordionButton>
-                <Box as="span" ml="3" textAlign="left">
+                <Box as="span" ml="2" textAlign="left" fontWeight="600">
                   {title}
                 </Box>
                 {isExpanded ? (
-                  <Text color="gray.600" flex={1}>
+                  <Text color="black" flex={1}>
                     <RiArrowDropUpLine style={{ fontSize: "30px" }} />
                   </Text>
                 ) : (
-                  <Text color="gray.600" flex={1}>
+                  <Text color="black" flex={1}>
                     <RiArrowDropDownLine style={{ fontSize: "30px" }} />
                   </Text>
                 )}

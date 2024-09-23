@@ -54,6 +54,7 @@ export function RadioCard(props: any) {
         w="full"
         borderTop="none"
         borderRight="none"
+        /*borderRight:last-of-type="1px"*/
         textAlign="center"
         alignItems="center"
         justifyContent="center"

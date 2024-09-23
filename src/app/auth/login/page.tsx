@@ -30,7 +30,8 @@ export default function LoginPage() {
           as="h1"
           color="primary.200"
           fontSize="2xl"
-          fontWeight="medium"
+          fontWeight="600"
+          pt="1em"
         >
           Welcome to ProSocial
         </Text>
@@ -61,18 +62,6 @@ export default function LoginPage() {
                 value={formik.values.password}
                 error={formik.errors.password}
               />
-              <Link href={appRouteLinks.changePassword}>
-                <Text
-                  fontSize="sm"
-                  color="info.100"
-                  textAlign="right"
-                  cursor="pointer"
-                  _hover={{ textDecor: "none" }}
-                  textDecor="underline"
-                >
-                  I forgot my password
-                </Text>
-              </Link>
             </Flex>
             <Button
               w="full"
@@ -85,11 +74,22 @@ export default function LoginPage() {
             </Button>
           </Flex>
         </form>
-        <Flex mt="5" fontSize="sm" alignItems="center">
+        <Link href={appRouteLinks.changePassword}>
+          <Text
+            mt="2em"
+            color="info.100"
+            textAlign="center"
+            cursor="pointer"
+            _hover={{ textDecor: "none" }}
+            textDecor="underline"
+          >
+            I forgot my password
+          </Text>
+        </Link>
+        <Flex mt="5" alignItems="center" justifyContent="center">
           Don&apos;t have an account? &nbsp;{" "}
           <Link href={appRouteLinks.register}>
             <Text
-              fontSize="sm"
               color="info.100"
               cursor="pointer"
               _hover={{ textDecor: "none" }}

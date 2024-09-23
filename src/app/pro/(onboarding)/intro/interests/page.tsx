@@ -21,7 +21,6 @@ import { appRouteLinks, configExtras } from "@/utils/constants";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
-  Divider,
   Flex,
   FormControl,
   FormLabel,
@@ -367,13 +366,13 @@ export default function InterestedExtendedPage() {
                 imageUrl={trait.image_url || ""}
               >
                 <Flex flexDir="column">
-                  <RadioGroup>
+                  <RadioGroup >
                     <Stack>
                       {trait?.interests?.map((interest, i) => (
                         <Flex
                           key={interest.id}
                           p="3"
-                          bg={i % 2 === 0 ? "#f4ede2" : "transparent"}
+                          bg={i % 2 === 0 ? "none" : "white"}
                         >
                           <InterestsSwitch
                             isChecked={flattenedInterests?.includes(
@@ -399,7 +398,7 @@ export default function InterestedExtendedPage() {
             </Flex>
           )}
 
-          <Divider mt="7" borderColor="gray.500" />
+          
 
           {/* <Flex flexDir="column" mt="5" gap="5">
             <FormControl>
@@ -449,7 +448,7 @@ export default function InterestedExtendedPage() {
           </Flex> */}
           <FormControl mt="3">
             <FormLabel as="h2">
-              <Flex flexDir="column">
+              <Flex flexDir="column" pt="1em">
                 <Text>Don&apos;t see your interest(s), list it here.</Text>
                 <Text fontSize="small" color="black" fontStyle="italic">
                   Optional

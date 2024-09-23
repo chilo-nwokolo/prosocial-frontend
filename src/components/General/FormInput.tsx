@@ -105,12 +105,17 @@ export default function FormInput({
             borderRadius="0"
             bg="#fff"
             border="0.75px solid #876a6c"
-            _focus={{ border: "1.5px solid #7bb4ce", bg: "#fff" }}
+            _focus={{ border: "1.5px solid #7bb4ce" }}
           />
         )}
         <FormHelperText>
           {error ? (
-            <Text fontSize="xs" color="critical.100" fontWeight="600">
+            <Text
+              fontSize="14px"
+              color="critical.100"
+              fontWeight="600"
+              fontStyle="italic"
+            >
               {error}
             </Text>
           ) : tooltip ? (

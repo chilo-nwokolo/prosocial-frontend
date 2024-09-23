@@ -37,6 +37,7 @@ export const Button = defineStyleConfig({
       _disabled: {
         bg: "rgba(135, 106, 108, 0.5)",
         opacity: "1",
+        _hover: { pointerEvents: "none" },
       },
     },
     secondary: {
