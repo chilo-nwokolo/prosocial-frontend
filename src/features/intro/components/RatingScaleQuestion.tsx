@@ -61,8 +61,8 @@ export function RadioCard(props: any) {
         padding=".5em"
         whiteSpace="pre-wrap"
         bg="white"
-        // _last={{ 
-        //   borderRight: "1px", 
+        // _last={{
+        //   borderRight: "1px",
         //   borderRightColor: "gray.400",
         // }}
       >
