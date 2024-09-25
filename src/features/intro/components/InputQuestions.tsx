@@ -30,10 +30,7 @@ export default function InputQuestions({
         value={value}
         onChange={onChange}
         borderColor="black"
-        bg="white"
-        /* _hover={{
-          border: "2px",
-        }}*/
+        bg={isOptional ? "none" : "white"}
       />
     </FormControl>
   );

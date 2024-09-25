@@ -14,7 +14,7 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FcInfo } from "react-icons/fc";
+import { FaInfoCircle } from "react-icons/fa";
 
 export default function ResultPage() {
   const {
@@ -35,7 +35,7 @@ export default function ResultPage() {
   return (
     <>
       <Flex justifyContent="center" alignItems="center" gap="1">
-        <FcInfo /*color="red"*/ />
+        <FaInfoCircle color="#226db4"/>
         <Tooltip label="Every answer you provided during the registration procures a score that combines together to place you into a category. If you feel this category is not an accurate reflection of your personality, you will have the opportunity to answer some more questions so we can further refine our understanding of who you are as a person.">
           <Text
             fontSize="sm"

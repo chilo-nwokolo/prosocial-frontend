@@ -52,9 +52,8 @@ export function RadioCard(props: any) {
         }}
         h="5.8rem"
         w="full"
-        borderTop="none"
-        borderRight="none"
-        /*borderRight:last-of-type="1px"*/
+        /*borderTop="none"
+        borderRight="none"*/
         textAlign="center"
         alignItems="center"
         justifyContent="center"
@@ -62,6 +61,10 @@ export function RadioCard(props: any) {
         padding=".5em"
         whiteSpace="pre-wrap"
         bg="white"
+        // _last={{ 
+        //   borderRight: "1px", 
+        //   borderRightColor: "gray.400",
+        // }}
       >
         {props.children}
       </Flex>
