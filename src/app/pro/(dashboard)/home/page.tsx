@@ -78,9 +78,9 @@ export default function HomePage() {
   }, [config, loading]);
 
   return (
-    <Flex flexDir="column" w="full" gap="5">
+    <Flex flexDir="column" w="full" gap="5" textAlign="left">
       <Box gap="4" mb="3">
-        <Text as="h2" fontWeight="lg" fontSize="2xl">
+        <Text as="h2" fontWeight="600" fontSize="2xl">
           What to expect next
         </Text>
         <Text mt="3">
@@ -108,16 +108,17 @@ export default function HomePage() {
                   : "md",
             }}
             gap="4"
-            border="2px solid"
-            borderColor="primary.300"
-            borderRadius="0"
-            py="10"
-            px="5"
+            border="1px solid"
+            
+            borderColor="black"
             backgroundColor="#fff"
+            py="16"
+            px="5"
+            borderRadius="0"
             boxShadow="3px 3px 3px 0px #CECDCD"
             opacity={
               section.id === 4 && userProfile?.me?.groups?.length === 0
-                ? 0.5
+                ? 0.5 /*boxShadow="none"*/
                 : 1
             }
           >
@@ -126,7 +127,8 @@ export default function HomePage() {
               <Text
                 fontWeight="600"
                 fontSize="2xl"
-                fontFamily="var(--font-playfair-display)"
+                fontFamily="var(--font-comfortaa)"
+                textAlign="left"
               >
                 {section.title}
               </Text>

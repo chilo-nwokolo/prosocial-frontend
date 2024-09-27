@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function WelcomePage() {
   return (
     <Box mt="20">
-      <Text as="h1" fontSize="2xl" color="primary.200" fontWeight="medium">
+      <Text as="h1" fontSize="2xl" color="primary.200" fontWeight="600">
         Welcome to ProSocial
       </Text>
       <Flex flexDir="column" gap="5" color="primary.200" my="5">

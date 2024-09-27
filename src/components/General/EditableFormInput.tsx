@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
-import { AiFillInfoCircle } from "react-icons/ai";
+import { FaInfoCircle } from "react-icons/fa";
 import AppModal from "../AppModal";
 import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
@@ -108,11 +108,13 @@ export default function EditableFormInput({
               <Flex
                 alignItems="center"
                 gap="1"
-                fontSize="xs"
-                cursor="default"
+                fontSize="sm"
+                color="blue.600"
+                fontWeight="600"
+                cursor="pointer"
                 onClick={onOpen}
               >
-                <AiFillInfoCircle /> {infoText}
+                <FaInfoCircle color="#226db4" /> {infoText}
               </Flex>
             </Tooltip>
           ) : (

@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import TelInput from "react-phone-number-input/input";
-import { AiFillInfoCircle } from "react-icons/ai";
+import { FaInfoCircle } from "react-icons/fa";
 import FormInput from "@/components/General/FormInput";
 import UseRegistrationPage from "@/features/auth/hooks/useRegistrationPage";
 import AppModal from "@/components/AppModal";
@@ -22,6 +22,7 @@ import Link from "next/link";
 import { appRouteLinks } from "@/utils/constants";
 import IFrameModal from "@/components/General/IFrameModal";
 import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
+
 
 const registrationOptions = [
   {
@@ -123,13 +124,14 @@ export default function RegistrationPage() {
                   <Flex
                     alignItems="center"
                     gap="1"
-                    fontSize="xs"
+                    fontSize="sm"
                     cursor="default"
+                    color="#226db4"
+                    fontWeight="600"
                     _hover={{ textDecoration: "none" }}
-                    /*color="info.200"*/
                     onClick={onPhoneInfoOpen}
                   >
-                    <AiFillInfoCircle /> Why do you ask for my phone number?
+                    <FaInfoCircle color="#226db4" /> Why do you ask for my phone number?
                   </Flex>
                 </Tooltip>
               </FormHelperText>

@@ -71,7 +71,7 @@ export default function ResultPage() {
         </Text>
         <Flex flexDir="column" gap="4" my="5">
           {result?.bucketQuestions?.map((val) => (
-            <CharacterBox
+            <CharacterBox 
               updatePersonalityBucketQuestions={
                 updatePersonalityBucketQuestions
               }
@@ -85,7 +85,7 @@ export default function ResultPage() {
             />
           ))}
         </Flex>
-        <Box>
+        <Box alignItems="center">
           {checkIfAllAnswered() ? (
             <>
               <Box fontWeight="medium" m="4" textAlign="center">
@@ -115,7 +115,7 @@ export default function ResultPage() {
                   </Text>
                 )}
               </Box>
-              <Button onClick={onSubmit} w="full" isLoading={submitting} m="4">
+              <Button onClick={onSubmit} w="425px" isLoading={submitting} m="4">
                 Complete
               </Button>
             </>

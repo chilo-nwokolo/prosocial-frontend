@@ -44,16 +44,16 @@ export function RadioCard(props: any) {
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
-        borderColor="black"
+        borderColor="gray.600"
         _checked={{
-          bg: "info.100",
+          bg: "info.300",
           color: "white",
           fontWeight: "600",
         }}
         h="5.8rem"
         w="full"
-        /*borderTop="none"
-        borderRight="none"*/
+        borderTop="none"
+        // borderLeft="none"
         textAlign="center"
         alignItems="center"
         justifyContent="center"
@@ -61,9 +61,9 @@ export function RadioCard(props: any) {
         padding=".5em"
         whiteSpace="pre-wrap"
         bg="white"
-        // _last={{
-        //   borderRight: "1px",
-        //   borderRightColor: "gray.400",
+        // _first={{
+        //   borderLeft: "1px",
+        //   borderRightColor: "black",
         // }}
       >
         {props.children}
@@ -95,7 +95,6 @@ export default function RatingScaleQuestion({
           as="legend"
           border="1px solid"
           mb="0"
-          borderColor="black"
           p="5"
           w="full"
           fontWeight="600"
@@ -129,7 +128,7 @@ export default function RatingScaleQuestion({
       {typeof title === "string" && title.includes("religious or spiritual") ? (
         <Flex
           border="1px solid"
-          borderColor="black"
+          
           borderTop="none"
           justifyContent="space-between"
           px="2"

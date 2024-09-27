@@ -26,11 +26,11 @@ function RadioCard(props: any) {
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
-        borderColor="black"
+        borderColor="gray.600"
         _checked={{
-          bg: props.value === "yes" ? "info.100" : "red.400",
+          bg: props.value === "yes" ? "info.300" : "#F95C47",
           color: "white",
-          borderColor: props.value === "yes" ? "info.100" : "red.400",
+          borderColor: props.value === "yes" ? "info.300" : "#F95C47",
         }}
         _active={{
           color: "white",
@@ -119,7 +119,7 @@ export default function CharacterBox({
         </Flex>
       </FormLabel>
       <RadioGroup>
-        <HStack {...group} gap="0">
+        <HStack {...group} gap="0" boxShadow="3px 3px 3px 0px #CECDCD">
           {options?.map((value, i) => {
             const radio = getRadioProps({ value });
             return (

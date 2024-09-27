@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ChangeEvent, HTMLInputTypeAttribute } from "react";
-import { AiFillInfoCircle } from "react-icons/ai";
+import { FaInfoCircle } from "react-icons/fa";
 import AppModal from "../AppModal";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
@@ -123,11 +123,13 @@ export default function FormInput({
               <Flex
                 alignItems="center"
                 gap="1"
-                fontSize="xs"
-                cursor="default"
+                fontSize="sm"
                 onClick={onOpen}
+                color="blue.600"
+                fontWeight="600"
+                cursor="pointer"
               >
-                <AiFillInfoCircle /> {infoText}
+                <FaInfoCircle color="#226db4" /> {infoText}
               </Flex>
             </Tooltip>
           ) : (
