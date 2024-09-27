@@ -109,7 +109,6 @@ export default function HomePage() {
             }}
             gap="4"
             border="1px solid"
-            
             borderColor="black"
             backgroundColor="#fff"
             py="16"

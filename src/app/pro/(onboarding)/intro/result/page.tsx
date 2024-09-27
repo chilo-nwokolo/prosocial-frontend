@@ -71,7 +71,7 @@ export default function ResultPage() {
         </Text>
         <Flex flexDir="column" gap="4" my="5">
           {result?.bucketQuestions?.map((val) => (
-            <CharacterBox 
+            <CharacterBox
               updatePersonalityBucketQuestions={
                 updatePersonalityBucketQuestions
               }

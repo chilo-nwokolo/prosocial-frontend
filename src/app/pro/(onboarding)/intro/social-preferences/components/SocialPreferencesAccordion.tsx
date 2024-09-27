@@ -74,7 +74,7 @@ export default function SocialPreferencesAccordion() {
                 key={option.id}
                 borderBottom="1px solid"
                 pb="5"
-                _last={{borderBottom:"none",}}
+                _last={{ borderBottom: "none" }}
               >
                 <Text fontWeight="semibold" fontSize="16px">
                   {option.title}

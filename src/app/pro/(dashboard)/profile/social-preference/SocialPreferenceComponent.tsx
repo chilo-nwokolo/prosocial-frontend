@@ -81,7 +81,8 @@ export default function SocialPreferenceComponent() {
                     cursor="default"
                     onClick={onOpenDpInfo}
                   >
-                    <FaInfoCircle color="#226db4" />Why do I need a profile picture?
+                    <FaInfoCircle color="#226db4" />
+                    Why do I need a profile picture?
                   </Flex>
                 </Tooltip>
               </Box>

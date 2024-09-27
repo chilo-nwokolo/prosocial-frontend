@@ -23,7 +23,6 @@ import { appRouteLinks } from "@/utils/constants";
 import IFrameModal from "@/components/General/IFrameModal";
 import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
 
-
 const registrationOptions = [
   {
     labelTitle: "Date of birth",
@@ -131,7 +130,8 @@ export default function RegistrationPage() {
                     _hover={{ textDecoration: "none" }}
                     onClick={onPhoneInfoOpen}
                   >
-                    <FaInfoCircle color="#226db4" /> Why do you ask for my phone number?
+                    <FaInfoCircle color="#226db4" /> Why do you ask for my phone
+                    number?
                   </Flex>
                 </Tooltip>
               </FormHelperText>

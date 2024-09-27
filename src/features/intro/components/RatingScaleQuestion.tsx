@@ -128,7 +128,6 @@ export default function RatingScaleQuestion({
       {typeof title === "string" && title.includes("religious or spiritual") ? (
         <Flex
           border="1px solid"
-          
           borderTop="none"
           justifyContent="space-between"
           px="2"

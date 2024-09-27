@@ -35,7 +35,7 @@ function InterestsAccordion({
       defaultIndex={defaultIndex}
       onChange={() => onChange && onChange(title, id)}
       borderBottom="none"
-      _first={{borderTop:"black",}}
+      _first={{ borderTop: "black" }}
     >
       <AccordionItem>
         {({ isExpanded }) => (
