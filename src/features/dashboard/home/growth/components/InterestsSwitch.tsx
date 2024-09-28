@@ -20,7 +20,7 @@ export default function InterestsSwitch({
     <>
       <FormControl display="flex" alignItems="center" gap="3">
         <Checkbox
-          borderColor="gray.500"
+          borderColor="black"
           onChange={(e) => onChange(interest.title as string, e.target.id)}
           value={interest.id as string}
           id={interest.id as string}

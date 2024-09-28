@@ -106,6 +106,7 @@ export default function FormInput({
             bg="#fff"
             border="0.75px solid #876a6c"
             _focus={{ border: "1.5px solid #7bb4ce" }}
+            // _hover={{ border: "1.5px solid black" }}
           />
         )}
         <FormHelperText>

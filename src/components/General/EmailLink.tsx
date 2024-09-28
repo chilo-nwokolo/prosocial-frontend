@@ -7,6 +7,7 @@ export default function EmailLink() {
     <Link
       href={`mailto:${externalLinks.email}`}
       style={{ color: "#226db4", textDecoration: "underline" }}
+      /*style_hover={{ textDecoration: "none" }}*/
     >
       {externalLinks.email}
     </Link>

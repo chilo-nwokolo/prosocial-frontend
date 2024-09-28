@@ -56,7 +56,7 @@ export default function QuestionCategories() {
           isDisabled={!getQuestionsAnswersCount}
           onClick={onSubmit}
         >
-          View Results
+          View results
         </Button>
       </Flex>
       <LoadingModal

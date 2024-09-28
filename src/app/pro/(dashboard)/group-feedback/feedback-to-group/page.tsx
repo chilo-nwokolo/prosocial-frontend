@@ -36,7 +36,7 @@ export default function FeedbackToGroup() {
       <Text fontSize="2xl" as="h1" mt="3" fontWeight="semibold">
         Is there anyone from your outing you don&apos;t want to see again?
       </Text>
-      <Text fontSize="sm">
+      <Text fontSize="16px" mb="5">
         We definitely won&apos;t match you with them again
       </Text>
       <Flex
@@ -48,14 +48,16 @@ export default function FeedbackToGroup() {
         overflowY="auto"
         p="3"
         flexDir="column"
+        bg="#fff9f2"
       >
         {outingGroupMembers?.map((user, i) => {
           return (
-            <Box p="3" bg={i % 2 === 0 ? "gray.100" : "#fff"} key={user.id}>
+            <Box p="3" bg={i % 2 === 0 ? "none" : "white"} key={user.id}>
               <Checkbox
                 value={user.id}
                 defaultChecked={excludeUsers.includes(user.id)}
                 onChange={() => handleCheck(user.id)}
+                borderColor="black"
               >
                 {user.name}
               </Checkbox>

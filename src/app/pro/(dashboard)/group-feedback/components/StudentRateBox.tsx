@@ -24,11 +24,13 @@ export function RadioCard(props: any) {
       <Flex
         {...checkbox}
         cursor="pointer"
+        bg="white"
         borderWidth="1px"
         _checked={{
-          bg: "teal.600",
+          bg: "#15617F",
           color: "white",
-          borderColor: "teal.600",
+          borderColor: "#15617F",
+          fontWeight: "600",
         }}
         h="5.8rem"
         w="full"
@@ -36,7 +38,7 @@ export function RadioCard(props: any) {
         textAlign="center"
         alignItems="center"
         justifyContent="center"
-        fontSize="xs"
+        fontSize="14px"
         whiteSpace="pre-wrap"
         borderLeft="0.5px solid black"
         borderRight="0.5px solid black"

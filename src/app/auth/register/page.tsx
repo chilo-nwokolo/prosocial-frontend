@@ -219,6 +219,7 @@ export default function RegistrationPage() {
               <Checkbox
                 onChange={(state) => setAcceptTc(state.target.checked)}
                 fontWeight="500"
+                borderColor="black"
               >
                 I have read and accept the{" "}
                 <Button

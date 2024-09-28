@@ -52,6 +52,7 @@ export default function PersonalityResultPage() {
             onClick={() => router.back()}
           >
             <FaChevronLeft />
+            Back
           </Button>
         </Flex>
         <Text fontWeight="500" mt={5} fontSize="xl">
@@ -73,9 +74,15 @@ export default function PersonalityResultPage() {
         </Flex>
         <Flex flexDir="column" gap="5" mb="6">
           {result?.bucketQuestions?.map((question) => (
-            <Card key={question.id} bg="bg">
+            <Card
+              key={question.id}
+              bg="none"
+              borderRadius="0"
+              borderColor="black"
+              border="1px"
+            >
               <CardBody>
-                <Heading mb="2" fontSize="lg">
+                <Heading mb="2" fontSize="18px" fontWeight="400">
                   {question.title}
                 </Heading>
                 <Text fontSize="md">{question.text}</Text>
@@ -84,7 +91,7 @@ export default function PersonalityResultPage() {
           ))}
         </Flex>
         <Link href={appRouteLinks.home}>
-          <Button width="full">Go back</Button>
+          <Button width="full">Dashboard</Button>
         </Link>
       </Flex>
     </QueryContainer>

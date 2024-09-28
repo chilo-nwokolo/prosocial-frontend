@@ -35,8 +35,8 @@ export const Button = defineStyleConfig({
         boxShadow: "0px 0px 1px 0px #876A6C",
       },
       _disabled: {
-        bg: "rgba(135, 106, 108, 0.5)",
-        opacity: "1",
+        // bg: "rgba(135, 106, 108, 0.5)",
+        opacity: "0.5",
         _hover: { pointerEvents: "none" },
       },
     },
