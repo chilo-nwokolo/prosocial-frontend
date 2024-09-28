@@ -47,8 +47,8 @@ export default function FeedbackPage() {
         </Text>
         <Text fontStyle="italic" mb="5">
           Your response is private and will never be shared outside of the
-          ProSocial admin team. We&apos;ll use your feedback to improve our matching
-          for social outings.
+          ProSocial admin team. We&apos;ll use your feedback to improve our
+          matching for social outings.
         </Text>
         <FormControl>
           <Textarea
