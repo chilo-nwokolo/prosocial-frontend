@@ -14,7 +14,7 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FcInfo } from "react-icons/fc";
+import { FaInfoCircle } from "react-icons/fa";
 
 export default function ResultPage() {
   const {
@@ -34,12 +34,13 @@ export default function ResultPage() {
 
   return (
     <>
-      <Flex justifyContent="end" alignItems="center" gap="1">
-        <FcInfo />
+      <Flex justifyContent="center" alignItems="center" gap="1">
+        <FaInfoCircle color="#226db4" />
         <Tooltip label="Every answer you provided during the registration procures a score that combines together to place you into a category. If you feel this category is not an accurate reflection of your personality, you will have the opportunity to answer some more questions so we can further refine our understanding of who you are as a person.">
           <Text
             fontSize="sm"
             color="blue.600"
+            fontWeight="600"
             cursor="pointer"
             onClick={onOpen}
           >
@@ -62,7 +63,7 @@ export default function ResultPage() {
           <Text fontSize="2xl" fontWeight="bold" marginTop="5">
             {result?.name}
           </Text>
-          <Text>{result?.sub_title}</Text>
+          <Text fontStyle="italic">{result?.sub_title}</Text>
           <Text mt="4">{result?.description}</Text>
         </Flex>
         <Text textAlign="center" px="9" fontWeight="bold">
@@ -84,21 +85,22 @@ export default function ResultPage() {
             />
           ))}
         </Flex>
-        <Box>
+        <Box alignItems="center">
           {checkIfAllAnswered() ? (
             <>
-              <Box fontWeight="medium" mb="3" textAlign="center">
+              <Box fontWeight="medium" m="4" textAlign="center">
                 {personalityBucketQuestions.length <= 1 ? (
                   <Flex flexDir="column" alignItems="flex-start">
-                    <Text textAlign="left">
-                      It looks like we didn&apos;t get this right. Please type
-                      in the descriptors of your personality (optional)
+                    <Text textAlign="center" mb="2" fontStyle="italic">
+                      It looks like we didn&apos;t get this right. If you&apos;d
+                      like, provide some descriptors of your personality
+                      (optional).
                     </Text>
                     <Textarea
                       value={resultNote}
                       onChange={(e) => setResultNote(e.target.value)}
-                      border="1.5px solid"
-                      borderColor="gray.500"
+                      border="1px solid"
+                      borderColor="black"
                     />
                   </Flex>
                 ) : personalityBucketQuestions.length === 2 ? (
@@ -113,7 +115,7 @@ export default function ResultPage() {
                   </Text>
                 )}
               </Box>
-              <Button onClick={onSubmit} w="full" isLoading={submitting}>
+              <Button onClick={onSubmit} w="425px" isLoading={submitting} m="4">
                 Complete
               </Button>
             </>

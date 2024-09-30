@@ -25,7 +25,7 @@ const homeSections = [
     id: 4,
     title: "Outing feedback",
     destination: appRouteLinks.outingMembers,
-    desc: "View your group, Give outing feedback",
+    desc: "View your group; give outing feedback",
     subText: "",
     icon: null,
   },
@@ -78,9 +78,9 @@ export default function HomePage() {
   }, [config, loading]);
 
   return (
-    <Flex flexDir="column" w="full" gap="5">
+    <Flex flexDir="column" w="full" gap="5" textAlign="left">
       <Box gap="4" mb="3">
-        <Text as="h2" fontWeight="lg" fontSize="2xl">
+        <Text as="h2" fontWeight="600" fontSize="24px">
           What to expect next
         </Text>
         <Text mt="3">
@@ -101,31 +101,42 @@ export default function HomePage() {
             cursor="pointer"
             flexDir="column"
             w="full"
-            _hover={{
-              shadow:
-                section.id === 4 && userProfile?.me?.groups?.length === 0
-                  ? "none"
-                  : "md",
-            }}
+            // _hover={{
+            //   pointerEvents:
+            //     section.id === 4 && userProfile?.me?.groups?.length === 0
+            //       ? "none"
+            //       : "auto"
+            // }}
             gap="4"
             border="1px solid"
-            borderColor="gray.400"
-            borderRadius="xl"
-            py="10"
-            px="5"
+            borderColor="black"
             backgroundColor="#fff"
+            py="16"
+            px="5"
+            borderRadius="0"
+            boxShadow={
+              section.id === 4 && userProfile?.me?.groups?.length === 0
+                ? "none"
+                : "3px 3px 3px 0px #CECDCD"
+            }
             opacity={
               section.id === 4 && userProfile?.me?.groups?.length === 0
                 ? 0.5
                 : 1
             }
+            // pointerEvents={
+            //   section.id === 4 && userProfile?.me?.groups?.length === 0
+            //     ? "none"
+            //     : "auto"
+            //   }
           >
             <Text>{section?.icon}</Text>
             <Flex alignItems="center" gap="4">
               <Text
                 fontWeight="600"
                 fontSize="2xl"
-                fontFamily="var(--font-playfair-display)"
+                fontFamily="var(--font-comfortaa)"
+                textAlign="left"
               >
                 {section.title}
               </Text>

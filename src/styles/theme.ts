@@ -18,12 +18,16 @@ export const theme = extendTheme({
     primary: {
       100: "#f95c47",
       200: "#3a3738",
+      300: "#876A6C",
+      400: "#6B4848",
     },
     critical: {
       100: "#f95c47",
     },
     info: {
-      100: "#0092c7",
+      /*link color*/ 100: "#226db4",
+      /*tooltip text color option*/ 200: "#15617F",
+      300: "#15617F",
     },
     bg: "#fdf5e9",
   },

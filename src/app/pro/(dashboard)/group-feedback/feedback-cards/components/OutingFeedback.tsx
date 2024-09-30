@@ -18,7 +18,7 @@ export default function OutingFeedback() {
 
   return (
     <Flex flexDir="column">
-      <Text fontSize="2xl" mt="3" fontWeight="semibold">
+      <Text fontSize="24px" mt="3" fontWeight="600">
         Outing feedback
       </Text>
       <Text mt="3">
@@ -33,6 +33,9 @@ export default function OutingFeedback() {
       <Flex mt="5" justifyContent="center">
         <Link href={appRouteLinks.outingFeedbackQuestions}>
           <Button
+            w="460px"
+            mt="5"
+            mb="5"
             isDisabled={
               outingGroupMembers?.length !== interactionFeedback.length
             }

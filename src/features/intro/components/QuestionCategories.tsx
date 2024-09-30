@@ -56,7 +56,7 @@ export default function QuestionCategories() {
           isDisabled={!getQuestionsAnswersCount}
           onClick={onSubmit}
         >
-          View Results
+          View results
         </Button>
       </Flex>
       <LoadingModal
@@ -80,14 +80,20 @@ const QuestionCategoryLinkBox = ({
       <Flex
         border="1px solid"
         alignItems="center"
-        borderColor="gray.400"
+        borderColor="black"
+        backgroundColor="#fff"
         py="16"
         px="5"
-        borderRadius="lg"
+        borderRadius="0"
         cursor="pointer"
+        boxShadow="3px 3px 3px 0px #CECDCD"
       >
         <Flex flexDir="column" gap="2">
-          <Text fontWeight="semibold" fontSize="lg">
+          <Text
+            fontWeight="600"
+            fontSize="2xl"
+            fontFamily="var(--font-comfortaa)"
+          >
             {question.category}
           </Text>
           {question.totalQuestions ? (
@@ -123,14 +129,20 @@ const OtherQuestionCategoryLinkBox = ({
       <Flex
         border="1px solid"
         alignItems="center"
-        borderColor="gray.400"
+        borderColor="black"
         py="16"
         px="5"
-        borderRadius="lg"
+        borderRadius="0"
         cursor="pointer"
+        backgroundColor="#fff"
+        boxShadow="3px 3px 3px 0px #CECDCD"
       >
         <Flex flexDir="column" gap="2">
-          <Text fontWeight="semibold" fontSize="lg">
+          <Text
+            fontWeight="600"
+            fontSize="2xl"
+            fontFamily="var(--font-comfortaa)"
+          >
             {question.category}
           </Text>
           {calculateRemainder}

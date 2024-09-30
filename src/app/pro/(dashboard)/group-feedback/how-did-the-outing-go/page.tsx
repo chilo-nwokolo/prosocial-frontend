@@ -45,22 +45,28 @@ export default function FeedbackPage() {
         <Text>
           Please take a moment to write a few sentences about your experience.
         </Text>
+        <Text fontStyle="italic" mb="5">
+          Your response is private and will never be shared outside of the
+          ProSocial admin team. We&apos;ll use your feedback to improve our
+          matching for social outings.
+        </Text>
         <FormControl>
           <Textarea
             name="feedback"
             value={formik.values.feedback}
             onChange={formik.handleChange}
             rows={10}
-            placeholder="Write your thoughts here. Your response is private and will never be shared outside of the ProSocial admin team. We'll use your feedback to improve our matching for social outings."
+            borderRadius="0"
+            bg="white"
+            placeholder="Write your thoughts here."
           />
           {formik.errors.feedback ? (
-            <FormHelperText fontSize="xs" color="critical.100">
+            <FormHelperText fontSize="s" color="critical.100" fontWeight="600">
               {formik.errors.feedback}
             </FormHelperText>
           ) : null}
         </FormControl>
-
-        <Button w="full" type="submit">
+        <Button w="full" type="submit" mt="5" mb="5" alignItems="center">
           Next
         </Button>
       </Flex>

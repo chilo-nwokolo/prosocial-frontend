@@ -11,7 +11,7 @@ import {
 // import ScheduleDaysBox from "@/features/intro/components/ScheduleDaysBox";
 import useSocialSchedule from "@/features/dashboard/hooks/useSocialSchedule";
 import BackButton from "@/components/General/BackButton";
-import { AiFillInfoCircle } from "react-icons/ai";
+import { FaInfoCircle } from "react-icons/fa";
 import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
 import { useSearchParams } from "next/navigation";
 import AppModal from "@/components/AppModal";
@@ -81,7 +81,8 @@ export default function SocialPreferenceComponent() {
                     cursor="default"
                     onClick={onOpenDpInfo}
                   >
-                    <AiFillInfoCircle /> Why do I need a profile picture?
+                    <FaInfoCircle color="#226db4" />
+                    Why do I need a profile picture?
                   </Flex>
                 </Tooltip>
               </Box>

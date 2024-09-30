@@ -55,12 +55,16 @@ export const friendTypeOptions = [
 export default function SocialPreferencesAccordion() {
   return (
     <Accordion defaultIndex={[0]}>
-      <AccordionItem border="1px solid">
+      <AccordionItem border="1px solid" bg="white">
         <h2>
           <AccordionButton>
-            <Box as="span" flex="1" textAlign="left" fontSize="xl">
-              ProSocial friend types
-            </Box>
+            <Box
+              as="span"
+              flex="1"
+              textAlign="left"
+              fontSize="xl"
+              _hover="none"
+            ></Box>
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
@@ -70,7 +74,7 @@ export default function SocialPreferencesAccordion() {
                 key={option.id}
                 borderBottom="1px solid"
                 pb="5"
-                borderColor="gray.600"
+                _last={{ borderBottom: "none" }}
               >
                 <Text fontWeight="semibold" fontSize="16px">
                   {option.title}

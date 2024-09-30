@@ -7,9 +7,9 @@ type MemberCardProps = {
 function MemberCard({ name }: MemberCardProps) {
   return (
     <Box
-      border={"2px"}
-      borderBottom={0}
-      borderColor="gray"
+      border={"1px"}
+      borderBottom={"none"}
+      borderColor="black"
       paddingY={10}
       paddingX={5}
       textAlign="left"

@@ -39,9 +39,9 @@ export default function SingleChoiceQuestion({
     <FormControl as="fieldset">
       <FormLabel as="legend">
         <Flex flexDir="column">
-          <Text>{title}</Text>
+          <Text fontWeight="600">{title}</Text>
           {infoText ? (
-            <Text fontSize="sm" color="gray.600">
+            <Text fontSize="sm" color="black">
               &#9432; {infoText}
             </Text>
           ) : null}
@@ -55,7 +55,7 @@ export default function SingleChoiceQuestion({
               value={config?.useIdAsValue ? option.id : option.value}
               name={name}
               onChange={onChange}
-              sx={{ border: "1.5px solid", color: "#00000070" }}
+              sx={{ border: "1.5px solid", color: "black", bg: "white" }}
             >
               {option.title}
             </Radio>
@@ -63,7 +63,7 @@ export default function SingleChoiceQuestion({
         </VStack>
       </RadioGroup>
       {error ? (
-        <FormHelperText color="critical.100" fontSize="xs">
+        <FormHelperText color="critical.100" fontSize="14px" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}

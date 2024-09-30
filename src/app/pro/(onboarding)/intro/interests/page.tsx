@@ -21,7 +21,6 @@ import { appRouteLinks, configExtras } from "@/utils/constants";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
-  Divider,
   Flex,
   FormControl,
   FormLabel,
@@ -33,7 +32,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { GrClose } from "react-icons/gr";
+import { FaChevronLeft } from "react-icons/fa";
 
 // type Interest = {
 //   __typename?: "Interest" | undefined;
@@ -337,13 +336,19 @@ export default function InterestedExtendedPage() {
   return (
     <QueryContainer loading={isLoading || loadingInterests} error={error}>
       <Flex flexDir="column">
-        <Flex justifyContent="flex-end">
-          <BackButton icon={<GrClose />} destination={appRouteLinks.intro} />
+        <Flex>
+          <Button
+            variant="secondary"
+            onClick={() => router.push(appRouteLinks.intro)}
+          >
+            <FaChevronLeft />
+            Back
+          </Button>
         </Flex>
-        <Text fontWeight="lg" fontSize="2xl">
-          What is your top interest
+        <Text fontWeight="lg" fontSize="2xl" color="black" marginTop="1em">
+          What is your top interest?
         </Text>
-        <Text mt={2} color={"GrayText"}>
+        <Text mt={2} color="black">
           View the categories and select your one top interest from within them.
         </Text>
 
@@ -367,7 +372,7 @@ export default function InterestedExtendedPage() {
                         <Flex
                           key={interest.id}
                           p="3"
-                          bg={i % 2 === 0 ? "#f4ede2" : "transparent"}
+                          bg={i % 2 === 0 ? "none" : "white"}
                         >
                           <InterestsSwitch
                             isChecked={flattenedInterests?.includes(
@@ -392,8 +397,6 @@ export default function InterestedExtendedPage() {
               <BackButton text="Go Back" />
             </Flex>
           )}
-
-          <Divider mt="7" borderColor="gray.500" />
 
           {/* <Flex flexDir="column" mt="5" gap="5">
             <FormControl>
@@ -443,16 +446,16 @@ export default function InterestedExtendedPage() {
           </Flex> */}
           <FormControl mt="3">
             <FormLabel as="h2">
-              <Flex flexDir="column">
+              <Flex flexDir="column" pt="1em">
                 <Text>Don&apos;t see your interest(s), list it here.</Text>
-                <Text fontSize="small" color="gray.500">
+                <Text fontSize="small" color="black" fontStyle="italic">
                   Optional
                 </Text>
               </Flex>
             </FormLabel>
             <Input
               border="1px solid"
-              borderColor="gray.400"
+              borderColor="black"
               type="text"
               value={newInterest}
               onChange={(e) => setNewInterest(e.target.value)}

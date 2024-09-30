@@ -44,20 +44,27 @@ export function RadioCard(props: any) {
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
-        borderColor="gray.500"
+        borderColor="gray.600"
         _checked={{
-          bg: "teal.600",
+          bg: "info.300",
           color: "white",
-          borderColor: "teal.600",
+          fontWeight: "600",
         }}
         h="5.8rem"
         w="full"
         borderTop="none"
+        // borderLeft="none"
         textAlign="center"
         alignItems="center"
         justifyContent="center"
-        fontSize="xs"
+        fontSize="14px"
+        padding=".5em"
         whiteSpace="pre-wrap"
+        bg="white"
+        // _first={{
+        //   borderLeft: "1px",
+        //   borderRightColor: "black",
+        // }}
       >
         {props.children}
       </Flex>
@@ -88,9 +95,9 @@ export default function RatingScaleQuestion({
           as="legend"
           border="1px solid"
           mb="0"
-          borderColor="gray.500"
           p="5"
           w="full"
+          fontWeight="600"
         >
           {config?.lowerCaseTitle ? title.toLowerCase() : title}
         </FormLabel>
@@ -121,7 +128,6 @@ export default function RatingScaleQuestion({
       {typeof title === "string" && title.includes("religious or spiritual") ? (
         <Flex
           border="1px solid"
-          borderColor="gray.500"
           borderTop="none"
           justifyContent="space-between"
           px="2"
@@ -139,7 +145,7 @@ export default function RatingScaleQuestion({
       {config?.hasLabel ? (
         <Flex
           border="1px solid"
-          borderColor="gray.500"
+          borderColor="black"
           borderTop="none"
           justifyContent="space-between"
           px="2"
@@ -156,7 +162,7 @@ export default function RatingScaleQuestion({
         </Flex>
       ) : null}
       {error ? (
-        <FormHelperText color="critical.100" fontSize="xs">
+        <FormHelperText color="critical.100" fontSize="xs" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}

@@ -36,7 +36,8 @@ export default function FriendTypeSelect({
         onChange={onChange}
         onBlur={onBlur}
         name={name}
-        borderColor="gray.500"
+        borderColor="black"
+        bg="white"
       >
         <option value="">Select One</option>
         {friendTypeOptions.map((option) => {
@@ -50,7 +51,7 @@ export default function FriendTypeSelect({
         })}
       </Select>
       {error ? (
-        <FormHelperText fontSize="xs" color="critical.100">
+        <FormHelperText fontSize="xs" color="critical.100" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}

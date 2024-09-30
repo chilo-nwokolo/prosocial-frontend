@@ -32,7 +32,12 @@ export default function Home() {
           h="200px"
           objectFit="contain"
         />
-        <Text textAlign="center" fontSize="4xl" fontWeight="extrabold">
+        <Text
+          textAlign="center"
+          fontSize="4xl"
+          fontWeight="extrabold"
+          fontFamily="var(--font-comfortaa)"
+        >
           ProSocial
         </Text>
       </Flex>

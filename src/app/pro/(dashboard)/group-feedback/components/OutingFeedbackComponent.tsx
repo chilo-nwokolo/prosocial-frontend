@@ -106,7 +106,7 @@ export default function OutingFeedbackComponent() {
     <Center h="90vh">
       <form className="w-100" onSubmit={formik.handleSubmit}>
         <Box my="auto" w="full">
-          <Text fontSize="2xl" fontWeight="medium" mb="5">
+          <Text fontSize="24px" fontWeight="600" mb="5">
             Outing Feedback
           </Text>
           <Text mb="3">When did you meet for your outing?</Text>

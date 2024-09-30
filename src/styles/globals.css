@@ -13,8 +13,9 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: #fdf5e9;
-  font-family: var(--font-inter);
+  background: #fffaf2;
+  font-family: var(--font-lato);
+  color: black;
 }
 
 /* TelInput component */
@@ -33,16 +34,3 @@ body {
 .w-100 {
   width: 100%;
 }
-
-/*Styling cards move to correct place
-
-.css-qe6pja,
-.css-lvorr0 {
-  font-family: var(--font-playfair-display);
-  font-size: 24px;
-  font-weight: 600;
-}
-
-.css-hqaej {
-  background-color: #fff;
-}*/

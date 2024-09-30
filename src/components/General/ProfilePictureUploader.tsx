@@ -72,7 +72,11 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
         right="5"
         borderRadius="full"
         p="0"
-        color="blue.900"
+        color="white"
+        backgroundColor="primary.100"
+        _hover={{
+          backgroundColor: "#f9432a",
+        }}
         // @ts-ignore
         onClick={() => imageUploadRef.current.click()}
       >

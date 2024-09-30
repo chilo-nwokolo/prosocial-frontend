@@ -35,9 +35,10 @@ export default function GroupMembers() {
       <Flex>
         <Button color="black" variant="secondary" onClick={() => router.back()}>
           <FaChevronLeft />
+          Back
         </Button>
       </Flex>
-      <Text fontWeight="lg" fontSize="2xl" mt="5">
+      <Text fontWeight="600" fontSize="24px" mt="5">
         Your group
       </Text>
 
@@ -46,7 +47,7 @@ export default function GroupMembers() {
           <MemberCard name={user.name} key={user.id} />
         ))}
       </Flex>
-      <Box border={"1px"} borderColor={"gray"} height={"1px"} />
+      <Box borderBottom={"1px"} borderColor={"black"} height={"1px"} />
       <Button onClick={handleStartFeedback} mt="10">
         Start feedback
       </Button>

@@ -54,14 +54,16 @@ const QuestionBox = ({
       </Text>
       <Textarea
         rows={10}
+        bg="white"
+        borderRadius="0"
         name={inputName}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        placeholder="Write your thoughts here. Your response is private and will never be shared outside of the ProSocial admin team. We'll use your feedback to improve our matching for social outings."
+        placeholder="Write your thoughts here."
       />
       {error ? (
-        <FormHelperText fontSize="xs" color="critical.100">
+        <FormHelperText fontSize="xs" color="critical.100" fontWeight="600">
           {error}
         </FormHelperText>
       ) : null}
@@ -192,7 +194,12 @@ export default function FeedbackQuestionsPage() {
   return (
     <Flex flexDir="column">
       <Text fontSize="2xl" mt="3" fontWeight="semibold">
-        Two Questions
+        Two questions:
+      </Text>
+      <Text fontStyle="italic" mb="5">
+        Your response is private and will never be shared outside of the
+        ProSocial admin team. We&apos;ll use your feedback to improve our
+        matching for social outings.
       </Text>
       <form onSubmit={formik.handleSubmit}>
         <Flex flexDir="column" gap="3">
@@ -210,7 +217,9 @@ export default function FeedbackQuestionsPage() {
           ))}
         </Flex>
         <Flex mt="5" justifyContent="center">
-          <Button type="submit">Save</Button>
+          <Button type="submit" w="full" mt="5" mb="5">
+            Save
+          </Button>
         </Flex>
       </form>
     </Flex>

@@ -191,6 +191,7 @@ export const personalQuestionsData = [
           "If you don't feel that you fit on this political orientation scale, please provide additional detail:",
         type: AnswerType.TEXT,
         optional: true,
+        /*bg: "#fff9f2",*/
       },
       // {
       //   id: "type_of_city_grown",

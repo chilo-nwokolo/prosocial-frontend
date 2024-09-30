@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import TelInput from "react-phone-number-input/input";
-import { AiFillInfoCircle } from "react-icons/ai";
+import { FaInfoCircle } from "react-icons/fa";
 import FormInput from "@/components/General/FormInput";
 import UseRegistrationPage from "@/features/auth/hooks/useRegistrationPage";
 import AppModal from "@/components/AppModal";
@@ -96,7 +96,7 @@ export default function RegistrationPage() {
   return (
     <>
       <Box mt="5">
-        <Text mb="4" as="h1" fontSize="2xl" fontWeight="medium">
+        <Text mb="4" as="h1" fontSize="2xl" fontWeight="600">
           Let&apos;s create your account
         </Text>
         <form onSubmit={formik.handleSubmit}>
@@ -123,13 +123,15 @@ export default function RegistrationPage() {
                   <Flex
                     alignItems="center"
                     gap="1"
-                    fontSize="xs"
+                    fontSize="sm"
                     cursor="default"
+                    color="#226db4"
+                    fontWeight="600"
                     _hover={{ textDecoration: "none" }}
-                    textDecoration="underline"
                     onClick={onPhoneInfoOpen}
                   >
-                    <AiFillInfoCircle /> Why do you ask for my phone number?
+                    <FaInfoCircle color="#226db4" /> Why do you ask for my phone
+                    number?
                   </Flex>
                 </Tooltip>
               </FormHelperText>
@@ -174,7 +176,11 @@ export default function RegistrationPage() {
                 ))}
               </Select>
               {formik.errors?.universityId ? (
-                <FormHelperText fontSize="xs" color="critical.100">
+                <FormHelperText
+                  fontSize="xs"
+                  color="critical.100"
+                  fontWeight="600"
+                >
                   {formik.errors?.universityId}
                 </FormHelperText>
               ) : null}
@@ -213,13 +219,16 @@ export default function RegistrationPage() {
               <Checkbox
                 onChange={(state) => setAcceptTc(state.target.checked)}
                 fontWeight="500"
+                borderColor="black"
               >
                 I have read and accept the{" "}
                 <Button
                   onClick={onOpenTerms}
-                  color="blue"
+                  color="info.100"
                   fontWeight="500"
                   variant="link"
+                  _hover={{ textDecor: "none" }}
+                  textDecor="underline"
                 >
                   Terms and Conditions
                 </Button>
@@ -237,12 +246,11 @@ export default function RegistrationPage() {
             </Button>
           </Flex>
         </form>
-        <Flex mt="5" fontSize="sm" justifyContent="center" alignItems="center">
+        <Flex mt="5" justifyContent="center" alignItems="center">
           Already have an account?&nbsp;
           <Link href={appRouteLinks.login}>
             <Text
-              fontSize="sm"
-              color="400"
+              color="info.100"
               cursor="pointer"
               _hover={{ textDecor: "none" }}
               textDecor="underline"
