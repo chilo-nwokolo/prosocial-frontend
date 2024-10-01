@@ -76,7 +76,6 @@ export default function OnboardingPage() {
 
   const [getQuestions, { loading }] = useLazyQuery(QUERY_QUESTIONS, {
     onCompleted: (data) => {
-      // updateOnboardAnswers(null);
       const result = transformQuestions(data);
       updateOnboardQuestions(result);
       // localStorage.clear();
