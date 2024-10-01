@@ -57,7 +57,7 @@ export default function NavBar() {
   return (
     <>
       <Flex
-        borderBottom={featureFlag("production") ? "none" : "1px solid"}
+        borderBottom={featureFlag("production") ? "1px solid" : "1px solid"}
         border={featureFlag("production") ? "none" : "1px solid"}
         borderColor={featureFlag("production") ? "none" : "gray.300"}
         shadow="sm"
@@ -68,7 +68,7 @@ export default function NavBar() {
         position="fixed"
         width="full"
         maxW="lg"
-        bg="bg"
+        bg="#FDF3E4"
         minWidth="xs"
         zIndex="modal"
         alignItems="center"

@@ -58,13 +58,7 @@ export default function SocialPreferencesAccordion() {
       <AccordionItem border="1px solid" bg="white">
         <h2>
           <AccordionButton>
-            <Box
-              as="span"
-              flex="1"
-              textAlign="left"
-              fontSize="xl"
-              _hover="none"
-            ></Box>
+            <Box as="span" flex="1" textAlign="left" fontSize="xl"></Box>
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
