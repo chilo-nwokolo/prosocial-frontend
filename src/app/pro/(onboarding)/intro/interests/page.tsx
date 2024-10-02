@@ -349,7 +349,9 @@ export default function InterestedExtendedPage() {
           What is your top interest?
         </Text>
         <Text mt={2} color="black">
-          View the categories and select your one top interest from within them.
+          We know you have lots of interests, but out of all the options below,
+          if you could only choose one, which would be your top/most important
+          interest? If you don&apos;t see it in the list, you can write it in.
         </Text>
 
         <Flex flexDir="column" mt="4">
