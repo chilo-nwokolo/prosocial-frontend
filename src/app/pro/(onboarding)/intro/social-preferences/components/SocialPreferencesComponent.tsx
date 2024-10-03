@@ -364,8 +364,7 @@ export default function SocialPreferencesComponent() {
 
             {/* Q5 */}
             <SingleChoiceQuestion
-              title="5. When you do your outing with Fitness19 members, would you like:"
-              infoText="We will do our best to place you in a group of your preference."
+              title="5. For your outing group, would you like:"
               value={formik.values[6]}
               name="6"
               onChange={formik.handleChange}
