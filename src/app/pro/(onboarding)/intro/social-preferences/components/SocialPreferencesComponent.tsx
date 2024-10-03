@@ -22,12 +22,18 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import FriendTypeSelect from "./FriendTypeSelect";
 import { useMutation } from "@apollo/client";
-import { convertSocialPreferenceObjectToArray } from "../helpers";
 import { UserSocialPreferenceSubmitInput } from "@/__generated__/graphql";
 import { useAppQuestions, useConfig } from "@/store";
-import { socializationOptions, toSocializeOptions, yesNo } from "../helpers";
+import {
+  socializationOptions,
+  toSocializeOptions,
+  yesNo,
+  convertSocialPreferenceObjectToArray,
+  outingDynamics,
+} from "../helpers";
 import { SUBMIT_SOCIAL_PREFERENCES } from "../graphql/gql";
 import useAppConfig from "@/hooks/useAppConfig";
+import SingleChoiceQuestion from "@/features/intro/components/SingleChoiceQuestion";
 
 type ReferralList = { name: string; value: string }[];
 
@@ -356,6 +362,17 @@ export default function SocialPreferencesComponent() {
               error={formik.errors[5]}
             />
 
+            {/* Q5 */}
+            <SingleChoiceQuestion
+              title="5. For your outing group, would you like:"
+              value={formik.values[6]}
+              name="6"
+              onChange={formik.handleChange}
+              options={outingDynamics}
+              config={{ useIdAsValue: true }}
+              error={formik.errors[6]}
+            />
+
             {formik.values[7] === "29" ? (
               <Flex flexDir="column" gap="5">
                 {/* Q7 */}
@@ -402,10 +419,10 @@ export default function SocialPreferencesComponent() {
                         onChange={handleReferralInputChange}
                       />
                     ))}
-                    <Text mt="4">
+                    {/* <Text mt="4">
                       To get your friend(s) set up to receive a free month of
                       membership at Fitness19, please share this link with them:
-                    </Text>
+                    </Text> */}
 
                     <Box cursor="pointer" onClick={onCopy}>
                       <Button
@@ -427,10 +444,10 @@ export default function SocialPreferencesComponent() {
                   value={referralInput}
                   onChange={handleReferralInputChange}
                 />
-                <Text mt="4">
+                {/* <Text mt="4">
                   To make sure you receive your free month of membership, visit
                   Fitness 19 in Arlington Heights to sign-up.
-                </Text>
+                </Text> */}
               </Flex>
             ) : null}
             <Button type="submit" isLoading={loading} loadingText="Saving">
