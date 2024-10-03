@@ -9,7 +9,7 @@ import useQuestionCategories from "../hooks/useQuestionCategories";
 
 const socialPrefererences = {
   category: "Social preferences",
-  totalQuestions: 4,
+  totalQuestions: 5,
   destination: "/social-preferences",
 };
 const interests = {

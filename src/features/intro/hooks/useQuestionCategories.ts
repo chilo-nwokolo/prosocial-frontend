@@ -126,14 +126,14 @@ export default function useQuestionCategories() {
   };
 
   const calculateSocialPreferenceAnswers = useMemo(() => {
-    const singleKeys = ["4", "5", "8", "12"];
+    const singleKeys = ["4", "5", "8", "12", "6"];
     // let counted1 = false;
     // let counted2 = false;
 
     let count = 0;
 
     if (!config[configExtras.user_has_filled_social_preferences]) {
-      return `${count} / 4`;
+      return `${count} / 5`;
     }
 
     for (let key in socialPreferenceAnswers) {
@@ -174,7 +174,7 @@ export default function useQuestionCategories() {
       updateSubmittedPreferences(true);
     }
 
-    return `${count} / 4`;
+    return `${count} / 5`;
   }, [config, socialPreferenceAnswers, updateSubmittedPreferences]);
 
   return {
