@@ -25,7 +25,6 @@ export default function QuestionCategories() {
     onSubmit,
     onClose,
     onboardAnswers,
-    getQuestionsAnswersCount,
     calculateSocialPreferenceAnswers,
   } = useQuestionCategories();
 
@@ -51,11 +50,7 @@ export default function QuestionCategories() {
             calculateRemainder={null}
           />
         </Flex>
-        <Button
-          mt="10"
-          isDisabled={!getQuestionsAnswersCount}
-          onClick={onSubmit}
-        >
+        <Button mt="10" onClick={onSubmit}>
           View results
         </Button>
       </Flex>

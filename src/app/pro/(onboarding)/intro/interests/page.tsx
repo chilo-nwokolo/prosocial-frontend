@@ -8,17 +8,9 @@ import BackButton from "@/components/General/BackButton";
 import QueryContainer from "@/components/General/QueryContainer";
 import InterestsAccordion from "@/features/dashboard/home/growth/components/InterestsAccordion";
 import InterestsSwitch from "@/features/dashboard/home/growth/components/InterestsSwitch";
-import {
-  CREATE_USER_INTEREST,
-  QUERY_INTERESTS_BY_NONE_TRAITS,
-  QUERY_ME_INTERESTS,
-  SUBMIT_USER_INTERESTS,
-} from "@/features/dashboard/home/growth/queries";
 import useAppConfig from "@/hooks/useAppConfig";
-import { client } from "@/service";
 import { useAppQuestions } from "@/store";
 import { appRouteLinks, configExtras } from "@/utils/constants";
-import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
   Flex,
@@ -31,22 +23,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa";
-
-// type Interest = {
-//   __typename?: "Interest" | undefined;
-//   id?: string | null | undefined;
-//   image_url?: string | null | undefined;
-//   title?: string | null | undefined;
-// };
-
-// type MeInterestResponse = {
-//   __typename?: "Interest" | undefined;
-//   id?: string | null | undefined;
-//   title?: string | null | undefined;
-//   is_top_interest?: TopInterestEnum | null | undefined;
-// };
+import localStorageService from "@/service/localStorage";
 
 export default function InterestedExtendedPage() {
   const { updateConfig } = useAppConfig({});
@@ -54,19 +33,14 @@ export default function InterestedExtendedPage() {
   const [flattenedInterests, setFlattenedInterets] = useState<string[] | null>(
     null,
   );
-
-  // const [topSelectedInterest, setTopSelectedInterest] = useState<{
-  //   id: string;
-  //   title: string;
-  //   interests: Array<Interest>;
-  // }>({ id: "", interests: [], title: "" });
-
-  // const [topChildInterest, setTopChildInterest] = useState({
-  //   title: "",
-  //   id: "",
-  // });
-
   const [newInterest, setNewInterest] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [creatingInterest, setCreatingInterest] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingInterests, setLoadingInterests] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  const [data, setData] = useState<any>(null);
 
   const router = useRouter();
 
@@ -79,18 +53,18 @@ export default function InterestedExtendedPage() {
       state.updateSubmittedInterests,
     ]);
 
-  const {
-    data,
-    loading: isLoading,
-    error,
-  } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
+  useEffect(() => {
+    // Load interests by non-trait
+    const interests = localStorageService.getInterestsByNonTrait();
+    setData({ interestsByNoneTrait: interests });
+    setIsLoading(false);
+  }, []);
 
   const result = useMemo(() => {
-    // let sortedData = [...(data?.interestsByNoneTrait ?? [])];
     return {
       ...data,
       interestsByNoneTrait: [...(data?.interestsByNoneTrait ?? [])].sort(
-        (a, b) => {
+        (a: any, b: any) => {
           if (a.title && b.title) {
             if (a.title < b.title) return -1;
             if (a.title > b.title) return 1;
@@ -101,106 +75,30 @@ export default function InterestedExtendedPage() {
     };
   }, [data]);
 
-  // const getTopInterests = (interests: Array<MeInterestResponse>) => {
-  //   const found = interests.map((interest) => {
-  //     // @ts-ignore
-  //     if (interest?.pivot?.is_top_interest === "YES") {
-  //       return interest.title;
-  //     }
-  //     return null;
-  //   });
-
-  //   let topInterest = {
-  //     id: "",
-  //     title: "",
-  //     interests: [],
-  //   };
-  //   let topChildInterest = {
-  //     id: "",
-  //     title: "",
-  //   };
-
-  //   result?.interestsByNoneTrait?.forEach((interest) => {
-  //     if (found.includes(interest.title)) {
-  //       topInterest = {
-  //         id: interest.id || "",
-  //         title: interest.title || "",
-  //         interests: interest.interests as any,
-  //       };
-  //       interest.interests?.forEach((childInterest) => {
-  //         if (found.includes(childInterest.title)) {
-  //           topChildInterest = {
-  //             title: childInterest.title || "",
-  //             id: childInterest.id || "",
-  //           };
-  //         }
-  //       });
-  //     }
-  //   });
-
-  //   // setTopSelectedInterest(topInterest);
-  //   // setTopChildInterest(topChildInterest);
-  // };
-
-  const { loading: loadingInterests } = useQuery(QUERY_ME_INTERESTS, {
-    onCompleted: (data) => {
-      const interests: string[] = [];
-      const interestsResponse = data?.me?.interests;
-      if (interestsResponse?.length) {
-        // getTopInterests(interestsResponse);
-        interestsResponse?.forEach((interest) => {
-          interests.push("" + interest.title);
-        });
-        setFlattenedInterets(interests);
-        updateInterestsAnswer(
-          interestsResponse?.map((interest) => ({
-            interest_id: interest.id as string,
-            response: interest.title as string,
-          })),
-        );
-        setKey(key + 1);
-        return;
-      }
+  useEffect(() => {
+    // Load user's interests
+    const userInterests = localStorageService.getUserInterests();
+    const interests: string[] = [];
+    if (userInterests.length) {
+      userInterests.forEach((interest) => {
+        interests.push("" + interest.title);
+      });
+      setFlattenedInterets(interests);
+      updateInterestsAnswer(
+        userInterests.map((interest) => ({
+          interest_id: interest.id as string,
+          response: interest.title as string,
+        })),
+      );
+      setKey(key + 1);
+    } else {
       setFlattenedInterets([]);
-    },
-  });
+    }
+    setLoadingInterests(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toast = useToast();
-
-  const [mutate, { loading }] = useMutation(SUBMIT_USER_INTERESTS, {
-    onError: () => {
-      toast({
-        status: "error",
-        title: "Unable to save interests. Please try again.",
-      });
-    },
-    onCompleted: async () => {
-      toast({
-        status: "success",
-        title: "Interests updated successfully",
-      });
-      updateSubmittedInterests(true);
-      await client.refetchQueries({
-        include: ["QUERY_INTERESTS_BY_NONE_TRAITS"],
-      });
-      updateConfig([
-        { key: configExtras.user_completed_interests_2, value: "true" },
-      ]);
-      router.push(appRouteLinks.intro);
-    },
-  });
-
-  const [createInterest, { loading: creatingInterest }] = useMutation(
-    CREATE_USER_INTEREST,
-    {
-      onError: () => {
-        toast({
-          status: "error",
-          title: "Unable to create your interests. Please try again.",
-        });
-      },
-    },
-  );
 
   const onChange = (value: string, id: string) => {
     const foundIndex = interestsAnswer.findIndex(
@@ -222,116 +120,63 @@ export default function InterestedExtendedPage() {
     }
   };
 
-  // const selectTopInterest = (interestId: any) => {
-  //   if (!interestId) {
-  //     toast({
-  //       status: "error",
-  //       title: "Invalid selection",
-  //     });
-  //     return;
-  //   }
-  //   const res = result?.interestsByNoneTrait?.find(
-  //     (interest) => interest.id === interestId,
-  //   );
-
-  //   setTopChildInterest({
-  //     title: "",
-  //     id: "",
-  //   });
-
-  //   setTopSelectedInterest({
-  //     id: res?.id || "",
-  //     title: res?.title || "",
-  //     interests: res?.interests || [],
-  //   });
-  // };
-
   const handleInterestsSubmit = async () => {
-    // if (!topSelectedInterest.id || !topChildInterest.id) {
-    //   toast({
-    //     status: "error",
-    //     title: "Please select your top interests",
-    //   });
-    //   return;
-    // }
-
-    // const topInterestsIds = [topChildInterest.id, topSelectedInterest.id];
-    // const allInterestIds = interestsAnswer.map(
-    //   (interest) => interest.interest_id,
-    // );
+    setLoading(true);
 
     let interests: SubmitUserInterestInput[] = [...interestsAnswer];
 
-    // if (allInterestIds.includes(topSelectedInterest.id)) {
-    //   interests = interestsAnswer.map((interest) => {
-    //     if (topInterestsIds.includes(interest.interest_id)) {
-    //       return {
-    //         ...interest,
-    //         is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
-    //       };
-    //     }
-    //     return interest;
-    //   });
-    // } else {
-    //   interests = [
-    //     ...interestsAnswer,
-    //     {
-    //       response: topSelectedInterest.title,
-    //       interest_id: topSelectedInterest.id,
-    //       is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
-    //     },
-    //     {
-    //       response: topChildInterest.title,
-    //       interest_id: topChildInterest.id,
-    //       is_top_interest: "YES" as InputMaybe<TopInterestEnum>,
-    //     },
-    //   ];
-    // }
-
     if (newInterest) {
-      await createInterest({
-        variables: {
-          input: {
-            title: newInterest,
-            description: newInterest,
-            image_url: "",
+      setCreatingInterest(true);
+      try {
+        const createdInterest = localStorageService.createInterest({
+          title: newInterest,
+          image_url: "",
+        });
+        interests = [
+          ...interests,
+          {
+            response: createdInterest.title || "",
+            interest_id: createdInterest.id || "",
+            is_top_interest: "NO" as InputMaybe<TopInterestEnum>,
           },
-        },
-        onCompleted: (data) => {
-          const interest = data.createInterest;
-          interests = [
-            ...interests,
-            {
-              response: interest?.title || "",
-              interest_id: interest?.id || "",
-              is_top_interest: "NO" as InputMaybe<TopInterestEnum>,
-            },
-          ];
-        },
-      });
+        ];
+      } catch (error) {
+        toast({
+          status: "error",
+          title: "Unable to create your interests. Please try again.",
+        });
+      }
+      setCreatingInterest(false);
     }
 
     updateInterestsAnswer(interests);
 
-    mutate({
-      variables: {
-        input: {
-          inputs: interests,
-        },
-      },
-    });
+    try {
+      localStorageService.submitUserInterests(
+        interests.map((i) => ({
+          interest_id: i.interest_id as string,
+          is_top_interest: i.is_top_interest === "YES",
+        })),
+      );
+
+      toast({
+        status: "success",
+        title: "Interests updated successfully",
+      });
+      updateSubmittedInterests(true);
+      updateConfig([
+        { key: configExtras.user_completed_interests_2, value: "true" },
+      ]);
+      router.push(appRouteLinks.intro);
+    } catch (error) {
+      toast({
+        status: "error",
+        title: "Unable to save interests. Please try again.",
+      });
+    }
+
+    setLoading(false);
   };
-
-  // const handleSelectTopChildrenInterest = (value: string) => {
-  //   const selectedChild = topSelectedInterest.interests.find(
-  //     (interest) => interest.id === value,
-  //   );
-
-  //   setTopChildInterest({
-  //     title: selectedChild?.title || "",
-  //     id: value,
-  //   });
-  // };
 
   return (
     <QueryContainer loading={isLoading || loadingInterests} error={error}>
@@ -356,12 +201,11 @@ export default function InterestedExtendedPage() {
 
         <Flex flexDir="column" mt="4">
           {result?.interestsByNoneTrait?.length ? (
-            result?.interestsByNoneTrait?.map((trait) => (
+            result?.interestsByNoneTrait?.map((trait: any) => (
               <InterestsAccordion
                 key={"" + trait.id + key}
                 title={trait.title as string}
                 id={trait.id as string}
-                // onChange={onChange}
                 defaultIndex={
                   flattenedInterests?.includes("" + trait.title) ? [0] : []
                 }
@@ -370,7 +214,7 @@ export default function InterestedExtendedPage() {
                 <Flex flexDir="column">
                   <RadioGroup>
                     <Stack>
-                      {trait?.interests?.map((interest, i) => (
+                      {trait?.interests?.map((interest: any, i: number) => (
                         <Flex
                           key={interest.id}
                           p="3"
@@ -400,52 +244,6 @@ export default function InterestedExtendedPage() {
             </Flex>
           )}
 
-          {/* <Flex flexDir="column" mt="5" gap="5">
-            <FormControl>
-              <FormLabel>
-                Out of all these options, what is your top interest?
-              </FormLabel>
-              <Select
-                border="1px solid"
-                borderColor="gray.500"
-                value={topSelectedInterest.id}
-                onChange={(e) => selectTopInterest(e.target.value)}
-                key="interestParent"
-              >
-                <option value="" key="interestParent-1">
-                  Choose one option
-                </option>
-                {result?.interestsByNoneTrait?.map((interest) => (
-                  <option key={interest.id} value={interest.id || ""}>
-                    {interest.title}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl isDisabled={!topSelectedInterest.interests.length}>
-              <FormLabel>
-                Within that category, what is your top interest?
-              </FormLabel>
-              <Select
-                key="interestChild"
-                border="1px solid"
-                borderColor="gray.500"
-                onChange={(e) =>
-                  handleSelectTopChildrenInterest(e.target.value)
-                }
-                value={topChildInterest.id}
-              >
-                <option key="interestChild-1" value="">
-                  Choose one option
-                </option>
-                {topSelectedInterest.interests.map((interest) => (
-                  <option key={interest.id} value={interest.id || ""}>
-                    {interest.title}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Flex> */}
           <FormControl mt="3">
             <FormLabel as="h2">
               <Flex flexDir="column" pt="1em">

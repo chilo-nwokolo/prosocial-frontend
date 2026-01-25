@@ -3,16 +3,9 @@ import BackButton from "@/components/General/BackButton";
 import QueryContainer from "@/components/General/QueryContainer";
 import InterestsAccordion from "@/features/dashboard/home/growth/components/InterestsAccordion";
 import InterestsSwitch from "@/features/dashboard/home/growth/components/InterestsSwitch";
-import {
-  QUERY_INTERESTS_BY_NONE_TRAITS,
-  QUERY_ME_INTERESTS,
-  SUBMIT_USER_INTERESTS,
-} from "@/features/dashboard/home/growth/queries";
 import useAppConfig from "@/hooks/useAppConfig";
-import { client } from "@/service";
 import { useAppQuestions } from "@/store";
 import { appRouteLinks, configExtras } from "@/utils/constants";
-import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
   Flex,
@@ -22,8 +15,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GrClose } from "react-icons/gr";
+import localStorageService from "@/service/localStorage";
 
 export default function InterestedExtendedPage() {
   const { updateConfig } = useAppConfig({});
@@ -31,6 +25,12 @@ export default function InterestedExtendedPage() {
   const [flattenedInterests, setFlattenedInterets] = useState<string[] | null>(
     null,
   );
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingInterests, setLoadingInterests] = useState(true);
+  const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  const [result, setResult] = useState<any>(null);
 
   const router = useRouter();
 
@@ -41,55 +41,55 @@ export default function InterestedExtendedPage() {
     state.updateInterestsAnswer,
   ]);
 
-  const {
-    data: result,
-    loading: isLoading,
-    error,
-  } = useQuery(QUERY_INTERESTS_BY_NONE_TRAITS);
+  useEffect(() => {
+    const interests = localStorageService.getInterestsByNonTrait();
+    setResult({ interestsByNoneTrait: interests });
+    setIsLoading(false);
+  }, []);
 
-  const { loading: loadingInterests } = useQuery(QUERY_ME_INTERESTS, {
-    onCompleted: (data) => {
-      const interests: string[] = [];
-      if (data.me?.interests?.length) {
-        data.me?.interests?.forEach((interest) => {
-          interests.push("" + interest.title);
-        });
-        setFlattenedInterets(interests);
-        setKey(key + 1);
-        return;
-      }
+  useEffect(() => {
+    const userInterests = localStorageService.getUserInterests();
+    const interests: string[] = [];
+    if (userInterests.length) {
+      userInterests.forEach((interest) => {
+        interests.push("" + interest.title);
+      });
+      setFlattenedInterets(interests);
+      setKey(key + 1);
+    } else {
       setFlattenedInterets([]);
-    },
-  });
+    }
+    setLoadingInterests(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toast = useToast();
 
-  const [mutate, { loading }] = useMutation(SUBMIT_USER_INTERESTS, {
-    variables: {
-      input: {
-        inputs: interestsAnswer,
-      },
-    },
-    onError: () => {
-      toast({
-        status: "error",
-        title: "Unable to save interests. Please try again.",
-      });
-    },
-    onCompleted: async () => {
+  const mutate = async () => {
+    setLoading(true);
+    try {
+      localStorageService.submitUserInterests(
+        interestsAnswer.map((i) => ({
+          interest_id: i.interest_id as string,
+          is_top_interest: false,
+        })),
+      );
       toast({
         status: "success",
         title: "Interests updated successfully",
-      });
-      await client.refetchQueries({
-        include: ["QUERY_INTERESTS_BY_NONE_TRAITS"],
       });
       updateConfig([
         { key: configExtras.user_completed_interests_2, value: "true" },
       ]);
       router.push(appRouteLinks.growth);
-    },
-  });
+    } catch (error) {
+      toast({
+        status: "error",
+        title: "Unable to save interests. Please try again.",
+      });
+    }
+    setLoading(false);
+  };
 
   const onChange = (value: string, id: string) => {
     const foundIndex = interestsAnswer.findIndex(
@@ -122,7 +122,7 @@ export default function InterestedExtendedPage() {
         </Text>
         <Flex flexDir="column" mt="4">
           {result?.interestsByNoneTrait?.length ? (
-            result?.interestsByNoneTrait?.map((trait) => (
+            result?.interestsByNoneTrait?.map((trait: any) => (
               <InterestsAccordion
                 key={"" + trait.id + key}
                 title={trait.title as string}
@@ -136,7 +136,7 @@ export default function InterestedExtendedPage() {
                 <Flex flexDir="column">
                   <RadioGroup>
                     <Stack>
-                      {trait?.interests?.map((interest, i) => (
+                      {trait?.interests?.map((interest: any, i: number) => (
                         <Flex
                           key={interest.id}
                           p="3"

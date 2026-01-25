@@ -12,13 +12,9 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { appRouteLinks } from "@/utils/constants";
 import AppModal from "@/components/AppModal";
 import useSubmitChallengeJournal from "@/features/dashboard/home/growth/hooks/useSubmitChallengeJournal";
-import { useQuery } from "@apollo/client";
-import {
-  QUERY_JOURNAL_CATEGORIES,
-  QUERY_ME_JOURNALS,
-} from "@/features/dashboard/home/growth/queries";
 import QueryContainer from "@/components/General/QueryContainer";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import localStorageService from "@/service/localStorage";
 
 const journalTitles = {
   "Happiest Childhood Memory": "What is your happiest memory from childhood?",
@@ -34,25 +30,38 @@ export default function ViewJournalPage({
 }: {
   params: { journalId: number };
 }) {
-  const { data, loading, error } = useQuery(QUERY_JOURNAL_CATEGORIES);
+  const [loading, setLoading] = useState(true);
+  const [meLoading, setMeLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  // eslint-disable-next-line no-unused-vars
+  const [meError, _setMeError] = useState<Error | null>(null);
+  const [journalCategories, setJournalCategories] = useState<any[]>([]);
+  const [meJournals, setMeJournals] = useState<any[]>([]);
 
   const clearedErrors = useRef(false);
 
-  const {
-    data: meData,
-    loading: meLoading,
-    error: meError,
-  } = useQuery(QUERY_ME_JOURNALS);
+  useEffect(() => {
+    const categories = localStorageService.getJournalCategories();
+    setJournalCategories(categories);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    const journals = localStorageService.getUserJournals();
+    setMeJournals(journals);
+    setMeLoading(false);
+  }, []);
 
   const genInitialValues = () => {
-    const found = meData?.me?.journals?.find(
-      (challenge) => challenge?.category?.id === journalId.toString(),
+    const found = meJournals.find(
+      (journal) => journal?.category?.id === journalId.toString(),
     );
     return clearedErrors.current ? "" : found?.input || "";
   };
 
   const getJournalTitle = () => {
-    const found = data?.journalCategories?.find(
+    const found = journalCategories.find(
       (journal) => journal.id === journalId.toString(),
     );
     return found?.title || "";

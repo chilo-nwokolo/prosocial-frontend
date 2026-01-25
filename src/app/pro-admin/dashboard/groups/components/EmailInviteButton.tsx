@@ -1,7 +1,6 @@
-import { useMutation } from "@apollo/client";
 import { Button, useToast } from "@chakra-ui/react";
-import { SEND_GROUP_INVITATION } from "../gql/queries";
-import { apolloErrorHandler } from "@/utils/helpers";
+import { useState } from "react";
+import localStorageService from "@/service/localStorage";
 
 type Props = {
   id: string;
@@ -9,26 +8,27 @@ type Props = {
 
 export default function EmailInviteButton({ id }: Props) {
   const toast = useToast();
-  const [mutate, { loading }] = useMutation(SEND_GROUP_INVITATION, {
-    onError(error) {
+  const [loading, setLoading] = useState(false);
+
+  const handleSendInvite = () => {
+    setLoading(true);
+    try {
+      localStorageService.sendGroupInvitation(id);
       toast({
-        title: apolloErrorHandler(error),
+        title: "Group invitation sent successfully!",
+        status: "success",
+      });
+    } catch (error: any) {
+      toast({
+        title: error.message || "Failed to send invitation",
         status: "error",
       });
-    },
-    onCompleted: (data) => {
-      toast({
-        title: data.sendGroupInviteToParticipants.message,
-      });
-    },
-  });
+    }
+    setLoading(false);
+  };
 
   return (
-    <Button
-      isDisabled={loading}
-      isLoading={loading}
-      onClick={() => mutate({ variables: { group_id: id } })}
-    >
+    <Button isDisabled={loading} isLoading={loading} onClick={handleSendInvite}>
       Send Email
     </Button>
   );

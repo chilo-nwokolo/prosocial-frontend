@@ -1,10 +1,10 @@
 "use client";
 import { deleteCookie } from "@/libs/cookies";
-import { client } from "@/service";
 import { AccessToken, adminRoutes, storeKeys } from "@/utils/constants";
 import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import localStorageService from "@/service/localStorage";
 
 const navItems = [
   { id: 1, title: "User Data", link: adminRoutes.users },
@@ -19,8 +19,8 @@ export default function AdminNavBar() {
     deleteCookie("userType");
     localStorage.removeItem(storeKeys.USER_STORE);
     localStorage.removeItem(storeKeys.QUESTIONS_STORE);
+    localStorageService.logout();
     router.push(adminRoutes.login);
-    client.clearStore();
   };
 
   return (

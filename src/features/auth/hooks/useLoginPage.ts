@@ -1,8 +1,7 @@
 import * as yup from "yup";
-import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import { LOGIN_USER } from "../gql";
+import { useState } from "react";
 import {
   AccessToken,
   appRouteLinks,
@@ -12,12 +11,12 @@ import {
 import { useToast } from "@chakra-ui/react";
 import { useUserStore } from "@/store";
 import { deleteCookie, getCookie, setCookie } from "@/libs/cookies";
-import { apolloErrorHandler } from "@/utils/helpers";
+import localStorageService from "@/service/localStorage";
 
 export default function useLoginPage() {
   const router = useRouter();
-  const [login, { loading }] = useMutation(LOGIN_USER);
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
   const [updateUser] = useUserStore((state) => [state.updateUser]);
 
   const validationSchema = yup.object({
@@ -34,28 +33,47 @@ export default function useLoginPage() {
       password: "",
     },
     onSubmit: ({ email, password }) => {
+      setLoading(true);
+
       if (getCookie(AccessToken)) {
         deleteCookie(AccessToken);
       }
-      login({
-        variables: {
-          email,
-          password,
-        },
-        onCompleted: (data) => {
-          localStorage.removeItem(storeKeys.USER_STORE);
-          localStorage.removeItem(storeKeys.QUESTIONS_STORE);
-          updateUser(data);
-          router.push(appRouteLinks.onbording);
-          setCookie("accessToken", data.login.token);
-        },
-        onError: (error) => {
-          toast({
-            status: "error",
-            title: apolloErrorHandler(error),
-          });
-        },
-      });
+
+      try {
+        const data = localStorageService.login(email, password);
+
+        localStorage.removeItem(storeKeys.USER_STORE);
+        localStorage.removeItem(storeKeys.QUESTIONS_STORE);
+
+        // Format data to match the expected structure
+        updateUser({
+          login: {
+            token: data.token,
+            user: {
+              id: data.user.id,
+              name: data.user.name,
+              phone: data.user.phone,
+              email: data.user.email,
+              user_type: data.user.user_type,
+              groups: data.user.groups.map((g) => ({
+                id: g.id,
+                name: g.name,
+                users: g.users.map((u) => ({ id: u.id, name: u.name })),
+              })),
+            },
+          },
+        });
+
+        router.push(appRouteLinks.onbording);
+        setCookie("accessToken", data.token);
+        setLoading(false);
+      } catch (error: any) {
+        toast({
+          status: "error",
+          title: error.message || "Login failed",
+        });
+        setLoading(false);
+      }
     },
     validationSchema,
   });

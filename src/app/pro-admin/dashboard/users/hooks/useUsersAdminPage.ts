@@ -5,8 +5,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
-import { QUERY_ADMIN_USERS } from "../gql/queries";
 import { useDisclosure } from "@chakra-ui/react";
 import { useFilterContext } from "./useFilterContext";
 import { DynamicQueryObject, adminQueryBuilder } from "@/utils/admin.utils";
@@ -18,6 +16,7 @@ import {
   activeFilterHandler,
   updateFilterPropHandler,
 } from "@/utils/admin.utils";
+import localStorageService from "@/service/localStorage";
 
 export default function useUsersAdminPage() {
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -30,6 +29,8 @@ export default function useUsersAdminPage() {
     groupView,
   } = useFilterContext();
   const [query, setQuery] = useState<DynamicQueryObject>();
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<{ adminQueryUsers: any[] } | null>(null);
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -38,13 +39,16 @@ export default function useUsersAdminPage() {
     setQuery(adminQueryBuilder(filterProp, activeFilters));
   }, [activeFilters, filterProp]);
 
-  const { loading, data } = useQuery(QUERY_ADMIN_USERS, {
-    variables: {
-      input: {
-        ...query,
-      },
-    },
-  });
+  useEffect(() => {
+    // Fetch users from localStorage
+    setLoading(true);
+    const users = localStorageService.adminQueryUsers({
+      search: query?.search as string | undefined,
+      groupId: query?.groupId as string | undefined,
+    });
+    setData({ adminQueryUsers: users });
+    setLoading(false);
+  }, [query]);
 
   useEffect(() => {
     const groupId = searchParams.get("groupId");

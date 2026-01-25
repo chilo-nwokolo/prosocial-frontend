@@ -1,6 +1,4 @@
-import { UPDATE_PROFILE_PICTURE } from "@/features/dashboard/profile/gql/queries";
-import { client } from "@/service";
-import { useMutation } from "@apollo/client";
+import useAppConfig from "@/hooks/useAppConfig";
 import {
   Box,
   Button,
@@ -16,10 +14,10 @@ import { ChangeEvent, LegacyRef, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
 import imageCompression from "browser-image-compression";
-import useAppConfig from "@/hooks/useAppConfig";
 import { configExtras } from "@/utils/constants";
 import { useConfig, useUserStore } from "@/store";
 import { usePathname } from "next/navigation";
+import localStorageService from "@/service/localStorage";
 
 type Props = {
   currentImage?: File | string | null;
@@ -34,35 +32,44 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
     File | string | null | undefined
   >(currentImage);
   const [compressingImage, setCompressingImage] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { updateConfig } = useAppConfig({});
   const [updateStoreConfig] = useConfig((state) => [state.updateConfig]);
   const [setAvatar] = useUserStore((state) => [state.setAvatar]);
   const pathname = usePathname();
 
-  const [upload, { loading }] = useMutation(UPDATE_PROFILE_PICTURE, {
-    onCompleted: async () => {
+  const upload = async (file: File) => {
+    setLoading(true);
+    try {
+      // Convert file to base64
+      const reader = new FileReader();
+
+      await new Promise<void>((resolve, reject) => {
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          localStorageService.updateProfilePicture(base64String);
+          resolve();
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
       setKey(key + 1);
-      setProfileImage(uploadedImage.current);
+      setProfileImage(file);
       updateConfig([
         { key: configExtras.user_has_uploaded_profile_picture, value: "true" },
       ]);
       updateStoreConfig({ user_has_uploaded_profile_picture: "true" });
-      await client.refetchQueries({
-        include: ["ME"],
-        updateCache(cache) {
-          cache.evict({ fieldName: "ME" });
-        },
-      });
       setCompressingImage(false);
-    },
-    onError: () => {
-      setCompressingImage(false);
+    } catch (error) {
       toast({
         title: "Picture upload failed. Please try again",
         status: "error",
       });
-    },
-  });
+      setCompressingImage(false);
+    }
+    setLoading(false);
+  };
 
   const UploadProfilePictureButton = () => (
     <Tooltip label="Upload profile picture" aria-label="A tooltip">
@@ -115,15 +122,7 @@ export default function ProfilePictureUploader({ currentImage }: Props) {
         setProfileImage(uploadedImage.current);
         setCompressingImage(false);
       } else {
-        upload({
-          variables: {
-            input: {
-              profile: {
-                avatar: uploadedFile,
-              },
-            },
-          },
-        });
+        await upload(uploadedFile);
       }
     }
   };

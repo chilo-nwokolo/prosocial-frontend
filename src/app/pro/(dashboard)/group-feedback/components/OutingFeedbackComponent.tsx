@@ -6,10 +6,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GroupUser, useGlobalStore } from "@/store";
-import { useEffect } from "react";
-import { useLazyQuery } from "@apollo/client";
-import { PULL_USER_GROUP } from "../graphql/gql";
-import { apolloErrorHandler } from "@/utils/helpers";
+import { useEffect, useState } from "react";
+import localStorageService from "@/service/localStorage";
 
 const field = {
   labelTitle: "Pick a date",
@@ -22,6 +20,7 @@ const field = {
 export default function OutingFeedbackComponent() {
   const router = useRouter();
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
   const [
     setOutingDate,
     setUserData,
@@ -35,30 +34,6 @@ export default function OutingFeedbackComponent() {
     state.updateGroupData,
     state.setOutingGroupMembers,
   ]);
-
-  const [getUserGroup, { loading }] = useLazyQuery(PULL_USER_GROUP, {
-    onCompleted: (data) => {
-      updateGroupData(data.pullUserGroupParticipants);
-
-      const result = [] as GroupUser[];
-
-      data?.pullUserGroupParticipants?.users?.forEach((user) => {
-        if (user.unique_id !== userData?.userId) {
-          result.push(user);
-        }
-      });
-
-      setOutingGroupMembers(result);
-
-      router.push(appRouteLinks.outingFeedbackCards);
-    },
-    onError: (error) => {
-      toast({
-        title: apolloErrorHandler(error),
-        status: "error",
-      });
-    },
-  });
 
   const params = useSearchParams();
 
@@ -79,25 +54,51 @@ export default function OutingFeedbackComponent() {
     date: yup.date().required(formFeedback.chooseValidOutingDate),
   });
 
+  const getUserGroup = () => {
+    setLoading(true);
+
+    if (userData?.groupId && userData?.userId) {
+      const group = localStorageService.pullUserGroupParticipants(
+        userData.userId,
+        userData.groupId,
+      );
+
+      if (group) {
+        updateGroupData(group as any);
+
+        const result = [] as GroupUser[];
+
+        group.users?.forEach((user) => {
+          if (user.unique_id !== userData?.userId) {
+            result.push(user as GroupUser);
+          }
+        });
+
+        setOutingGroupMembers(result);
+        router.push(appRouteLinks.outingFeedbackCards);
+      } else {
+        toast({
+          title: "Group not found",
+          status: "error",
+        });
+      }
+    } else {
+      toast({
+        title: "Sorry, this link is invalid",
+        status: "error",
+      });
+    }
+
+    setLoading(false);
+  };
+
   const formik = useFormik({
     initialValues: {
       date: "",
     },
     onSubmit: (data) => {
       setOutingDate(data.date);
-      if (userData?.groupId && userData?.userId) {
-        getUserGroup({
-          variables: {
-            user_unique_id: userData.userId,
-            group_id: userData.groupId,
-          },
-        });
-      } else {
-        toast({
-          title: "Sorry, this link is invalid",
-          status: "error",
-        });
-      }
+      getUserGroup();
     },
     validationSchema,
   });

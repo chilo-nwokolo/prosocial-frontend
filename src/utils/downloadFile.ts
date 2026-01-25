@@ -1,5 +1,5 @@
 export default function DownloadFile(
-  data: Blob,
+  data: Blob | string,
   filename: string,
   mime = "application/octet-stream",
 ) {

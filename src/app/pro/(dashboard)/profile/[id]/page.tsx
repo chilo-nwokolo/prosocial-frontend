@@ -1,26 +1,33 @@
 "use client";
 import EditableFormInput from "@/components/General/EditableFormInput";
 import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
-import { UPDATE_USER_INFO } from "@/features/dashboard/profile/gql/queries";
 import { useUserStore } from "@/store";
-import { useMutation } from "@apollo/client";
 import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useState } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function ProfilePageId() {
   const [userProfile] = useUserStore((state) => [state.userProfile]);
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
-  // eslint-disable-next-line no-unused-vars
-  const [submit, { loading }] = useMutation(UPDATE_USER_INFO, {
-    onCompleted: () => {
+  const submit = async (formData: any) => {
+    setLoading(true);
+    try {
+      localStorageService.updateUser(formData);
       toast({
         status: "success",
         title: "Update successful",
       });
-    },
-    refetchQueries: [`${userProfile?.me?.__typename}:${userProfile?.me?.id}`],
-  });
+    } catch (error: any) {
+      toast({
+        status: "error",
+        title: error.message || "Update failed",
+      });
+    }
+    setLoading(false);
+  };
 
   const password = "password";
 
@@ -40,6 +47,9 @@ export default function ProfilePageId() {
       }
       if (values.password !== password) {
         formData.password = values.password;
+      }
+      if (Object.keys(formData).length > 0) {
+        submit(formData);
       }
     },
   });
@@ -79,7 +89,9 @@ export default function ProfilePageId() {
             value={formik.values.password}
             reset={formik.resetForm}
           />
-          <Button type="submit">Save</Button>
+          <Button type="submit" isLoading={loading}>
+            Save
+          </Button>
         </Flex>
       </form>
     </Flex>

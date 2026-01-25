@@ -1,8 +1,7 @@
-import { useQuery } from "@apollo/client";
-import { QUERY_GROUP } from "../gql/queries";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { groupViewColumns } from "../components/GroupViewTableColumns";
+import localStorageService from "@/service/localStorage";
 
 type Props = {
   group: string;
@@ -17,16 +16,24 @@ export type GroupDataType = {
 };
 
 export default function useGroupView({ group }: Props) {
-  const { loading, data, error } = useQuery(QUERY_GROUP, {
-    variables: {
-      id: group,
-    },
-  });
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  const [data, setData] = useState<any>(null);
   const [groupData, setGroupData] = useState<GroupDataType[]>([]);
-
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+
+  useEffect(() => {
+    // Fetch group from localStorage
+    setLoading(true);
+    const groupInfo = localStorageService.getGroup(group);
+    if (groupInfo) {
+      setData({ fetchGroup: groupInfo });
+    } else {
+      setError(new Error("Group not found"));
+    }
+    setLoading(false);
+  }, [group]);
 
   useEffect(() => {
     const transformData = () => {
@@ -36,7 +43,7 @@ export default function useGroupView({ group }: Props) {
 
       const outingFeedbacks = data?.fetchGroup?.outing_feedbacks;
 
-      outingFeedbacks?.forEach((response) => {
+      outingFeedbacks?.forEach((response: any) => {
         const name = response.user?.name || "";
         const id = response.id;
 
@@ -48,7 +55,7 @@ export default function useGroupView({ group }: Props) {
           feedback: "",
         };
 
-        response.feedback_responses?.forEach((feedback) => {
+        response.feedback_responses?.forEach((feedback: any) => {
           let secondConnection = "";
           receiversInfo["receiversName"] = feedback?.receiving_user?.name || "";
           receiversInfo["feedback"] = feedback?.note || "";
@@ -57,13 +64,13 @@ export default function useGroupView({ group }: Props) {
             usersWithFeedback.includes(feedback.receiving_user?.unique_id || "")
           ) {
             const feedbackMatch = outingFeedbacks.find(
-              (result) =>
+              (result: any) =>
                 result.user?.unique_id === feedback.receiving_user?.unique_id ||
                 "",
             );
 
             if (feedbackMatch?.id) {
-              feedbackMatch.feedback_responses?.forEach((response) => {
+              feedbackMatch.feedback_responses?.forEach((response: any) => {
                 if (
                   feedbackMatch.user?.unique_id ===
                   feedback.receiving_user?.unique_id

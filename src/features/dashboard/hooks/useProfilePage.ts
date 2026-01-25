@@ -1,11 +1,8 @@
 import { useFormik } from "formik";
-import { useQuery, useMutation } from "@apollo/client";
 import { useUserStore } from "@/store";
-import {
-  UPDATE_USER_INFO,
-  ME_QUERY,
-} from "@/features/dashboard/profile/gql/queries";
 import { useToast } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function useProfilePage() {
   const [setUserProfile, userProfile] = useUserStore((state) => [
@@ -13,22 +10,80 @@ export default function useProfilePage() {
     state.userProfile,
   ]);
   const toast = useToast();
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  const [data, setData] = useState<any>(null);
 
-  const { loading, error, data } = useQuery(ME_QUERY, {
-    onCompleted: (data) => {
-      setUserProfile(data);
-    },
-  });
+  useEffect(() => {
+    // Fetch user data from localStorage
+    const user = localStorageService.getCurrentUser();
+    if (user) {
+      const meData = {
+        me: {
+          __typename: "User" as const,
+          id: user.id,
+          unique_id: user.unique_id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          profile: {
+            avatar: user.profile.avatar,
+          },
+          groups: user.groups.map((g) => ({
+            id: g.id,
+            name: g.name,
+            created_at: g.created_at,
+            users: g.users.map((u) => ({ id: u.id, name: u.name })),
+          })),
+        },
+      };
+      setData(meData);
+      setUserProfile(meData);
+    }
+    setLoading(false);
+  }, [setUserProfile]);
 
-  const [submit, { loading: updating }] = useMutation(UPDATE_USER_INFO, {
-    onCompleted: () => {
+  const submit = async (variables: { input: any }) => {
+    setUpdating(true);
+    try {
+      const updated = localStorageService.updateUser(variables.input);
+      if (updated) {
+        const meData = {
+          me: {
+            __typename: "User" as const,
+            id: updated.id,
+            unique_id: updated.unique_id,
+            name: updated.name,
+            email: updated.email,
+            phone: updated.phone,
+            profile: {
+              avatar: updated.profile.avatar,
+            },
+            groups: updated.groups.map((g) => ({
+              id: g.id,
+              name: g.name,
+              created_at: g.created_at,
+              users: g.users.map((u) => ({ id: u.id, name: u.name })),
+            })),
+          },
+        };
+        setData(meData);
+        setUserProfile(meData);
+        toast({
+          status: "success",
+          title: "Update successful",
+        });
+      }
+    } catch (err: any) {
       toast({
-        status: "success",
-        title: "Update successful",
+        status: "error",
+        title: err.message || "Update failed",
       });
-    },
-    refetchQueries: ["ME"],
-  });
+    }
+    setUpdating(false);
+  };
 
   const password = "password";
 
@@ -53,9 +108,7 @@ export default function useProfilePage() {
       }
       if (!Object.values(formData).length) return;
       submit({
-        variables: {
-          input: formData,
-        },
+        input: formData,
       });
     },
     enableReinitialize: true,

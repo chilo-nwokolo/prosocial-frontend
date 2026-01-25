@@ -1,5 +1,3 @@
-import { ApolloError } from "@apollo/client";
-
 export const calculateMinDateOfBirth = () => {
   const theYear = new Date().getFullYear() - 15;
   return `${theYear}-01-01`;
@@ -40,15 +38,15 @@ export function decodeUrl(params: string, separator?: string) {
     : decodeURI(params);
 }
 
-export const apolloErrorHandler = (error: ApolloError) => {
-  return error.graphQLErrors.map((e) => {
-    if (e.extensions.reason) {
-      return e.extensions.reason as unknown as string;
-    }
-    if (e.message) {
-      return e.message;
-    }
-  });
+// Error handler - now works with any Error type since we're not using Apollo anymore
+export const apolloErrorHandler = (error: Error | any): string => {
+  if (error?.message) {
+    return error.message;
+  }
+  if (typeof error === "string") {
+    return error;
+  }
+  return "An error occurred";
 };
 
 export const calculateGrowthProgress = (qty: number, total: number) => {

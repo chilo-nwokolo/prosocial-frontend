@@ -5,10 +5,9 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { UserQuestionsType, useAppQuestions, useUserStore } from "@/store";
-import { useMutation } from "@apollo/client";
-import { QUESTION_RESPONSE_MUTATION } from "@/features/intro/gql";
-import { apolloErrorHandler, combineIntoFormattedArray } from "@/utils/helpers";
+import { combineIntoFormattedArray } from "@/utils/helpers";
 import useAppConfig from "@/hooks/useAppConfig";
+import localStorageService from "@/service/localStorage";
 
 type Props = {
   quizId: string;
@@ -17,6 +16,7 @@ type Props = {
 export default function usePersonalityQuestionsPage({ quizId }: Props) {
   const router = useRouter();
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
   const [sectionQuestions, setSectionQuestions] = useState<
     UserQuestionsType[] | undefined
   >(undefined);
@@ -44,23 +44,6 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizId, questions]);
 
-  const [submitAnswers, { loading }] = useMutation(QUESTION_RESPONSE_MUTATION, {
-    onError: (error) => {
-      toast({
-        status: "error",
-        title: apolloErrorHandler(error),
-      });
-    },
-    onCompleted: () => {
-      toast({
-        title: "Saved successfully.",
-        status: "success",
-      });
-      router.push(appRouteLinks.growthPersonality);
-    },
-    refetchQueries: ["QUERY_ALL_QUESTIONS"],
-  });
-
   const genInitialValues = useCallback(() => {
     const result: Record<string, string> = {};
     sectionQuestions?.forEach((element) => {
@@ -74,6 +57,8 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
     initialValues: genInitialValues(),
     enableReinitialize: true,
     onSubmit: async (values) => {
+      setLoading(true);
+
       const location = decodeURI(quizId);
       const locationIndex = userPersonalityAnswers.findIndex(
         (answer) => answer[location],
@@ -93,21 +78,40 @@ export default function usePersonalityQuestionsPage({ quizId }: Props) {
       }
 
       const formattedAnswers = combineIntoFormattedArray([values]);
-      if (formattedAnswers.length === 10) {
-        updateConfig([
-          {
-            key: `user_quiz_${decodeURI(quizId)
-              .replace(" ", "-")
-              .toLowerCase()}`,
-            value: "completed",
-          },
-        ]);
+
+      try {
+        // Submit to localStorage
+        localStorageService.submitQuestionResponses(
+          formattedAnswers.map((a: any) => ({
+            question_id: a.question_id,
+            answer_id: a.answer_id,
+          })),
+        );
+
+        if (formattedAnswers.length === 10) {
+          updateConfig([
+            {
+              key: `user_quiz_${decodeURI(quizId)
+                .replace(" ", "-")
+                .toLowerCase()}`,
+              value: "completed",
+            },
+          ]);
+        }
+
+        toast({
+          title: "Saved successfully.",
+          status: "success",
+        });
+        router.push(appRouteLinks.growthPersonality);
+      } catch (error: any) {
+        toast({
+          status: "error",
+          title: error.message || "Failed to save",
+        });
       }
-      await submitAnswers({
-        variables: {
-          input: { answers: formattedAnswers },
-        },
-      });
+
+      setLoading(false);
     },
   });
 

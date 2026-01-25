@@ -1,22 +1,24 @@
 "use client";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { appRouteLinks, configExtras, formFeedback } from "@/utils/constants";
-import { QUERY_UNIVERSITY_GROUPS, REGISTER_USER } from "../gql";
 import { useRouter } from "next/navigation";
-import { apolloErrorHandler } from "@/utils/helpers";
 import { setCookie } from "@/libs/cookies";
 import { useUserStore } from "@/store";
-import useUploadProfilePicture from "@/features/dashboard/home/growth/hooks/useUploadProfilePicture";
+import localStorageService from "@/service/localStorage";
 
 export default function UseRegistrationPage() {
   const [phone, setPhone] = useState("");
   const toast = useToast();
   const router = useRouter();
   const [acceptTc, setAcceptTc] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingGroups, setLoadingGroups] = useState(true);
+  const [groups, setGroups] = useState<{
+    universities: { id: string; name: string }[];
+  } | null>(null);
   const [updateUser, avatar] = useUserStore((state) => [
     state.updateUser,
     state.avatar,
@@ -24,27 +26,13 @@ export default function UseRegistrationPage() {
 
   useEffect(() => {
     setCookie(configExtras.user_visited_intro_page, "true");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // Load universities from localStorage
+    const universities = localStorageService.getUniversities();
+    setGroups({ universities });
+    setLoadingGroups(false);
   }, []);
 
-  const { data: groups, loading: loadingGroups } = useQuery(
-    QUERY_UNIVERSITY_GROUPS,
-    {
-      onError: (error) => {
-        toast({
-          title: apolloErrorHandler(error),
-          status: "error",
-        });
-      },
-    },
-  );
-
-  const [register, { loading }] = useMutation(REGISTER_USER);
-  const {
-    upload,
-    loading: isUploadingProfilePic,
-    error,
-  } = useUploadProfilePicture();
   const validationSchema = yup.object({
     dob: yup.date().required(formFeedback.required),
     email: yup
@@ -72,7 +60,7 @@ export default function UseRegistrationPage() {
       lastName: "",
       universityId: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (!avatar) {
         toast({
           description: "Please, upload a profile picture",
@@ -98,47 +86,65 @@ export default function UseRegistrationPage() {
         return;
       }
 
-      register({
-        variables: {
-          input: {
-            phone,
-            dob,
-            email,
-            name: `${firstName} ${lastName}`,
-            password,
-            university_id: universityId,
-          },
-        },
-        onCompleted: async (data) => {
-          updateUser(data);
-          setCookie("accessToken", data.register.token);
-          await upload({
-            variables: {
-              input: {
-                profile: {
-                  avatar,
-                },
-              },
+      setLoading(true);
+
+      try {
+        const data = localStorageService.register({
+          phone,
+          dob,
+          email,
+          name: `${firstName} ${lastName}`,
+          password,
+          university_id: universityId,
+        });
+
+        // Format data to match the expected structure
+        updateUser({
+          register: {
+            token: data.token,
+            user: {
+              id: data.user.id,
+              name: data.user.name,
+              phone: data.user.phone,
+              email: data.user.email,
+              user_type: data.user.user_type,
+              groups: data.user.groups.map((g) => ({
+                id: g.id,
+                name: g.name,
+                users: g.users.map((u) => ({ id: u.id, name: u.name })),
+              })),
             },
-          });
-          if (error) {
-            toast({
-              title: "Picture upload failed. Please try again",
-              status: "error",
-            });
-            return;
-          }
-          if (!isUploadingProfilePic) {
-            router.push(appRouteLinks.onbording);
-          }
-        },
-        onError: (error) => {
-          toast({
-            title: "Registration failed",
-            description: apolloErrorHandler(error),
-          });
-        },
-      });
+          },
+        });
+
+        setCookie("accessToken", data.token);
+
+        // Handle profile picture upload - convert to base64 and store
+        if (avatar) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64String = reader.result as string;
+            localStorageService.updateProfilePicture(base64String);
+          };
+          reader.readAsDataURL(avatar);
+        }
+
+        // Email verification is skipped - user is automatically verified
+        toast({
+          title: "Registration successful!",
+          status: "success",
+        });
+
+        router.push(appRouteLinks.onbording);
+        setLoading(false);
+      } catch (error: any) {
+        toast({
+          title: "Registration failed",
+          description: error.message || "An error occurred",
+          status: "error",
+        });
+        setLoading(false);
+      }
     },
     validationSchema,
   });
@@ -148,7 +154,7 @@ export default function UseRegistrationPage() {
     setPhone,
     phone,
     loading,
-    isUploadingProfilePic,
+    isUploadingProfilePic: false,
     loadingGroups,
     groups,
     setAcceptTc,

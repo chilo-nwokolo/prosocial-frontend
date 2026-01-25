@@ -1,9 +1,7 @@
 "use client";
 import QueryContainer from "@/components/General/QueryContainer";
-import { QUERY_ME_PERSONALITY_SCORE } from "@/features/intro/gql";
 import { useUserStore } from "@/store";
 import { ImageLinks, appRouteLinks } from "@/utils/constants";
-import { useQuery } from "@apollo/client";
 import {
   Button,
   Card,
@@ -17,6 +15,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function PersonalityResultPage() {
   // eslint-disable-next-line no-unused-vars
@@ -26,21 +26,24 @@ export default function PersonalityResultPage() {
   ]);
   const router = useRouter();
   const toast = useToast();
+  const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  const [result, setResult] = useState<any>(null);
 
-  const { data, loading, error } = useQuery(QUERY_ME_PERSONALITY_SCORE, {
-    fetchPolicy: "network-only",
-    onCompleted: (data) => {
-      if (!data.me?.personalityScore?.personalityBucketType) {
-        toast({
-          status: "error",
-          title: "Please complete your registration first",
-        });
-        router.push(appRouteLinks.onbording);
-      }
-    },
-  });
-
-  const result = data?.me?.personalityScore?.personalityBucketType;
+  useEffect(() => {
+    const score = localStorageService.getPersonalityScore();
+    if (!score?.personalityBucketType) {
+      toast({
+        status: "error",
+        title: "Please complete your registration first",
+      });
+      router.push(appRouteLinks.onbording);
+    } else {
+      setResult(score.personalityBucketType);
+    }
+    setLoading(false);
+  }, [router, toast]);
 
   return (
     <QueryContainer loading={loading} error={error}>
@@ -73,7 +76,7 @@ export default function PersonalityResultPage() {
           <Text mt="4">{result?.description}</Text>
         </Flex>
         <Flex flexDir="column" gap="5" mb="6">
-          {result?.bucketQuestions?.map((question) => (
+          {result?.bucketQuestions?.map((question: any) => (
             <Card
               key={question.id}
               bg="none"

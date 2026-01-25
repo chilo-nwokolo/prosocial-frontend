@@ -12,15 +12,11 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import useSubmitChallengeJournal from "@/features/dashboard/home/growth/hooks/useSubmitChallengeJournal";
 import { appRouteLinks } from "@/utils/constants";
 import AppModal from "@/components/AppModal";
-import {
-  QUERY_CHALLENGE_CATEGORIES,
-  QUERY_ME_CHALLENGE_CATEGORIES,
-} from "@/features/dashboard/home/growth/queries";
 import QueryContainer from "@/components/General/QueryContainer";
-import { useQuery } from "@apollo/client";
 import YoutubeEmbed from "@/components/General/YoutubeEmbed";
 import TranscriptComponent from "@/components/General/TranscriptComponent";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import localStorageService from "@/service/localStorage";
 
 const challengeTitles = {
   " Interesting or Funny Story": "Write down an interesting or Funny Story",
@@ -30,12 +26,11 @@ const challengeTitles = {
 };
 
 type ChallengeCategoriesQueryType = {
-  __typename?: "JournalCategory" | undefined;
   id: string;
   title: string;
   type: string;
-  video_url?: string | null | undefined;
-  transcript?: string | null | undefined;
+  video_url?: string | null;
+  transcript?: string | null;
 };
 
 export default function ViewChallengePage({
@@ -45,30 +40,37 @@ export default function ViewChallengePage({
 }) {
   const [activeChallenge, setActiveChallenge] =
     useState<ChallengeCategoriesQueryType | null>(null);
-
-  const { loading, error } = useQuery(QUERY_CHALLENGE_CATEGORIES, {
-    onCompleted: (data) => {
-      const found = data?.challengeCategories?.find(
-        (challenge) => challenge.id === challengeId.toString(),
-      );
-      if (found?.id) {
-        setActiveChallenge(found);
-        return;
-      }
-      setActiveChallenge(null);
-    },
-  });
+  const [loading, setLoading] = useState(true);
+  const [meLoading, setMeLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  // eslint-disable-next-line no-unused-vars
+  const [meError, _setMeError] = useState<Error | null>(null);
+  const [meChallenges, setMeChallenges] = useState<any[]>([]);
 
   const clearedErrors = useRef(false);
 
-  const {
-    data: meData,
-    loading: meLoading,
-    error: meError,
-  } = useQuery(QUERY_ME_CHALLENGE_CATEGORIES);
+  useEffect(() => {
+    // Load challenge categories
+    const categories = localStorageService.getChallengeCategories();
+    const found = categories.find(
+      (challenge) => challenge.id === challengeId.toString(),
+    );
+    if (found) {
+      setActiveChallenge(found);
+    }
+    setLoading(false);
+  }, [challengeId]);
+
+  useEffect(() => {
+    // Load user's challenges
+    const challenges = localStorageService.getUserChallenges();
+    setMeChallenges(challenges);
+    setMeLoading(false);
+  }, []);
 
   const genInitialValues = () => {
-    const found = meData?.me?.challenges?.find(
+    const found = meChallenges.find(
       (challenge) => challenge?.category?.id === challengeId.toString(),
     );
     return clearedErrors.current ? "" : found?.input || "";

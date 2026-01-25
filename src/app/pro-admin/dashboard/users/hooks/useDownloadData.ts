@@ -1,7 +1,6 @@
 import DownloadFile from "@/utils/downloadFile";
 import { useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { BASE_REST_URL } from "@/service";
+import localStorageService from "@/service/localStorage";
 
 export default function useDownloadData() {
   const toast = useToast();
@@ -11,8 +10,38 @@ export default function useDownloadData() {
       status: "loading",
       title: "Downloading data as CSV",
     });
-    const response = await axios.get(BASE_REST_URL + "/download-data-csv");
-    DownloadFile(response.data, "prosocial-data.csv");
+
+    // Get all users from localStorage and convert to CSV
+    const users = localStorageService.adminQueryUsers({});
+
+    // Convert to CSV format
+    const headers = [
+      "ID",
+      "Name",
+      "Email",
+      "Phone",
+      "DOB",
+      "User Type",
+      "Created At",
+    ];
+    const csvRows = [headers.join(",")];
+
+    users.forEach((user) => {
+      const row = [
+        user.id,
+        `"${user.name}"`,
+        user.email,
+        user.phone,
+        user.dob,
+        user.user_type,
+        user.created_at,
+      ];
+      csvRows.push(row.join(","));
+    });
+
+    const csvData = csvRows.join("\n");
+
+    DownloadFile(csvData, "prosocial-data.csv");
     toast.closeAll();
   };
 

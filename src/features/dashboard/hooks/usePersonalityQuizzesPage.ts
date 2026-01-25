@@ -1,12 +1,9 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { QUERY_ALL_QUESTIONS } from "../home/growth/queries";
-import { useAppQuestions, useUserStore } from "@/store";
-import { ME_QUESTION_RESPONSES } from "../profile/gql/queries";
-import useAppConfig from "@/hooks/useAppConfig";
 import { useCallback, useEffect, useState } from "react";
-import { QUERY_ME_PERSONALITY_SCORE } from "@/features/intro/gql";
+import { useAppQuestions, useUserStore } from "@/store";
 import { useDisclosure } from "@chakra-ui/react";
 import { configExtras } from "@/utils/constants";
+import localStorageService from "@/service/localStorage";
+import useAppConfig from "@/hooks/useAppConfig";
 
 const questionConfigMap = {
   "Personality 1": configExtras.user_quiz_personality_1,
@@ -21,6 +18,11 @@ export default function usePersonalityQuizzesPage() {
   ]);
 
   const [changedPersonality, setChangedPersonality] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadingPersonalityScore, setLoadingPersonalityScore] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  const [personalityScore, setPersonalityScore] = useState<any>(null);
 
   const { config, updateConfig } = useAppConfig({});
 
@@ -35,15 +37,18 @@ export default function usePersonalityQuizzesPage() {
     state.updateMeAnswers,
   ]);
 
-  const [
-    queryPersonalityScore,
-    { data: personalityScore, loading: loadingPersonalityScore },
-  ] = useLazyQuery(QUERY_ME_PERSONALITY_SCORE, {
-    onCompleted: (data) => {
-      if (
-        personalityType?.name ===
-        data.me?.personalityScore?.personalityBucketType?.name
-      ) {
+  const queryPersonalityScore = useCallback(() => {
+    setLoadingPersonalityScore(true);
+    const score = localStorageService.getPersonalityScore();
+    if (score) {
+      const data = {
+        me: {
+          personalityScore: score,
+        },
+      };
+      setPersonalityScore(data);
+
+      if (personalityType?.name === score.personalityBucketType?.name) {
         setChangedPersonality(false);
       } else {
         setChangedPersonality(true);
@@ -52,8 +57,9 @@ export default function usePersonalityQuizzesPage() {
       updateConfig([
         { key: configExtras.user_has_seen_retyped_result_1, value: "true" },
       ]);
-    },
-  });
+    }
+    setLoadingPersonalityScore(false);
+  }, [personalityType, openPersonalityModal, updateConfig]);
 
   useEffect(() => {
     if (
@@ -64,28 +70,25 @@ export default function usePersonalityQuizzesPage() {
     ) {
       queryPersonalityScore();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config]);
+  }, [config, queryPersonalityScore]);
 
-  const { loading, error } = useQuery(QUERY_ALL_QUESTIONS, {
-    onCompleted: (data) => {
-      const questions = data.questionCategories?.[1].questions;
-      updateQuestions(questions);
-    },
-  });
+  useEffect(() => {
+    // Load questions from localStorage
+    const categories = localStorageService.getQuestionCategories();
+    const questions = categories?.[1]?.questions || [];
+    updateQuestions(questions);
 
-  useQuery(ME_QUESTION_RESPONSES, {
-    onCompleted: (data) => {
-      const answers = data.me?.question_responses?.map((q) => {
-        return {
-          questionId: q.question?.id || "",
-          answerId: q.answer?.id || "",
-          value: q.answer?.value || "",
-        };
-      });
-      updateMeAnswers(answers || []);
-    },
-  });
+    // Load question responses
+    const responses = localStorageService.getQuestionResponses();
+    const answers = responses.map((q) => ({
+      questionId: q.question?.id || "",
+      answerId: q.answer?.id || "",
+      value: q.answer?.value || "",
+    }));
+    updateMeAnswers(answers);
+
+    setLoading(false);
+  }, [updateQuestions, updateMeAnswers]);
 
   const checkIfCompleted = useCallback(
     (question: string) => {

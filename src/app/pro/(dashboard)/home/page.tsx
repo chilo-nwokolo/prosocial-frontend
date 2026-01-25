@@ -1,6 +1,5 @@
 "use client";
 import { Box, Flex, Text, useToast } from "@chakra-ui/react";
-// import { FaPeopleArrows } from "react-icons/fa";
 import { BiSolidChevronRight } from "react-icons/bi";
 import { appRouteLinks, configExtras } from "@/utils/constants";
 import Link from "next/link";
@@ -8,9 +7,8 @@ import useAppConfig from "@/hooks/useAppConfig";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store";
-import { useQuery } from "@apollo/client";
-import { ME_QUERY } from "@/features/dashboard/profile/gql/queries";
 import EmailLink from "@/components/General/EmailLink";
+import localStorageService from "@/service/localStorage";
 
 const homeSections = [
   {
@@ -29,22 +27,6 @@ const homeSections = [
     subText: "",
     icon: null,
   },
-  // {
-  //   id: 1,
-  //   icon: <GrGrow style={{ fontSize: "30px" }} />,
-  //   title: "Growth",
-  //   desc: "Discover your strengths and growth areas",
-  //   subText: "Tell us about your talents and interests",
-  //   destination: appRouteLinks.growth,
-  // },
-  // {
-  //   id: 2,
-  //   title: "Social",
-  //   icon: <FaPeopleArrows style={{ fontSize: "30px" }} />,
-  //   desc: "",
-  //   subText: "Update your weekly availability",
-  //   destination: appRouteLinks.socialPreference,
-  // },
 ];
 
 export default function HomePage() {
@@ -57,11 +39,33 @@ export default function HomePage() {
     state.userProfile,
   ]);
 
-  useQuery(ME_QUERY, {
-    onCompleted: (data) => {
-      setUserProfile(data);
-    },
-  });
+  useEffect(() => {
+    // Fetch user data from localStorage
+    const user = localStorageService.getCurrentUser();
+    if (user) {
+      const meData = {
+        me: {
+          __typename: "User" as const,
+          id: user.id,
+          unique_id: user.unique_id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          profile: {
+            avatar: user.profile.avatar,
+          },
+          groups: user.groups.map((g) => ({
+            id: g.id,
+            name: g.name,
+            created_at: g.created_at,
+            users: g.users.map((u) => ({ id: u.id, name: u.name })),
+          })),
+        },
+      };
+      setUserProfile(meData);
+    }
+  }, [setUserProfile]);
+
   useEffect(() => {
     if (
       !loading &&
@@ -101,12 +105,6 @@ export default function HomePage() {
             cursor="pointer"
             flexDir="column"
             w="full"
-            // _hover={{
-            //   pointerEvents:
-            //     section.id === 4 && userProfile?.me?.groups?.length === 0
-            //       ? "none"
-            //       : "auto"
-            // }}
             gap="4"
             border="1px solid"
             borderColor="black"
@@ -124,11 +122,6 @@ export default function HomePage() {
                 ? 0.5
                 : 1
             }
-            // pointerEvents={
-            //   section.id === 4 && userProfile?.me?.groups?.length === 0
-            //     ? "none"
-            //     : "auto"
-            //   }
           >
             <Text>{section?.icon}</Text>
             <Flex alignItems="center" gap="4">

@@ -21,8 +21,6 @@ import RatingScaleQuestion from "@/features/intro/components/RatingScaleQuestion
 import { useFormik } from "formik";
 import * as yup from "yup";
 import FriendTypeSelect from "./FriendTypeSelect";
-import { useMutation } from "@apollo/client";
-import { UserSocialPreferenceSubmitInput } from "@/__generated__/graphql";
 import { useAppQuestions, useConfig } from "@/store";
 import {
   socializationOptions,
@@ -31,15 +29,16 @@ import {
   convertSocialPreferenceObjectToArray,
   outingDynamics,
 } from "../helpers";
-import { SUBMIT_SOCIAL_PREFERENCES } from "../graphql/gql";
 import useAppConfig from "@/hooks/useAppConfig";
 import SingleChoiceQuestion from "@/features/intro/components/SingleChoiceQuestion";
+import localStorageService from "@/service/localStorage";
 
 type ReferralList = { name: string; value: string }[];
 
 export default function SocialPreferencesComponent() {
   const router = useRouter();
   const [referrals, setReferrals] = useState<ReferralList>([]);
+  const [loading, setLoading] = useState(false);
   const { updateConfig } = useAppConfig({});
   const [updateLocalConfig] = useConfig((state) => [state.updateConfig]);
 
@@ -80,20 +79,6 @@ export default function SocialPreferencesComponent() {
 
   const toast = useToast();
 
-  const [mutate, { loading }] = useMutation(SUBMIT_SOCIAL_PREFERENCES, {
-    onCompleted: (data) => {
-      toast({
-        status: "success",
-        description: data.handleSocialPreferenceSubmit.message,
-      });
-      updateConfig([
-        { key: configExtras.user_has_filled_social_preferences, value: "true" },
-      ]);
-      updateLocalConfig({ user_has_filled_social_preferences: true });
-      router.push(appRouteLinks.intro);
-    },
-  });
-
   const handleReferralsList = (number: number) => {
     const result: ReferralList = [];
 
@@ -125,6 +110,8 @@ export default function SocialPreferencesComponent() {
     validationSchema,
     enableReinitialize: true,
     onSubmit: (data) => {
+      setLoading(true);
+
       updateSocialPreferenceAnswers(data);
       updateSocialPreferenceReferrees(referralInput);
 
@@ -143,6 +130,7 @@ export default function SocialPreferencesComponent() {
             description:
               "Please complete the first and last names of the people you would like to refer to Fitness19",
           });
+          setLoading(false);
           return;
         }
         metaName = "referees";
@@ -164,6 +152,7 @@ export default function SocialPreferencesComponent() {
             description:
               "Please enter the first and last name of the person who referred you to Fitness19",
           });
+          setLoading(false);
           return;
         }
         metaName = "referrer";
@@ -174,7 +163,7 @@ export default function SocialPreferencesComponent() {
         referralNames.push(name);
       }
 
-      let formData = result as unknown as UserSocialPreferenceSubmitInput[];
+      let formData = result as any[];
 
       if (metaName) {
         const meta = referralNames.map((name, i) => {
@@ -193,13 +182,30 @@ export default function SocialPreferencesComponent() {
           },
         ];
       }
-      mutate({
-        variables: {
-          input: {
-            input: formData,
+
+      try {
+        localStorageService.submitSocialPreferences(formData);
+
+        toast({
+          status: "success",
+          description: "Social preferences saved successfully!",
+        });
+        updateConfig([
+          {
+            key: configExtras.user_has_filled_social_preferences,
+            value: "true",
           },
-        },
-      });
+        ]);
+        updateLocalConfig({ user_has_filled_social_preferences: true });
+        router.push(appRouteLinks.intro);
+      } catch (error: any) {
+        toast({
+          status: "error",
+          description: error.message || "Failed to save preferences",
+        });
+      }
+
+      setLoading(false);
     },
   });
 
@@ -467,9 +473,9 @@ export default function SocialPreferencesComponent() {
             ProSocial friend types
           </Text>
           <Text>
-            Take a moment to read these friend types; in the next screen we’ll
-            ask you to choose the type of friend you’re looking for and the type
-            of friend that you are.
+            Take a moment to read these friend types; in the next screen
+            we&apos;ll ask you to choose the type of friend you&apos;re looking
+            for and the type of friend that you are.
           </Text>
           <SocialPreferencesAccordion />
           <Box mt="5" w="full">

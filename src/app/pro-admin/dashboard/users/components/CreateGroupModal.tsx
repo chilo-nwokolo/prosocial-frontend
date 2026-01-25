@@ -1,6 +1,5 @@
 import { Query_Admin_UsersQuery } from "@/__generated__/graphql";
 import { formFeedback } from "@/utils/constants";
-import { useMutation } from "@apollo/client";
 import {
   Box,
   Button,
@@ -18,8 +17,8 @@ import {
 import { Table } from "@tanstack/react-table";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { CREATE_GROUP_MUTATION } from "../gql/queries";
-import { apolloErrorHandler } from "@/utils/helpers";
+import { useState } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function CreateGroupModal({
   table,
@@ -38,8 +37,7 @@ export default function CreateGroupModal({
   });
 
   const toast = useToast();
-
-  const [createGroup, { loading }] = useMutation(CREATE_GROUP_MUTATION);
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -49,25 +47,26 @@ export default function CreateGroupModal({
       users: table.getSelectedRowModel().flatRows.map((l) => l?.original?.id),
     },
     onSubmit: (values) => {
-      createGroup({
-        variables: {
-          input: values,
-        },
-        onCompleted: () => {
-          toast({
-            title: "Group created successfully",
-            status: "success",
-          });
-          formik.resetForm();
-          onClose();
-        },
-        onError: (error) => {
-          toast({
-            status: "error",
-            title: apolloErrorHandler(error),
-          });
-        },
-      });
+      setLoading(true);
+      try {
+        localStorageService.createGroup({
+          name: values.name,
+          user_ids: values.users,
+          note: values.note,
+        });
+        toast({
+          title: "Group created successfully",
+          status: "success",
+        });
+        formik.resetForm();
+        onClose();
+      } catch (error: any) {
+        toast({
+          status: "error",
+          title: error.message || "Failed to create group",
+        });
+      }
+      setLoading(false);
     },
     validationSchema,
   });

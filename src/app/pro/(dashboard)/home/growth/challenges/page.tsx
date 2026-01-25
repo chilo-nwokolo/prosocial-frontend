@@ -4,14 +4,23 @@ import GrowthLayoutWrapper from "@/features/dashboard/home/growth/components/Gro
 import { appRouteLinks, configExtras } from "@/utils/constants";
 import Link from "next/link";
 import { FaCheckCircle, FaChevronRight } from "react-icons/fa";
-import { useQuery } from "@apollo/client";
-import { QUERY_CHALLENGE_CATEGORIES } from "@/features/dashboard/home/growth/queries";
 import QueryContainer from "@/components/General/QueryContainer";
 import useAppConfig from "@/hooks/useAppConfig";
+import { useState, useEffect } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function ChallengesPage() {
-  const { data, loading, error } = useQuery(QUERY_CHALLENGE_CATEGORIES);
+  const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+  const [challengeCategories, setChallengeCategories] = useState<any[]>([]);
   const { config } = useAppConfig({});
+
+  useEffect(() => {
+    const categories = localStorageService.getChallengeCategories();
+    setChallengeCategories(categories);
+    setLoading(false);
+  }, []);
 
   return (
     <QueryContainer loading={loading} error={error}>
@@ -23,7 +32,7 @@ export default function ChallengesPage() {
         destination={appRouteLinks.growth}
       >
         <Flex flexDir="column" gap="5" mt="4">
-          {data?.challengeCategories?.map((challenge, i) => (
+          {challengeCategories?.map((challenge, i) => (
             <Link
               href={`${appRouteLinks.growthChallenges}/${challenge.id}`}
               key={challenge.id}

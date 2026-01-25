@@ -1,15 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScheduleDateType, useUserStore } from "@/store";
-import { useMutation, useQuery } from "@apollo/client";
-import {
-  ME_SCHEDULES,
-  UPDATE_USER_SCHEDULE,
-} from "@/features/dashboard/profile/gql/queries";
 import { DayName, TimeRange } from "@/__generated__/graphql";
-import { apolloErrorHandler } from "@/utils/helpers";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { appRouteLinks } from "@/utils/constants";
+import localStorageService from "@/service/localStorage";
 
 export type NewScheduleDateType = {
   day_name: DayName;
@@ -24,61 +19,28 @@ export default function useSocialSchedule() {
     state.selectedSchedules,
     state.updateSelectedSchedules,
   ]);
+  const [loading, setLoading] = useState(false);
+  const [loadingSchedules, setLoadingSchedules] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
 
   const router = useRouter();
   const toast = useToast();
 
-  const { loading: loadingSchedules, error } = useQuery(ME_SCHEDULES, {
-    onCompleted: (data) => {
-      const schedule = data.me?.schedules || [];
-      const updatedSchedules: ScheduleDateType[] = [];
-      schedule.forEach((sch) => {
-        updatedSchedules.push({
-          day: sch.day_name,
-          timeRange: sch.time_range,
-          status: sch.status,
-        });
-      });
-      updateSelectedSchedules(updatedSchedules);
-    },
-  });
-
-  const [submit, { loading }] = useMutation(UPDATE_USER_SCHEDULE, {
-    onCompleted: () => {
-      toast({
-        title: "Updated Successfully",
-        status: "success",
-      });
-      router.push(appRouteLinks.socialScheduleSuccess);
-    },
-    onError: (e) => {
-      apolloErrorHandler(e);
-    },
-    refetchQueries: [ME_SCHEDULES],
-  });
-
-  // const toggleAccordion = (day: string) => {
-  //   const index = selectedDays.indexOf(day);
-
-  //   if (index < 0) {
-  //     setSelectedDays([...selectedDays, day]);
-  //   }
-
-  //   if (index >= 0) {
-  //     const newSelectedDays = [...selectedDays];
-  //     newSelectedDays.splice(index, 1);
-  //     setSelectedDays(newSelectedDays);
-  //   }
-  // };
+  useEffect(() => {
+    // Load schedules from localStorage
+    const schedules = localStorageService.getSchedules();
+    const updatedSchedules: ScheduleDateType[] = schedules.map((sch) => ({
+      day: sch.day_name,
+      timeRange: sch.time_range,
+      status: sch.status,
+    }));
+    updateSelectedSchedules(updatedSchedules);
+    setLoadingSchedules(false);
+  }, [updateSelectedSchedules]);
 
   const submitSocialSchedule = () => {
-    // if (!selectedDays.length) {
-    //   toast({
-    //     status: "error",
-    //     title: "You have not selected a valid time for your outings",
-    //   });
-    //   return;
-    // }
+    setLoading(true);
 
     const result: NewScheduleDateType[] = [];
 
@@ -92,14 +54,33 @@ export default function useSocialSchedule() {
       }
     });
 
-    submit({
-      variables: { input: { schedules: result } },
-    });
+    try {
+      localStorageService.updateSchedules(
+        result.map((r) => ({
+          day_name: r.day_name,
+          time_range: r.time_range as string[],
+          status: r.status,
+        })),
+      );
+
+      toast({
+        title: "Updated Successfully",
+        status: "success",
+      });
+      router.push(appRouteLinks.socialScheduleSuccess);
+    } catch (err: any) {
+      toast({
+        status: "error",
+        title: err.message || "Update failed",
+      });
+    }
+
+    setLoading(false);
   };
+
   return {
     loading,
     submitSocialSchedule,
-    // toggleAccordion,
     loadingSchedules,
     error,
   } as const;

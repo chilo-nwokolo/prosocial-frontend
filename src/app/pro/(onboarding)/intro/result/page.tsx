@@ -70,7 +70,7 @@ export default function ResultPage() {
           Select whether or not you agree these characteristics match you.
         </Text>
         <Flex flexDir="column" gap="4" my="5">
-          {result?.bucketQuestions?.map((val) => (
+          {result?.bucketQuestions?.map((val: any) => (
             <CharacterBox
               updatePersonalityBucketQuestions={
                 updatePersonalityBucketQuestions

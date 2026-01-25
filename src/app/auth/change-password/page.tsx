@@ -15,11 +15,9 @@ import FormInput from "@/components/General/FormInput";
 import Link from "next/link";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useMutation } from "@apollo/client";
-import { RESET_PASSWORD_LINK } from "@/features/auth/gql";
 import AppModal from "@/components/AppModal";
-import { apolloErrorHandler } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ChangePasswordPage() {
   const validationSchema = yup.object({
@@ -30,31 +28,26 @@ export default function ChangePasswordPage() {
   });
   const toast = useToast();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const { onOpen, onClose, isOpen } = useDisclosure();
-
-  const [submit, { loading }] = useMutation(RESET_PASSWORD_LINK, {
-    onCompleted: () => {
-      onOpen();
-    },
-    onError: (error) => {
-      toast({
-        status: "error",
-        title: apolloErrorHandler(error),
-      });
-    },
-  });
 
   const formik = useFormik({
     initialValues: {
       email: "",
     },
-    onSubmit: (values) => {
-      submit({
-        variables: {
-          email: values.email,
-        },
+    // eslint-disable-next-line no-unused-vars
+    onSubmit: (_values) => {
+      setLoading(true);
+      // Since we're using localStorage, we'll just simulate a password reset
+      // In a real localStorage-only app, you would handle this differently
+      toast({
+        status: "info",
+        title: "Password reset is not available in offline mode",
+        description: "Please contact support for assistance.",
       });
+      setLoading(false);
+      onOpen();
     },
     validationSchema,
   });
@@ -109,8 +102,8 @@ export default function ChangePasswordPage() {
         </Box>
       </Center>
       <AppModal
-        title="Check your email"
-        description="An email has been sent to your email address for confirmation. Kindly check your email and follow the intructions to reset your password."
+        title="Password Reset Notice"
+        description="In offline mode, password reset is handled locally. If you forgot your password, please contact support or create a new account."
         onClose={onClose}
         isOpen={isOpen}
         actionButtons={

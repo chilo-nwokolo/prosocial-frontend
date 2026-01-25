@@ -1,11 +1,9 @@
 import { useGlobalStore } from "@/store";
-import { useMutation } from "@apollo/client";
-import { MUTATION_SUBMIT_FEEDBACK } from "../graphql/gql";
 import { appRouteLinks, storeKeys } from "@/utils/constants";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { apolloErrorHandler } from "@/utils/helpers";
-import { OutingFeedbackInput } from "@/__generated__/graphql";
+import { useState } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function useSubmitOutingFeedback() {
   const [userData, feedbackResponses, excludeUsers, outingTextFeedback] =
@@ -18,44 +16,46 @@ export default function useSubmitOutingFeedback() {
 
   const toast = useToast();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  const [submitFeedback, { loading }] = useMutation(MUTATION_SUBMIT_FEEDBACK, {
-    onCompleted: (data) => {
+  const handleSubmit = (message: string) => {
+    setLoading(true);
+
+    try {
+      const formData = {
+        group_id: userData!.groupId,
+        unique_user_id: userData!.userId,
+        feedbackResponses: feedbackResponses.map((fr: any) => ({
+          receiving_user_id: fr.receiving_user_id || fr.receivingUserId,
+          connection: fr.connection,
+          note: fr.note,
+        })),
+        meta: [
+          {
+            key: "Would you like to go on a second outing?",
+            value: message,
+          },
+        ],
+        user_excluded_matches: excludeUsers,
+        outing_feedback_note: outingTextFeedback,
+      };
+
+      localStorageService.submitFeedback(formData);
+
       toast({
         status: "success",
-        title: data.submitFeedback?.message,
+        title: "Feedback submitted successfully!",
       });
       localStorage.removeItem(storeKeys.GLOBAL_STORE);
       router.push(appRouteLinks.outingFeedbackSuccess);
-    },
-    onError: (error) => {
+    } catch (error: any) {
       toast({
         status: "error",
-        title: apolloErrorHandler(error),
+        title: error.message || "Failed to submit feedback",
       });
-    },
-  });
+    }
 
-  const handleSubmit = (message: string) => {
-    const formData: OutingFeedbackInput = {
-      group_id: userData!.groupId,
-      unique_user_id: userData!.userId,
-      feedbackResponses,
-      meta: [
-        {
-          key: "Would you like to go on a second outing?",
-          value: message,
-        },
-      ],
-      user_excluded_matches: excludeUsers,
-      outing_feedback_note: outingTextFeedback,
-    };
-
-    submitFeedback({
-      variables: {
-        input: { ...formData },
-      },
-    });
+    setLoading(false);
   };
 
   return { handleSubmit, loading } as const;

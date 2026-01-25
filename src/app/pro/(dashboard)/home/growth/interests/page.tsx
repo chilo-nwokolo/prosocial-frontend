@@ -1,29 +1,37 @@
 "use client";
 import BackButton from "@/components/General/BackButton";
 import QueryContainer from "@/components/General/QueryContainer";
-import { QUERY_INTERESTS_BY_TRAITS } from "@/features/dashboard/home/growth/queries";
-import { QUERY_ME_PERSONALITY_SCORE } from "@/features/intro/gql";
 import { useUserStore } from "@/store";
 import { appRouteLinks } from "@/utils/constants";
-import { useQuery } from "@apollo/client";
 import { Button, Center, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function InterestsPage() {
   const router = useRouter();
   const [setPersonalityType] = useUserStore((state) => [
     state.setPersonalityType,
   ]);
-  const { loading, error } = useQuery(QUERY_INTERESTS_BY_TRAITS);
-  useQuery(QUERY_ME_PERSONALITY_SCORE, {
-    onCompleted: (data) => {
+  const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
+  const [error, _setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    // Load interests by traits
+    localStorageService.getInterestsByTrait();
+
+    // Load personality score
+    const score = localStorageService.getPersonalityScore();
+    if (score?.personalityBucketType) {
       setPersonalityType({
-        name: data.me?.personalityScore?.personalityBucketType?.name || "",
-        subTitle:
-          data.me?.personalityScore?.personalityBucketType?.sub_title || "",
+        name: score.personalityBucketType.name || "",
+        subTitle: score.personalityBucketType.sub_title || "",
       });
-    },
-  });
+    }
+
+    setLoading(false);
+  }, [setPersonalityType]);
 
   return (
     <QueryContainer loading={loading} error={error}>

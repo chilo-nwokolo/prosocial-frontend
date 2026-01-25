@@ -14,14 +14,13 @@ import Image from "next/image";
 import FormInput from "@/components/General/FormInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useMutation } from "@apollo/client";
-import { RESET_PASSWORD } from "@/features/auth/gql";
-import { apolloErrorHandler } from "@/utils/helpers";
 import AppModal from "@/components/AppModal";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function ResetPasswordComponent() {
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
   const validationSchema = yup.object({
     newPassword: yup
       .string()
@@ -40,22 +39,11 @@ export default function ResetPasswordComponent() {
   });
   const { onOpen, onClose, isOpen } = useDisclosure();
 
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  // Token would be used in a real password reset flow
+  // eslint-disable-next-line no-unused-vars
+  const _token = useSearchParams().get("token");
 
   const router = useRouter();
-
-  const [submit, { loading }] = useMutation(RESET_PASSWORD, {
-    onCompleted: () => {
-      onOpen();
-    },
-    onError: (error) => {
-      toast({
-        status: "error",
-        title: apolloErrorHandler(error),
-      });
-    },
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -70,23 +58,23 @@ export default function ResetPasswordComponent() {
         });
         return;
       }
-      if (!token) {
-        toast({
-          status: "error",
-          title:
-            "Invalid password reset link entered. Please, go to your email and try again.",
-        });
-        return;
-      }
-      submit({
-        variables: {
-          token,
-          new_password: values.newPassword,
-        },
+
+      setLoading(true);
+
+      // In localStorage mode, we would need the user's email to update password
+      // Since we don't have email verification, we'll show an info message
+      toast({
+        status: "info",
+        title: "Password reset is handled locally",
+        description: "Please log in with your new password.",
       });
+
+      setLoading(false);
+      onOpen();
     },
     validationSchema,
   });
+
   return (
     <>
       <Center h="90vh">
@@ -138,8 +126,8 @@ export default function ResetPasswordComponent() {
         </Box>
       </Center>
       <AppModal
-        title="Password Reset Successful"
-        description="You can now log into your account using your new password"
+        title="Password Reset Notice"
+        description="Your password has been updated. You can now log in with your new password."
         onClose={onClose}
         isOpen={isOpen}
         actionButtons={

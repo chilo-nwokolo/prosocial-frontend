@@ -1,21 +1,24 @@
 "use client";
 
-import { ME_QUERY } from "@/features/dashboard/profile/gql/queries";
 import { useConfig } from "@/store";
 import { ImageLinks } from "@/utils/constants";
-import { useQuery } from "@apollo/client";
 import { Box, Image, SkeletonCircle } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function ProfilePicture() {
   const [updateConfig] = useConfig((state) => [state.updateConfig]);
+  const [loading, setLoading] = useState(true);
+  const [avatar, setAvatar] = useState<string | null>(null);
 
-  const { loading, data } = useQuery(ME_QUERY, {
-    onCompleted: (data) => {
-      if (data?.me?.profile?.avatar) {
-        updateConfig({ user_has_uploaded_profile_picture: true });
-      }
-    },
-  });
+  useEffect(() => {
+    const user = localStorageService.getCurrentUser();
+    if (user?.profile?.avatar) {
+      setAvatar(user.profile.avatar);
+      updateConfig({ user_has_uploaded_profile_picture: true });
+    }
+    setLoading(false);
+  }, [updateConfig]);
 
   return (
     <Box
@@ -30,11 +33,7 @@ export default function ProfilePicture() {
         <SkeletonCircle size="10" />
       ) : (
         <Image
-          src={
-            data?.me?.profile?.avatar
-              ? data?.me?.profile?.avatar
-              : ImageLinks.dpPlaceholder
-          }
+          src={avatar ? avatar : ImageLinks.dpPlaceholder}
           width="10"
           height="10"
           alt="profile picture"

@@ -1,27 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppQuestions } from "@/store";
-import { useMutation, useQuery } from "@apollo/client";
-import {
-  CONFIRM_USER_SUBMISSION,
-  QUERY_ME_PERSONALITY_SCORE,
-  USER_BUCKET_QUESTIONS_RESPONSE_INPUT,
-} from "../gql";
-import { apolloErrorHandler } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { appRouteLinks, configExtras } from "@/utils/constants";
 import useAppConfig from "@/hooks/useAppConfig";
+import localStorageService from "@/service/localStorage";
 
 export default function useResultPage() {
-  const { data, loading } = useQuery(QUERY_ME_PERSONALITY_SCORE, {
-    onCompleted: () => {
-      mutate();
-    },
-  });
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState<any>(null);
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
   const [resultNote, setResultNote] = useState("");
-
-  const [mutate] = useMutation(CONFIRM_USER_SUBMISSION);
 
   useAppConfig({
     initialConfig: [
@@ -39,27 +29,25 @@ export default function useResultPage() {
     state.updateOnboardAnswers,
   ]);
 
-  const result = data?.me?.personalityScore?.personalityBucketType;
+  useEffect(() => {
+    // Load personality score from localStorage
+    const score = localStorageService.getPersonalityScore();
+    if (score) {
+      setResult(score.personalityBucketType);
+      // Confirm submission
+      localStorageService.confirmUserSubmission();
+    }
+    setLoading(false);
+  }, []);
 
   const checkIfAllAnswered = () => {
     return selected.length === result?.bucketQuestions?.length;
   };
 
-  const [submit, { loading: submitting }] = useMutation(
-    USER_BUCKET_QUESTIONS_RESPONSE_INPUT,
-    {
-      onError: (error) => {
-        apolloErrorHandler(error);
-      },
-      onCompleted: () => {
-        updateOnboardAnswers(null);
-        router.push(appRouteLinks.resultSuccess);
-      },
-    },
-  );
-
   const onSubmit = () => {
-    let result = selected.map((id) => {
+    setSubmitting(true);
+
+    let resultData = selected.map((id) => {
       if (personalityBucketQuestions.includes(id)) {
         return {
           response: "yes",
@@ -71,8 +59,9 @@ export default function useResultPage() {
         bucket_id: id,
       };
     });
+
     if (resultNote) {
-      result = result.map((result, i) => {
+      resultData = resultData.map((result, i) => {
         if (i === 0) {
           return {
             ...result,
@@ -84,11 +73,16 @@ export default function useResultPage() {
         return result;
       });
     }
-    submit({
-      variables: {
-        input: result,
-      },
-    });
+
+    try {
+      localStorageService.submitPersonalityBucketQuestions(resultData as any);
+      updateOnboardAnswers(null);
+      router.push(appRouteLinks.resultSuccess);
+    } catch (error) {
+      console.error("Failed to submit:", error);
+    }
+
+    setSubmitting(false);
   };
 
   return {

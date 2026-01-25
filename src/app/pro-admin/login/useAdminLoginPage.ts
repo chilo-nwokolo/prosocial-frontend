@@ -1,7 +1,7 @@
 import * as yup from "yup";
-import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
+import { useState } from "react";
 import {
   AccessToken,
   adminRoutes,
@@ -10,13 +10,12 @@ import {
 } from "@/utils/constants";
 import { useToast } from "@chakra-ui/react";
 import { deleteCookie, getCookie, setCookie } from "@/libs/cookies";
-import { apolloErrorHandler } from "@/utils/helpers";
-import { LOGIN_USER } from "@/features/auth/gql";
+import localStorageService from "@/service/localStorage";
 
 export default function useAdminLoginPage() {
   const router = useRouter();
-  const [login, { loading }] = useMutation(LOGIN_USER);
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = yup.object({
     email: yup
@@ -32,34 +31,35 @@ export default function useAdminLoginPage() {
       password: "",
     },
     onSubmit: ({ email, password }) => {
+      setLoading(true);
+
       if (getCookie(AccessToken)) {
         deleteCookie(AccessToken);
       }
-      login({
-        variables: {
-          email,
-          password,
-        },
-        onCompleted: (data) => {
-          if (data.login.user?.user_type === "admin") {
-            router.push(adminRoutes.users);
-            setCookie(AccessToken, data.login.token);
-            setCookie(userType, data.login.user?.user_type || "");
-            return;
-          } else {
-            toast({
-              status: "error",
-              title: "Wrong user credentials",
-            });
-          }
-        },
-        onError: (error) => {
+
+      try {
+        const data = localStorageService.login(email, password);
+
+        if (data.user.user_type === "admin") {
+          router.push(adminRoutes.users);
+          setCookie(AccessToken, data.token);
+          setCookie(userType, data.user.user_type || "");
+          setLoading(false);
+          return;
+        } else {
           toast({
             status: "error",
-            title: apolloErrorHandler(error),
+            title: "Wrong user credentials",
           });
-        },
-      });
+          setLoading(false);
+        }
+      } catch (error: any) {
+        toast({
+          status: "error",
+          title: error.message || "Login failed",
+        });
+        setLoading(false);
+      }
     },
     validationSchema,
   });

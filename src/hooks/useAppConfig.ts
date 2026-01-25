@@ -1,10 +1,5 @@
-import {
-  QUERY_ME_SETTINGS,
-  UPDATE_USER_SETTINGS,
-} from "@/features/dashboard/profile/gql/queries";
-import { client } from "@/service";
-import { useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import localStorageService from "@/service/localStorage";
 
 type ConfigType = { key: string; value: string }[];
 
@@ -40,80 +35,66 @@ export default function useAppConfig({
   };
 
   const [config, setConfig] = useState<FlatConfigType | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const [mutate] = useMutation(UPDATE_USER_SETTINGS, {
-    onCompleted: async (data) => {
-      if (onUpdateSuccess && typeof onUpdateSuccess === "function") {
-        onUpdateSuccess();
-      }
-      const preferenceSettings =
-        data.updateUserSettings.settings?.preference_settings!;
+  useEffect(() => {
+    // Load settings from localStorage
+    const settings = localStorageService.getUserSettings();
+    const preferenceSettings = settings.preference_settings || [];
 
-      const res = transformElement(preferenceSettings);
+    const obj: FlatConfigType = {};
+    const settingsArray: string[] = [];
+    preferenceSettings.forEach((element) => {
+      obj[element.key] = element.value;
+      settingsArray.push(element.key);
+    });
 
-      setConfig(res);
+    setConfig(obj);
 
-      console.info(
-        "config ::: ",
-        data.updateUserSettings.settings?.preference_settings,
-      );
-      client.refetchQueries({ include: [QUERY_ME_SETTINGS] });
-    },
-  });
+    // Compare initialConfig options with result
+    if (preferenceSettings.length) {
+      const configToUpdate: ConfigType = [];
 
-  const { loading } = useQuery(QUERY_ME_SETTINGS, {
-    onCompleted: (data) => {
-      const obj: FlatConfigType = {};
-      const settings = data.me?.settings?.preference_settings;
-      const settingsArray: string[] = [];
-      settings?.forEach((element) => {
-        obj[element.key] = element.value;
-        settingsArray.push(element.key);
+      initialConfig?.forEach((config) => {
+        if (!settingsArray?.includes(config.key)) {
+          configToUpdate.push({ key: config.key, value: config.value });
+        }
       });
 
-      setConfig(obj);
-
-      // Compare initialConfig options with result
-      if (settings?.length) {
-        const configToUpdate: ConfigType = [];
-
-        initialConfig?.forEach((config) => {
-          if (!settingsArray?.includes(config.key)) {
-            configToUpdate.push({ key: config.key, value: config.value });
-          }
-        });
-
-        // store new config
-        if (configToUpdate.length) {
-          mutate({
-            variables: {
-              input: { preferenceSettings: initialConfig },
-            },
-          });
-        }
+      // store new config
+      if (configToUpdate.length) {
+        const updatedSettings = localStorageService.updateUserSettings(
+          initialConfig || [],
+        );
+        const res = transformElement(updatedSettings.preference_settings);
+        setConfig(res);
       }
+    }
 
-      // The user does not have any settings saved and there is a config to be saved
-      if (!settings && initialConfig?.length) {
-        mutate({
-          variables: {
-            input: { preferenceSettings: initialConfig },
-          },
-        });
-      }
-      if (onQuerySuccess && typeof onQuerySuccess === "function") {
-        onQuerySuccess(obj);
-      }
-    },
-    fetchPolicy: "cache-and-network",
-  });
+    // The user does not have any settings saved and there is a config to be saved
+    if (!preferenceSettings.length && initialConfig?.length) {
+      const updatedSettings =
+        localStorageService.updateUserSettings(initialConfig);
+      const res = transformElement(updatedSettings.preference_settings);
+      setConfig(res);
+    }
+
+    if (onQuerySuccess && typeof onQuerySuccess === "function") {
+      onQuerySuccess(obj);
+    }
+
+    setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateConfig = (values: ConfigType) => {
-    mutate({
-      variables: {
-        input: { preferenceSettings: values },
-      },
-    });
+    const updatedSettings = localStorageService.updateUserSettings(values);
+    const res = transformElement(updatedSettings.preference_settings);
+    setConfig(res);
+
+    if (onUpdateSuccess && typeof onUpdateSuccess === "function") {
+      onUpdateSuccess();
+    }
   };
 
   return { config, updateConfig, loading } as const;

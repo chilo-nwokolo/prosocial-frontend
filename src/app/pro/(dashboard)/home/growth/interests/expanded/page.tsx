@@ -1,14 +1,13 @@
 "use client";
 import BackButton from "@/components/General/BackButton";
-import { SUBMIT_USER_INTERESTS } from "@/features/dashboard/home/growth/queries";
 import useAppConfig from "@/hooks/useAppConfig";
 import { useAppQuestions } from "@/store";
 import { appRouteLinks, configExtras } from "@/utils/constants";
-import { useMutation } from "@apollo/client";
 import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GrClose } from "react-icons/gr";
+import localStorageService from "@/service/localStorage";
 
 export default function InterestedExtendedPage() {
   const router = useRouter();
@@ -20,26 +19,26 @@ export default function InterestedExtendedPage() {
 
   const { updateConfig } = useAppConfig({});
 
-  const [mutate] = useMutation(SUBMIT_USER_INTERESTS, {
-    variables: {
-      input: {
-        inputs: interestsAnswer,
-      },
-    },
-    onError: () => {
+  const mutate = () => {
+    try {
+      localStorageService.submitUserInterests(
+        interestsAnswer.map((i) => ({
+          interest_id: i.interest_id as string,
+          is_top_interest: false,
+        })),
+      );
+      updateConfig([
+        { key: configExtras.user_completed_interests_1, value: "true" },
+      ]);
+      setProceed(true);
+    } catch (error) {
       toast({
         status: "error",
         title:
           "Unable to save interests. Please click the close button above to try again",
       });
-    },
-    onCompleted: () => {
-      updateConfig([
-        { key: configExtras.user_completed_interests_1, value: "true" },
-      ]);
-      setProceed(true);
-    },
-  });
+    }
+  };
 
   useEffect(() => {
     if (ref.current) {
@@ -48,7 +47,8 @@ export default function InterestedExtendedPage() {
     return () => {
       ref.current = false;
     };
-  }, [mutate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Flex flexDir="column">

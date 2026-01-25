@@ -1,14 +1,14 @@
 "use client";
 import { Interest } from "@/__generated__/graphql";
 import BackButton from "@/components/General/BackButton";
-import { QUERY_INTERESTS_BY_TRAITS } from "@/features/dashboard/home/growth/queries";
-import { client } from "@/service";
 import { useAppQuestions } from "@/store";
 import { ImageLinks, appRouteLinks } from "@/utils/constants";
 import { Box, Button, Flex, Text, Image } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { GrClose } from "react-icons/gr";
+import { useEffect, useState } from "react";
+import localStorageService from "@/service/localStorage";
 
 export default function InterestsPairComponent() {
   const searchParams = useSearchParams();
@@ -18,26 +18,33 @@ export default function InterestsPairComponent() {
     state.interestsAnswer,
     state.updateInterestsAnswer,
   ]);
+  const [queryResult, setQueryResult] = useState<any[]>([]);
 
-  const result = client.readQuery({
-    query: QUERY_INTERESTS_BY_TRAITS,
-  });
+  useEffect(() => {
+    const interests = localStorageService.getInterestsByTrait();
+    setQueryResult(interests);
+  }, []);
 
   if (!questionId) {
     router.back();
   }
 
-  if (!result?.interestsByTrait?.length) {
-    router.back();
+  if (!queryResult?.length) {
+    return (
+      <Flex
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+        h="80vh"
+      >
+        <Text>Loading interests...</Text>
+      </Flex>
+    );
   }
-
-  const queryResult = result?.interestsByTrait!;
 
   const activeInterest = queryResult?.[parseInt(questionId as string) - 1];
 
   const selectInterest = (question: Interest) => {
-    // updateInterestsAnswer([])
-    // return;
     const foundIndex = interestsAnswer.findIndex(
       (interest) => question.id === interest.interest_id,
     );
@@ -83,7 +90,7 @@ export default function InterestsPairComponent() {
         Which do you like more?
       </Text>
       <Flex flexDir="column" px="24" mt="8" gap="10">
-        {activeInterest?.interests?.map((question) => (
+        {activeInterest?.interests?.map((question: any) => (
           <Flex
             flexDir="column"
             border="1px solid"

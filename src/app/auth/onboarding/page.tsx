@@ -7,20 +7,79 @@ import {
   configExtras,
   userType,
 } from "@/utils/constants";
-import { useLazyQuery } from "@apollo/client";
-import { QUERY_QUESTIONS } from "@/features/intro/gql";
 import { useAppQuestions, useUserStore } from "@/store";
 import { transformQuestions } from "@/features/intro/helpers";
-import { apolloErrorHandler } from "@/utils/helpers";
 import { deleteCookie, getCookie } from "@/libs/cookies";
 import useAppConfig from "@/hooks/useAppConfig";
-import { QUERY_USER_SOCIAL_PREFERENCE } from "@/app/pro/(onboarding)/intro/social-preferences/graphql/gql";
 import { convertSocialPrefResponseToInitialValues } from "@/app/pro/(onboarding)/intro/social-preferences/helpers";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Login_UserMutation, RegisterMutation } from "@/__generated__/graphql";
+import localStorageService from "@/service/localStorage";
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(false);
+
+  const [
+    updateOnboardQuestions,
+    updateSocialPreferenceAnswers,
+    updateSocialPreferenceReferrees,
+  ] = useAppQuestions((state) => [
+    state.updateOnboardQuestions,
+    state.updateSocialPreferenceAnswers,
+    state.updateSocialPreferenceReferrees,
+  ]);
+  const [userData] = useUserStore((state) => [state.user]);
+
+  const toast = useToast();
+  const userId = useMemo(() => {
+    return (
+      (userData as RegisterMutation)?.register?.user?.id ||
+      (userData as Login_UserMutation)?.login?.user?.id
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getSocialPreferences = () => {
+    setLoadingUser(true);
+    const socialPreferences = localStorageService.getUserSocialPreferences();
+    if (socialPreferences.length) {
+      const response = {
+        user: {
+          id: userId,
+          name: "",
+          social_preference_answers: socialPreferences,
+        },
+      };
+      const { result, referrals } =
+        convertSocialPrefResponseToInitialValues(response);
+      updateSocialPreferenceAnswers(result);
+      updateSocialPreferenceReferrees(referrals);
+    }
+    setLoadingUser(false);
+  };
+
+  const getQuestions = () => {
+    setLoading(true);
+    try {
+      const categories =
+        localStorageService.getOnboardCategoriesWithQuestions();
+      const data = { onBoardCategoriesWithQuestions: categories } as any;
+      const result = transformQuestions(data);
+      updateOnboardQuestions(result);
+      setTimeout(() => {
+        router.push(appRouteLinks.intro);
+      }, 1000);
+    } catch (error: any) {
+      toast({
+        title: error.message || "Failed to load questions",
+        status: "error",
+      });
+      deleteCookie(AccessToken);
+    }
+    setLoading(false);
+  };
 
   useAppConfig({
     onQuerySuccess: (settings) => {
@@ -35,60 +94,6 @@ export default function OnboardingPage() {
           getSocialPreferences();
         }
       }
-    },
-  });
-
-  const [
-    updateOnboardQuestions,
-    // updateOnboardAnswers,
-    updateSocialPreferenceAnswers,
-    updateSocialPreferenceReferrees,
-  ] = useAppQuestions((state) => [
-    state.updateOnboardQuestions,
-    // state.updateOnboardAnswers,
-    state.updateSocialPreferenceAnswers,
-    state.updateSocialPreferenceReferrees,
-  ]);
-  const [userData] = useUserStore((state) => [state.user]);
-
-  const toast = useToast();
-  const userId = useMemo(() => {
-    return (
-      (userData as RegisterMutation)?.register?.user?.id ||
-      (userData as Login_UserMutation)?.login?.user?.id
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const [getSocialPreferences, { loading: loadingUser }] = useLazyQuery(
-    QUERY_USER_SOCIAL_PREFERENCE,
-    {
-      variables: {
-        id: userId,
-      },
-      onCompleted: (response) => {
-        const { result, referrals } =
-          convertSocialPrefResponseToInitialValues(response);
-        updateSocialPreferenceAnswers(result);
-        updateSocialPreferenceReferrees(referrals);
-      },
-    },
-  );
-
-  const [getQuestions, { loading }] = useLazyQuery(QUERY_QUESTIONS, {
-    onCompleted: (data) => {
-      const result = transformQuestions(data);
-      updateOnboardQuestions(result);
-      // localStorage.clear();
-      setTimeout(() => {
-        router.push(appRouteLinks.intro);
-      }, 1000);
-    },
-    onError: (error) => {
-      toast({
-        title: apolloErrorHandler(error),
-        status: "error",
-      });
-      deleteCookie(AccessToken);
     },
   });
 
