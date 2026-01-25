@@ -50,7 +50,7 @@ export default function ResultPage() {
       </Flex>
       <Flex mt="5" mb="10" flexDir="column">
         <Text fontWeight="medium" fontSize="xl">
-          Based on your answers, you seem to fit one of our social categories:{" "}
+          Based on your answers, you seem to fit one of our social categories:
         </Text>
         <Flex flexDir="column" alignItems="center" my="8">
           <Image

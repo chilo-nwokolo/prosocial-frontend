@@ -59,7 +59,7 @@ export default function PersonalityResultPage() {
           </Button>
         </Flex>
         <Text fontWeight="500" mt={5} fontSize="xl">
-          Based on your answers to these additional questions, you seem to be:{" "}
+          Based on your answers to these additional questions, you seem to be:
         </Text>
         <Flex flexDir="column" alignItems="center" my="8">
           <Image
