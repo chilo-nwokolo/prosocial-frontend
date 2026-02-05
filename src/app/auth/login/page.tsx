@@ -99,6 +99,17 @@ export default function LoginPage() {
             </Text>
           </Link>
         </Flex>
+        {/* Demo credentials hint */}
+        <Text
+          mt="8"
+          fontSize="xs"
+          color="gray.500"
+          textAlign="center"
+          opacity={0.6}
+          title="Demo: admin@mail.com / password123"
+        >
+          v1.0.0-demo • admin@mail.com • password123
+        </Text>
       </Box>
     </Center>
   );

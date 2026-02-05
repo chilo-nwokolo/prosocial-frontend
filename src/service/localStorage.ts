@@ -221,6 +221,347 @@ export interface LocalOutingFeedback {
   }[];
 }
 
+// Demo user credentials
+export const DEMO_USER_EMAIL = "admin@mail.com";
+export const DEMO_USER_PASSWORD = "password123";
+
+// Create a complete demo user with all necessary data
+const createDemoUser = (): LocalUser => {
+  const userId = "demo_user_001";
+  const profileId = "demo_profile_001";
+  const uniqueId = "USR_DEMO001";
+
+  // Create sample group with other demo members
+  const demoGroup: LocalUserGroup = {
+    id: "demo_group_001",
+    name: "Demo Social Group",
+    outing_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week from now
+    note: "A friendly meetup at the local coffee shop",
+    feedback_received: false,
+    group_invite_status: true,
+    created_at: new Date().toISOString(),
+    users: [
+      {
+        id: userId,
+        name: "Demo User",
+        unique_id: uniqueId,
+        profile: { avatar: "/profile_placeholder.jpeg" },
+      },
+      {
+        id: "demo_member_002",
+        name: "Sarah Johnson",
+        unique_id: "USR_SARAH02",
+        profile: { avatar: "/profile_placeholder.jpeg" },
+      },
+      {
+        id: "demo_member_003",
+        name: "Michael Chen",
+        unique_id: "USR_MIKE03",
+        profile: { avatar: "/profile_placeholder.jpeg" },
+      },
+    ],
+    outing_feedbacks: [],
+  };
+
+  // Create personality score
+  const personalityScore: LocalPersonalityScore = {
+    id: "demo_personality_001",
+    extroversion: "72.5",
+    agreeableness: "85.3",
+    conscientiousness: "68.7",
+    neuroticism: "32.1",
+    openness: "78.9",
+    narcissism: "15.2",
+    personalityBucketType: {
+      id: "1",
+      name: "The Social Butterfly",
+      sub_title: "Outgoing and energetic",
+      image: "/personality/butterfly.png",
+      description:
+        "You thrive in social situations and love meeting new people. Your energy is contagious and you naturally draw others to you.",
+      bucketQuestions: [
+        {
+          id: "bq1",
+          title: "Social Energy",
+          text: "Do you feel energized after social gatherings?",
+        },
+        {
+          id: "bq2",
+          title: "New Connections",
+          text: "Do you enjoy making new friends?",
+        },
+      ],
+    },
+    last_computed: new Date().toISOString(),
+  };
+
+  // Create schedules for the week
+  const schedules: LocalSchedule[] = [
+    {
+      id: "sched_1",
+      day_name: "Monday",
+      status: true,
+      time_range: ["EVENING"],
+    },
+    {
+      id: "sched_2",
+      day_name: "Tuesday",
+      status: true,
+      time_range: ["AFTERNOON", "EVENING"],
+    },
+    {
+      id: "sched_3",
+      day_name: "Wednesday",
+      status: false,
+      time_range: [],
+    },
+    {
+      id: "sched_4",
+      day_name: "Thursday",
+      status: true,
+      time_range: ["EVENING"],
+    },
+    {
+      id: "sched_5",
+      day_name: "Friday",
+      status: true,
+      time_range: ["EVENING"],
+    },
+    {
+      id: "sched_6",
+      day_name: "Saturday",
+      status: true,
+      time_range: ["MORNING", "AFTERNOON", "EVENING"],
+    },
+    {
+      id: "sched_7",
+      day_name: "Sunday",
+      status: true,
+      time_range: ["AFTERNOON"],
+    },
+  ];
+
+  // Create interests
+  const interests: LocalInterest[] = [
+    {
+      id: "i1",
+      title: "Board Games",
+      image_url: "/interests/board-games.jpg",
+      is_organized_by_trait: true,
+      pivot: { is_top_interest: true },
+    },
+    {
+      id: "i2",
+      title: "Dining Out",
+      image_url: "/interests/dining.jpg",
+      is_organized_by_trait: true,
+      pivot: { is_top_interest: true },
+    },
+    {
+      id: "i4",
+      title: "Hiking",
+      image_url: "/interests/hiking.jpg",
+      is_organized_by_trait: true,
+      pivot: { is_top_interest: false },
+    },
+    {
+      id: "ni1",
+      title: "Painting",
+      image_url: "/interests/painting.jpg",
+      is_organized_by_trait: false,
+      pivot: { is_top_interest: false },
+    },
+  ];
+
+  // Create question responses
+  const questionResponses: LocalQuestionResponse[] = [
+    { id: "qr1", question: { id: "q1" }, answer: { id: "o1", value: "MALE" } },
+    {
+      id: "qr2",
+      question: { id: "q2" },
+      answer: { id: "o5", value: "single" },
+    },
+    { id: "qr3", question: { id: "pq1" }, answer: { id: "po4", value: "4" } },
+    { id: "qr4", question: { id: "pq2" }, answer: { id: "po4", value: "4" } },
+  ];
+
+  // Create social preference answers
+  const socialPreferenceAnswers: LocalSocialPreferenceAnswer[] = [
+    {
+      id: "spa1",
+      answer: "Yes",
+      social_preference_option: {
+        id: "spo1",
+        title: "Yes",
+        social_preference: { id: "sp1", title: "Open to new experiences" },
+      },
+      meta: [],
+    },
+  ];
+
+  // Create user settings with all onboarding completed
+  const settings: LocalUserSettings = {
+    preference_settings: [
+      { key: "user_has_seen_personality_score", value: "true" },
+      { key: "user_visited_intro_page", value: "true" },
+      { key: "user_completed_interests_1", value: "true" },
+      { key: "user_completed_interests_2", value: "true" },
+      { key: "user_challenges_story", value: "true" },
+      { key: "user_journal_story", value: "true" },
+      { key: "user_has_uploaded_profile_picture", value: "true" },
+      { key: "user_accepted_terms_and_conditions", value: "true" },
+      { key: "user_has_filled_social_preferences", value: "true" },
+    ],
+  };
+
+  // Create journals
+  const journals: LocalJournal[] = [
+    {
+      id: "journal_1",
+      input:
+        "Today I am grateful for the opportunity to connect with new people.",
+      category: { id: "jc1", title: "Gratitude", type: "journal" },
+    },
+  ];
+
+  // Create the demo user
+  const demoUser: LocalUser = {
+    id: userId,
+    unique_id: uniqueId,
+    name: "Demo User",
+    email: DEMO_USER_EMAIL,
+    phone: "+1234567890",
+    dob: "1990-05-15",
+    password: DEMO_USER_PASSWORD,
+    user_type: "user",
+    created_at: new Date().toISOString(),
+    email_verified_at: new Date().toISOString(),
+    university_id: "1",
+    profile: {
+      id: profileId,
+      avatar: "/profile_placeholder.jpeg",
+      gender: "Male",
+      race: null,
+      relationship_status: "single",
+      level_of_education: "Bachelor's Degree",
+      zip_code: "60601",
+      political_orientation: null,
+      health_rating: "Good",
+      has_children: false,
+      occupation: "Software Developer",
+      family_size_in_numbers: "2",
+      type_of_city_grown: "Urban",
+      socialization: "Moderate",
+      to_socialization: "High",
+      religiosity_range: null,
+    },
+    groups: [demoGroup],
+    interests: interests,
+    journals: journals,
+    challenges: [],
+    schedules: schedules,
+    question_responses: questionResponses,
+    personalityScore: personalityScore,
+    social_preference_answers: socialPreferenceAnswers,
+    settings: settings,
+  };
+
+  return demoUser;
+};
+
+// Create demo group members (users that appear in the demo group)
+const createDemoGroupMembers = (): LocalUser[] => {
+  const baseSettings: LocalUserSettings = {
+    preference_settings: [
+      { key: "user_has_seen_personality_score", value: "true" },
+    ],
+  };
+
+  const member1: LocalUser = {
+    id: "demo_member_002",
+    unique_id: "USR_SARAH02",
+    name: "Sarah Johnson",
+    email: "sarah@demo.com",
+    phone: "+1234567891",
+    dob: "1992-03-20",
+    password: "demo123",
+    user_type: "user",
+    created_at: new Date().toISOString(),
+    email_verified_at: new Date().toISOString(),
+    university_id: "1",
+    profile: {
+      id: "profile_sarah",
+      avatar: "/profile_placeholder.jpeg",
+      gender: "Female",
+      race: null,
+      relationship_status: "relationship",
+      level_of_education: "Master's Degree",
+      zip_code: "60602",
+      political_orientation: null,
+      health_rating: "Excellent",
+      has_children: false,
+      occupation: "Marketing Manager",
+      family_size_in_numbers: "1",
+      type_of_city_grown: "Suburban",
+      socialization: "High",
+      to_socialization: "High",
+      religiosity_range: null,
+    },
+    groups: [],
+    interests: [],
+    journals: [],
+    challenges: [],
+    schedules: [],
+    question_responses: [],
+    personalityScore: null,
+    social_preference_answers: [],
+    settings: baseSettings,
+  };
+
+  const member2: LocalUser = {
+    id: "demo_member_003",
+    unique_id: "USR_MIKE03",
+    name: "Michael Chen",
+    email: "michael@demo.com",
+    phone: "+1234567892",
+    dob: "1988-11-08",
+    password: "demo123",
+    user_type: "user",
+    created_at: new Date().toISOString(),
+    email_verified_at: new Date().toISOString(),
+    university_id: "1",
+    profile: {
+      id: "profile_mike",
+      avatar: "/profile_placeholder.jpeg",
+      gender: "Male",
+      race: null,
+      relationship_status: "married",
+      level_of_education: "PhD",
+      zip_code: "60603",
+      political_orientation: null,
+      health_rating: "Good",
+      has_children: true,
+      occupation: "Research Scientist",
+      family_size_in_numbers: "4",
+      type_of_city_grown: "Urban",
+      socialization: "Moderate",
+      to_socialization: "Moderate",
+      religiosity_range: null,
+    },
+    groups: [],
+    interests: [],
+    journals: [],
+    challenges: [],
+    schedules: [],
+    question_responses: [],
+    personalityScore: null,
+    social_preference_answers: [],
+    settings: baseSettings,
+  };
+
+  return [member1, member2];
+};
+
 // Initialize default data
 const initializeDefaultData = () => {
   // Universities
@@ -465,12 +806,30 @@ const initializeDefaultData = () => {
     setToStorage(STORAGE_KEYS.CHALLENGE_CATEGORIES, challengeCategories);
   }
 
-  // Initialize empty users array
-  if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
-    setToStorage(STORAGE_KEYS.USERS, []);
+  // Initialize users array with demo user
+  const existingUsers = getFromStorage<LocalUser[]>(STORAGE_KEYS.USERS, []);
+  const demoUserExists = existingUsers.some(
+    (u) => u.email.toLowerCase() === DEMO_USER_EMAIL.toLowerCase(),
+  );
+
+  if (!demoUserExists) {
+    const demoUser = createDemoUser();
+    const demoMembers = createDemoGroupMembers();
+    const allUsers = [...existingUsers, demoUser, ...demoMembers];
+    setToStorage(STORAGE_KEYS.USERS, allUsers);
+
+    // Also add the demo group to groups storage
+    const existingGroups = getFromStorage<LocalUserGroup[]>(
+      STORAGE_KEYS.GROUPS,
+      [],
+    );
+    if (!existingGroups.some((g) => g.id === "demo_group_001")) {
+      existingGroups.push(demoUser.groups[0]);
+      setToStorage(STORAGE_KEYS.GROUPS, existingGroups);
+    }
   }
 
-  // Initialize empty groups array
+  // Initialize empty groups array if needed
   if (!localStorage.getItem(STORAGE_KEYS.GROUPS)) {
     setToStorage(STORAGE_KEYS.GROUPS, []);
   }

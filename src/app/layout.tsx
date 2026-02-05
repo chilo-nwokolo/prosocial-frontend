@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Comfortaa, Lato } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import TopBanner from "./auth/components/TopBanner";
 
 const comfortaa = Comfortaa({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${comfortaa.variable} ${lato.variable}`}>
+        <TopBanner />
         <Providers>{children}</Providers>
         {process.env.NODE_ENV === "production" ? (
           <GoogleAnalytics gaId="G-VYFS0L1TWZ" />
