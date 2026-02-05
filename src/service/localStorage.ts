@@ -321,7 +321,12 @@ const createDemoUser = (): LocalUser => {
       status: true,
       time_range: ["EVENING"],
     },
-    { id: "sched_5", day_name: "Friday", status: true, time_range: ["EVENING"] },
+    {
+      id: "sched_5",
+      day_name: "Friday",
+      status: true,
+      time_range: ["EVENING"],
+    },
     {
       id: "sched_6",
       day_name: "Saturday",
@@ -413,7 +418,8 @@ const createDemoUser = (): LocalUser => {
   const journals: LocalJournal[] = [
     {
       id: "journal_1",
-      input: "Today I am grateful for the opportunity to connect with new people.",
+      input:
+        "Today I am grateful for the opportunity to connect with new people.",
       category: { id: "jc1", title: "Gratitude", type: "journal" },
     },
   ];
