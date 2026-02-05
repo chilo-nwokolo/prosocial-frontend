@@ -20,7 +20,6 @@ import UseRegistrationPage from "@/features/auth/hooks/useRegistrationPage";
 import AppModal from "@/components/AppModal";
 import Link from "next/link";
 import { appRouteLinks } from "@/utils/constants";
-import IFrameModal from "@/components/General/IFrameModal";
 import ProfilePictureUploader from "@/components/General/ProfilePictureUploader";
 
 const registrationOptions = [
@@ -47,8 +46,6 @@ const registrationOptions = [
     infoText: "",
   },
 ];
-
-const termsPage = "/files/terms_and_conditions.pdf";
 
 const registrationOptions2 = [
   {
@@ -85,12 +82,6 @@ export default function RegistrationPage() {
     isOpen: isPhoneInfo,
     onClose: onPhoneInfoClose,
     onOpen: onPhoneInfoOpen,
-  } = useDisclosure();
-
-  const {
-    isOpen: isTermsOpen,
-    onClose: onCloseTerms,
-    onOpen: onOpenTerms,
   } = useDisclosure();
 
   return (
@@ -222,16 +213,17 @@ export default function RegistrationPage() {
                 borderColor="black"
               >
                 I have read and accept the{" "}
-                <Button
-                  onClick={onOpenTerms}
-                  color="info.100"
-                  fontWeight="500"
-                  variant="link"
-                  _hover={{ textDecor: "none" }}
-                  textDecor="underline"
+                <Link
+                  href={appRouteLinks.termsConditions}
+                  target="_blank"
+                  style={{
+                    color: "#226db4",
+                    fontWeight: 500,
+                    textDecoration: "underline",
+                  }}
                 >
                   Terms and Conditions
-                </Button>
+                </Link>
               </Checkbox>
             </Flex>
             <Button
@@ -260,11 +252,6 @@ export default function RegistrationPage() {
           </Link>
         </Flex>
       </Box>
-      <IFrameModal
-        onClose={onCloseTerms}
-        isOpen={isTermsOpen}
-        inView={termsPage}
-      />
       <AppModal
         title=""
         description="We need your phone number for push notifications and account recovery purposes."
