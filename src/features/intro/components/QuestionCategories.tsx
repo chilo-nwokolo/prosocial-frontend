@@ -6,6 +6,10 @@ import { FaChevronRight } from "react-icons/fa";
 import { appRouteLinks } from "@/utils/constants";
 import LoadingModal from "@/components/General/LoadingModal";
 import useQuestionCategories from "../hooks/useQuestionCategories";
+import { useAppQuestions } from "@/store";
+import { transformQuestions } from "../helpers";
+import localStorageService from "@/service/localStorage";
+import { useEffect } from "react";
 
 const socialPrefererences = {
   category: "Social preferences",
@@ -27,6 +31,22 @@ export default function QuestionCategories() {
     onboardAnswers,
     calculateSocialPreferenceAnswers,
   } = useQuestionCategories();
+
+  const updateOnboardQuestions = useAppQuestions(
+    (state) => state.updateOnboardQuestions,
+  );
+
+  useEffect(() => {
+    if (!onboardQuestions || onboardQuestions.length === 0) {
+      const categories =
+        localStorageService.getOnboardCategoriesWithQuestions();
+      if (categories.length) {
+        const data = { onBoardCategoriesWithQuestions: categories } as any;
+        const result = transformQuestions(data);
+        updateOnboardQuestions(result);
+      }
+    }
+  }, [onboardQuestions, updateOnboardQuestions]);
 
   return (
     <>

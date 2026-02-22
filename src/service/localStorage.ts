@@ -3,6 +3,21 @@
  * Replaces all API calls with localStorage-based data persistence
  */
 
+import {
+  SEED_UNIVERSITIES,
+  SEED_PERSONALITY_BUCKET_TYPES,
+  SEED_QUESTION_CATEGORIES,
+  SEED_JOURNAL_CATEGORIES,
+  SEED_CHALLENGE_CATEGORIES,
+  SEED_INTERESTS_BY_TRAIT,
+  SEED_INTERESTS_BY_NON_TRAIT,
+  SEED_SOCIAL_PREFERENCES,
+} from "./seedData";
+
+// Bump this version to force-refresh seed data in localStorage
+const SEED_VERSION = "4";
+const SEED_VERSION_KEY = "prosocial_seed_version";
+
 // Storage keys
 export const STORAGE_KEYS = {
   USERS: "prosocial_users",
@@ -191,6 +206,8 @@ export interface LocalQuestion {
   text: string;
   type: string;
   sub_category?: string;
+  trait?: string;
+  note?: string;
   optional?: boolean;
   options: { id: string; title: string; value: string }[];
 }
@@ -263,36 +280,16 @@ const createDemoUser = (): LocalUser => {
     outing_feedbacks: [],
   };
 
-  // Create personality score
   const personalityScore: LocalPersonalityScore = {
     id: "demo_personality_001",
-    extroversion: "72.5",
-    agreeableness: "85.3",
-    conscientiousness: "68.7",
-    neuroticism: "32.1",
-    openness: "78.9",
-    narcissism: "15.2",
-    personalityBucketType: {
-      id: "1",
-      name: "The Social Butterfly",
-      sub_title: "Outgoing and energetic",
-      image: "/personality/butterfly.png",
-      description:
-        "You thrive in social situations and love meeting new people. Your energy is contagious and you naturally draw others to you.",
-      bucketQuestions: [
-        {
-          id: "bq1",
-          title: "Social Energy",
-          text: "Do you feel energized after social gatherings?",
-        },
-        {
-          id: "bq2",
-          title: "New Connections",
-          text: "Do you enjoy making new friends?",
-        },
-      ],
-    },
-    last_computed: new Date().toISOString(),
+    extroversion: "6.00",
+    agreeableness: "6.00",
+    conscientiousness: "10.00",
+    neuroticism: "2.00",
+    openness: "6.00",
+    narcissism: "17.00",
+    personalityBucketType: SEED_PERSONALITY_BUCKET_TYPES[2],
+    last_computed: "2023-11-09T08:01:00.000Z",
   };
 
   // Create schedules for the week
@@ -341,61 +338,46 @@ const createDemoUser = (): LocalUser => {
     },
   ];
 
-  // Create interests
   const interests: LocalInterest[] = [
     {
-      id: "i1",
-      title: "Board Games",
-      image_url: "/interests/board-games.jpg",
+      id: "2",
+      title: "I like to build things.",
+      image_url:
+        "https://res.cloudinary.com/doz0qlqcu/image/upload/v1701257055/interest-images/07_-_Build_duq7bm.jpg",
       is_organized_by_trait: true,
-      pivot: { is_top_interest: true },
-    },
-    {
-      id: "i2",
-      title: "Dining Out",
-      image_url: "/interests/dining.jpg",
-      is_organized_by_trait: true,
-      pivot: { is_top_interest: true },
-    },
-    {
-      id: "i4",
-      title: "Hiking",
-      image_url: "/interests/hiking.jpg",
-      is_organized_by_trait: true,
-      pivot: { is_top_interest: false },
-    },
-    {
-      id: "ni1",
-      title: "Painting",
-      image_url: "/interests/painting.jpg",
-      is_organized_by_trait: false,
       pivot: { is_top_interest: false },
     },
   ];
 
-  // Create question responses
   const questionResponses: LocalQuestionResponse[] = [
-    { id: "qr1", question: { id: "q1" }, answer: { id: "o1", value: "MALE" } },
-    {
-      id: "qr2",
-      question: { id: "q2" },
-      answer: { id: "o5", value: "single" },
-    },
-    { id: "qr3", question: { id: "pq1" }, answer: { id: "po4", value: "4" } },
-    { id: "qr4", question: { id: "pq2" }, answer: { id: "po4", value: "4" } },
+    { id: "qr1", question: { id: "1" }, answer: { id: "1", value: "1" } },
+    { id: "qr2", question: { id: "2" }, answer: { id: "6", value: "1" } },
+    { id: "qr3", question: { id: "3" }, answer: { id: "11", value: "1" } },
+    { id: "qr4", question: { id: "4" }, answer: { id: "16", value: "1" } },
+    { id: "qr5", question: { id: "5" }, answer: { id: "21", value: "1" } },
+    { id: "qr6", question: { id: "6" }, answer: { id: "26", value: "1" } },
+    { id: "qr7", question: { id: "7" }, answer: { id: "31", value: "1" } },
+    { id: "qr8", question: { id: "8" }, answer: { id: "36", value: "1" } },
+    { id: "qr9", question: { id: "9" }, answer: { id: "41", value: "1" } },
+    { id: "qr10", question: { id: "10" }, answer: { id: "46", value: "1" } },
   ];
 
-  // Create social preference answers
   const socialPreferenceAnswers: LocalSocialPreferenceAnswer[] = [
     {
       id: "spa1",
-      answer: "Yes",
+      answer: "Friend",
       social_preference_option: {
-        id: "spo1",
-        title: "Yes",
-        social_preference: { id: "sp1", title: "Open to new experiences" },
+        id: "7",
+        title: "H3 Parent Friend",
+        social_preference: {
+          id: "1",
+          title: "H2 Prosocial friend types",
+        },
       },
-      meta: [],
+      meta: [
+        { key: "someKeys", value: "some Vaules" },
+        { key: "another_key", value: "checking" },
+      ],
     },
   ];
 
@@ -414,13 +396,12 @@ const createDemoUser = (): LocalUser => {
     ],
   };
 
-  // Create journals
   const journals: LocalJournal[] = [
     {
       id: "journal_1",
       input:
         "Today I am grateful for the opportunity to connect with new people.",
-      category: { id: "jc1", title: "Gratitude", type: "journal" },
+      category: { id: "1", title: "Happiest ChildhoodMemory", type: "journal" },
     },
   ];
 
@@ -564,246 +545,60 @@ const createDemoGroupMembers = (): LocalUser[] => {
 
 // Initialize default data
 const initializeDefaultData = () => {
-  // Universities
+  // Clear stale seed data when the seed version changes
+  const storedVersion = localStorage.getItem(SEED_VERSION_KEY);
+  if (storedVersion !== SEED_VERSION) {
+    const seedKeys = [
+      STORAGE_KEYS.UNIVERSITIES,
+      STORAGE_KEYS.PERSONALITY_BUCKET_TYPES,
+      STORAGE_KEYS.QUESTION_CATEGORIES,
+      STORAGE_KEYS.INTERESTS_BY_TRAIT,
+      STORAGE_KEYS.INTERESTS_BY_NON_TRAIT,
+      STORAGE_KEYS.JOURNAL_CATEGORIES,
+      STORAGE_KEYS.CHALLENGE_CATEGORIES,
+      STORAGE_KEYS.SOCIAL_PREFERENCES,
+      "prosocial_questions",
+    ];
+    seedKeys.forEach((key) => localStorage.removeItem(key));
+    localStorage.setItem(SEED_VERSION_KEY, SEED_VERSION);
+  }
+
   if (!localStorage.getItem(STORAGE_KEYS.UNIVERSITIES)) {
-    const universities: LocalUniversity[] = [
-      { id: "1", name: "University of Illinois" },
-      { id: "2", name: "Northwestern University" },
-      { id: "3", name: "University of Chicago" },
-      { id: "4", name: "DePaul University" },
-      { id: "5", name: "Loyola University" },
-    ];
-    setToStorage(STORAGE_KEYS.UNIVERSITIES, universities);
+    setToStorage(STORAGE_KEYS.UNIVERSITIES, SEED_UNIVERSITIES);
   }
 
-  // Personality Bucket Types
   if (!localStorage.getItem(STORAGE_KEYS.PERSONALITY_BUCKET_TYPES)) {
-    const bucketTypes: LocalPersonalityBucketType[] = [
-      {
-        id: "1",
-        name: "The Social Butterfly",
-        sub_title: "Outgoing and energetic",
-        image: "/personality/butterfly.png",
-        description:
-          "You thrive in social situations and love meeting new people.",
-        bucketQuestions: [
-          {
-            id: "bq1",
-            title: "Social Energy",
-            text: "Do you feel energized after social gatherings?",
-          },
-          {
-            id: "bq2",
-            title: "New Connections",
-            text: "Do you enjoy making new friends?",
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "The Thoughtful Observer",
-        sub_title: "Reflective and insightful",
-        image: "/personality/observer.png",
-        description:
-          "You prefer deep conversations and meaningful connections.",
-        bucketQuestions: [
-          {
-            id: "bq3",
-            title: "Deep Talks",
-            text: "Do you prefer deep conversations over small talk?",
-          },
-          {
-            id: "bq4",
-            title: "Observation",
-            text: "Do you often observe before participating?",
-          },
-        ],
-      },
-    ];
-    setToStorage(STORAGE_KEYS.PERSONALITY_BUCKET_TYPES, bucketTypes);
+    setToStorage(
+      STORAGE_KEYS.PERSONALITY_BUCKET_TYPES,
+      SEED_PERSONALITY_BUCKET_TYPES,
+    );
   }
 
-  // Question Categories for onboarding
   if (!localStorage.getItem(STORAGE_KEYS.QUESTION_CATEGORIES)) {
-    const categories: LocalQuestionCategory[] = [
-      {
-        id: "1",
-        name: "The-basics",
-        questions: [
-          {
-            id: "q1",
-            text: "What is your gender?",
-            type: "SINGLE_CHOICE",
-            options: [
-              { id: "o1", title: "Male", value: "MALE" },
-              { id: "o2", title: "Female", value: "FEMALE" },
-              { id: "o3", title: "Non-binary", value: "NONCONFORMING" },
-              {
-                id: "o4",
-                title: "Prefer not to say",
-                value: "PREFERNOTOANSWER",
-              },
-            ],
-          },
-          {
-            id: "q2",
-            text: "What is your relationship status?",
-            type: "SINGLE_CHOICE",
-            options: [
-              { id: "o5", title: "Single", value: "single" },
-              { id: "o6", title: "In a relationship", value: "relationship" },
-              { id: "o7", title: "Married", value: "married" },
-            ],
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Personality",
-        questions: [
-          {
-            id: "pq1",
-            text: "I enjoy being the center of attention",
-            type: "RATING_SCALE",
-            sub_category: "Personality 1",
-            options: [
-              { id: "po1", title: "Strongly Disagree", value: "1" },
-              { id: "po2", title: "Disagree", value: "2" },
-              { id: "po3", title: "Neutral", value: "3" },
-              { id: "po4", title: "Agree", value: "4" },
-              { id: "po5", title: "Strongly Agree", value: "5" },
-            ],
-          },
-          {
-            id: "pq2",
-            text: "I feel comfortable in large groups",
-            type: "RATING_SCALE",
-            sub_category: "Personality 1",
-            options: [
-              { id: "po1", title: "Strongly Disagree", value: "1" },
-              { id: "po2", title: "Disagree", value: "2" },
-              { id: "po3", title: "Neutral", value: "3" },
-              { id: "po4", title: "Agree", value: "4" },
-              { id: "po5", title: "Strongly Agree", value: "5" },
-            ],
-          },
-        ],
-      },
-    ];
-    setToStorage(STORAGE_KEYS.QUESTION_CATEGORIES, categories);
+    setToStorage(STORAGE_KEYS.QUESTION_CATEGORIES, SEED_QUESTION_CATEGORIES);
   }
 
-  // Interests by trait
   if (!localStorage.getItem(STORAGE_KEYS.INTERESTS_BY_TRAIT)) {
-    const interestsByTrait: LocalInterestTrait[] = [
-      {
-        id: "trait1",
-        title: "Social Activities",
-        interests: [
-          {
-            id: "i1",
-            title: "Board Games",
-            image_url: "/interests/board-games.jpg",
-            is_organized_by_trait: true,
-          },
-          {
-            id: "i2",
-            title: "Dining Out",
-            image_url: "/interests/dining.jpg",
-            is_organized_by_trait: true,
-          },
-          {
-            id: "i3",
-            title: "Movie Nights",
-            image_url: "/interests/movies.jpg",
-            is_organized_by_trait: true,
-          },
-        ],
-      },
-      {
-        id: "trait2",
-        title: "Outdoor Activities",
-        interests: [
-          {
-            id: "i4",
-            title: "Hiking",
-            image_url: "/interests/hiking.jpg",
-            is_organized_by_trait: true,
-          },
-          {
-            id: "i5",
-            title: "Cycling",
-            image_url: "/interests/cycling.jpg",
-            is_organized_by_trait: true,
-          },
-          {
-            id: "i6",
-            title: "Camping",
-            image_url: "/interests/camping.jpg",
-            is_organized_by_trait: true,
-          },
-        ],
-      },
-    ];
-    setToStorage(STORAGE_KEYS.INTERESTS_BY_TRAIT, interestsByTrait);
+    setToStorage(STORAGE_KEYS.INTERESTS_BY_TRAIT, SEED_INTERESTS_BY_TRAIT);
   }
 
-  // Interests by non-trait
   if (!localStorage.getItem(STORAGE_KEYS.INTERESTS_BY_NON_TRAIT)) {
-    const interestsByNonTrait: LocalInterestTrait[] = [
-      {
-        id: "nt1",
-        title: "Arts & Crafts",
-        interests: [
-          {
-            id: "ni1",
-            title: "Painting",
-            image_url: "/interests/painting.jpg",
-            is_organized_by_trait: false,
-          },
-          {
-            id: "ni2",
-            title: "Photography",
-            image_url: "/interests/photography.jpg",
-            is_organized_by_trait: false,
-          },
-        ],
-      },
-    ];
-    setToStorage(STORAGE_KEYS.INTERESTS_BY_NON_TRAIT, interestsByNonTrait);
+    setToStorage(
+      STORAGE_KEYS.INTERESTS_BY_NON_TRAIT,
+      SEED_INTERESTS_BY_NON_TRAIT,
+    );
   }
 
-  // Journal Categories
   if (!localStorage.getItem(STORAGE_KEYS.JOURNAL_CATEGORIES)) {
-    const journalCategories: LocalJournalCategory[] = [
-      { id: "jc1", title: "Gratitude", type: "journal", journals: [] },
-      { id: "jc2", title: "Reflection", type: "journal", journals: [] },
-      { id: "jc3", title: "Goals", type: "journal", journals: [] },
-    ];
-    setToStorage(STORAGE_KEYS.JOURNAL_CATEGORIES, journalCategories);
+    setToStorage(STORAGE_KEYS.JOURNAL_CATEGORIES, SEED_JOURNAL_CATEGORIES);
   }
 
-  // Challenge Categories
   if (!localStorage.getItem(STORAGE_KEYS.CHALLENGE_CATEGORIES)) {
-    const challengeCategories: LocalJournalCategory[] = [
-      {
-        id: "cc1",
-        title: "Social Challenge",
-        type: "challenge",
-        video_url: "",
-        transcript: "",
-        journals: [],
-      },
-      {
-        id: "cc2",
-        title: "Mindfulness Challenge",
-        type: "challenge",
-        video_url: "",
-        transcript: "",
-        journals: [],
-      },
-    ];
-    setToStorage(STORAGE_KEYS.CHALLENGE_CATEGORIES, challengeCategories);
+    setToStorage(STORAGE_KEYS.CHALLENGE_CATEGORIES, SEED_CHALLENGE_CATEGORIES);
+  }
+
+  if (!localStorage.getItem(STORAGE_KEYS.SOCIAL_PREFERENCES)) {
+    setToStorage(STORAGE_KEYS.SOCIAL_PREFERENCES, SEED_SOCIAL_PREFERENCES);
   }
 
   // Initialize users array with demo user
@@ -818,7 +613,6 @@ const initializeDefaultData = () => {
     const allUsers = [...existingUsers, demoUser, ...demoMembers];
     setToStorage(STORAGE_KEYS.USERS, allUsers);
 
-    // Also add the demo group to groups storage
     const existingGroups = getFromStorage<LocalUserGroup[]>(
       STORAGE_KEYS.GROUPS,
       [],
@@ -829,7 +623,6 @@ const initializeDefaultData = () => {
     }
   }
 
-  // Initialize empty groups array if needed
   if (!localStorage.getItem(STORAGE_KEYS.GROUPS)) {
     setToStorage(STORAGE_KEYS.GROUPS, []);
   }

@@ -17,7 +17,7 @@ export const transformQuestions = (
   };
 
   const otherQuestions = questions.onBoardCategoriesWithQuestions
-    ?.filter((cat) => cat.id !== "3" && cat.id !== "4")
+    ?.filter((cat) => cat.id !== "1" && cat.id !== "3" && cat.id !== "4")
     ?.map((category) => {
       const questionsClone = [...category.questions!];
       let questions = questionsClone;
