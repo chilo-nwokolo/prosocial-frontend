@@ -22,7 +22,12 @@ export const transformQuestions = (
       const questionsClone = [...category.questions!];
       let questions = questionsClone;
       if (category.id === "2") {
-        questions = questionsClone?.sort(() => Math.random() - 0.5);
+        questions = questionsClone
+          ?.map((q) => ({
+            ...q,
+            text: q.text.charAt(0).toUpperCase() + q.text.slice(1),
+          }))
+          ?.sort(() => Math.random() - 0.5);
       }
 
       const renameCategory = category.name.replace("&", "and");

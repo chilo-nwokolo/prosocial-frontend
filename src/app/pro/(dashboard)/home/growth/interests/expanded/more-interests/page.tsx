@@ -96,15 +96,19 @@ export default function InterestedExtendedPage() {
       (interest) => interest.interest_id === id,
     );
 
-    if (foundIndex < 0 && !flattenedInterests?.includes(value)) {
+    if (foundIndex < 0) {
       updateInterestsAnswer([
         ...interestsAnswer,
         { response: value, interest_id: id },
       ]);
-    } else if (foundIndex >= 0 || flattenedInterests?.includes(value)) {
+      setFlattenedInterets([...(flattenedInterests || []), value]);
+    } else {
       const result = [...interestsAnswer];
       result.splice(foundIndex, 1);
       updateInterestsAnswer(result);
+      setFlattenedInterets(
+        (flattenedInterests || []).filter((v) => v !== value),
+      );
     }
   };
 

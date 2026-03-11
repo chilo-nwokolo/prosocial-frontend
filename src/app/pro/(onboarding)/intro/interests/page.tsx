@@ -105,18 +105,18 @@ export default function InterestedExtendedPage() {
       (interest) => interest.interest_id === id,
     );
 
-    if (foundIndex < 0 && !flattenedInterests?.includes(value)) {
-      const updatedInterests = [{ response: value, interest_id: id }];
+    if (foundIndex < 0) {
+      const updatedInterests = [
+        ...interestsAnswer,
+        { response: value, interest_id: id },
+      ];
       updateInterestsAnswer(updatedInterests);
-
-      setFlattenedInterets(
-        updatedInterests?.map((interest) => interest.response),
-      );
-    } else if (foundIndex >= 0 || flattenedInterests?.includes(value)) {
+      setFlattenedInterets(updatedInterests.map((i) => i.response));
+    } else {
       const result = [...interestsAnswer];
       result.splice(foundIndex, 1);
       updateInterestsAnswer(result);
-      setFlattenedInterets(result.map((interest) => interest.response));
+      setFlattenedInterets(result.map((i) => i.response));
     }
   };
 
@@ -191,12 +191,12 @@ export default function InterestedExtendedPage() {
           </Button>
         </Flex>
         <Text fontWeight="lg" fontSize="2xl" color="black" marginTop="1em">
-          What is your top interest?
+          What are your interests?
         </Text>
         <Text mt={2} color="black">
-          We know you have lots of interests, but out of all the options below,
-          if you could only choose one, which would be your top/most important
-          interest? If you don&apos;t see it in the list, you can write it in.
+          Select all the interests that apply to you from the options below. You
+          can choose as many as you like. If you don&apos;t see yours in the
+          list, you can add it below.
         </Text>
 
         <Flex flexDir="column" mt="4">

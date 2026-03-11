@@ -37,7 +37,17 @@ export default function QuestionCategories() {
   );
 
   useEffect(() => {
-    if (!onboardQuestions || onboardQuestions.length === 0) {
+    const personalitySection = onboardQuestions?.find(
+      (q: any) => q.category === "Your personality",
+    );
+    const hasStalePersonalityCount =
+      personalitySection?.questions?.length === 47;
+
+    if (
+      !onboardQuestions ||
+      onboardQuestions.length === 0 ||
+      hasStalePersonalityCount
+    ) {
       const categories =
         localStorageService.getOnboardCategoriesWithQuestions();
       if (categories.length) {

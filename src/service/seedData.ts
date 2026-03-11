@@ -108,57 +108,106 @@ const onboardDefs: [string, string, string][] = [
   ["Has little interest in abstract ideas.", "Openness", "REVERSE"],
 ];
 
-// Personality questions reused across categories 2 (IDs 11-40), 4 (59-88), 5 (89-118), 6 (119-148)
-// Grouped in sets of 10: Personality 1, Personality 2, Personality 3
-const personalityDefs: [string, string, string][] = [
-  // Personality 1
-  ["Is full of energy.", "Extroversion", ""],
-  ["Assumes the best about people.", "Agreeableness", ""],
-  ["Is reliable, can always be counted on.", "Conscientiousness", ""],
-  ["Is temperamental, gets emotional easily.", "Neuroticism", ""],
-  ["Is original, comes up with new ideas.", "Openness", ""],
-  ["Is outgoing, sociable.", "Extroversion", ""],
-  ["Is helpful and unselfish with others.", "Agreeableness", ""],
-  ["Is systematic, likes to keep things in order.", "Conscientiousness", ""],
-  ["Is relaxed, handles stress well.", "Neuroticism", "REVERSE"],
-  ["Is complex, a deep thinker.", "Openness", ""],
-  // Personality 2
-  ["Has an assertive personality.", "Extroversion", ""],
-  ["Is respectful, treats others with respect", "Agreeableness", ""],
-  ["Is persistent, works until the task is finished", "Conscientiousness", ""],
-  ["Stays optimistic after experiencing a setback", "Neuroticism", "REVERSE"],
-  ["Thinks poetry and plays are boring", "Openness", "REVERSE"],
-  ["Rarely feels excited or eager.", "Extroversion", "REVERSE"],
-  ["Is suspicious of others\u2019 intentions.", "Agreeableness", "REVERSE"],
-  ["Sometimes behaves irresponsibly. ", "Conscientiousness", "REVERSE"],
-  ["Keeps their emotions under control.", "Neuroticism", "REVERSE"],
-  ["Has difficulty imagining things.", "Openness", "REVERSE"],
-  // Personality 3
-  ["Prefers to have others take charge.", "Extroversion", "REVERSE"],
-  ["Can be cold and uncaring.", "Agreeableness", "REVERSE"],
-  [" Is efficient, gets things done.", "Conscientiousness", ""],
-  ["Feels secure, comfortable with self.", "Neuroticism", "REVERSE"],
-  [" Avoids intellectual, philosophical discussions.", "Openness", "REVERSE"],
-  ["Is less active than other people.", "Extroversion", "REVERSE"],
-  ["Starts arguments with others.", "Agreeableness", "REVERSE"],
-  ["Can be somewhat careless.", "Conscientiousness", "REVERSE"],
-  ["Is emotionally stable, not easily upset.", "Neuroticism", "REVERSE"],
-  ["Is inventive, finds clever ways to do things.", "Openness", ""],
+// Approach-to-life questions for categories 4, 5, 6 (IDs 59-148)
+// Focus on behaviors, actions, decisions — not personality traits
+// Grouped in sets of 10: Approach 1, Approach 2, Approach 3
+const approachToLifeDefs: [string, string, string][] = [
+  // Approach 1 — goals, planning, decision-making
+  ["Prefers to think things through before taking action.", "Deliberation", ""],
+  [
+    "Sets long-term goals and works steadily toward them.",
+    "Goal-Orientation",
+    "",
+  ],
+  [
+    "When faced with obstacles, focuses on finding solutions.",
+    "Problem-Focus",
+    "",
+  ],
+  ["Likes to have a plan before starting something new.", "Planning", ""],
+  [
+    "Believes that effort and persistence lead to success.",
+    "Growth-Mindset",
+    "",
+  ],
+  [
+    "Takes initiative rather than waiting for others to act.",
+    "Proactivity",
+    "",
+  ],
+  [
+    "Weighs pros and cons carefully when making important decisions.",
+    "Deliberation",
+    "",
+  ],
+  ["Prioritizes relationships over achievements.", "Relationship-Focus", ""],
+  ["Adapts well when things do not go as planned.", "Adaptability", ""],
+  ["Seeks feedback to improve.", "Growth-Mindset", ""],
+  // Approach 2 — values, coping, risk
+  ["When stressed, seeks support from others.", "Support-Seeking", ""],
+  [
+    "Is willing to take calculated risks for things that matter.",
+    "Risk-Tolerance",
+    "",
+  ],
+  ["Believes life is what you make of it.", "Locus-of-Control", ""],
+  ["Reflects on experiences to learn from them.", "Reflection", ""],
+  [
+    "Prefers to work through problems alone before asking for help.",
+    "Self-Reliance",
+    "REVERSE",
+  ],
+  [
+    "Lives in the present rather than dwelling on the past.",
+    "Present-Focus",
+    "",
+  ],
+  [
+    "Takes responsibility for outcomes rather than blaming others.",
+    "Accountability",
+    "",
+  ],
+  ["Values work-life balance and protects personal time.", "Balance", ""],
+  [
+    "Tries new approaches when the current one is not working.",
+    "Flexibility",
+    "",
+  ],
+  ["Believes setbacks are temporary and can be overcome.", "Resilience", ""],
+  // Approach 3 — habits, priorities, mindset
+  ["Tends to procrastinate on unpleasant tasks.", "Proactivity", "REVERSE"],
+  ["Makes time for things that matter most.", "Prioritization", ""],
+  ["Avoids difficult conversations when possible.", "Confrontation", "REVERSE"],
+  [
+    "Seeks to understand different perspectives before judging.",
+    "Open-Mindedness",
+    "",
+  ],
+  ["Finds meaning in helping others.", "Purpose", ""],
+  [
+    "Gets overwhelmed when there are too many choices.",
+    "Decision-Comfort",
+    "REVERSE",
+  ],
+  ["Looks for the silver lining in difficult situations.", "Optimism", ""],
+  ["Sticks to routines that work.", "Consistency", ""],
+  ["Is open to changing plans when better options emerge.", "Flexibility", ""],
+  ["Learns from mistakes rather than repeating them.", "Learning", ""],
 ];
 
-// Build personality questions with the standard 5-point scale
-const buildPersonalityQs = (
+// Build approach-to-life questions with the standard 5-point scale
+const buildApproachToLifeQs = (
   startQId: number,
   startOptId: number,
   subCatOverride?: string,
 ) =>
-  personalityDefs.map((d, i) => ({
+  approachToLifeDefs.map((d, i) => ({
     id: String(startQId + i),
     text: d[0],
     type: "RATING_SCALE" as const,
     sub_category:
       subCatOverride ||
-      ["Personality 1", "Personality 2", "Personality 3"][Math.floor(i / 10)],
+      ["Approach 1", "Approach 2", "Approach 3"][Math.floor(i / 10)],
     trait: d[1],
     note: d[2],
     options: agree5(startOptId + i * 5),
@@ -395,49 +444,49 @@ export const SEED_PERSONALITY_BUCKET_TYPES: LocalPersonalityBucketType[] = [
 // Note: Category "1" ("The basics") is omitted because those profile questions
 // are provided by personalQuestionsData in src/features/intro/questions.ts
 
-// Narcissism questions (category 2, IDs 41-47)
+// Narcissism questions (category 2, IDs 11-17, after 10 onboard)
 const narcissismQs = [
   {
-    id: "41",
+    id: "11",
     text: "reacts annoyed if another person steals the show from me.",
     note: "",
-    opts: narcScale(201),
+    opts: narcScale(51),
   },
   {
-    id: "42",
+    id: "12",
     text: "wants my rivals to fail.",
     note: "",
-    opts: narcScale(206),
+    opts: narcScale(56),
   },
   {
-    id: "43",
+    id: "13",
     text: "deserves to be seen as a great personality.",
     note: "",
-    opts: narcScale(211),
+    opts: narcScale(61),
   },
   {
-    id: "44",
+    id: "14",
     text: "tends to be unconcerned with the morality of my actions.",
     note: "",
-    opts: narcScale(216),
+    opts: narcScale(66),
   },
   {
-    id: "45",
+    id: "15",
     text: "has used deceit or lied to get my way.",
     note: "",
-    opts: narcScale(221),
+    opts: narcScale(71),
   },
   {
-    id: "46",
+    id: "16",
     text: "is a narcissist.",
     note: "Weighted",
-    opts: narcWeighted(226),
+    opts: narcWeighted(76),
   },
   {
-    id: "47",
+    id: "17",
     text: "tends to want others to pay attention to me.",
     note: "",
-    opts: narcScale(231),
+    opts: narcScale(81),
   },
 ].map((q) => ({
   id: q.id,
@@ -544,7 +593,7 @@ export const SEED_QUESTION_CATEGORIES: LocalQuestionCategory[] = [
     id: "2",
     name: "Your personality",
     questions: [
-      // Onboard questions (IDs 1-10, option IDs 1-50)
+      // Onboard questions (IDs 1-10, option IDs 1-50) — Big Five
       ...onboardDefs.map((d, i) => ({
         id: String(i + 1),
         text: d[0],
@@ -554,9 +603,7 @@ export const SEED_QUESTION_CATEGORIES: LocalQuestionCategory[] = [
         note: d[2],
         options: agree5(i * 5 + 1),
       })),
-      // Personality 1/2/3 questions (IDs 11-40, option IDs 51-200)
-      ...buildPersonalityQs(11, 51),
-      // Narcissism questions (IDs 41-47)
+      // Narcissism questions (IDs 11-17) — total 17 questions
       ...narcissismQs,
     ],
   },
@@ -568,17 +615,17 @@ export const SEED_QUESTION_CATEGORIES: LocalQuestionCategory[] = [
   {
     id: "4",
     name: "How you approach life",
-    questions: buildPersonalityQs(59, 308),
+    questions: buildApproachToLifeQs(59, 308),
   },
   {
     id: "5",
     name: "How you approach life",
-    questions: buildPersonalityQs(89, 458, "How you approach life"),
+    questions: buildApproachToLifeQs(89, 458, "How you approach life"),
   },
   {
     id: "6",
     name: "How you approach life",
-    questions: buildPersonalityQs(119, 608, "How you approach life"),
+    questions: buildApproachToLifeQs(119, 608, "How you approach life"),
   },
 ];
 

@@ -115,9 +115,16 @@ export default function ResultPage() {
                   </Text>
                 )}
               </Box>
-              <Button onClick={onSubmit} w="425px" isLoading={submitting} m="4">
-                Complete
-              </Button>
+              <Flex w="full">
+                <Button
+                  onClick={onSubmit}
+                  w="full"
+                  isLoading={submitting}
+                  m="4"
+                >
+                  Complete
+                </Button>
+              </Flex>
             </>
           ) : null}
         </Box>

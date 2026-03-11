@@ -15,7 +15,7 @@ import {
 } from "./seedData";
 
 // Bump this version to force-refresh seed data in localStorage
-const SEED_VERSION = "4";
+const SEED_VERSION = "5";
 const SEED_VERSION_KEY = "prosocial_seed_version";
 
 // Storage keys
@@ -841,10 +841,17 @@ export const localStorageService = {
 
   // Questions & Responses
   getOnboardCategoriesWithQuestions: (): LocalQuestionCategory[] => {
-    return getFromStorage<LocalQuestionCategory[]>(
+    const categories = getFromStorage<LocalQuestionCategory[]>(
       STORAGE_KEYS.QUESTION_CATEGORIES,
       [],
     );
+    // Migration: "Your personality" (id 2) should have 17 questions, not 47
+    const personalityCat = categories.find((c) => c.id === "2");
+    if (personalityCat && personalityCat.questions?.length === 47) {
+      setToStorage(STORAGE_KEYS.QUESTION_CATEGORIES, SEED_QUESTION_CATEGORIES);
+      return SEED_QUESTION_CATEGORIES;
+    }
+    return categories;
   },
 
   getQuestionCategories: (): LocalQuestionCategory[] => {
