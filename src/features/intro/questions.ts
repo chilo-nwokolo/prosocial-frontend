@@ -5,11 +5,11 @@ export const genderOptions = [
   { id: 2, title: "Male", value: "MALE" },
   {
     id: 3,
-    title: "Gender variant/Non-conforming",
+    title: "Gender Variant/Non-Conforming",
     value: "NONCONFORMING",
   },
   { id: 4, title: "Transgender", value: "TRANSGENDER" },
-  { id: 5, title: "Prefer not to answer", value: "OTHER" },
+  { id: 5, title: "Prefer Not to Answer", value: "OTHER" },
 ];
 
 export const raceOptions = [
@@ -36,7 +36,7 @@ export const raceOptions = [
   { id: 9, title: "Other", value: "Other" },
   {
     id: 10,
-    title: "Don’t know/Not sure",
+    title: "Don’t Know/Not Sure",
     value: "Don’t know/Not sure",
   },
 ];
@@ -44,20 +44,20 @@ export const raceOptions = [
 export const educationOptions = [
   {
     id: 1,
-    title: "Elementary or Middle school",
+    title: "Elementary or Middle School",
     value: "Elementary or Middle school",
   },
   {
     id: 2,
-    title: "High school graduate/GED equivalent",
+    title: "High School Graduate/GED Equivalent",
     value: "High school graduate/GED equivalent",
   },
-  { id: 3, title: "Some college", value: "Some college" },
-  { id: 4, title: "Associates degree", value: "Associates degree" },
-  { id: 5, title: "Bachelor’s degree", value: "Bachelor’s degree" },
+  { id: 3, title: "Some College", value: "Some college" },
+  { id: 4, title: "Associates Degree", value: "Associates degree" },
+  { id: 5, title: "Bachelor’s Degree", value: "Bachelor’s Degree" },
   {
     id: 6,
-    title: "Graduate or professional degree",
+    title: "Graduate or Professional Degree",
     value: "Graduate or professional degree",
   },
 ];
@@ -67,24 +67,24 @@ export const relationshipStatusOptions = [
   { id: 2, title: "Dating", value: "Dating" },
   {
     id: 3,
-    title: "In a committed relationship",
+    title: "In a Committed Relationship",
     value: "In a committed relationship",
   },
   { id: 4, title: "Married", value: "Married" },
 ];
 
 export const politicalOrientationOptions = [
-  { id: 1, title: "Strongly liberal", value: "Strongly liberal" },
-  { id: 2, title: "Slightly liberal", value: "Slightly liberal" },
+  { id: 1, title: "Strongly Liberal", value: "Strongly liberal" },
+  { id: 2, title: "Slightly Liberal", value: "Slightly liberal" },
   { id: 3, title: "Moderate", value: "Moderate" },
   {
     id: 4,
-    title: "Slightly conservative",
+    title: "Slightly Conservative",
     value: "Slightly conservative",
   },
   {
     id: 5,
-    title: "Strongly conservative",
+    title: "Strongly Conservative",
     value: "Strongly conservative",
   },
 ];
@@ -93,7 +93,7 @@ export const healthRatingOptions = [
   { id: 1, title: "Poor", value: "Poor" },
   { id: 2, title: "Moderate", value: "Moderate" },
   { id: 3, title: "Good", value: "Good" },
-  { id: 4, title: "Very good", value: "Very good" },
+  { id: 4, title: "Very Good", value: "Very good" },
   { id: 5, title: "Excellent", value: "Excellent" },
 ];
 

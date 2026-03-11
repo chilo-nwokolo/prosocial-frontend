@@ -111,7 +111,7 @@ const UserModal = ({ user }: { user: AdminUserType | null }) => {
           value={user?.profile?.occupation || ""}
         />
         <AnswerSect
-          title={"do you have children?"}
+          title={"Do you have children?"}
           value={user?.profile?.has_children ? "Yes" : "No"}
         />
       </SimpleGrid>

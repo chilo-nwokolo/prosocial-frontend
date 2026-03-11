@@ -19,7 +19,7 @@ export const componentConfig = {
       leftLabel: `Strongly \ndisagree`,
       rightLabel: `Strongly \nagree`,
       midLabel: `Neither \nagree nor \n disagree`,
-      lowerCaseTitle: true,
+      lowerCaseTitle: false,
       returnTitle: true,
       hasLabel: false,
     },
