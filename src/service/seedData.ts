@@ -218,6 +218,8 @@ const buildApproachToLifeQs = (
 // --- Universities ---
 export const SEED_UNIVERSITIES: LocalUniversity[] = [
   { id: "1", name: "Chicago State University" },
+  { id: "2", name: "Arlington Heights Moms" },
+  { id: "3", name: "Fitness 19" },
 ];
 
 // --- Personality Bucket Types ---
@@ -616,16 +618,6 @@ export const SEED_QUESTION_CATEGORIES: LocalQuestionCategory[] = [
     id: "4",
     name: "How you approach life",
     questions: buildApproachToLifeQs(59, 308),
-  },
-  {
-    id: "5",
-    name: "How you approach life",
-    questions: buildApproachToLifeQs(89, 458, "How you approach life"),
-  },
-  {
-    id: "6",
-    name: "How you approach life",
-    questions: buildApproachToLifeQs(119, 608, "How you approach life"),
   },
 ];
 

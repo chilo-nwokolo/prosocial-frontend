@@ -15,7 +15,7 @@ import {
 } from "./seedData";
 
 // Bump this version to force-refresh seed data in localStorage
-const SEED_VERSION = "5";
+const SEED_VERSION = "8";
 const SEED_VERSION_KEY = "prosocial_seed_version";
 
 // Storage keys
